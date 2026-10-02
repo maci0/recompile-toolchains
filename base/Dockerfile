@@ -25,6 +25,23 @@
 # same snapshot on every build.  Toolchain downloads are pinned by sha256
 # in the per-toolchain Dockerfiles.
 
+# libfaketime 0.9.13 supports Wine's 32-bit time64 ABI. Debian's 0.9.10
+# hangs before native LIB executes. Build both ELF ABIs without changing Wine.
+FROM debian:bookworm-slim@sha256:362e64223cc0da95422b3b13c045186fc0a81250e765d31c025fbddf257f6143 AS clock-build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        gcc gcc-multilib make curl ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/libfaketime.tar.gz \
+        "https://codeload.github.com/wolfcw/libfaketime/tar.gz/86b37fde2fed7336ea2d0c17928e3015a55d9b4a" \
+    && echo "d98aa7beeb21344b3612f60cbfe08196541a2ef25525b3774b11871493a4726e  /tmp/libfaketime.tar.gz" | sha256sum -c - \
+    && mkdir /tmp/faketime && tar -xzf /tmp/libfaketime.tar.gz -C /tmp/faketime --strip-components=1 \
+    && make -C /tmp/faketime/src libfaketime.so.1 \
+    && install -Dm0644 /tmp/faketime/src/libfaketime.so.1 /clock/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 \
+    && make -C /tmp/faketime/src clean \
+    && make -C /tmp/faketime/src CC='gcc -m32' libfaketime.so.1 \
+    && install -Dm0644 /tmp/faketime/src/libfaketime.so.1 /clock/lib/i386-linux-gnu/faketime/libfaketime.so.1 \
+    && install -Dm0644 /tmp/libfaketime.tar.gz /clock/share/doc/libfaketime/source.tar.gz \
+    && install -Dm0644 /tmp/faketime/COPYING /clock/share/doc/libfaketime/COPYING
+
 # debian:bookworm-slim@sha256:362e64223cc0da95422b3b13c045186fc0a81250e765d31c025fbddf257f6143
 FROM debian:bookworm-slim@sha256:362e64223cc0da95422b3b13c045186fc0a81250e765d31c025fbddf257f6143
 
@@ -57,6 +74,9 @@ ENV WINEDEBUG=-all \
 
 COPY wrapper-common.sh /usr/local/lib/rebrew/wrapper-common.sh
 RUN chmod +x /usr/local/lib/rebrew/wrapper-common.sh
+COPY --from=clock-build /clock/ /usr/
+COPY clock.sh /usr/local/bin/rebrew-clock
+RUN chmod +x /usr/local/bin/rebrew-clock
 
 # Runtime runs as a non-root user (fixed uid/gid 1000): these images compile
 # untrusted workdirs mounted at /work, so the compiler and its emulator never

@@ -134,6 +134,10 @@ rebrew_run() {
         wibo) _runner=wibo ;;
         *) rebrew_die "unknown REBREW_RUNNER '${REBREW_RUNNER}' (wine|wibo)" ;;
     esac
+    if [ "${SOURCE_DATE_EPOCH+x}" = x ]; then
+        [ "$_runner" = wine ] || rebrew_die "SOURCE_DATE_EPOCH clock requires the wine runner"
+        rebrew_exec /usr/local/bin/rebrew-clock "$_runner" "$@"
+    fi
     rebrew_exec "$_runner" "$@"
 }
 

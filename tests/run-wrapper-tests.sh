@@ -312,6 +312,21 @@ case "$out" in
 esac
 rm -rf "$SBOX2"
 
+# SOURCE_DATE_EPOCH is opt-in; its guard runs before any clock library loads.
+clock="$ROOT/base/clock.sh"
+# The argument intentionally contains shell syntax that must remain literal.
+# shellcheck disable=SC2016
+out=$(env -u SOURCE_DATE_EPOCH sh "$clock" printf '%s' 'literal $value; x')
+# shellcheck disable=SC2016
+check "clock unset preserves argv" 'literal $value; x' "$out"
+for epoch in '' '-1' '1 2' '9223372036854775808'; do
+  if SOURCE_DATE_EPOCH="$epoch" sh "$clock" true >/dev/null 2>&1; then
+    check "clock rejects invalid epoch [$epoch]" 1 0
+  fi
+done
+if SOURCE_DATE_EPOCH=1 REBREW_RUNNER=wibo sh -c '. '"$WC"'; rebrew_run test.exe' >/dev/null 2>&1; then
+  check "clock rejects static wibo clock" 1 0
+fi
 if [ "$fail" -eq 0 ]; then
   echo "ALL-PASS"
 else

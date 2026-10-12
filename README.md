@@ -1,4 +1,4 @@
-# rebrew-toolchains
+# recompile-toolchains
 
 Standalone docker images for legacy and modern C compilers: MSVC 1.0–11.0
 (every preserved service pack), Borland C/C++ (Turbo C 2.0, Turbo C++ 3.1,

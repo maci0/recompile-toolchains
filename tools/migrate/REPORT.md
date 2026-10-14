@@ -41,6 +41,8 @@ Since the migration, `delphi-1.0` is acknowledged too: its hand-written wrapper
 now keeps an 8.3 source basename instead of staging every source as `SRC.DPR`,
 so `make verify` reports 4 acknowledged.  That acknowledgement is pinned to the
 wrapper's sha256: any later edit to it fails the run until the pin is updated.
+Whole-program builds also stage sibling units/resources and custom RTL/VCL
+units/configuration, forward compiler switches and copy fresh compiler maps.
 Two
 more findings came out of the migration and were fixed rather than papered over:
 the PSY-Q 4.5 SDK download had no hash at all in the manifest (it is stable

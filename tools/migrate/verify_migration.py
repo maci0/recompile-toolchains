@@ -53,9 +53,9 @@ ACKNOWLEDGED: dict[str, tuple[str, str, str | None]] = {
         ("pin upgraded from http to https (same sha256)", "http://deb.debian.org", None),
     ),
     "delphi-1.0": (
-        "wrapper keeps the 8.3 source basename as the NE module name",
+        "wrapper preserves the 8.3 module name and stages program units, flags and maps",
         "wrapper line ",
-        "96f51c6fe7149e096af3d24f96451dd365bb1043e14b9553b5b8a0cd7ee98287",
+        "b570e4c8e2aee8cace91ac323f5728e18f275ed73602b0af8f51a65a5c34a3eb",
     ),
 }
 

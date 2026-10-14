@@ -18,6 +18,8 @@
 
 set -e
 rebrew_pick_source "$@"
+rebrew_flags_except_source "$@"
+_flags=$FLAGS
 
 _sandbox=$(mktemp -d /tmp/dcc.XXXXXX) || rebrew_die "mktemp failed"
 trap 'rm -rf "$_sandbox"' EXIT
@@ -41,10 +43,33 @@ case "$_basename" in
 esac
 cp "$SRC" "$_sandbox/$_staged" || rebrew_die "cannot stage source $SRC"
 
-# DCC reads DCC.CFG for the RTL/VCL unit paths.
-printf '/m\n/cw\n/rC:\\DELPHI\\LIB\n/uC:\\DELPHI\\LIB\n/iC:\\DELPHI\\LIB\n' > "$_sandbox/DCC.CFG"
+# A whole program uses the units and resources adjacent to its source. Other
+# programs are deliberately excluded: they are not units and cannot be used.
+_source_dir=$(dirname "$SRC")
+for _unit in "$_source_dir"/*; do
+    [ -f "$_unit" ] || continue
+    [ "$_unit" = "$SRC" ] && continue
+    case "$_unit" in
+        *.[Pp][Aa][Ss] | *.[Dd][Cc][Uu] | *.[Dd][Ff][Mm] | *.[Rr][Ee][Ss] | *.[Ii][Nn][Cc])
+            cp "$_unit" "$_sandbox/" || rebrew_die "cannot stage unit $_unit"
+            ;;
+        *) ;;
+    esac
+done
+if [ -d "$_source_dir/DELPHI/LIB" ]; then
+    rm -rf "$_sandbox/DELPHI/LIB"
+    mkdir -p "$_sandbox/DELPHI"
+    cp -r "$_source_dir/DELPHI/LIB" "$_sandbox/DELPHI/" || rebrew_die "cannot stage supplied units"
+fi
 
-rebrew_dosbox_run "$_sandbox" "C:\\DCC.EXE $_staged > C:\\dccout.txt"
+# DCC reads DCC.CFG for the RTL/VCL unit paths.
+if [ -f "$_source_dir/DCC.CFG" ]; then
+    cp "$_source_dir/DCC.CFG" "$_sandbox/DCC.CFG"
+else
+    printf '/m\n/cw\n/rC:\\DELPHI\\LIB\n/uC:\\DELPHI\\LIB\n/iC:\\DELPHI\\LIB\n' > "$_sandbox/DCC.CFG"
+fi
+
+rebrew_dosbox_run "$_sandbox" "C:\\DCC.EXE$_flags $_staged > C:\\dccout.txt"
 # Returns 0 once the staged EXE is copied back as ${STEM}.EXE; otherwise dies
 # embedding the compiler log and how DOSBox itself ended.  DOSBox's FAT
 # uppercases the artifact name, so the lookup name is upper-cased too: a
@@ -52,3 +77,7 @@ rebrew_dosbox_run "$_sandbox" "C:\\DCC.EXE $_staged > C:\\dccout.txt"
 _staged_exe=$(printf '%s' "${_staged%.*}" | tr '[:lower:]' '[:upper:]').EXE
 rebrew_dosbox_collect "$_sandbox" DCCOUT.TXT dccout.txt \
     "$_staged_exe" "${STEM}.EXE" "DCC produced no executable"
+_staged_map=$(printf '%s' "${_staged%.*}" | tr '[:lower:]' '[:upper:]').MAP
+if [ -f "$_sandbox/$_staged_map" ]; then
+    rebrew_copy_back "$_sandbox" "$_staged_map" "${STEM}.MAP"
+fi

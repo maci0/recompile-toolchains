@@ -15,5 +15,11 @@
 - The build source is named `recompile-toolchains` throughout the repository.
   Image names and compiler versions are unchanged.
 
+### Fixed
+
+- Refresh seven dosemu2/dj64 runtime package pins whose superseded Launchpad
+  downloads returned 404. Each replacement is pinned to its published file and
+  verified SHA-256; the build never selects a package from a moving index.
+
 This release distributes build definitions and wrappers. Proprietary compiler
 archives remain external inputs with their existing provenance and hashes.

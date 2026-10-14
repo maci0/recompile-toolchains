@@ -12,12 +12,10 @@
 # `base/` is Debian; the shared wrapper helpers are copied out of `base/` so
 # there is exactly one implementation of argument handling and error reporting.
 #
-# Every PPA package is pinned by its immutable Launchpad librarian URL (the
-# `+files/` copy, which is content-addressed and kept even after the PPA index
-# drops the build) plus a sha256.  The pool path the index points at is pruned
-# when a newer build supersedes it, and that pruning is what used to 404 this
-# image's pins.  The build never reads a PPA index, so a PPA rebuild cannot
-# change what an image contains.
+# Every PPA package is pinned by a Launchpad librarian URL and sha256.
+# Superseded files can disappear, so a failed download requires an explicit
+# pin refresh and compiler smoke verification. The build never reads a PPA
+# index and never substitutes an unverified newer package.
 #
 # NOTE: dosemu2 runs the guest CPU under KVM, so containers built FROM this
 #       base must be run with `--device /dev/kvm`; rebrew_dosemu_run says so
@@ -56,8 +54,8 @@ RUN apt-get update \
 RUN apt-get update \
     && mkdir -p /tmp/debs \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/dosemu2.deb \
-        "https://launchpadlibrarian.net/876969458/dosemu2_2.0~pre9-10295-4c9fe98ef+202609142054~ubuntu24.04.1_amd64.deb" \
-    && echo "fc764ef92f98c152e2c4f753d4395a76eb900c5da23cc6d5d48815a119893e8d  /tmp/debs/dosemu2.deb" | sha256sum -c - \
+        "https://launchpadlibrarian.net/880873282/dosemu2_2.0~pre9-10377-b683aeb53+202610131505~ubuntu24.04.1_amd64.deb" \
+    && echo "aebb1f5b3eba515e0b2d49f897bbf2b225a2f9a4179c79cb2d814ef569d1ea5b  /tmp/debs/dosemu2.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/fdpp.deb \
         "https://launchpadlibrarian.net/860512428/fdpp_1.10-10002-1671-9282d8c+202605091902~ubuntu24.04.1_amd64.deb" \
     && echo "e1b2c238ef79c97ac588dfeec54cc8598890cd97e2e344dc4627258948d09d8d  /tmp/debs/fdpp.deb" | sha256sum -c - \
@@ -68,23 +66,23 @@ RUN apt-get update \
         "https://launchpadlibrarian.net/876268289/libfdpp35_1.11-10003-1714-6fc57bc+202609081621~ubuntu24.04.1_amd64.deb" \
     && echo "1baec8711043c75d1e29a4f260e926cb7343c9cc484f8c053970e0e0a7000a2a  /tmp/debs/libfdpp35.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/comcom64.deb \
-        "https://launchpadlibrarian.net/874745384/comcom64_0.5-0~202608251909+202608252240~ubuntu24.04.1_amd64.deb" \
-    && echo "43e96d94b63beb0e9e14bb9304e4dc7d252bd743b7ac265555b2925e4d314eb5  /tmp/debs/comcom64.deb" | sha256sum -c - \
+        "https://launchpadlibrarian.net/879631907/comcom64_0.5-0~202610040914+202610052207~ubuntu24.04.1_amd64.deb" \
+    && echo "88deb90bc01279da57da12d131ff1a8fa7c9d4e2779c54aba8c624d085633357  /tmp/debs/comcom64.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/comcom32.deb \
-        "https://launchpadlibrarian.net/874745382/comcom32_0.5-0~202608251909+202608252240~ubuntu24.04.1_all.deb" \
-    && echo "1065f09a596c111f4ea92c6b4efb3542364523765c378b0a1a3f64cdfacca888  /tmp/debs/comcom32.deb" | sha256sum -c - \
+        "https://launchpadlibrarian.net/879631904/comcom32_0.5-0~202610040914+202610052207~ubuntu24.04.1_all.deb" \
+    && echo "f7b6ef20b573be739d81abc6ab282663f610755c4be4197d62c46bce8f17a873  /tmp/debs/comcom32.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/dj64.deb \
-        "https://launchpadlibrarian.net/874520505/dj64_0.5-0~202608232226+202608240134~ubuntu24.04.1_amd64.deb" \
-    && echo "c38d9355c742c15256d7ec78a2177438fdc6342ae8c0e4b6c982dac023cc8780  /tmp/debs/dj64.deb" | sha256sum -c - \
+        "https://launchpadlibrarian.net/879631484/dj64_0.5-0~202610031149+202610052030~ubuntu24.04.1_amd64.deb" \
+    && echo "a59151ebc5c6201544f9870095397e417dbac7b8f4fdef522fa6fda684c77476  /tmp/debs/dj64.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/djstub.deb \
-        "https://launchpadlibrarian.net/873874092/djstub_0.9-0~202608180717+202608181449~ubuntu24.04.1_all.deb" \
-    && echo "84b11036b02322e2ce15089e9509d385f536b7cbc52034fc0edc434820e04a5b  /tmp/debs/djstub.deb" | sha256sum -c - \
+        "https://launchpadlibrarian.net/878048879/djstub_0.9-0~202609240014+202609240117~ubuntu24.04.1_all.deb" \
+    && echo "207f8a28e7be896f256c1519a69269ae1dfcbc9667bf2eecbbf976e88e122033  /tmp/debs/djstub.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libdjstub64-0.deb \
-        "https://launchpadlibrarian.net/874520507/libdjstub64-0_0.5-0~202608232226+202608240134~ubuntu24.04.1_amd64.deb" \
-    && echo "59e39e45c28b03aad80340db1e7b31e928aa24c705af7386c3bd2e93bd9a2bde  /tmp/debs/libdjstub64-0.deb" | sha256sum -c - \
+        "https://launchpadlibrarian.net/878032061/libdjstub64-0_0.5-0~202609232118~ubuntu24.04.1_amd64.deb" \
+    && echo "62ccf36ab4ce966f7917772eff3d66d5c4ca5d9702b4c4bf85fc7e6987c29217  /tmp/debs/libdjstub64-0.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libdjdev64-0.deb \
-        "https://launchpadlibrarian.net/874520506/libdjdev64-0_0.5-0~202608232226+202608240134~ubuntu24.04.1_amd64.deb" \
-    && echo "0ec1f660905dd24e0c8e529de80264c491a3bb917c6f3b11735ae5100447ae9a  /tmp/debs/libdjdev64-0.deb" | sha256sum -c - \
+        "https://launchpadlibrarian.net/878032060/libdjdev64-0_0.5-0~202609232118~ubuntu24.04.1_amd64.deb" \
+    && echo "0b286a3f2c7639a2b5bcaf4641d5a8cf06e81c4998f1f809f2ace44021de5756  /tmp/debs/libdjdev64-0.deb" | sha256sum -c - \
     && apt-get install -y --no-install-recommends /tmp/debs/dosemu2.deb /tmp/debs/fdpp.deb \
         /tmp/debs/libfdldr35.deb /tmp/debs/libfdpp35.deb /tmp/debs/comcom64.deb \
         /tmp/debs/comcom32.deb /tmp/debs/dj64.deb /tmp/debs/djstub.deb \

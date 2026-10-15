@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.4.2] - 2026-10-15
+
+### Added
+
+- The MSVC 6.0 SP5 CRT profile Dockerfile and `cl` wrapper. `sources.json` already named `msvc/6.0-sp5-crt-win32`, and image-contract tests read that Dockerfile.
+
 ## [1.4.1] - 2026-10-15
 
 ### Added

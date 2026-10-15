@@ -398,3 +398,14 @@ discretion).  The builds fetch the reconstructed trees from the
 community-run `archaic-msvc` / `archaic-toolchains` GitHub repos, pinned by
 sha256 in `sources.json`; see also the provenance notes in the
 [rebrew TOOLCHAIN docs](https://github.com/maci0/rebrew/blob/main/docs/TOOLCHAIN.md).
+
+The Wine base includes pinned libfaketime 0.9.13 libraries for both ELF
+architectures. `SOURCE_DATE_EPOCH` enables the native build clock through
+`/usr/local/bin/rebrew-clock`; the supported Wine epoch range is
+`0..2147483647`. File mtimes and monotonic clocks stay real. The wrapper
+rejects the static wibo runner when this clock is requested. Without the
+variable, tools use their ordinary clocks.
+
+libfaketime is distributed under GPL version 2. Its exact upstream source
+archive and COPYING are included at `/usr/share/doc/libfaketime/`; the
+base Dockerfile records the source commit, SHA-256 and complete build recipe.

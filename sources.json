@@ -9244,6 +9244,107 @@
       }
     }
   },
+  "msvc-6.0-sp5-crt": {
+    "family": "msvc",
+    "host_dir": "msvc/6.0-sp5-crt-win32",
+    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp5/tar.gz/refs/heads/master",
+    "sha256": "a95a9c17cbcbe0d97a3e80ef9596f12404eb28f36bab24e89aabcbe37acbbef6",
+    "commit": "b0b07e29108e2695eb0274c2a377a7b7d7326150",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "cabextract"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/msvc600_sp5.tar.gz"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/vc6-runtime.exe"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/msvc6.0-sp5-crt"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/msvc600_sp5.tar.gz",
+          "into": "/opt/msvc6.0-sp5-crt",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/msvc600_sp5.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/msvc6.0-sp5-crt/Common/MSDev98/Bin/MSPDB60.DLL /opt/msvc6.0-sp5-crt/VC98/Bin/"
+        },
+        {
+          "op": "guard",
+          "cmd": "ls /opt/msvc6.0-sp5-crt/VC98/Bin/CL.EXE /opt/msvc6.0-sp5-crt/VC98/Bin/MSPDB60.DLL"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/tmp/vc6-runtime"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "cabextract -q -F vcredist.exe -d /tmp/vc6-runtime /tmp/vc6-runtime.exe"
+        },
+        {
+          "op": "script",
+          "run": "cabextract -q -F msvcrt.dll -d /tmp/vc6-runtime /tmp/vc6-runtime/vcredist.exe"
+        },
+        {
+          "op": "script",
+          "run": "echo '887eb5ce93edb7192ca3e9220f07f9ca0f94db02af5862ebcbdfcb852db99fd1  /tmp/vc6-runtime/msvcrt.dll' | sha256sum -c -"
+        },
+        {
+          "op": "cp",
+          "from": "/tmp/vc6-runtime/msvcrt.dll",
+          "into": "/opt/msvc6.0-sp5-crt/VC98/Bin/"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /tmp/vc6-runtime.exe /tmp/vc6-runtime"
+        },
+        {
+          "op": "guard",
+          "cmd": "ls /opt/msvc6.0-sp5-crt/VC98/Bin/msvcrt.dll"
+        }
+      ],
+      "env": {
+        "WINEDLLOVERRIDES": "\"msvcrt=n,b\""
+      },
+      "root": "msvc6.0-sp5-crt",
+      "title": "rebrew MSVC 6.0-sp5 with native VC6 CRT (win32, wine)",
+      "description": "Stock SP5 tools and archives; pinned Microsoft MSVCRT 6.0.8797 for native import qsort ordering",
+      "entrypoint": "cl",
+      "binary": "VC98/Bin/CL.EXE",
+      "runner": "wine",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": true,
+        "argv": []
+      }
+    },
+    "extra_pins": [
+      {
+        "url": "https://download.microsoft.com/download/vc60pro/Update/2/W9XNT4/EN-US/VC6RedistSetup_deu.exe",
+        "sha256": "c2eb91d9c4448d50e46a32fecbcc3b418706d002beab9b5f4981de552098cee7"
+      }
+    ]
+  },
   "msvc-6.0-sp5-pp": {
     "family": "msvc",
     "host_dir": "msvc/6.0-sp5-pp-win32",

@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-10-15
+
+### Added
+
+- MSVC 6.0 SP5 profile that pins the SP5 compiler tree and Microsoft's VC6
+  redistributable, and checks the native MSVCRT hash before that DLL is kept.
+  Provenance and the toolchain catalog name the source.
+
+### Changed
+
+- CI installs Python through setup-uv.
+- The Wine base image keeps the pinned libfaketime source snapshot.
+  `SOURCE_DATE_EPOCH` enables the native build clock. The wrapper rejects
+  the static wibo runner when that clock is requested, and the wrapper tests
+  cover the contract.
+
 ## [1.4.0] - 2026-10-14
 
 ### Added

@@ -3,7 +3,7 @@
 
 # Toolchain catalog
 
-275 toolchains, one self-contained image each.  This file is generated
+276 toolchains, one self-contained image each.  This file is generated
 from `sources.json` and the toolchain Dockerfiles; see
 [ADDING-TOOLCHAIN.md](ADDING-TOOLCHAIN.md) to add another, and the
 [README](../README.md) for how to run the images.
@@ -36,7 +36,7 @@ the notes column flags the toolchains whose output needs a second step.
 | wii | 10 |
 | wiiu | 1 |
 | win16 | 9 |
-| win32 | 46 |
+| win32 | 47 |
 | x360 | 2 |
 
 ## agbcc
@@ -271,6 +271,7 @@ Microsoft Visual C/C++ 1.0-11.0
 | `rebrew/msvc:6.0-sp2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `088cd189ce0a` @ `79157a87dec5` | none |
 | `rebrew/msvc:6.0-sp3-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.3` | `main` `f753adfa8a29` @ `ff28b9385708` | none |
 | `rebrew/msvc:6.0-sp4-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.4` | `main` `7aeb03f65858` @ `0ca69bae9e3c` | none |
+| `rebrew/msvc:6.0-sp5-crt-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `a95a9c17cbcb` @ `b0b07e29108e` | none |
 | `rebrew/msvc:6.0-sp5-pp-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5pp` | `master` `1bbf17748905` @ `762e9382c751` | none |
 | `rebrew/msvc:6.0-sp5-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5` | `master` `a95a9c17cbcb` @ `b0b07e29108e` | none |
 | `rebrew/msvc:6.0-sp6-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.6` | `master` `7c2aa3dd4c56` @ `1f4223a77122` | none |

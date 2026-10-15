@@ -88,6 +88,10 @@ _ENTRYPOINT = re.compile(r'^ENTRYPOINT \["/usr/local/bin/([^"]+)"\]$', re.MULTIL
 #: pins a URL whose source is not listed here, so provenance (and the
 #: licence class that goes with it) cannot be added silently.
 SOURCES: dict[str, tuple[str, str]] = {
+    "download.microsoft.com/download/vc60pro": (
+        "Microsoft's Visual C++ 6.0 redistributable (native MSVCRT runtime for the tools)",
+        "proprietary",
+    ),
     "github.com/archaic-msvc": (
         (
             "our own preservation repos for the archived 32-bit Microsoft VC++ trees "

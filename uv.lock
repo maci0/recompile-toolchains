@@ -224,7 +224,7 @@ wheels = [
 
 [[package]]
 name = "recompile-toolchains"
-version = "1.4.0"
+version = "1.4.1"
 source = { virtual = "." }
 
 [package.dev-dependencies]

@@ -21,13 +21,13 @@
 #   - REBREW_RUNNER (wine|wibo) selects the 32-bit PE runtime per run; the
 #     wrapper-common rebrew_run helper dispatches on it
 #
-# Determinism: the debian base is pinned to a digest so apt resolves the
-# same snapshot on every build.  Toolchain downloads are pinned by sha256
-# in the per-toolchain Dockerfiles.
+# The Debian filesystem is pinned by digest; apt still reads current
+# Bookworm package indexes. Native compiler downloads remain sha256-pinned
+# in each toolchain Dockerfile.
 
 # libfaketime 0.9.13 supports Wine's 32-bit time64 ABI. Debian's 0.9.10
 # hangs before native LIB executes. Build both ELF ABIs without changing Wine.
-FROM debian:bookworm-slim@sha256:362e64223cc0da95422b3b13c045186fc0a81250e765d31c025fbddf257f6143 AS clock-build
+FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587 AS clock-build
 RUN apt-get update && apt-get install -y --no-install-recommends \
         gcc gcc-multilib make curl ca-certificates && rm -rf /var/lib/apt/lists/*
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/libfaketime.tar.gz \
@@ -42,8 +42,8 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/libfaketime.tar.gz \
     && install -Dm0644 /tmp/libfaketime.tar.gz /clock/share/doc/libfaketime/source.tar.gz \
     && install -Dm0644 /tmp/faketime/COPYING /clock/share/doc/libfaketime/COPYING
 
-# debian:bookworm-slim@sha256:362e64223cc0da95422b3b13c045186fc0a81250e765d31c025fbddf257f6143
-FROM debian:bookworm-slim@sha256:362e64223cc0da95422b3b13c045186fc0a81250e765d31c025fbddf257f6143
+# debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
 
 # OCI provenance labels (org.opencontainers.image).
 LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \

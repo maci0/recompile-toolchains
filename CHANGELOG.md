@@ -8,6 +8,9 @@
 
 - Update Ruff to 0.17.1 and mypy to 2.4.0, with refreshed locked dependencies.
 - Pin CI checkout 7.0.1 and setup-uv 10.3.0 by commit.
+- Refresh the shared Debian Bookworm base digest to its current security
+  snapshot. Compiler archive versions/hashes are unchanged; the accepted
+  MSVC payload and fixed-clock compiler output remain byte-identical.
 
 ## [1.4.2] - 2026-10-15
 

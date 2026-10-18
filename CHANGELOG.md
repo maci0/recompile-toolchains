@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.4.3] - 2026-10-18
+
+### Changed
+
+- Update Ruff to 0.17.1 and mypy to 2.4.0, with refreshed locked dependencies.
+- Pin CI checkout 7.0.1 and setup-uv 10.3.0 by commit.
+
 ## [1.4.2] - 2026-10-15
 
 ### Added

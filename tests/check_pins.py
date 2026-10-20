@@ -43,7 +43,7 @@ def _request(url: str, method: str) -> tuple[int, str]:
     request = urllib.request.Request(url, method=method)  # noqa: S310
     if method == "GET":
         request.add_header("Range", "bytes=0-0")
-    request.add_header("User-Agent", "rebrew-toolchains-pin-check")
+    request.add_header("User-Agent", "recompile-toolchains-pin-check")
     try:
         with urllib.request.urlopen(  # noqa: S310  (same manifest-sourced URLs)
             request, timeout=TIMEOUT_SECONDS

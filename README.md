@@ -30,6 +30,14 @@ build time from the URL recorded in `sources.json` (the proprietary trees
 live in the community preservation repos the build pulls from; see
 [Copyright](#copyright)).
 
+## Naming
+
+The repository and project name is `recompile-toolchains` (formerly
+`rebrew-toolchains`). Published image tags keep the `rebrew/` prefix, and
+existing settings such as `REBREW_TOOLCHAINS_DIR`, `REBREW_BUILD_JOBS` and
+`REBREW_RUNNER` keep their names. The repository rename does not change
+image identities or consumer configuration.
+
 ## Why
 
 These are the same images [rebrew](https://github.com/maci0/rebrew) uses for

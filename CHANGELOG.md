@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [1.5.0] - 2026-10-18
+## [1.5.0] - 2026-10-20
 
 ### Changed
 
@@ -11,6 +11,11 @@
 - Refresh the shared Debian Bookworm base digest to its current security
   snapshot. Compiler archive versions/hashes are unchanged; the accepted
   MSVC payload and fixed-clock compiler output remain byte-identical.
+
+### Fixed
+
+- Clarify the `recompile-toolchains` repository name and retained `rebrew/` image
+  tags and `REBREW_*` settings; use the current name in the pin-check user agent.
 
 ## [1.4.2] - 2026-10-15
 

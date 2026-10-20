@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Refresh the dependency lock and current CI interpreter selection; preserve the
+  archived compiler versions and source hashes.
+
 ## [1.5.0] - 2026-10-20
 
 ### Changed

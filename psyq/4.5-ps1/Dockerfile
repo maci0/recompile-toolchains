@@ -25,11 +25,11 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psyq.tar.gz \
     && echo "495697696a3288866d83ff7b7aff423560ffaffd3e212274417f3348cc0b29f8  /tmp/psyq.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/psyq/4.5/bin \
-    && tar xzf /tmp/gcc281.tar.gz -C /opt/psyq/4.5/bin \
+    && tar xzf /tmp/gcc281.tar.gz --no-same-owner -C /opt/psyq/4.5/bin \
     && rm /tmp/gcc281.tar.gz \
     && chmod +x /opt/psyq/4.5/bin/gcc \
     && mkdir -p /tmp/psyq \
-    && tar xzf /tmp/psyq.tar.gz --strip-components=1 -C /tmp/psyq \
+    && tar xzf /tmp/psyq.tar.gz --no-same-owner --strip-components=1 -C /tmp/psyq \
     && cp -a /tmp/psyq/psyq_4.5/include /tmp/psyq/psyq_4.5/lib /opt/psyq/4.5/ \
     && rm -rf /tmp/psyq.tar.gz /tmp/psyq \
     && ls /opt/psyq/4.5/lib/libgte.lib \

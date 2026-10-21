@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/tc31.tar.gz \
     && echo "3d534741ebdc31ffdceb87db8de3b7d494ad5c912b7cd1a4f326b4a94d0c2ba1  /tmp/tc31.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/tc31 \
-    && tar xzf /tmp/tc31.tar.gz --strip-components=1 -C /opt/tc31 \
+    && tar xzf /tmp/tc31.tar.gz --no-same-owner --strip-components=1 -C /opt/tc31 \
     && rm /tmp/tc31.tar.gz \
     && ls /opt/tc31/BIN/TCC.EXE
 

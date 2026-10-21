@@ -7,6 +7,12 @@
 - Refresh the dependency lock and current CI interpreter selection; preserve the
   archived compiler versions and source hashes.
 
+### Fixed
+
+- Extract compiler archives without preserving the publisher's numeric owners.
+  Rootless engines can unpack LLVM payloads with high upstream UIDs without
+  changing host subordinate ID ranges; compiler execution remains non-root.
+
 ## [1.5.0] - 2026-10-20
 
 ### Changed

@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/bcc55.tar.gz \
     && echo "e9319c3904303ca4424cfed855b17837d10aa9653a3d8e6329d2adb3326392b0  /tmp/bcc55.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/bcc55 \
-    && tar xzf /tmp/bcc55.tar.gz --strip-components=1 -C /opt/bcc55 \
+    && tar xzf /tmp/bcc55.tar.gz --no-same-owner --strip-components=1 -C /opt/bcc55 \
     && rm /tmp/bcc55.tar.gz \
     && ls /opt/bcc55/Bin/bcc32.exe
 

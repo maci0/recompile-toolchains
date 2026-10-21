@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc600_sp5.tar.gz \
     && echo "a95a9c17cbcbe0d97a3e80ef9596f12404eb28f36bab24e89aabcbe37acbbef6  /tmp/msvc600_sp5.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc6.0-sp5 \
-    && tar xzf /tmp/msvc600_sp5.tar.gz --strip-components=1 -C /opt/msvc6.0-sp5 \
+    && tar xzf /tmp/msvc600_sp5.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc6.0-sp5 \
     && rm /tmp/msvc600_sp5.tar.gz \
     && cp /opt/msvc6.0-sp5/Common/MSDev98/Bin/MSPDB60.DLL /opt/msvc6.0-sp5/VC98/Bin/ \
     && ls /opt/msvc6.0-sp5/VC98/Bin/CL.EXE /opt/msvc6.0-sp5/VC98/Bin/MSPDB60.DLL

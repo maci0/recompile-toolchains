@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc700.tar.gz \
     && echo "5f75462fb6134ad56c3ae28cf8b1e3b2869578d4171568b7a1fcdfb0bf97830b  /tmp/msvc700.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc7.0 \
-    && tar xzf /tmp/msvc700.tar.gz --strip-components=1 -C /opt/msvc7.0 \
+    && tar xzf /tmp/msvc700.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc7.0 \
     && rm /tmp/msvc700.tar.gz \
     && ls /opt/msvc7.0/Vc7/bin/cl.exe
 

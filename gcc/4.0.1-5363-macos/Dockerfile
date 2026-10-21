@@ -25,7 +25,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /opt/gcc-4.0.1-5363/convert_gas_s
     && echo "8ad067bedef54c526774e6453f55ef7a2bedc93604bd7640a6a8a1cc64b3cda0  /opt/gcc-4.0.1-5363/convert_gas_syntax.py" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xzf /tmp/tools/gcc-5363.tar.gz -C /opt/gcc-4.0.1-5363 \
+    && tar xzf /tmp/tools/gcc-5363.tar.gz --no-same-owner -C /opt/gcc-4.0.1-5363 \
     && rm -rf /tmp/tools \
     && chmod +x /opt/gcc-4.0.1-5363/cc1 /opt/gcc-4.0.1-5363/convert_gas_syntax.py
 

@@ -21,8 +21,8 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/binutils.tar.gz \
     && echo "c3cd88db47ac41f78b557042c7e7ad47ac9c04cee6f0d1069a489c1c9e8c103c  /tmp/binutils.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/gcc-2.8.1-pm \
-    && tar xzf /tmp/gcc.tar.gz -C /opt/gcc-2.8.1-pm \
-    && tar xzf /tmp/binutils.tar.gz -C /opt/gcc-2.8.1-pm \
+    && tar xzf /tmp/gcc.tar.gz --no-same-owner -C /opt/gcc-2.8.1-pm \
+    && tar xzf /tmp/binutils.tar.gz --no-same-owner -C /opt/gcc-2.8.1-pm \
     && rm /tmp/gcc.tar.gz /tmp/binutils.tar.gz \
     && chmod +x /opt/gcc-2.8.1-pm/gcc /opt/gcc-2.8.1-pm/as \
     && /opt/gcc-2.8.1-pm/gcc --version

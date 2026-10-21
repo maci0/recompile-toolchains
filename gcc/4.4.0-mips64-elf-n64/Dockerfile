@@ -21,7 +21,7 @@ RUN mkdir -p /opt/gcc-4.4.0-mips64-elf /tmp/tools && curl -fsSL --retry 3 --retr
     && echo "d1a9815f730582ff65f8c14371c62436790655b20a21a5f8ee8b39b4fafa2f58  /tmp/tools/gcc440-mips64.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xzf /tmp/tools/gcc440-mips64.tar.gz -C /opt/gcc-4.4.0-mips64-elf \
+    && tar xzf /tmp/tools/gcc440-mips64.tar.gz --no-same-owner -C /opt/gcc-4.4.0-mips64-elf \
     && rm -rf /tmp/tools
 
 COPY cc-wrapper.sh /usr/local/bin/cc

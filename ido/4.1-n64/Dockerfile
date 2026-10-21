@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido41.tar.gz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/ido-4.1 \
-    && tar xzf /tmp/ido41.tar.gz -C /opt/ido-4.1 \
+    && tar xzf /tmp/ido41.tar.gz --no-same-owner -C /opt/ido-4.1 \
     && rm /tmp/ido41.tar.gz \
     && chmod +x /opt/ido-4.1/usr/bin/qemu-irix-4.0 \
     && /opt/ido-4.1/usr/bin/qemu-irix-4.0 --version 2>&1 | head -1 || true

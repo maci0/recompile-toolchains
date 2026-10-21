@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/tc20.tar.gz \
     && echo "2eca4c26c1b30ce2bd7e61573eb9f40096994405fc173c28143f06a93da269d1  /tmp/tc20.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/tc20 \
-    && tar xzf /tmp/tc20.tar.gz --strip-components=1 -C /opt/tc20 \
+    && tar xzf /tmp/tc20.tar.gz --no-same-owner --strip-components=1 -C /opt/tc20 \
     && rm /tmp/tc20.tar.gz \
     && ls /opt/tc20/BIN/TCC.EXE
 

@@ -19,7 +19,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
     && echo "a4a00c2450ee2b6f7be29fc73470446994fcf2b1b1003b8ac34568f3358e1c99  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwccpsp-3.0.1-134 /tmp/x \
-    && tar xzf /tmp/compiler.tar.gz -C /tmp/x \
+    && tar xzf /tmp/compiler.tar.gz --no-same-owner -C /tmp/x \
     && cp -a /tmp/x/. /opt/mwccpsp-3.0.1-134/ \
     && rm -rf /tmp/x /tmp/compiler.tar.gz \
     && ls /opt/mwccpsp-3.0.1-134/mwccpsp.exe

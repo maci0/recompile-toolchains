@@ -21,7 +21,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/gcc263.tar.gz \
     && echo "01e6e8c4933414ea3f8d8e3bc766a1f5fafd4fc0110e0b75d1f691bd791989b1  /tmp/gcc263.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/gcc-2.6.3-ps1 \
-    && tar xzf /tmp/gcc263.tar.gz -C /opt/gcc-2.6.3-ps1 \
+    && tar xzf /tmp/gcc263.tar.gz --no-same-owner -C /opt/gcc-2.6.3-ps1 \
     && rm /tmp/gcc263.tar.gz \
     && chmod +x /opt/gcc-2.6.3-ps1/gcc \
     && /opt/gcc-2.6.3-ps1/gcc --version \

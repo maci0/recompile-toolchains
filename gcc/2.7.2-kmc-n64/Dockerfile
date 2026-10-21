@@ -21,11 +21,11 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/binutils26.tar.gz \
     && echo "405a7ddb29a0b2eb472b167e8f15472223df1eff3093a5ff31d6e545d3a6c670  /tmp/binutils26.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/gcc-2.7.2-kmc \
-    && tar xzf /tmp/gcc272.tar.gz -C /opt/gcc-2.7.2-kmc \
+    && tar xzf /tmp/gcc272.tar.gz --no-same-owner -C /opt/gcc-2.7.2-kmc \
     && rm /tmp/gcc272.tar.gz \
     && chmod +x /opt/gcc-2.7.2-kmc/gcc \
     && mkdir -p /opt/mips-binutils-2.6 \
-    && tar xzf /tmp/binutils26.tar.gz -C /opt/mips-binutils-2.6 \
+    && tar xzf /tmp/binutils26.tar.gz --no-same-owner -C /opt/mips-binutils-2.6 \
     && rm /tmp/binutils26.tar.gz \
     && chmod +x /opt/mips-binutils-2.6/* \
     && mkdir -p /opt/cross/bin /opt/cross/lib/gcc-lib/mips-mips-gnu/2.7.2 \

@@ -21,8 +21,8 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/tools/binutils-egcs.tar.gz \
     && echo "54eb249ccfbc9956048de5c740ff41d6ab6137cfc3a872739e465349327bbcbf  /tmp/tools/binutils-egcs.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xzf /tmp/tools/mips-gcc-egcs.tar.gz -C /opt/gcc-egcs-1.1.2-4c \
-    && tar xzf /tmp/tools/binutils-egcs.tar.gz -C /opt/gcc-egcs-1.1.2-4c \
+    && tar xzf /tmp/tools/mips-gcc-egcs.tar.gz --no-same-owner -C /opt/gcc-egcs-1.1.2-4c \
+    && tar xzf /tmp/tools/binutils-egcs.tar.gz --no-same-owner -C /opt/gcc-egcs-1.1.2-4c \
     && rm -rf /tmp/tools
 
 COPY cc-wrapper.sh /usr/local/bin/cc

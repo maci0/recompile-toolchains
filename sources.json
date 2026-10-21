@@ -1876,7 +1876,7 @@
         },
         {
           "op": "script",
-          "run": "tar xJf data.tar.xz"
+          "run": "tar xJf data.tar.xz --no-same-owner"
         },
         {
           "op": "script",
@@ -2029,7 +2029,7 @@
         },
         {
           "op": "script",
-          "run": "tar xJf data.tar.xz"
+          "run": "tar xJf data.tar.xz --no-same-owner"
         },
         {
           "op": "script",
@@ -2117,7 +2117,7 @@
         },
         {
           "op": "script",
-          "run": "tar xJf data.tar.xz"
+          "run": "tar xJf data.tar.xz --no-same-owner"
         },
         {
           "op": "script",
@@ -7414,7 +7414,7 @@
         },
         {
           "op": "script",
-          "run": "tar xf /tmp/ido/ssb.tar -C /opt/ido-irix-5.3"
+          "run": "tar xf /tmp/ido/ssb.tar --no-same-owner -C /opt/ido-irix-5.3"
         },
         {
           "op": "rm",

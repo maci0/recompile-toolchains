@@ -33,7 +33,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
 RUN rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/tools \
     && chmod +x /opt/gcc-2.8.1-sn/*.exe \
-    && tar xzf /tmp/parser.tar.gz -C /opt/gcc-2.8.1-sn \
+    && tar xzf /tmp/parser.tar.gz --no-same-owner -C /opt/gcc-2.8.1-sn \
     && rm /tmp/parser.tar.gz \
     && chmod +x /opt/gcc-2.8.1-sn/psyq-obj-parser
 

@@ -19,7 +19,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/icc.tar.gz \
     && echo "2661672232e8845004f40d8aaba15f19cde36750b72b3a864aa21f6a0d196564  /tmp/icc.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/icc-5.0.1 \
-    && tar xzf /tmp/icc.tar.gz -C /opt/icc-5.0.1 \
+    && tar xzf /tmp/icc.tar.gz --no-same-owner -C /opt/icc-5.0.1 \
     && rm /tmp/icc.tar.gz \
     && chmod +x /opt/icc-5.0.1/Bin/*.exe \
     && ls /opt/icc-5.0.1/Bin/icl.exe

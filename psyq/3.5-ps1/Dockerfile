@@ -21,10 +21,10 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
     && echo "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e  /tmp/parser.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/psyq-3.5 \
-    && tar xzf /tmp/psyq.tar.gz --strip-components=1 -C /opt/psyq-3.5 \
+    && tar xzf /tmp/psyq.tar.gz --no-same-owner --strip-components=1 -C /opt/psyq-3.5 \
     && rm /tmp/psyq.tar.gz \
     && chmod +x /opt/psyq-3.5/*.EXE \
-    && tar xzf /tmp/parser.tar.gz -C /opt/psyq-3.5 \
+    && tar xzf /tmp/parser.tar.gz --no-same-owner -C /opt/psyq-3.5 \
     && rm /tmp/parser.tar.gz \
     && chmod +x /opt/psyq-3.5/psyq-obj-parser
 

@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/agbcc.tar.gz \
     && echo "5bdeac906031476a341f09929d303c5834d8adda8dc00bd85934eb4b2463daa7  /tmp/agbcc.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/agbcc-fe8j \
-    && tar xzf /tmp/agbcc.tar.gz -C /opt/agbcc-fe8j \
+    && tar xzf /tmp/agbcc.tar.gz --no-same-owner -C /opt/agbcc-fe8j \
     && rm /tmp/agbcc.tar.gz \
     && chmod +x /opt/agbcc-fe8j/bin/agbcc \
     && ls /opt/agbcc-fe8j/bin/agbcc

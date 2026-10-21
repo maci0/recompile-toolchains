@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc600_sp4.tar.gz \
     && echo "7aeb03f65858000bb6988a64cc066a4a2aec9fc591400db400ffe6fc99ae2dbc  /tmp/msvc600_sp4.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc6.0-sp4 \
-    && tar xzf /tmp/msvc600_sp4.tar.gz --strip-components=1 -C /opt/msvc6.0-sp4 \
+    && tar xzf /tmp/msvc600_sp4.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc6.0-sp4 \
     && rm /tmp/msvc600_sp4.tar.gz \
     && ls /opt/msvc6.0-sp4/VC98/bin/CL.EXE
 

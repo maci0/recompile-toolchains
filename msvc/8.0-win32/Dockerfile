@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc800.tar.gz \
     && echo "ab819164ebd9e9d367c1178a86eb9c3337b1a8d85d1357322a3252b63ad64453  /tmp/msvc800.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc8.0 \
-    && tar xzf /tmp/msvc800.tar.gz --strip-components=1 -C /opt/msvc8.0 \
+    && tar xzf /tmp/msvc800.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc8.0 \
     && rm /tmp/msvc800.tar.gz \
     && ls /opt/msvc8.0/VC/bin/cl.exe
 

@@ -19,7 +19,7 @@ RUN mkdir -p /opt/watcom-10.0a /tmp/watcom && curl -fsSL --retry 3 --retry-all-e
         "https://github.com/decompme/compilers/releases/download/compilers/wcc10.0a.tar.gz" \
     && echo "920a9674d1b10f227ae65171c187212b06d7fc38b263313922615c4f5e9b24a6  /tmp/watcom/watcom.tar.gz" | sha256sum -c -
 
-RUN tar xzf /tmp/watcom/watcom.tar.gz -C /opt/watcom-10.0a \
+RUN tar xzf /tmp/watcom/watcom.tar.gz --no-same-owner -C /opt/watcom-10.0a \
     && rm -rf /tmp/watcom \
     && ls /opt/watcom-10.0a/binnt/wcc386.exe
 

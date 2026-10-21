@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc6.tar.gz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/msvc6.0-win9x \
-    && tar xzf /tmp/msvc6.tar.gz -C /opt/msvc6.0-win9x \
+    && tar xzf /tmp/msvc6.tar.gz --no-same-owner -C /opt/msvc6.0-win9x \
     && rm /tmp/msvc6.tar.gz \
     && ls /opt/msvc6.0-win9x/Bin/CL.EXE
 

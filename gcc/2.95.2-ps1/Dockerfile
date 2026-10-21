@@ -21,7 +21,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/gcc2952.tar.gz \
     && echo "932ed3669710a82b12570c29c46ff42989b6505b2af10db84d4551d55dfc0b1c  /tmp/gcc2952.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/gcc-2.95.2-ps1 \
-    && tar xzf /tmp/gcc2952.tar.gz -C /opt/gcc-2.95.2-ps1 \
+    && tar xzf /tmp/gcc2952.tar.gz --no-same-owner -C /opt/gcc-2.95.2-ps1 \
     && rm /tmp/gcc2952.tar.gz \
     && chmod +x /opt/gcc-2.95.2-ps1/gcc \
     && /opt/gcc-2.95.2-ps1/gcc --version \

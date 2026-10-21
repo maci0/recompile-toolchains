@@ -16,7 +16,7 @@ RUN mkdir -p /opt/bcc2.0dm /tmp/bcc && curl -fsSL --retry 3 --retry-all-errors -
         "https://github.com/decompme/compilers/releases/download/compilers/bcc2.0.tar.gz" \
     && echo "6a8bb50e1d390e05ea8ef5ea076035eadda32eb1640b5b802538f2c3933565c3  /tmp/bcc/bcc.tar.gz" | sha256sum -c -
 
-RUN tar xzf /tmp/bcc/bcc.tar.gz -C /opt/bcc2.0dm \
+RUN tar xzf /tmp/bcc/bcc.tar.gz --no-same-owner -C /opt/bcc2.0dm \
     && rm -rf /tmp/bcc \
     && ls /opt/bcc2.0dm/bin/bcc.exe
 

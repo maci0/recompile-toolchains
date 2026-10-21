@@ -19,7 +19,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
     && echo "d021f7d02ab63da770c13dc246637276141321ca08221ee2333a7acadf82482b  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwcps2-3.0.1b145-050209 /tmp/x \
-    && tar xzf /tmp/compiler.tar.gz -C /tmp/x \
+    && tar xzf /tmp/compiler.tar.gz --no-same-owner -C /tmp/x \
     && cp -a /tmp/x/. /opt/mwcps2-3.0.1b145-050209/ \
     && rm -rf /tmp/x /tmp/compiler.tar.gz \
     && ls /opt/mwcps2-3.0.1b145-050209/mwccps2.exe

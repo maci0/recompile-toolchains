@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido53.tar.gz \
     && echo "ab5c741561f80913d58c8b074771f23941a3edd312505a8ebed6d1dfeb65e506  /tmp/ido53.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/ido/5.3 \
-    && tar xzf /tmp/ido53.tar.gz -C /opt/ido/5.3 \
+    && tar xzf /tmp/ido53.tar.gz --no-same-owner -C /opt/ido/5.3 \
     && rm /tmp/ido53.tar.gz \
     && chmod +x /opt/ido/5.3/cc
 

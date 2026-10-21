@@ -19,7 +19,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/mwccarm.tar.gz \
     && echo "91e10b9826bb985641a6db075da444a51bf25dd53df3216cb8bc05548561ec45  /tmp/mwccarm.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwccarm-2.0-56 \
-    && tar xzf /tmp/mwccarm.tar.gz -C /opt/mwccarm-2.0-56 \
+    && tar xzf /tmp/mwccarm.tar.gz --no-same-owner -C /opt/mwccarm-2.0-56 \
     && rm /tmp/mwccarm.tar.gz \
     && ls /opt/mwccarm-2.0-56/mwccarm.exe
 

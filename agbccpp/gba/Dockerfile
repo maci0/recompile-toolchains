@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/agbccpp.tar.gz \
     && echo "05a30f03ee916563bba29efdc9da64c47909892aa878002cf07e8e7ae5bd32f5  /tmp/agbccpp.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/agbccpp \
-    && tar xzf /tmp/agbccpp.tar.gz -C /opt/agbccpp \
+    && tar xzf /tmp/agbccpp.tar.gz --no-same-owner -C /opt/agbccpp \
     && rm /tmp/agbccpp.tar.gz \
     && chmod +x /opt/agbccpp/bin/agbcp \
     && ls /opt/agbccpp/bin/agbcp

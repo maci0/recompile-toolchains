@@ -7287,6 +7287,10 @@
           "into": "/opt/ido-4.1"
         },
         {
+          "op": "chmod",
+          "cmd": "chmod -R a+rX /opt/ido-4.1"
+        },
+        {
           "op": "rm",
           "cmd": "rm /tmp/ido41.tar.gz"
         },
@@ -8221,6 +8225,10 @@
           "compression": "gz",
           "from": "/tmp/msc/msc.tar.gz",
           "into": "/opt/msc60"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod -R a+rX /opt/msc60"
         },
         {
           "op": "rm",

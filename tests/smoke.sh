@@ -234,6 +234,7 @@ delphi_module_names() {
 if [ "$#" -gt 0 ]; then
     for profile in "$@"; do
         case "$profile" in
+            msc-6.0) run_case "$profile" 't.c' 't.obj' 'relocatable' ;;
             delphi-1.0) run_case "$profile" 't.dpr' 't.exe' 'MS-DOS' ;;
             *-maspsx-4ffa8b5) run_case "$profile" '-c t.c -o t.o' t.o 'MIPS' ;;
             psyq-*-daze-0.3.0) run_case "$profile" '-c t.c -o t.o' t.o 'MIPS' ;;

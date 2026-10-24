@@ -4,6 +4,11 @@
 
 ## [1.6.0] - 2026-10-24
 
+### Fixed
+
+- Normalize IDO 4.1 and Microsoft C 6.0 archive permissions so the non-root
+  compiler user can execute the emulator and stage the compiler payload.
+
 ### Added
 
 - Add 22 PS1 GCC variants with maspsx pinned at `4ffa8b5`, plus Daze 0.3.0

@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-10-25
+
+### Changed
+
+- Require Python 3.14, pin contributor and CI interpreters to 3.14.9, and
+  refresh Ruff and all locked dependencies to their latest stable releases.
+
 ## [1.7.0] - 2026-10-25
 
 ### Added

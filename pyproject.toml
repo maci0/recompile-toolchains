@@ -4,13 +4,13 @@
 [project]
 name = "recompile-toolchains"
 # Nominal (nothing here is packaged or published); required by PEP 621.
-version = "1.7.0"
-requires-python = ">=3.13"
+version = "1.8.0"
+requires-python = ">=3.14"
 
 [tool.ruff]
 # Matches requires-python above (the only interpreters that can run this
 # tree); bump both together or pyupgrade/mypy reason about a dead dialect.
-target-version = "py313"
+target-version = "py314"
 line-length = 100
 
 [tool.ruff.lint]
@@ -66,7 +66,7 @@ select = [
 [tool.mypy]
 strict = true
 # Matches requires-python above; bump both together (see [tool.ruff]).
-python_version = "3.13"
+python_version = "3.14"
 # Not part of `strict`: flags dead code and impossible branches as errors.
 warn_unreachable = true
 # Not part of `strict`: bans explicit `Any` outright instead of merely
@@ -83,7 +83,7 @@ files = ["."]
 
 [dependency-groups]
 lint = [
-    "ruff==0.17.1",
+    "ruff==0.17.2",
     "mypy==2.4.0",
     # Wraps the upstream ShellCheck 0.11.0 binary under the `shellcheck`
     # command; keeps the shell analyzer in the same pinned set.

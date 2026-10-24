@@ -21,7 +21,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/cc1.tar.gz \
     && echo "3f215db5c6c6040461b82b85f4d7564da59da3064d7c13b872c16ad9f5731497  /tmp/cc1.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/saturn-cygnus-native \
-    && tar xzf /tmp/cc1.tar.gz -C /opt/saturn-cygnus-native \
+    && tar xzf /tmp/cc1.tar.gz --no-same-owner -C /opt/saturn-cygnus-native \
     && rm /tmp/cc1.tar.gz \
     && chmod +x /opt/saturn-cygnus-native/cc1-native \
     && test -x /opt/saturn-cygnus-native/cc1-native

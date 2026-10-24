@@ -26,14 +26,14 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/maspsx.tar.gz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/gcc-2.7.2.3 /opt/cross/bin /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3 \
-    && tar xzf /tmp/gcc.tar.gz -C /opt/gcc-2.7.2.3 \
+    && tar xzf /tmp/gcc.tar.gz --no-same-owner -C /opt/gcc-2.7.2.3 \
     && rm /tmp/gcc.tar.gz \
     && chmod +x /opt/gcc-2.7.2.3/gcc \
     && cp /opt/gcc-2.7.2.3/cc1 /opt/gcc-2.7.2.3/cc1plus /opt/gcc-2.7.2.3/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3/ \
     && cp /opt/gcc-2.7.2.3/gcc /opt/cross/bin/gcc \
     && cp /opt/gcc-2.7.2.3/g++ /opt/cross/bin/g++ \
     && mkdir -p /opt/maspsx \
-    && tar xzf /tmp/maspsx.tar.gz --strip-components=1 -C /opt/maspsx \
+    && tar xzf /tmp/maspsx.tar.gz --no-same-owner --strip-components=1 -C /opt/maspsx \
     && rm /tmp/maspsx.tar.gz \
     && printf '%s\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler "$@"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3/as \
     && chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3/as \

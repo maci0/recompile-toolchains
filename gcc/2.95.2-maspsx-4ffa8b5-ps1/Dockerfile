@@ -25,7 +25,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/maspsx.tar.gz \
     && echo "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464  /tmp/maspsx.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/gcc-2.95.2-ps1 \
-    && tar xzf /tmp/gcc2952.tar.gz -C /opt/gcc-2.95.2-ps1 \
+    && tar xzf /tmp/gcc2952.tar.gz --no-same-owner -C /opt/gcc-2.95.2-ps1 \
     && rm /tmp/gcc2952.tar.gz \
     && chmod +x /opt/gcc-2.95.2-ps1/gcc \
     && /opt/gcc-2.95.2-ps1/gcc --version \
@@ -35,7 +35,7 @@ RUN mkdir -p /opt/gcc-2.95.2-ps1 \
     && cp /opt/gcc-2.95.2-ps1/gcc /opt/cross/bin/gcc \
     && cp /opt/gcc-2.95.2-ps1/g++ /opt/cross/bin/g++ \
     && mkdir -p /opt/maspsx \
-    && tar xzf /tmp/maspsx.tar.gz --strip-components=1 -C /opt/maspsx \
+    && tar xzf /tmp/maspsx.tar.gz --no-same-owner --strip-components=1 -C /opt/maspsx \
     && rm /tmp/maspsx.tar.gz \
     && printf '%s\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler "$@"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.95.2/as \
     && chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.95.2/as \

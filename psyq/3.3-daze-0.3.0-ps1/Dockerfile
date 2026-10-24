@@ -73,10 +73,10 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /opt/daze-notices/unicorn-qemu.tx
     && echo "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e  /opt/daze-notices/unicorn-qemu.txt" | sha256sum -c -
 
 RUN mkdir -p /opt/psyq-3.3 \
-    && tar xzf /tmp/psyq.tar.gz --strip-components=1 -C /opt/psyq-3.3 \
+    && tar xzf /tmp/psyq.tar.gz --no-same-owner --strip-components=1 -C /opt/psyq-3.3 \
     && rm /tmp/psyq.tar.gz \
     && chmod +x /opt/psyq-3.3/*.EXE \
-    && tar xzf /tmp/parser.tar.gz -C /opt/psyq-3.3 \
+    && tar xzf /tmp/parser.tar.gz --no-same-owner -C /opt/psyq-3.3 \
     && rm /tmp/parser.tar.gz \
     && chmod +x /opt/psyq-3.3/psyq-obj-parser \
     && chmod +x /usr/local/bin/daze

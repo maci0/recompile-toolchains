@@ -316,6 +316,8 @@ def render_wrapper(profile: str, entry: dict[str, object]) -> str:
         return _wrapper_dosbox_compile(entry, wrapper)
     if shape == "psyq_dosemu":
         return _wrapper_psyq_dosemu(entry, wrapper)
+    if shape == "daze":
+        return _wrapper_daze(entry, wrapper)
     if shape == "psyq_native":
         return _wrapper_psyq_native(entry, wrapper)
     if shape == "sn64_pe":
@@ -640,6 +642,86 @@ def _wrapper_psyq_dosemu(entry: dict[str, object], wrapper: dict[str, object]) -
     """The PSY-Q 2.6.3/3.x compile pipeline, from recipe data."""
     body = _PSYQ_DOSEMU_BODY.replace("{dir}", f"/opt/{install_root(entry)}")
     return "\n".join(_head(entry, "Entrypoint", wrapper)) + body
+
+
+def _wrapper_daze(entry: dict[str, object], wrapper: dict[str, object]) -> str:
+    """Run the original DOS compiler stages using Daze's software backend."""
+    family = _text(entry, "family")
+    _require(family in {"psyq", "saturn"}, "Daze pipeline needs a PSY-Q or Saturn profile")
+    head = _head(entry, "Entrypoint", wrapper)
+    head[0] = "#!/bin/bash"
+    body = r"""set -euo pipefail
+out=""
+args=()
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -o)
+            [ "$#" -ge 2 ] && [ -n "$2" ] || rebrew_die "-o requires an output file"
+            out="$2"
+            shift 2
+            ;;
+        -c) shift ;;
+        *) args+=("$1"); shift ;;
+    esac
+done
+rebrew_pick_source "${args[@]}"
+[ -n "$out" ] || out="$STEM.o"
+flags=()
+for arg in "${args[@]}"; do
+    [ "$arg" = "$SRC" ] || flags+=("$arg")
+done
+src=$(realpath -- "$SRC")
+out=$(realpath -m -- "$out")
+[ "$src" != "$out" ] || rebrew_die "source and output must be different files"
+work=$(mktemp -d) || rebrew_die "cannot create a temporary directory"
+target=""
+trap 'rm -rf -- "$work"; [ -z "$target" ] || rm -f -- "$target"' EXIT
+cd "$work"
+
+# Each stage keeps its exit status and watchdog; compiler files are read-only.
+run_dos() {
+    ( rebrew_exec /usr/local/bin/daze --no-tmp --backend unicorn \
+        --mount-ro C:{dir} --mount "D:$work" \
+        --env TMP=D:/ --env TEMP=D:/ "$@" )
+}
+( rebrew_exec /usr/bin/cpp -E {cpp_flags} "$src" -o preprocessed.c )
+unix2dos -q -n preprocessed.c dos_src.c
+{precompile}
+run_dos C:/{cc1}.EXE -quiet "${flags[@]}" D:/{input} -o D:/output.s
+[ -s output.s ] || rebrew_die "compiler produced no assembly"
+run_dos C:/{assembler}.EXE {as_flags} D:/output.s -o D:/output.obj
+[ -s output.obj ] || rebrew_die "assembler produced no object"
+{convert}
+[ -s output.o ] || rebrew_die "converter produced no ELF object"
+target=$(mktemp "${out}.tmp.XXXXXX")
+cp --preserve=mode -- output.o "$target"
+mv -f -- "$target" "$out"
+"""
+    root = f"/opt/{install_root(entry)}"
+    saturn = family == "saturn"
+    values = {
+        "dir": root,
+        # The DOS preprocessor cannot read modern cpp's #0 line markers.
+        "cpp_flags": "-P" if saturn else "",
+        "cc1": "CC1" if saturn else "CC1PSX",
+        "assembler": "AS" if saturn else "ASPSX",
+        "as_flags": "" if saturn else "-quiet",
+        "input": "src_proc.c" if saturn else "dos_src.c",
+        "precompile": (
+            "run_dos C:/CPP.EXE D:/dos_src.c -o D:/src_proc.c\n"
+            '[ -s src_proc.c ] || rebrew_die "DOS preprocessor produced no source"'
+            if saturn
+            else ""
+        ),
+        "convert": (
+            "( rebrew_exec sh-elf-objcopy -Icoff-sh -Oelf32-sh output.obj output.o )"
+            if saturn
+            else f"( rebrew_exec {root}/psyq-obj-parser output.obj -o output.o )"
+        ),
+    }
+    for key, value in values.items():
+        body = body.replace("{" + key + "}", value)
+    return "\n".join(head) + body
 
 
 def _wrapper_dosbox_compile(entry: dict[str, object], wrapper: dict[str, object]) -> str:

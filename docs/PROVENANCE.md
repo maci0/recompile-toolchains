@@ -23,37 +23,41 @@ listed here, so a new upstream cannot arrive undocumented.
 
 | Upstream | What it hosts | Licence class | Toolchains |
 | --- | --- | --- | --- |
-| `github.com/decompme` | decomp.me's compiler release assets (`decompme/compilers`: the vendor MWCCARM/ARMCC/MWCPS2/MWCCCPSP/SHC/PSY-Q/IRIX tools (proprietary) plus the Apache-2.0/GPL Android NDK repacks and psyq-obj-parser) | proprietary | 128 |
-| `files.decomp.dev` | dated decomp.me compiler bundles (the GameCube/Wii MWCC, ProDG and Xbox 360 MSVC trees; older dates stay addressable) | proprietary | 36 |
-| `github.com/decompals` | decompals rebuilds: `ido-static-recomp` (IDO for Linux), `old-gcc` (PS1/N64 GCC), `mips-gcc-2.7.2`, `mips-binutils-2.6` | GPL (rebuilds of GPL toolchains) | 31 |
+| `github.com/decompme` | decomp.me's compiler release assets (`decompme/compilers`: the vendor MWCCARM/ARMCC/MWCPS2/MWCCCPSP/SHC/PSY-Q/IRIX tools (proprietary) plus the Apache-2.0/GPL Android NDK repacks and psyq-obj-parser) | proprietary | 133 |
+| `github.com/mkst/daze` | Daze 0.3.0 DOS runtime; release includes dependency notices and source references | MIT source; GPL-2.0 release binaries with Unicorn and other dependencies | 5 |
+| `github.com/decompals` | decompals rebuilds: `ido-static-recomp` (IDO for Linux), `old-gcc` (PS1/N64 GCC), `mips-gcc-2.7.2`, `mips-binutils-2.6` | GPL (rebuilds of GPL toolchains) | 53 |
+| `files.decomp.dev` | dated decomp.me compiler bundles (the GameCube/Wii MWCC, ProDG and Xbox 360 MSVC trees; older dates stay addressable) | proprietary | 37 |
 | `github.com/archaic-msvc` | our own preservation repos for the archived 32-bit Microsoft VC++ trees (`msvc1000` … `msvc900`, every service pack) | proprietary | 23 |
+| `codeload.github.com/mkst/maspsx` | Commit-pinned Modern ASPSX compatibility layer for PS1 GCC assembly | MIT | 22 |
 | `gist.githubusercontent.com` | revision-pinned converter scripts: `Mc-muffin`'s `rof2elf.py` (SHC ROF → ELF) and `ChrisNonyminus`'s `convert_gas_syntax.py` (Apple cc1 assembler → GNU as) | MIT (gists) | 15 |
 | `github.com/archaic-toolchains` | our own preservation repos: reconstructed 16-bit MSVC / Turbo C / Delphi trees, the MSVC 4.0 and service-pack repos, and Borland C++ 5.5 | proprietary | 13 |
+| `github.com/mkst` | `mkst/esa` `psyq-binaries`: the PSY-Q SDK releases (CCPSX/CC1PSX/ASPSX) | proprietary | 11 |
 | `github.com/OmniBlade` | `OmniBlade/decomp.me` preservation releases: the DOS-era Watcom C/C++ 10.5/10.5a/10.6/11.0 trees (and the `msvcwin9x` repacks) | proprietary | 10 |
-| `github.com/mkst` | `mkst/esa` `psyq-binaries`: the PSY-Q SDK releases (CCPSX/CC1PSX/ASPSX) | proprietary | 8 |
 | `github.com/marijnvdwerf` | `marijnvdwerf/sn64` release assets (the 2.8.1 cc1n64 / asn64) | proprietary | 3 |
 | `github.com/LLONSIT` | `qemu-irix-helpers`: the static qemu-irix user-mode emulator plus the original IRIX IDO / MIPSpro trees, commit-pinned | mixed: GPL emulator, proprietary IRIX binaries | 5 |
 | `github.com/ChrisNonyminus` | `ChrisNonyminus/powerpc-darwin-cross`: Apple cc1/cc1plus cross builds (powerpc-apple-darwin) | GPL (Apple GCC sources) | 4 |
 | `releases.llvm.org` | LLVM's own release host, for the prebuilt clang tarballs that the 3.9.1/4.0.1/8.0.0/9.0.0 GitHub releases do not carry | Apache-2.0 with LLVM exception | 4 |
 | `deb.debian.org` | the Debian pool: the pinned `libtinfo5` runtime package the prebuilt clang trees link against (Debian dropped libtinfo5 from bookworm, so each clang image installs the .deb from the pool) | MIT-style (ncurses); the .deb is taken unmodified | 3 |
+| `ftp.gnu.org` | GNU GCC release tarballs, compiled inside the image | GPL | 3 |
+| `github.com/llvm` | LLVM/Clang GitHub release assets | Apache-2.0 with LLVM exception | 3 |
 | `github.com/pret` | `pret/agbcc`: the GBA compiler rebuild | GPL | 3 |
-| `ftp.gnu.org` | GNU GCC release tarballs, compiled inside the image | GPL | 2 |
 | `github.com/Mr-Wiseguy` | `Mr-Wiseguy/pcsx-redux` N64 release assets (cc1n64.exe, asn64.exe) | GPL | 1 |
 | `github.com/RocketRet` | `RocketRet/modern-asn64`: the Python assembler driver used by the SNEW build | MIT | 2 |
-| `github.com/llvm` | LLVM/Clang GitHub release assets | Apache-2.0 with LLVM exception | 2 |
 | `github.com/niXman` | `niXman/mingw-builds-binaries`: prebuilt MinGW-w64 | GPL | 2 |
 | `github.com/open-watcom` | Open Watcom v2 release snapshots | Sybase Open Watcom licence | 2 |
 | `github.com/pmret` | `gcc-papermario` / `binutils-papermario`: N64 rebuilds for the Paper Mario decomp | GPL | 1 |
+| `github.com/sozud` | `sozud/saturn-compilers`: the Sega Saturn Cygnus 2.7-96Q3 compiler and SDK media, commit-pinned | proprietary | 2 |
 | `FoxdieTeam` | `FoxdieTeam/psyq_sdk`: the PSY-Q 4.5 headers and libraries (commit-pinned tarball; the codeload archive hashes the same on repeat fetches, so the pin is sha256-verified like every other) | proprietary | 1 |
 | `download.microsoft.com/download/vc60pro` | Microsoft's Visual C++ 6.0 redistributable (native MSVCRT runtime for the tools) | proprietary | 1 |
 | `earthsiege2` | `earthsiege2/borland-cpp-ide`: an archive of abandoned Borland C++ installations (the Borland C++ 5.6 command-line tree is extracted from it here) | proprietary | 1 |
+| `gist.githubusercontent.com/masonc15` | Revision-pinned rof2elf.py fork with Saturn SH-2 0xff section padding support | No licence declared in the gist; fork of the existing Mc-muffin converter | 1 |
 | `github.com/AngheloAlf` | `AngheloAlf/egcs_1.1.2-4`: the N64 EGCS tree (mips-linux-gcc driver) | GPL | 1 |
 | `github.com/SBird1337` | `SBird1337/camelot-gcc`: Camelot GCC 2.96 (GBA) | GPL | 1 |
 | `github.com/bwrsandman` | `bwrsandman/icc5.0.1.010525Z`: the Intel C++ 5.0.1 (build 010525Z) tree, extracted from the archive.org item `latest-versions-of-c` (`data1.cab` md5 e8dd2defb4754dafe9295f2087a52be0).  A personal repository with one release, so the pin is sha256-verified and the same content also exists as git blobs (codeload fallback); mirror it before relying on it for a rebuild | proprietary | 1 |
 | `github.com/devwizard64` | `devwizard64/gcc4.4.0-mips64-elf`: a prebuilt mips64-elf GCC 4.4.0 tree | GPL | 1 |
 | `github.com/laqieer` | `laqieer/agbcc`: the FE8J agbcc fork | GPL | 1 |
 | `github.com/notyourav` | `notyourav/agbcc`: the agbcc C++ frontend fork | GPL | 1 |
-| `github.com/sozud` | `sozud/saturn-compilers`: the Sega Saturn Cygnus 2.7-96Q3 compiler and SDK media, commit-pinned | proprietary | 1 |
+| `github.com/sozud/saturn-compiler-repro` | Native Linux reproductions of the Sega Saturn Cygnus 2.7-96Q3 compiler | GPL compiler sources; AGPL-3.0 reproduction tooling | 1 |
 | `widberg` | `widberg/msvc8.0`: portable (patched) MSVC 8.0 repacks, commit-pinned per variant | proprietary | 1 |
 
 ## Shared bases
@@ -74,6 +78,7 @@ version matches, the row says so rather than pretending to be a match.
 
 | Community id | Image here | Status | Evidence |
 | --- | --- | --- | --- |
+| `msvc8.0sp1` | `msvc/8.0-sp1-win32` | verified alias | Drahsid/ffxiv_msvc8.0sp1@0d6f444c and archaic-msvc/msvc800_sp1@4b1bafba have identical cl.exe, c1.dll, c1xx.dll and c2.dll Git blobs |
 | `msvc6.3` | `msvc/6.0-sp3-win32` | verified alias | `c1xx.dll` `28c355499c` and `c2.dll` `a0cc45f83f`, identical in both trees |
 | `msvc6.4` | `msvc/6.0-sp4-win32` | verified alias | `c1xx.dll` `71718c2ba1` and `c2.dll` `5649bd68ed`, identical in both trees |
 | `msvc6.5` | `msvc/6.0-sp5-win32` | verified alias | `c1xx.dll` `f014b3bee6` and `c2.dll` `d50100ac23`, identical in both trees |

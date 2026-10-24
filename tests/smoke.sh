@@ -133,6 +133,58 @@ run_case() {
         fi
         kind="$kind (module names ok)"
     fi
+    case "$profile" in
+        *-maspsx-4ffa8b5)
+            if ! docker run --rm --network=none --entrypoint python3 \
+                -w /opt/maspsx "$tag" -m unittest discover -s tests -t . \
+                >"$work/compile.log" 2>&1; then
+                echo "FAIL $profile: upstream maspsx regression tests failed" >&2
+                tail -20 "$work/compile.log" >&2
+                fail=1
+                return 0
+            fi
+            ;;
+        *) ;;
+    esac
+    case "$profile" in
+        saturn-cygnus-2.7-96Q3-native|shc-5.0r32-sh2|*-daze-0.3.0)
+            if ! docker run --rm -v "$work":/work -w /work "$tag" \
+                -o t.o -c t.c >"$work/compile.log" 2>&1; then
+                echo "FAIL $profile: cannot replace an output named before the source" >&2
+                fail=1
+                return 0
+            fi
+            case "$profile" in
+                *-daze-0.3.0)
+                    cp "$work/t.c" "$work/expected-source"
+                    if docker run --rm -v "$work":/work -w /work "$tag" \
+                        -o t.c -c t.c >"$work/compile.log" 2>&1 \
+                        || ! cmp -s "$work/t.c" "$work/expected-source"; then
+                        echo "FAIL $profile: source/output collision was not refused safely" >&2
+                        fail=1
+                        return 0
+                    fi
+                    ;;
+                *) ;;
+            esac
+            # Failed stages must leave an existing output intact.
+            printf 'keep existing output\n' > "$work/t.o"
+            cp "$work/t.o" "$work/expected"
+            printf 'this is not C;\n' > "$work/t.c"
+            if docker run --rm -v "$work":/work -w /work "$tag" \
+                -o t.o -c t.c >"$work/compile.log" 2>&1; then
+                echo "FAIL $profile: accepted invalid C" >&2
+                fail=1
+                return 0
+            fi
+            if ! cmp -s "$work/t.o" "$work/expected"; then
+                echo "FAIL $profile: failed compile replaced existing output" >&2
+                fail=1
+                return 0
+            fi
+            ;;
+        *) ;;
+    esac
     echo "ok  $profile: $kind"
     return 0
 }
@@ -183,6 +235,14 @@ if [ "$#" -gt 0 ]; then
     for profile in "$@"; do
         case "$profile" in
             delphi-1.0) run_case "$profile" 't.dpr' 't.exe' 'MS-DOS' ;;
+            *-maspsx-4ffa8b5) run_case "$profile" '-c t.c -o t.o' t.o 'MIPS' ;;
+            psyq-*-daze-0.3.0) run_case "$profile" '-c t.c -o t.o' t.o 'MIPS' ;;
+            saturn-*-daze-0.3.0) run_case "$profile" '-c t.c -o t.o' t.o 'Renesas SH' ;;
+            mwcc-4.1-51213p1) run_case "$profile" '-c t.c -o t.o' t.o 'PowerPC' ;;
+            saturn-cygnus-2.7-96Q3-native|shc-5.0r32-sh2)
+                run_case "$profile" '-c t.c -o t.o' t.o 'Renesas SH' ;;
+            gcc-16.2.0|clang-23.1.4)
+                run_case "$profile" '-c t.c -o t.o' t.o 'x86-64' ;;
             *) run_case "$profile" '-c t.c -o t.o' t.o '' ;;
         esac
     done
@@ -218,6 +278,10 @@ gcc-4.0.1-5363|-c t.c -o t.o|t.o|PowerPC|
 psp-gcc-1.3.1|-c t.c -o t.o|t.o|MIPS|
 psyq-3.3|-c t.c -o t.o|t.o|MIPS|kvm
 saturn-cygnus-2.7-96Q3|-c t.c -o t.o|t.o|Renesas SH|kvm
+saturn-cygnus-2.7-96Q3-native|-c t.c -o t.o|t.o|Renesas SH|
+shc-5.0r32-sh2|-c t.c -o t.o|t.o|Renesas SH|
+gcc-2.7.2-psx-maspsx-4ffa8b5|-c t.c -o t.o|t.o|MIPS|
+psyq-3.3-daze-0.3.0|-c t.c -o t.o|t.o|MIPS|
 CASES
 fi
 

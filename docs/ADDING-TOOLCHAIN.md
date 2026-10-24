@@ -181,6 +181,7 @@ Wrapper shapes:
 | --- | --- |
 | `passthrough` | `rebrew_exec` / `rebrew_run <binary> "$@"`, plus `rebrew_pick_source` when `validate_source` is set and the wrapper-scoped `env` |
 | `normalising` | the `-o`/`-c` argv rewriting the compilers need that name their own output object |
+| `daze` | the DOS PSY-Q or Saturn stages under pinned Daze with the explicit Unicorn backend, isolated scratch files, stage watchdogs and atomic ELF output publication |
 | `handwritten` | nothing at all: the file is edited by hand and `why` says what a shape would have to do to replace it.  `tests/test_generation.py` lists every one of them, so adding an exception is a deliberate edit to that list. |
 
 Every generated file starts with `# Generated from sources.json by

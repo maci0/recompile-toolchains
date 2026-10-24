@@ -3,7 +3,7 @@
 
 # Toolchain catalog
 
-308 toolchains, one self-contained image each.  This file is generated
+335 toolchains, one self-contained image each.  This file is generated
 from `sources.json` and the toolchain Dockerfiles; see
 [ADDING-TOOLCHAIN.md](ADDING-TOOLCHAIN.md) to add another, and the
 [README](../README.md) for how to run the images.
@@ -21,23 +21,31 @@ the notes column flags the toolchains whose output needs a second step.
 | dreamcast | 11 |
 | gba | 6 |
 | gc | 25 |
-| host | 2 |
+| host | 18 |
 | linux-i386 | 1 |
 | linux-x64 | 6 |
-| macos | 4 |
-| msdos | 2 |
+| macos | 5 |
+| msdos | 5 |
 | n64 | 23 |
 | nds | 24 |
 | ps1 | 58 |
-| ps2 | 40 |
-| psp | 13 |
-| saturn | 4 |
+| ps2 | 42 |
+| psp | 14 |
+| saturn | 5 |
 | switch | 4 |
 | wii | 10 |
 | wiiu | 1 |
-| win16 | 9 |
-| win32 | 47 |
+| win16 | 10 |
+| win32 | 49 |
 | x360 | 2 |
+
+## ack
+
+Amsterdam Compiler Kit
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/ack:6.2-7afa32a-linux386` | host | `cc` | native | none | `7afa32a0a0f13e865fa2e8104e442689005cd627` `142ad8834ed5` @ `7afa32a0a0f1` | none |
 
 ## agbcc
 
@@ -45,10 +53,10 @@ GBA decomp compilers (pret agbcc, the notyourav C++ fork, FE8J fork)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/agbcc:arm-gba` | gba | `agbcc_arm` | native | `agbcc_arm` | `agbcc.tar.gz` `bcf0197e3e27` @ `da598c1d9184` | the same build as `agbcc`, with a different front end; cc1-style: emits assembly, not an object; upstream release tag is rebuilt on every push, so re-pin on drift |
-| `rebrew/agbcc:fe8j-gba` | gba | `agbcc` | native | none | `agbcc.tar.gz` `5bdeac906031` | cc1-style: emits assembly, not an object; upstream release tag is rebuilt on every push, so re-pin on drift |
-| `rebrew/agbcc:gba` | gba | `agbcc` | native | none | `agbcc.tar.gz` `bcf0197e3e27` @ `da598c1d9184` | cc1-style: emits assembly, not an object; upstream release tag is rebuilt on every push, so re-pin on drift |
-| `rebrew/agbcc:old-gba` | gba | `old_agbcc` | native | `old_agbcc` | `agbcc.tar.gz` `bcf0197e3e27` @ `da598c1d9184` | the same build as `agbcc`, with a different front end; cc1-style: emits assembly, not an object; upstream release tag is rebuilt on every push, so re-pin on drift |
+| `rebrew/agbcc:arm-gba` | gba | `agbcc_arm` | native | `agbcc_arm` | `agbcc.tar.gz` `bcf0197e3e27` @ `da598c1d9184` | the same build as `agbcc`, with a different front end; Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly |
+| `rebrew/agbcc:fe8j-gba` | gba | `agbcc` | native | none | `agbcc.tar.gz` `5bdeac906031` | Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly |
+| `rebrew/agbcc:gba` | gba | `agbcc` | native | none | `agbcc.tar.gz` `bcf0197e3e27` @ `da598c1d9184` | Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly |
+| `rebrew/agbcc:old-gba` | gba | `old_agbcc` | native | `old_agbcc` | `agbcc.tar.gz` `bcf0197e3e27` @ `da598c1d9184` | the same build as `agbcc`, with a different front end; Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly |
 
 ## agbccpp
 
@@ -56,7 +64,7 @@ GBA decomp C++ compiler (notyourav/agbcc `cp` fork)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/agbccpp:gba` | gba | `agbccpp` | native | none | `agbcc.tar.gz` `05a30f03ee91` @ `ac51b05a0741` | cc1-style: emits assembly, not an object; upstream release tag is rebuilt on every push, so re-pin on drift |
+| `rebrew/agbccpp:gba` | gba | `agbccpp` | native | none | `agbcc.tar.gz` `05a30f03ee91` @ `ac51b05a0741` | Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly |
 
 ## armcc
 
@@ -79,6 +87,14 @@ ARM Compiler for Nintendo 3DS
 | `rebrew/armcc:4.1-921-3ds` | 3ds | `armcc` | wine, wibo via `REBREW_RUNNER=wibo` | `armcc_41_921` | `armcc.zip` `bda0cea5b13a` @ `0884197d3e4a` | unpacked from `zip-subpath:4.1/b921` |
 | `rebrew/armcc:5.04-82-3ds` | 3ds | `armcc` | wine, wibo via `REBREW_RUNNER=wibo` | `armcc_504_82` | `armcc.zip` `bda0cea5b13a` @ `0884197d3e4a` | unpacked from `zip-subpath:5.04/b82` |
 
+## bootlin
+
+Bootlin Linux cross-toolchains with pinned sysroots
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/bootlin:m68k-glibc-2026.08-1-linux` | host | `cc` | native | none | `m68k-68xxx--glibc--stable-2026.08-1.tar.xz` `c92f32f48cdb` | Linux m68k ABI with the exact glibc sysroot, GCC 15.3.0, binutils 2.45.1 |
+
 ## borland
 
 Borland Turbo C/C++ (DOS and Win32)
@@ -91,6 +107,14 @@ Borland Turbo C/C++ (DOS and Win32)
 | `rebrew/borland:3.1-win16` | win16 | `tcc` | DOSBox | none | `main` `3d534741ebdc` @ `ba6af878392b` | none |
 | `rebrew/borland:5.5-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `e9319c390430` @ `fcdcaf5bc41f` | none |
 | `rebrew/borland:5.6-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `09bcecc81184` `8e5a93db9933` @ `09bcecc81184` | unpacked from `tar-subset` |
+
+## cc65
+
+cc65 C compiler for 6502 systems
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/cc65:2.19-c64` | host | `cc` | native | none | `V2.19` `157b8051aed7` | none |
 
 ## clang
 
@@ -114,6 +138,38 @@ Borland Delphi 1.0 (16-bit, DOSBox)
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/delphi:1.0-win16` | win16 | `dcc` | DOSBox | none | `main` `24cd23f0ef55` @ `fd12406eeaa6` | none |
 
+## devkita64
+
+devkitPro AArch64 bare-metal toolchains
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/devkita64:16.1.0-1-elf` | host | `cc` | native | none | `devkita64-gcc-16.1.0-1-x86_64.pkg.tar.zst` `8192b899f0a5` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
+
+## devkitarm
+
+devkitPro ARM bare-metal toolchains
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/devkitarm:16.1.0-1-elf` | host | `cc` | native | none | `devkitarm-gcc-16.1.0-1-x86_64.pkg.tar.zst` `289be1a7a423` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
+
+## devkitppc
+
+devkitPro PowerPC bare-metal toolchains
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/devkitppc:16.2.0-1-elf` | host | `cc` | native | none | `devkitppc-gcc-16.2.0-1-x86_64.pkg.tar.zst` `d27ec75b8e30` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
+
+## djgpp
+
+Linux-hosted DJGPP GNU compilers for DOS
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/djgpp:12.2.0-msdos` | msdos | `cc` | native | none | `djgpp-linux64-gcc1220.tar.bz2` `8464f17017d6` | Native Linux-hosted DJGPP cross compiler; GNU i386 COFF output |
+
 ## ee-gcc
 
 Emotion Engine GCC for PlayStation 2
@@ -135,6 +191,14 @@ Emotion Engine GCC for PlayStation 2
 | `rebrew/ee-gcc:3.2-030210-beta2-ps2` | ps2 | `ee-gcc` | wine, wibo via `REBREW_RUNNER=wibo` | `ee-gcc3.2-030210-beta2` | `ee-gcc3.2-030210-beta2.tar.gz` `5244521973d3` @ `0884197d3e4a` | none |
 | `rebrew/ee-gcc:3.2-030926-ps2` | ps2 | `ee-gcc` | native | `ee-gcc3.2-030926` | `ee-gcc3.2-030926.tar.gz` `6b92b61e40f8` @ `0884197d3e4a` | none |
 | `rebrew/ee-gcc:3.2-040921-ps2` | ps2 | `ee-gcc` | native | `ee-gcc3.2-040921` | `ee-gcc3.2-040921.tar.xz` `8c60ca748252` @ `0884197d3e4a` | none |
+
+## gbdk
+
+GBDK-2020 compilers and libraries for 8-bit consoles
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/gbdk:4.5.0-sm83-gb` | host | `cc` | native | none | `gbdk-linux64.tar.gz` `d7857a5f6d13` | Bundled SDCC build and ASxxxx object format; Game Boy SM83 target |
 
 ## gcc
 
@@ -218,6 +282,14 @@ Green Hills C/C++ for Wii U
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/ghs:5.3.22-wiiu` | wiiu | `cxppc` | wine, wibo via `REBREW_RUNNER=wibo` | `ghs5.3.22` | `ghs5.3.22.tar.gz` `41cd0a4723ac` @ `0884197d3e4a` | none |
 
+## ia16
+
+GCC for segmented 16-bit x86
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/ia16:6.3.0-20260612-msdos` | msdos | `cc` | native | none | `gcc-ia16-elf_6.3.0-20260612.00-ppa260612104~noble_amd64.deb` `4a23a16d3836` | Linux-hosted segmented 16-bit x86 GCC with exact binutils, newlib and libi86 packages |
+
 ## icc
 
 Intel C++ Compiler for 32-bit Windows (i386 COFF)
@@ -253,6 +325,15 @@ I/O processor GCC for PlayStation 2
 | `rebrew/iop-gcc:2.8.1-ps2` | ps2 | `iop-gcc` | native | `iop-gcc2.8.1` | `iop-gcc2.8.1.tar.gz` `1f602e146f5b` @ `0884197d3e4a` | none |
 | `rebrew/iop-gcc:2.95.2-102-ps2` | ps2 | `iop-gcc` | wine, wibo via `REBREW_RUNNER=wibo` | `iop-gcc2.95.2-102` | `iop-gcc2.95.2-102.tar.gz` `84016c589935` @ `0884197d3e4a` | none |
 
+## llvm-mos
+
+LLVM-MOS 6502-family C/C++ cross-compilers
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/llvm-mos:23.3.0-c64-mos` | host | `cc` | native | none | `llvm-mos-linux.tar.xz` `9f694497bc93` | MOS ELF with target-specific relocations; platform c64 |
+| `rebrew/llvm-mos:23.3.0-nes-mos` | host | `cc` | native | none | `llvm-mos-linux.tar.xz` `9f694497bc93` | MOS ELF with target-specific relocations; platform nes |
+
 ## mingw
 
 MinGW-w64 GCC cross compilers (i686 PE, wine)
@@ -261,6 +342,14 @@ MinGW-w64 GCC cross compilers (i686 PE, wine)
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/mingw:14.2.0-win32` | win32 | `mingw` | wine, wibo via `REBREW_RUNNER=wibo` | none | `i686-14.2.0-release-posix-dwarf-msvcrt-rt_v12-rev2.7z` `895d22c902e2` | unpacked from `7z-strip1` |
 | `rebrew/mingw:16.2.0-win32` | win32 | `mingw` | wine, wibo via `REBREW_RUNNER=wibo` | none | `i686-16.2.0-release-posix-dwarf-msvcrt-rt_v14-rev1.7z` `9773342cba88` | unpacked from `7z-strip1` |
+
+## mintelf
+
+Atari MiNT ELF cross compilers
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/mintelf:15.2.0-atari` | host | `cc` | native | none | `gcc-15.2.0-mintelf-20250810-bin-linux64.tar.xz` `1f86cc5caa9a` | MiNT ELF ABI; GCC 15.2.0, binutils 2.45 and mintlib 0.60.1 with dated package revisions |
 
 ## msc
 
@@ -273,7 +362,7 @@ Microsoft C 5.1 (16-bit DOS)
 
 ## msvc
 
-Microsoft Visual C/C++ 1.0-11.0
+Microsoft Visual C/C++ 1.0-12.0
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -283,6 +372,7 @@ Microsoft Visual C/C++ 1.0-11.0
 | `rebrew/msvc:10.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `2e5fbb9b71ed` @ `09a53c11f781` | none |
 | `rebrew/msvc:10.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `5f0b4486eb68` @ `f8977e2cacbe` | none |
 | `rebrew/msvc:11.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `adba1882eb07` @ `89087a636aea` | none |
+| `rebrew/msvc:12.0-u4-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc12.zip` `2adc1d97b342` | Visual C++ 2013 Update 4; native x86 MSVCR120 and MSVCP120 retained beside the tools with archive notices; headers and libraries configured |
 | `rebrew/msvc:2.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `0b058f103fe6` @ `6bf022c590fd` | none |
 | `rebrew/msvc:4.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.0` | `main` `4996b91a8e07` @ `17122292d394` | none |
 | `rebrew/msvc:4.1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.1` | `master` `21486aecd108` @ `373f5e621ac8` | none |
@@ -458,6 +548,15 @@ SN Systems ProDG compilers (GameCube)
 | `rebrew/prodg:3.8.1-gc` | gc | `ngccc` | wine, wibo via `REBREW_RUNNER=wibo` | `prodg_381` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:ProDG/3.8.1` |
 | `rebrew/prodg:3.9.3-gc` | gc | `ngccc` | wine, wibo via `REBREW_RUNNER=wibo` | `prodg_393` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:ProDG/3.9.3` |
 
+## ps2dev
+
+PS2DEV homebrew EE and IOP SDK toolchains
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/ps2dev:2.0.0-ee-ps2` | ps2 | `cc` | native | none | `ps2dev-ubuntu-latest.tar.gz` `c8e5dedccf62` | none |
+| `rebrew/ps2dev:2.0.0-iop-ps2` | ps2 | `cc` | native | none | `ps2dev-ubuntu-latest.tar.gz` `c8e5dedccf62` | none |
+
 ## psp-gcc
 
 Sony PSP allegrex GCC (decompme/compilers 1.3.1)
@@ -465,6 +564,14 @@ Sony PSP allegrex GCC (decompme/compilers 1.3.1)
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/psp-gcc:1.3.1-psp` | psp | `cc` | native | none | `psp-gcc-1.3.1.tar.gz` `788b6d2c0ed9` @ `0884197d3e4a` | none |
+
+## pspdev
+
+PSPDEV homebrew SDK toolchains
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/pspdev:20261001-psp` | psp | `cc` | native | none | `pspdev-debian-latest.tar.gz` `39b20efc7c84` | none |
 
 ## pspsnc
 
@@ -480,8 +587,8 @@ Sony PSY-Q SDK toolchains (PS1)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/psyq:2.6.3-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq_263_221.tar.gz` `082a57e28efe` | the same build as `psyq-2.6.3-221`, with a different front end; pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
-| `rebrew/psyq:2.6.3-ps1` | ps1 | `cc` | dosemu2 (needs `--device /dev/kvm`) | `psyq_263_221` | `psyq_263_221.tar.gz` `082a57e28efe` | converts its Sony object with the image's `psyq-obj-parser`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
+| `rebrew/psyq:2.6.3-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq_263_221.tar.gz` `082a57e28efe` | the same build as `psyq-2.6.3-221`, with a different front end; pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required; GPREL16_LE relocation 30 supported by source-built PCSX-Redux parser at c2edcc4c; source and dependency notices retained under /opt/psyq-parser-source |
+| `rebrew/psyq:2.6.3-ps1` | ps1 | `cc` | dosemu2 (needs `--device /dev/kvm`) | `psyq_263_221` | `psyq_263_221.tar.gz` `082a57e28efe` | converts its Sony object with the image's `psyq-obj-parser`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm`; GPREL16_LE relocation 30 supported by source-built PCSX-Redux parser at c2edcc4c; source and dependency notices retained under /opt/psyq-parser-source |
 | `rebrew/psyq:3.3-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq3.3.tar.gz` `6acc5bf3a2e4` | the same build as `psyq-3.3`, with a different front end; pins a second source (obj parser); pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
 | `rebrew/psyq:3.3-ps1` | ps1 | `cc` | dosemu2 (needs `--device /dev/kvm`) | `psyq3.3` | `psyq3.3.tar.gz` `6acc5bf3a2e4` | pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
 | `rebrew/psyq:3.5-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq3.5.tar.gz` `0f9dff42081a` | the same build as `psyq-3.5`, with a different front end; pins a second source (obj parser); pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
@@ -493,7 +600,23 @@ Sony PSY-Q SDK toolchains (PS1)
 | `rebrew/psyq:4.3-ps1` | ps1 | `cc` | wine, wibo via `REBREW_RUNNER=wibo` | `psyq4.3` | `psyq4.3.tar.gz` `577038d66507` | pins a second source (obj parser); emits a Sony object; convert with the image's `psyq-obj-parser` |
 | `rebrew/psyq:4.4-ps1` | ps1 | `cc` | wine, wibo via `REBREW_RUNNER=wibo` | `psyq4.4` | `psyq4.4.tar.gz` `72e73934bab0` | pins a second source (obj parser); emits a Sony object; convert with the image's `psyq-obj-parser` |
 | `rebrew/psyq:4.5-ps1` | ps1 | `cc` | native | `psyq4.5`, `psyq-4.5-ps1` | `gcc-2.8.1-psx.tar.gz` `f6f6e883942d` @ `b74211c9d959` | the same build as `gcc-2.8.1-psx`, with a different front end; pins a second source (SDK headers/libs) |
-| `rebrew/psyq:4.6-ps1` | ps1 | `cc` | wine, wibo via `REBREW_RUNNER=wibo` | `psyq4.6` | `psyq4.6.tar.gz` `635603e09a45` | pins a second source (obj parser); emits a Sony object; convert with the image's `psyq-obj-parser` |
+| `rebrew/psyq:4.6-ps1` | ps1 | `cc` | wine, wibo via `REBREW_RUNNER=wibo` | `psyq4.6` | `psyq4.6.tar.gz` `635603e09a45` | pins a second source (obj parser); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+
+## quickc
+
+Microsoft QuickC for DOS
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/quickc:2.50-msdos` | msdos | `quickc` | DOSBox | none | `Microsoft%20QuickC%202.50%20(1990)%20(5.25-360k).7z` `922305575ba4` @ `0884197d3e4a` | Original eight floppy images retained under /opt/quickc-media; QBasic SZDD compression expanded with pinned libmspack example frontend and distribution libmspack |
+
+## retro68
+
+Classic Macintosh cross compilers with open interfaces
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/retro68:16.0.0-0cbd3cb-m68k-macos` | macos | `cc` | native | none | `0cbd3cb918a127a0d30a675b337f8f8e15062786` `c4775801b3d3` @ `0cbd3cb918a1` | Build uses open Multiversal Interfaces; Apple Universal Interfaces are neither fetched nor redistributed; Build parallelism capped at eight jobs |
 
 ## saturn
 
@@ -503,7 +626,19 @@ Sega Saturn SH-2 toolchains (Cygnus 2.7-96Q3)
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/saturn:cygnus-2.7-96Q3-daze-0.3.0-saturn` | saturn | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip` `f5460e3ea653` @ `af27f4aa6566` | the same build as `saturn-cygnus-2.7-96Q3`, with a different front end; pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
 | `rebrew/saturn:cygnus-2.7-96Q3-native-saturn` | saturn | `cc` | native | `cygnus-2.7-96Q3-native` | `cc1-native.tar.gz` `3f215db5c6c6` | native Linux i386 compiler; host cpp -> cc1-native -> sh-elf-as; no KVM required; GNU assembler can add trailing SH NOP section padding relative to the DOS assembler; use the DOS profile when exact section padding is required |
+| `rebrew/saturn:cygnus-2.7-96Q3-native64-saturn` | saturn | `cc` | native | none | `cc1-native64.tar.gz` `67f8072355ea` | Native Linux x86-64 compiler reproduction; qualified separately from native32 and DOS |
 | `rebrew/saturn:cygnus-2.7-96Q3-saturn` | saturn | `cc` | dosemu2 (needs `--device /dev/kvm`) | `cygnus-2.7-96Q3` | `af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip` `f5460e3ea653` @ `af27f4aa6566` | unpacked from `zip-subpath:cygnus-2.7-96Q3-bin`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
+
+## sdcc
+
+Small Device C Compiler for 8-bit targets
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/sdcc:4.6.0-8051` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
+| `rebrew/sdcc:4.6.0-sm83` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
+| `rebrew/sdcc:4.6.0-stm8` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
+| `rebrew/sdcc:4.6.0-z80` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
 
 ## shc
 
@@ -511,18 +646,26 @@ Hitachi SuperH C compiler (Dreamcast / Saturn)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/shc:5.0r10-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r10` | `shc-v5.0r10.tar.gz` `1932570b2f75` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.0r26-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r26` | `shc-v5.0r26.tar.gz` `a065c9b6bfe6` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.0r28-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r28` | `shc-v5.0r28.tar.gz` `27eebe4e3938` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.0r31-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r31` | `shc-v5.0r31.tar.gz` `1b67fce97220` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.0r32-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r32` | `shc-v5.0r32.tar.gz` `21f26227e48a` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
+| `rebrew/shc:5.0r10-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r10` | `shc-v5.0r10.tar.gz` `1932570b2f75` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.0r26-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r26` | `shc-v5.0r26.tar.gz` `a065c9b6bfe6` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.0r28-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r28` | `shc-v5.0r28.tar.gz` `27eebe4e3938` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.0r31-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r31` | `shc-v5.0r31.tar.gz` `1b67fce97220` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.0r32-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r32` | `shc-v5.0r32.tar.gz` `21f26227e48a` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
 | `rebrew/shc:5.0r32-saturn` | saturn | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `shc-v5.0r32-sh2` | `shc-v5.0r32.tar.gz` `21f26227e48a` @ `0884197d3e4a` | the same build as `shc-5.0r32`, with a different front end; pins a second source (converter script); SH-2 big-endian ELF pipeline; converts ROF with 0xff padding |
-| `rebrew/shc:5.1r01-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r01` | `shc-v5.1r01.tar.gz` `d42a0ff0f7c4` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.1r03-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r03` | `shc-v5.1r03.tar.gz` `a5c41c4b9499` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.1r04-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r04` | `shc-v5.1r04.tar.gz` `277065890128` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.1r08-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r08` | `shc-v5.1r08.tar.gz` `2bcc5598a71a` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.1r11-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r11` | `shc-v5.1r11.tar.gz` `5fda93249443` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
-| `rebrew/shc:5.1r13-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r13` | `shc-v5.1r13.tar.gz` `0da9982adc57` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
+| `rebrew/shc:5.1r01-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r01` | `shc-v5.1r01.tar.gz` `d42a0ff0f7c4` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.1r03-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r03` | `shc-v5.1r03.tar.gz` `a5c41c4b9499` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.1r04-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r04` | `shc-v5.1r04.tar.gz` `277065890128` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.1r08-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r08` | `shc-v5.1r08.tar.gz` `2bcc5598a71a` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.1r11-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r11` | `shc-v5.1r11.tar.gz` `5fda93249443` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+| `rebrew/shc:5.1r13-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r13` | `shc-v5.1r13.tar.gz` `0da9982adc57` @ `0884197d3e4a` | pins a second source (converter script); Original raw-object invocation retained; -c selects the complete ELF conversion pipeline |
+
+## vbcc
+
+VBCC, VASM and VLINK for Amiga m68k
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/vbcc:0.9h-p2-amiga` | host | `cc` | native | none | `647720b664c0599a4b5b28b3232987673615fe11` `d9b4d46c27af` @ `647720b664c0` | Unmodified upstream source/target archives retained under /opt/vbcc-sources; mirror packages VBCC 0.9h patch 2, target patch 3, VASM 2.0d and VLINK 0.18a; Amiga m68k Hunk object output; compile-only in Rebrew until a Hunk reader exists; VBCC/VASM/VLINK component licence restrictions apply; public availability does not imply unrestricted commercial use; VBCC datatype probing runs serially so every prompt receives the supplied default answer |
 
 ## watcom
 
@@ -540,5 +683,15 @@ Open Watcom C/C++ (32- and 16-bit)
 | `rebrew/watcom:10.6-win32` | win32 | `wcc386` | wine, wibo via `REBREW_RUNNER=wibo` | `wcc10.6` | `wcc10.6.tar.gz` `c455edf32dc7` | none |
 | `rebrew/watcom:11.0-cxx-win32` | win32 | `wpp386` | wine, wibo via `REBREW_RUNNER=wibo` | `wpp11.0` | `wcc11.0.tar.gz` `6ecbf03ad4d7` | the same build as `watcom-11.0`, with a different front end |
 | `rebrew/watcom:11.0-win32` | win32 | `wcc386` | wine, wibo via `REBREW_RUNNER=wibo` | `wcc11.0` | `wcc11.0.tar.gz` `6ecbf03ad4d7` | none |
+| `rebrew/watcom:2.0-20261001-win16` | win16 | `wcc` | native | none | `ow-snapshot.tar.xz` `e6aa1b1e40ac` | Dated 2026-10-01 snapshot; September profile kept separately |
+| `rebrew/watcom:2.0-20261001-win32` | win32 | `wcc386` | native | none | `ow-snapshot.tar.xz` `e6aa1b1e40ac` | Dated 2026-10-01 snapshot; September profile kept separately |
 | `rebrew/watcom:2.0-win16` | win16 | `wcc` | native | none | `ow-snapshot.tar.xz` `bac354f3c75f` | none |
 | `rebrew/watcom:2.0-win32` | win32 | `wcc386` | native | none | `ow-snapshot.tar.xz` `bac354f3c75f` | the same build as `watcom-2.0-win16`, with a different front end |
+
+## z88dk
+
+z88dk C toolchain for Z80 systems
+
+| Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/z88dk:2.4-sccz80-z80` | host | `cc` | native | none | `z88dk-src-2.4.tgz` `96a57a01d44f` | none |

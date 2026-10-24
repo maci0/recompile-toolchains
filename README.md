@@ -1,6 +1,6 @@
 # recompile-toolchains
 
-Standalone docker images for legacy and modern C compilers: MSVC 1.0–11.0
+Standalone docker images for legacy and modern C compilers: MSVC 1.0–12.0 Update 4
 (every preserved service pack), Borland C/C++ (Turbo C 2.0, Turbo C++ 3.1,
 bcc32 5.5), Watcom C (Open Watcom 2.0, 32- and 16-bit), Delphi 1.0, MinGW-w64
 GCC (i686 PE), GNU GCC (ELF/x86_64), Clang (ELF/x86_64), the SGI IDO
@@ -61,8 +61,8 @@ service is the reference consumer).
 ```
 
 `PREFIX` env var re-tags the images (`PREFIX=archaic ./build.sh` →
-`archaic/msvc:6.0-win32`).  Three shared bases are built first, in
-dependency order: `rebrew/base` (Debian + wine/wibo/dosbox), `rebrew/base-noble`
+`archaic/msvc:6.0-win32`). The builder follows the selected images’ base
+dependency chains and builds only the required shared bases, in order: `rebrew/base` (Debian + wine/wibo/dosbox), `rebrew/base-noble`
 (Ubuntu 24.04 + the wrapper helpers and user, for toolchains Debian cannot
 host) and `rebrew/base-dosemu` (base-noble + dosemu2 + dj64, for the 16-bit DOS
 toolchains).  Each Dockerfile declares the one it needs in its `ARG BASE_IMAGE=`
@@ -77,7 +77,7 @@ manifest key in `sources.json` is
 `aliases`: the decomp.me ids and pre-normalization rebrew names
 (`mwcc_233_163`, `ido7.1`, `shc-v5.1r13`, `ee-gcc2.95.3-136`, ...), so
 `./build.sh <alias>` resolves to the same canonical dir; an alias that would
-shadow a profile name or a second dir is rejected at startup.  The base image is built first, then the
+shadow a profile name or a second dir is rejected at startup. The required bases are built first, then the
 toolchain images build in parallel (`REBREW_BUILD_JOBS` concurrent builds,
 default 4; set it to 1 for strictly sequential): each build downloads its
 pinned source tarball, so a full sweep is network-bound and parallelism cuts
@@ -236,6 +236,8 @@ REBREW_RUNNER=wine` still forces wine.
 
 ## Docs
 
+The [2026-10-25 ingestion report](docs/RELATED-WORK.md#ingestion-and-repairs--2026-10-25) records the latest additions, consumer coverage and matching limits.
+
 - **[docs/TOOLCHAINS.md](docs/TOOLCHAINS.md)**: the full catalog, with every image
   tag, its entrypoint, how it runs (native / wine / wibo / DOSBox), its
   aliases, the pinned source and any second-step caveat.  **Generated** from
@@ -260,7 +262,10 @@ REBREW_RUNNER=wine` still forces wine.
 - **[docs/RELATED-WORK.md](docs/RELATED-WORK.md)**: how Compiler Explorer
   ("godbolt") organises the same problem (its YAML install list, shared
   compiler tree and per-compiler properties) and where this repo's
-  image-per-toolchain model differs on purpose.
+  image-per-toolchain model differs on purpose. Dated audits record upstream
+  changes, build health, consumer coverage and candidates for ingestion;
+  [the latest audit](docs/RELATED-WORK.md#audit-and-wider-source-search--2026-10-25)
+  includes candidate source pins and current blockers.
 - **[sources.json](sources.json)**: the manifest itself, holding per toolchain the
   pinned `url` + `sha256` (+ `commit` for branch pins), archive `layout`,
   secondary pins and `aliases`.  `build.sh` validates it in both directions
@@ -294,7 +299,7 @@ version mappings follow
 `0884197d`), which is where the preserved console compilers are catalogued.
 Per-family notes:
 
-- **MSVC 1.0–11.0**: `archaic-msvc` (github.com/archaic-msvc) preservation
+- **MSVC 1.0–12.0 Update 4**: `archaic-msvc` (github.com/archaic-msvc) preservation
   repos, plus `archaic-toolchains/msvc400` and the `archaic-toolchains`
   service-pack repos (`msvc600_sp{1,2,3,4}`, `msvc900_sp1`); VC 6.0 SP3/SP4
   from the decomp.me `msvc6.3`/`msvc6.4` releases (sha-verified byte-identical

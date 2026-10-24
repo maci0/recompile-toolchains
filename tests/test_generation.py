@@ -10,8 +10,10 @@ in the manifest with a reason, so the exception list cannot grow quietly.
 
 from __future__ import annotations
 
+import re
 import unittest
 from pathlib import Path
+from typing import cast
 
 import generate  # repo root is on sys.path under `python -m unittest discover`
 
@@ -31,9 +33,9 @@ _HANDWRITTEN = (
     "gcc-2.8.1-snew-cxx",
     "icc-5.0.1-010525z",
     "ido-4.1",
-    "psyq-4.6",
     "saturn-cygnus-2.7-96Q3",
     "saturn-cygnus-2.7-96Q3-native",
+    "saturn-cygnus-2.7-96Q3-native64",
     "shc-5.0r32-sh2",
 )
 
@@ -55,11 +57,29 @@ class TestGeneration(unittest.TestCase):
         for path, text in generate.render_all(generate.manifest()).items():
             if path.name == "Dockerfile":
                 for line in text.splitlines():
-                    if "tar x" in line:
+                    if re.search(r"(?<![\w./-])tar\s", line):
                         self.assertIn(" --no-same-owner", line, str(path))
         for line in (_REPO / "base" / "Dockerfile").read_text().splitlines():
             if "tar -x" in line:
                 self.assertIn(" --no-same-owner", line)
+
+    def test_papermario_keeps_helpers_and_deterministic_pipe(self) -> None:
+        entry = generate.manifest()["gcc-2.8.1-pm"]
+        wrapper = generate.render_wrapper("gcc-2.8.1-pm", entry)
+        self.assertIn("-B /opt/gcc-2.8.1-pm/ -pipe", wrapper)
+
+    def test_https_fetch_transport_keeps_hash_verification(self) -> None:
+        import copy
+
+        entry = copy.deepcopy(generate.manifest()["devkitarm-16.1.0-1"])
+        dockerfile = generate.render_dockerfile("devkitarm-16.1.0-1", entry)
+        self.assertIn("urllib.request.urlopen", dockerfile)
+        self.assertIn(str(entry["sha256"]), dockerfile)
+        self.assertIn("sha256sum -c -", dockerfile)
+        fetches = cast("list[dict[str, object]]", generate.recipe(entry)["fetch"])
+        fetches[0]["transport"] = "unknown"
+        with self.assertRaises(ValueError):
+            generate.render_dockerfile("devkitarm-16.1.0-1", entry)
 
     def test_handwritten_wrappers_are_the_declared_ones(self) -> None:
         entries = generate.manifest()

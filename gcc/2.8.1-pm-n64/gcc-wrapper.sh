@@ -5,4 +5,4 @@
 # shellcheck source=base/wrapper-common.sh
 . /usr/local/lib/rebrew/wrapper-common.sh
 
-rebrew_exec /opt/gcc-2.8.1-pm/gcc -B /opt/gcc-2.8.1-pm/ "$@"
+rebrew_exec /opt/gcc-2.8.1-pm/gcc -B /opt/gcc-2.8.1-pm/ -pipe "$@"

@@ -183,12 +183,22 @@ def render_dockerfile(profile: str, entry: dict[str, object]) -> str:
         _require(sha, f"{profile}: pin {name} has no sha256 in sources.json")
         dest = str(fetch["as"])
         mkdir = f"{early[index]} && " if index in early else ""
-        lines += [
-            f"RUN {mkdir}{CURL} -o {dest} \\",
-            f'        "{url}" \\',
-            f'    && echo "{sha}  {dest}" | sha256sum -c -',
-            "",
-        ]
+        agent = f" -A '{fetch['user_agent']}'" if fetch.get("user_agent") else ""
+        transport = str(fetch.get("transport", "curl"))
+        _require(transport in {"curl", "urllib"}, f"{profile}: unknown fetch transport")
+        if transport == "urllib":
+            # devkitPro rejects the base image's curl TLS client with HTTP 403.
+            script = (
+                "import sys,shutil,urllib.request; "
+                "r=urllib.request.urlopen(urllib.request.Request(sys.argv[1],"
+                'headers={"User-Agent":sys.argv[3]}),timeout=120); '
+                'shutil.copyfileobj(r,open(sys.argv[2],"wb"))'
+            )
+            command = f"python3 -c '{script}' \"{url}\" {dest} '{fetch['user_agent']}'"
+            lines.append(f"RUN {mkdir}{command} \\")
+        else:
+            lines += [f"RUN {mkdir}{CURL}{agent} -o {dest} \\", f'        "{url}" \\']
+        lines += [f'    && echo "{sha}  {dest}" | sha256sum -c -', ""]
 
     steps = rest
     if steps:
@@ -321,6 +331,8 @@ def render_wrapper(profile: str, entry: dict[str, object]) -> str:
         return _wrapper_psyq_dosemu(entry, wrapper)
     if shape == "daze":
         return _wrapper_daze(entry, wrapper)
+    if shape == "object_mode":
+        return _wrapper_object_mode(profile, entry, wrapper)
     if shape == "psyq_native":
         return _wrapper_psyq_native(entry, wrapper)
     if shape == "sn64_pe":
@@ -645,6 +657,87 @@ def _wrapper_psyq_dosemu(entry: dict[str, object], wrapper: dict[str, object]) -
     """The PSY-Q 2.6.3/3.x compile pipeline, from recipe data."""
     body = _PSYQ_DOSEMU_BODY.replace("{dir}", f"/opt/{install_root(entry)}")
     return "\n".join(_head(entry, "Entrypoint", wrapper)) + body
+
+
+def _wrapper_object_mode(profile: str, entry: dict[str, object], wrapper: dict[str, object]) -> str:
+    """Add POSIX compile-only ELF output while retaining the original raw invocation."""
+    family = _text(entry, "family")
+    _require(family in {"agbcc", "agbccpp", "shc", "psyq"}, "unknown object pipeline")
+    head = _head(entry, "Entrypoint", wrapper)
+    head[0] = "#!/bin/bash"
+    fallback = _wrapper_passthrough(profile, entry, wrapper).splitlines()[len(head) :]
+    root = f"/opt/{install_root(entry)}"
+    if family == "psyq":
+        fallback = [
+            f"printf '[ccpsx]\\ncompiler_path=Z:{root}\\nassembler_path=Z:{root}\\n' > SN.INI",
+            f'SN_PATH=. rebrew_run {root}/CCPSX.EXE "$@"',
+        ]
+    body = r"""compile=no
+for arg in "$@"; do
+    [ "$arg" != -c ] || compile=yes
+done
+if [ "$compile" = no ]; then
+__FALLBACK__
+fi
+set -euo pipefail
+out=""
+args=()
+cpp_flags=()
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -o)
+            [ "$#" -ge 2 ] && [ -n "$2" ] || rebrew_die "-o requires an output file"
+            out="$2"; shift 2 ;;
+        -c) shift ;;
+        -I|-D|-U|-include|-isystem)
+            [ "$#" -ge 2 ] || rebrew_die "$1 requires an argument"
+            cpp_flags+=("$1" "$2"); shift 2 ;;
+        -I*|-D*|-U*) cpp_flags+=("$1"); shift ;;
+        *) args+=("$1"); shift ;;
+    esac
+done
+rebrew_pick_source "${args[@]}"
+[ -n "$out" ] || out="$STEM.o"
+flags=()
+for arg in "${args[@]}"; do
+    [ "$arg" = "$SRC" ] || flags+=("$arg")
+done
+src=$(realpath -- "$SRC")
+out=$(realpath -m -- "$out")
+[ "$src" != "$out" ] || rebrew_die "source and output must be different files"
+work=$(mktemp -d) || rebrew_die "cannot create a temporary directory"
+target=""
+trap 'rm -rf -- "$work"; [ -z "$target" ] || rm -f -- "$target"' EXIT
+( rebrew_exec /usr/bin/cpp -P "${cpp_flags[@]}" "$src" -o "$work/input.i" )
+cd "$work"
+__STAGES__
+[ -s output.o ] || rebrew_die "compiler pipeline produced no ELF object"
+target=$(mktemp "${out}.tmp.XXXXXX")
+cp --preserve=mode -- output.o "$target"
+mv -f -- "$target" "$out"
+"""
+    if family in {"agbcc", "agbccpp"}:
+        stages = (
+            f'( rebrew_exec {binary_path(entry)} "${{flags[@]}}" input.i -o output.s )\n'
+            "( rebrew_exec arm-none-eabi-as -mcpu=arm7tdmi output.s -o output.o )"
+        )
+    elif family == "shc":
+        stages = (
+            f"cp -a {root}/bin/. .\n"
+            "unix2dos -q -n input.i input.c\nexport SHC_LIB=. SHC_TMP=.\n"
+            f"( rebrew_run {binary_path(entry)} input.c -cpu=sh4 -endian=little "
+            '"${flags[@]}" -object=raw.obj )\n'
+            f"( rebrew_exec python3 {root}/rof2elf.py raw.obj output.o )"
+        )
+    else:
+        stages = (
+            f"printf '[ccpsx]\\ncompiler_path=Z:{root}\\nassembler_path=Z:{root}\\n' > SN.INI\n"
+            f"( SN_PATH=. rebrew_run {root}/CCPSX.EXE -c input.i "
+            '"${flags[@]}" -o raw.obj )\n'
+            f"( rebrew_exec {root}/psyq-obj-parser raw.obj -o output.o )"
+        )
+    body = body.replace("__FALLBACK__", "\n".join("    " + line for line in fallback))
+    return "\n".join(head) + body.replace("__STAGES__", stages)
 
 
 def _wrapper_daze(entry: dict[str, object], wrapper: dict[str, object]) -> str:

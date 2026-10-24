@@ -7,7 +7,10 @@
     "commit": "da598c1d918402c42c0c0d7128ba14567f3175e9",
     "recipe": {
       "base": "base",
-      "apt": [],
+      "apt": [
+        "binutils-arm-none-eabi",
+        "cpp"
+      ],
       "fetch": [
         {
           "pin": "primary",
@@ -48,14 +51,13 @@
       "binary": "bin/agbcc",
       "runner": "exec",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": []
       }
     },
     "notes": [
-      "cc1-style: emits assembly, not an object",
-      "upstream release tag is rebuilt on every push, so re-pin on drift"
+      "Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly"
     ]
   },
   "agbcc-arm-gba": {
@@ -69,12 +71,14 @@
       "agbcc_arm"
     ],
     "notes": [
-      "cc1-style: emits assembly, not an object",
-      "upstream release tag is rebuilt on every push, so re-pin on drift"
+      "Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly"
     ],
     "recipe": {
       "base": "base",
-      "apt": [],
+      "apt": [
+        "binutils-arm-none-eabi",
+        "cpp"
+      ],
       "fetch": [
         {
           "pin": "primary",
@@ -115,7 +119,7 @@
       "binary": "bin/agbcc_arm",
       "runner": "exec",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": []
       }
@@ -129,7 +133,10 @@
     "commit": "",
     "recipe": {
       "base": "base",
-      "apt": [],
+      "apt": [
+        "binutils-arm-none-eabi",
+        "cpp"
+      ],
       "fetch": [
         {
           "pin": "primary",
@@ -170,14 +177,13 @@
       "binary": "bin/agbcc",
       "runner": "exec",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": []
       }
     },
     "notes": [
-      "cc1-style: emits assembly, not an object",
-      "upstream release tag is rebuilt on every push, so re-pin on drift"
+      "Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly"
     ]
   },
   "agbcc-old-gba": {
@@ -191,12 +197,14 @@
       "old_agbcc"
     ],
     "notes": [
-      "cc1-style: emits assembly, not an object",
-      "upstream release tag is rebuilt on every push, so re-pin on drift"
+      "Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly"
     ],
     "recipe": {
       "base": "base",
-      "apt": [],
+      "apt": [
+        "binutils-arm-none-eabi",
+        "cpp"
+      ],
       "fetch": [
         {
           "pin": "primary",
@@ -237,7 +245,7 @@
       "binary": "bin/old_agbcc",
       "runner": "exec",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": []
       }
@@ -251,7 +259,10 @@
     "commit": "ac51b05a074197bffa51148ae543ce1e03c9c094",
     "recipe": {
       "base": "base",
-      "apt": [],
+      "apt": [
+        "binutils-arm-none-eabi",
+        "cpp"
+      ],
       "fetch": [
         {
           "pin": "primary",
@@ -292,14 +303,13 @@
       "binary": "bin/agbcp",
       "runner": "exec",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": []
       }
     },
     "notes": [
-      "cc1-style: emits assembly, not an object",
-      "upstream release tag is rebuilt on every push, so re-pin on drift"
+      "Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly"
     ]
   },
   "armcc-4.0-771": {
@@ -5664,7 +5674,8 @@
         "validate_source": false,
         "argv": [
           "-B",
-          "/opt/gcc-2.8.1-pm/"
+          "/opt/gcc-2.8.1-pm/",
+          "-pipe"
         ]
       }
     }
@@ -16769,15 +16780,39 @@
     ],
     "notes": [
       "converts its Sony object with the image's `psyq-obj-parser`",
-      "1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm`"
+      "1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm`",
+      "GPREL16_LE relocation 30 supported by source-built PCSX-Redux parser at c2edcc4c; source and dependency notices retained under /opt/psyq-parser-source"
     ],
     "recipe": {
       "base": "base-dosemu",
-      "apt": [],
+      "apt": [
+        "g++",
+        "zlib1g-dev"
+      ],
       "fetch": [
         {
           "pin": "primary",
           "as": "/tmp/psyq.tar.gz"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/pcsx-source.tar.gz"
+        },
+        {
+          "pin": "extra1",
+          "as": "/tmp/pcsx-ELFIO.tar.gz"
+        },
+        {
+          "pin": "extra2",
+          "as": "/tmp/pcsx-fmt.tar.gz"
+        },
+        {
+          "pin": "extra3",
+          "as": "/tmp/pcsx-magic_enum.tar.gz"
+        },
+        {
+          "pin": "extra4",
+          "as": "/tmp/pcsx-args.tar.gz"
         }
       ],
       "steps": [
@@ -16800,6 +16835,59 @@
         {
           "op": "chmod",
           "cmd": "chmod +x /opt/psyq-2.6.3/*.EXE"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/psyq-parser-source"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-source.tar.gz",
+          "into": "/opt/psyq-parser-source",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-ELFIO.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/ELFIO",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-fmt.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/fmt",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-magic_enum.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/magic_enum",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-args.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/args",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/psyq-parser-source && g++ -std=c++23 -O2 -DFMT_HEADER_ONLY -Isrc -Ithird_party -Ithird_party/ELFIO -Ithird_party/fmt/include -Ithird_party/magic_enum/include tools/psyq-obj-parser/psyq-obj-parser.cc src/supportpsx/psyq-obj.cc src/support/file.cc -lz -o /opt/psyq-2.6.3/psyq-obj-parser"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/pcsx-*.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/psyq-2.6.3/psyq-obj-parser"
         }
       ],
       "env": {},
@@ -16825,7 +16913,29 @@
         ],
         "file": "cc-wrapper.sh"
       }
-    }
+    },
+    "extra_pins": [
+      {
+        "url": "https://codeload.github.com/grumpycoders/pcsx-redux/tar.gz/c2edcc4c0d3d1ac573c95b8be5349dd8fbdbf0c2",
+        "sha256": "90df8b6eecaae5d499601be31f59b36f21066080f9b0d67a2ba93b81fcc29f53"
+      },
+      {
+        "url": "https://codeload.github.com/serge1/ELFIO/tar.gz/8ae6cec5d60495822ecd57d736f66149da9b1830",
+        "sha256": "71c1a72e3fac6c9db3d4126c8f9b84bbda902e8dfb563f6dfcbed454636fa1c5"
+      },
+      {
+        "url": "https://codeload.github.com/fmtlib/fmt/tar.gz/407c905e45ad75fc29bf0f9bb7c5c2fd3475976f",
+        "sha256": "2bc1fe4a5b6d5d6a614239b4ca1d520e66e152a02d3d262684d26dfd6ab3438a"
+      },
+      {
+        "url": "https://codeload.github.com/Neargye/magic_enum/tar.gz/e55b9b54d5cf61f8e117cafb17846d7d742dd3b4",
+        "sha256": "bdb15ee58b44988a493b514194ca7e770b7c69d8af0c93d4447bcfa5fc044e3a"
+      },
+      {
+        "url": "https://codeload.github.com/Taywee/args/tar.gz/794f2dc7caa306984cf385cbb8e7176146514959",
+        "sha256": "009aad8e019da87322cea8feaee68f8b2d1d5434511b23743292bdf474cdd983"
+      }
+    ]
   },
   "psyq-3.3": {
     "family": "psyq",
@@ -17682,13 +17792,17 @@
       "psyq4.6"
     ],
     "notes": [
-      "emits a Sony object; convert with the image's `psyq-obj-parser`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "parser_url": "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz",
     "parser_sha256": "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e",
     "recipe": {
       "base": "base",
-      "apt": [],
+      "apt": [
+        "cpp",
+        "dos2unix",
+        "python3"
+      ],
       "fetch": [
         {
           "pin": "primary",
@@ -17743,10 +17857,10 @@
       "entrypoint": "cc",
       "runner": "wine",
       "wrapper": {
-        "shape": "handwritten",
-        "why": "writes SN.INI and drives the SDK's CCPSX.EXE \u2014 one image",
+        "shape": "object_mode",
         "file": "cc-wrapper.sh"
-      }
+      },
+      "binary": "CCPSX.EXE"
     }
   },
   "saturn-cygnus-2.7-96Q3": {
@@ -17898,13 +18012,15 @@
       "shc-v5.0r10"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -17955,7 +18071,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -17983,13 +18099,15 @@
       "shc-v5.0r26"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18040,7 +18158,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18068,13 +18186,15 @@
       "shc-v5.0r28"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18125,7 +18245,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18153,13 +18273,15 @@
       "shc-v5.0r31"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18210,7 +18332,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18238,13 +18360,15 @@
       "shc-v5.0r32"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18295,7 +18419,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18400,13 +18524,15 @@
       "shc-v5.1r01"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18457,7 +18583,7 @@
       "binary": "bin/SHC.EXE",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18485,13 +18611,15 @@
       "shc-v5.1r03"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18542,7 +18670,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18570,13 +18698,15 @@
       "shc-v5.1r04"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18627,7 +18757,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18655,13 +18785,15 @@
       "shc-v5.1r08"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18712,7 +18844,7 @@
       "binary": "bin/SHC.EXE",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18740,13 +18872,15 @@
       "shc-v5.1r11"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18797,7 +18931,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -18825,13 +18959,15 @@
       "shc-v5.1r13"
     ],
     "notes": [
-      "emits a ROF `.obj`; convert with the image's `rof2elf.py`"
+      "Original raw-object invocation retained; -c selects the complete ELF conversion pipeline"
     ],
     "helper_url": "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py",
     "helper_sha256": "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821",
     "recipe": {
       "base": "base",
       "apt": [
+        "cpp",
+        "dos2unix",
         "python3"
       ],
       "fetch": [
@@ -18882,7 +19018,7 @@
       "binary": "bin/shc.exe",
       "runner": "wine",
       "wrapper": {
-        "shape": "passthrough",
+        "shape": "object_mode",
         "validate_source": false,
         "argv": [],
         "env": [
@@ -22516,13 +22652,16 @@
     "sha256": "082a57e28efe06dc75f1c8be4f2b73ffa65ad5b995c6c345cf67b8dcd19192c5",
     "commit": "",
     "notes": [
-      "Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required"
+      "Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required",
+      "GPREL16_LE relocation 30 supported by source-built PCSX-Redux parser at c2edcc4c; source and dependency notices retained under /opt/psyq-parser-source"
     ],
     "recipe": {
       "base": "base",
       "apt": [
         "cpp",
-        "dos2unix"
+        "dos2unix",
+        "g++",
+        "zlib1g-dev"
       ],
       "fetch": [
         {
@@ -22576,6 +22715,26 @@
         {
           "pin": "extra10",
           "as": "/opt/daze-notices/unicorn-qemu.txt"
+        },
+        {
+          "pin": "extra11",
+          "as": "/tmp/pcsx-source.tar.gz"
+        },
+        {
+          "pin": "extra12",
+          "as": "/tmp/pcsx-ELFIO.tar.gz"
+        },
+        {
+          "pin": "extra13",
+          "as": "/tmp/pcsx-fmt.tar.gz"
+        },
+        {
+          "pin": "extra14",
+          "as": "/tmp/pcsx-magic_enum.tar.gz"
+        },
+        {
+          "pin": "extra15",
+          "as": "/tmp/pcsx-args.tar.gz"
         }
       ],
       "steps": [
@@ -22614,6 +22773,59 @@
         {
           "op": "chmod",
           "cmd": "chmod +x /usr/local/bin/daze"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/psyq-parser-source"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-source.tar.gz",
+          "into": "/opt/psyq-parser-source",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-ELFIO.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/ELFIO",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-fmt.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/fmt",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-magic_enum.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/magic_enum",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/pcsx-args.tar.gz",
+          "into": "/opt/psyq-parser-source/third_party/args",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/psyq-parser-source && g++ -std=c++23 -O2 -DFMT_HEADER_ONLY -Isrc -Ithird_party -Ithird_party/ELFIO -Ithird_party/fmt/include -Ithird_party/magic_enum/include tools/psyq-obj-parser/psyq-obj-parser.cc src/supportpsx/psyq-obj.cc src/support/file.cc -lz -o /opt/psyq-2.6.3/psyq-obj-parser"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/pcsx-*.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/psyq-2.6.3/psyq-obj-parser"
         }
       ],
       "env": {},
@@ -22678,6 +22890,26 @@
       {
         "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-qemu.txt",
         "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
+      },
+      {
+        "url": "https://codeload.github.com/grumpycoders/pcsx-redux/tar.gz/c2edcc4c0d3d1ac573c95b8be5349dd8fbdbf0c2",
+        "sha256": "90df8b6eecaae5d499601be31f59b36f21066080f9b0d67a2ba93b81fcc29f53"
+      },
+      {
+        "url": "https://codeload.github.com/serge1/ELFIO/tar.gz/8ae6cec5d60495822ecd57d736f66149da9b1830",
+        "sha256": "71c1a72e3fac6c9db3d4126c8f9b84bbda902e8dfb563f6dfcbed454636fa1c5"
+      },
+      {
+        "url": "https://codeload.github.com/fmtlib/fmt/tar.gz/407c905e45ad75fc29bf0f9bb7c5c2fd3475976f",
+        "sha256": "2bc1fe4a5b6d5d6a614239b4ca1d520e66e152a02d3d262684d26dfd6ab3438a"
+      },
+      {
+        "url": "https://codeload.github.com/Neargye/magic_enum/tar.gz/e55b9b54d5cf61f8e117cafb17846d7d742dd3b4",
+        "sha256": "bdb15ee58b44988a493b514194ca7e770b7c69d8af0c93d4447bcfa5fc044e3a"
+      },
+      {
+        "url": "https://codeload.github.com/Taywee/args/tar.gz/794f2dc7caa306984cf385cbb8e7176146514959",
+        "sha256": "009aad8e019da87322cea8feaee68f8b2d1d5434511b23743292bdf474cdd983"
       }
     ]
   },
@@ -23446,5 +23678,1964 @@
         "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
       }
     ]
+  },
+  "msvc-12.0-u4": {
+    "family": "msvc",
+    "host_dir": "msvc/12.0-u4-win32",
+    "url": "https://github.com/heinermann/compilers/releases/download/msvc12/msvc12.zip",
+    "sha256": "2adc1d97b342b6d14113b43321cc965c2afec5b9ff575c04a70c6d5c6e119f43",
+    "commit": "",
+    "notes": [
+      "Visual C++ 2013 Update 4; native x86 MSVCR120 and MSVCP120 retained beside the tools with archive notices; headers and libraries configured"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "unzip"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.zip"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/msvc12.0-u4"
+          ]
+        },
+        {
+          "op": "unzip",
+          "from": "/tmp/toolchain.zip",
+          "into": "/opt/msvc12.0-u4"
+        },
+        {
+          "op": "cp",
+          "from": [
+            "/opt/msvc12.0-u4/msvc12/redist/x86/Microsoft.VC120.CRT/msvcr120.dll",
+            "/opt/msvc12.0-u4/msvc12/redist/x86/Microsoft.VC120.CRT/msvcp120.dll"
+          ],
+          "into": "/opt/msvc12.0-u4/msvc12/bin/"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/msvc12.0-u4/msvc12/bin/*.exe"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.zip"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/msvc12.0-u4/msvc12/bin/cl.exe"
+        }
+      ],
+      "env": {},
+      "root": "msvc12.0-u4",
+      "title": "rebrew msvc-12.0-u4",
+      "description": "msvc-12.0-u4 pinned compiler toolchain image",
+      "entrypoint": "cl",
+      "binary": "msvc12/bin/cl.exe",
+      "runner": "wine",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [],
+        "env": [
+          {
+            "name": "INCLUDE",
+            "value": "'Z:\\opt\\msvc12.0-u4\\msvc12\\include'",
+            "style": "export"
+          },
+          {
+            "name": "LIB",
+            "value": "'Z:\\opt\\msvc12.0-u4\\msvc12\\lib'",
+            "style": "export"
+          }
+        ]
+      }
+    }
+  },
+  "djgpp-12.2.0": {
+    "family": "djgpp",
+    "host_dir": "djgpp/12.2.0-msdos",
+    "url": "https://github.com/andrewwutw/build-djgpp/releases/download/v3.4/djgpp-linux64-gcc1220.tar.bz2",
+    "sha256": "8464f17017d6ab1b2bb2df4ed82357b5bf692e6e2b7fee37e315638f3d505f00",
+    "commit": "",
+    "notes": [
+      "Native Linux-hosted DJGPP cross compiler; GNU i386 COFF output"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "bzip2"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.bz2"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/djgpp-12.2.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "bz2",
+          "from": "/tmp/toolchain.tar.bz2",
+          "into": "/opt/djgpp-12.2.0",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.bz2"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/djgpp-12.2.0/bin/i586-pc-msdosdjgpp-gcc"
+        }
+      ],
+      "env": {},
+      "root": "djgpp-12.2.0",
+      "title": "rebrew djgpp-12.2.0",
+      "description": "djgpp-12.2.0 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/i586-pc-msdosdjgpp-gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "pspdev-20261001": {
+    "family": "pspdev",
+    "host_dir": "pspdev/20261001-psp",
+    "url": "https://github.com/pspdev/pspdev/releases/download/v20261001/pspdev-debian-latest.tar.gz",
+    "sha256": "39b20efc7c8492cdbd9929178f45afc801dabb0967b7c882573520f22536920c",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "libmpc3",
+        "libmpfr6",
+        "libgmp10",
+        "zlib1g",
+        "libzstd1"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/pspdev"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/toolchain.tar.gz",
+          "into": "/opt/pspdev",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/pspdev/bin/psp-gcc"
+        }
+      ],
+      "env": {
+        "PSPDEV": "/opt/pspdev"
+      },
+      "root": "pspdev",
+      "title": "rebrew pspdev-20261001",
+      "description": "pspdev-20261001 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/psp-gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "ps2dev-2.0.0-ee": {
+    "family": "ps2dev",
+    "host_dir": "ps2dev/2.0.0-ee-ps2",
+    "url": "https://github.com/ps2dev/ps2dev/releases/download/v2.0.0/ps2dev-ubuntu-latest.tar.gz",
+    "sha256": "c8e5dedccf62084d476894e88cd0451b57f1ed288e741eb3c1263010aaffc028",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "libmpc3",
+        "libmpfr6",
+        "libgmp10",
+        "zlib1g",
+        "libzstd1"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/ps2dev"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/toolchain.tar.gz",
+          "into": "/opt/ps2dev",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/ps2dev/ee/bin/mips64r5900el-ps2-elf-gcc"
+        }
+      ],
+      "env": {
+        "PS2DEV": "/opt/ps2dev"
+      },
+      "root": "ps2dev",
+      "title": "rebrew ps2dev-2.0.0-ee",
+      "description": "ps2dev-2.0.0-ee pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "ee/bin/mips64r5900el-ps2-elf-gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "ps2dev-2.0.0-iop": {
+    "family": "ps2dev",
+    "host_dir": "ps2dev/2.0.0-iop-ps2",
+    "url": "https://github.com/ps2dev/ps2dev/releases/download/v2.0.0/ps2dev-ubuntu-latest.tar.gz",
+    "sha256": "c8e5dedccf62084d476894e88cd0451b57f1ed288e741eb3c1263010aaffc028",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "libmpc3",
+        "libmpfr6",
+        "libgmp10",
+        "zlib1g",
+        "libzstd1"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/ps2dev"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/toolchain.tar.gz",
+          "into": "/opt/ps2dev",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/ps2dev/iop/bin/mipsel-none-elf-gcc"
+        }
+      ],
+      "env": {
+        "PS2DEV": "/opt/ps2dev"
+      },
+      "root": "ps2dev",
+      "title": "rebrew ps2dev-2.0.0-iop",
+      "description": "ps2dev-2.0.0-iop pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "iop/bin/mipsel-none-elf-gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "bootlin-m68k-glibc-2026.08-1": {
+    "family": "bootlin",
+    "host_dir": "bootlin/m68k-glibc-2026.08-1-linux",
+    "url": "https://toolchains.bootlin.com/downloads/releases/toolchains/m68k-68xxx/tarballs/m68k-68xxx--glibc--stable-2026.08-1.tar.xz",
+    "sha256": "c92f32f48cdbaf5fcc80723ef957cb062fd1dbaa6189cc93834a02d59d7082e9",
+    "commit": "",
+    "notes": [
+      "Linux m68k ABI with the exact glibc sysroot, GCC 15.3.0, binutils 2.45.1"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "file",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/bootlin-m68k"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/toolchain.tar.xz",
+          "into": "/opt/bootlin-m68k",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/bootlin-m68k && ./relocate-sdk.sh"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.xz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/bootlin-m68k/bin/m68k-buildroot-linux-gnu-gcc"
+        }
+      ],
+      "env": {},
+      "root": "bootlin-m68k",
+      "title": "rebrew bootlin-m68k-glibc-2026.08-1",
+      "description": "bootlin-m68k-glibc-2026.08-1 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/m68k-buildroot-linux-gnu-gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "llvm-mos-23.3.0-c64": {
+    "family": "llvm-mos",
+    "host_dir": "llvm-mos/23.3.0-c64-mos",
+    "url": "https://github.com/llvm-mos/llvm-mos-sdk/releases/download/v23.3.0/llvm-mos-linux.tar.xz",
+    "sha256": "9f694497bc93a7c876d8c62325c7d74e7860346d80fbcd0555e19ba6856658c8",
+    "commit": "",
+    "notes": [
+      "MOS ELF with target-specific relocations; platform c64"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/llvm-mos"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/toolchain.tar.xz",
+          "into": "/opt/llvm-mos",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.xz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/llvm-mos/bin/mos-c64-clang"
+        }
+      ],
+      "env": {},
+      "root": "llvm-mos",
+      "title": "rebrew llvm-mos-23.3.0-c64",
+      "description": "llvm-mos-23.3.0-c64 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/mos-c64-clang",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-fno-lto"
+        ]
+      }
+    }
+  },
+  "llvm-mos-23.3.0-nes": {
+    "family": "llvm-mos",
+    "host_dir": "llvm-mos/23.3.0-nes-mos",
+    "url": "https://github.com/llvm-mos/llvm-mos-sdk/releases/download/v23.3.0/llvm-mos-linux.tar.xz",
+    "sha256": "9f694497bc93a7c876d8c62325c7d74e7860346d80fbcd0555e19ba6856658c8",
+    "commit": "",
+    "notes": [
+      "MOS ELF with target-specific relocations; platform nes"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/llvm-mos"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/toolchain.tar.xz",
+          "into": "/opt/llvm-mos",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.xz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/llvm-mos/bin/mos-nes-clang"
+        }
+      ],
+      "env": {},
+      "root": "llvm-mos",
+      "title": "rebrew llvm-mos-23.3.0-nes",
+      "description": "llvm-mos-23.3.0-nes pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/mos-nes-clang",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-fno-lto"
+        ]
+      }
+    }
+  },
+  "gbdk-4.5.0-sm83": {
+    "family": "gbdk",
+    "host_dir": "gbdk/4.5.0-sm83-gb",
+    "url": "https://github.com/gbdk-2020/gbdk-2020/releases/download/4.5.0/gbdk-linux64.tar.gz",
+    "sha256": "d7857a5f6d135ee4c249043ca26aad9f2ec8ab5d4106d97720d404114f42605c",
+    "commit": "",
+    "notes": [
+      "Bundled SDCC build and ASxxxx object format; Game Boy SM83 target"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gbdk"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/toolchain.tar.gz",
+          "into": "/opt/gbdk",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/gbdk/bin/lcc"
+        }
+      ],
+      "env": {},
+      "root": "gbdk",
+      "title": "rebrew gbdk-4.5.0-sm83",
+      "description": "gbdk-4.5.0-sm83 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/lcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "saturn-cygnus-2.7-96Q3-native64": {
+    "family": "saturn",
+    "host_dir": "saturn/cygnus-2.7-96Q3-native64-saturn",
+    "url": "https://github.com/sozud/saturn-compiler-repro/releases/download/v1.0.0/cc1-native64.tar.gz",
+    "sha256": "67f8072355ea2860decb48df87001badbad180008044be1181c1178b65163320",
+    "commit": "",
+    "notes": [
+      "Native Linux x86-64 compiler reproduction; qualified separately from native32 and DOS"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "cpp",
+        "binutils-sh-elf"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/cc1.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/saturn-cygnus-native64"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/cc1.tar.gz",
+          "into": "/opt/saturn-cygnus-native64"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/cc1.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/saturn-cygnus-native64/cc1-native64"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/saturn-cygnus-native64/cc1-native64"
+        }
+      ],
+      "env": {},
+      "root": "saturn-cygnus-native64",
+      "title": "rebrew Saturn Cygnus 2.7-96Q3 (native64)",
+      "description": "Cygnus SH-2 native Linux x86-64 reproduction",
+      "entrypoint": "cc",
+      "binary": "cc1-native64",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "handwritten",
+        "why": "native Saturn preprocessing, cc1 and assembler pipeline",
+        "file": "cc-wrapper.sh"
+      }
+    }
+  },
+  "sdcc-4.6.0-sm83": {
+    "family": "sdcc",
+    "host_dir": "sdcc/4.6.0-sm83",
+    "url": "https://downloads.sourceforge.net/project/sdcc/sdcc-linux-amd64/4.6.0/sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2",
+    "sha256": "f6b929c62ed3082a26087885e0f1f9bf41878602ef1f57e40b11b4a01bf4f366",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "bzip2"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.bz2"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/sdcc-4.6.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "bz2",
+          "from": "/tmp/toolchain.tar.bz2",
+          "into": "/opt/sdcc-4.6.0",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.bz2"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/sdcc-4.6.0/bin/sdcc"
+        }
+      ],
+      "env": {},
+      "root": "sdcc-4.6.0",
+      "title": "rebrew sdcc-4.6.0-sm83",
+      "description": "sdcc-4.6.0-sm83 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/sdcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-msm83"
+        ]
+      }
+    }
+  },
+  "sdcc-4.6.0-z80": {
+    "family": "sdcc",
+    "host_dir": "sdcc/4.6.0-z80",
+    "url": "https://downloads.sourceforge.net/project/sdcc/sdcc-linux-amd64/4.6.0/sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2",
+    "sha256": "f6b929c62ed3082a26087885e0f1f9bf41878602ef1f57e40b11b4a01bf4f366",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "bzip2"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.bz2"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/sdcc-4.6.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "bz2",
+          "from": "/tmp/toolchain.tar.bz2",
+          "into": "/opt/sdcc-4.6.0",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.bz2"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/sdcc-4.6.0/bin/sdcc"
+        }
+      ],
+      "env": {},
+      "root": "sdcc-4.6.0",
+      "title": "rebrew sdcc-4.6.0-z80",
+      "description": "sdcc-4.6.0-z80 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/sdcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-mz80"
+        ]
+      }
+    }
+  },
+  "sdcc-4.6.0-stm8": {
+    "family": "sdcc",
+    "host_dir": "sdcc/4.6.0-stm8",
+    "url": "https://downloads.sourceforge.net/project/sdcc/sdcc-linux-amd64/4.6.0/sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2",
+    "sha256": "f6b929c62ed3082a26087885e0f1f9bf41878602ef1f57e40b11b4a01bf4f366",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "bzip2"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.bz2"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/sdcc-4.6.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "bz2",
+          "from": "/tmp/toolchain.tar.bz2",
+          "into": "/opt/sdcc-4.6.0",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.bz2"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/sdcc-4.6.0/bin/sdcc"
+        }
+      ],
+      "env": {},
+      "root": "sdcc-4.6.0",
+      "title": "rebrew sdcc-4.6.0-stm8",
+      "description": "sdcc-4.6.0-stm8 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/sdcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-mstm8"
+        ]
+      }
+    }
+  },
+  "sdcc-4.6.0-8051": {
+    "family": "sdcc",
+    "host_dir": "sdcc/4.6.0-8051",
+    "url": "https://downloads.sourceforge.net/project/sdcc/sdcc-linux-amd64/4.6.0/sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2",
+    "sha256": "f6b929c62ed3082a26087885e0f1f9bf41878602ef1f57e40b11b4a01bf4f366",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "bzip2"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.bz2"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/sdcc-4.6.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "bz2",
+          "from": "/tmp/toolchain.tar.bz2",
+          "into": "/opt/sdcc-4.6.0",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.bz2"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/sdcc-4.6.0/bin/sdcc"
+        }
+      ],
+      "env": {},
+      "root": "sdcc-4.6.0",
+      "title": "rebrew sdcc-4.6.0-8051",
+      "description": "sdcc-4.6.0-8051 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/sdcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-mmcs51"
+        ]
+      }
+    }
+  },
+  "cc65-2.19-c64": {
+    "family": "cc65",
+    "host_dir": "cc65/2.19-c64",
+    "url": "https://codeload.github.com/cc65/cc65/tar.gz/refs/tags/V2.19",
+    "sha256": "157b8051aed7f534e5093471e734e7a95e509c577324099c3c81324ed9d0de77",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "build-essential"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/cc65"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/toolchain.tar.gz",
+          "into": "/opt/cc65",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/cc65 && make -j8 bin"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/cc65/bin/cl65"
+        }
+      ],
+      "env": {
+        "CC65_HOME": "/opt/cc65"
+      },
+      "root": "cc65",
+      "title": "rebrew cc65-2.19-c64",
+      "description": "cc65-2.19-c64 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/cl65",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-t",
+          "c64"
+        ]
+      }
+    }
+  },
+  "z88dk-2.4-sccz80": {
+    "family": "z88dk",
+    "host_dir": "z88dk/2.4-sccz80-z80",
+    "url": "https://github.com/z88dk/z88dk/releases/download/v2.4/z88dk-src-2.4.tgz",
+    "sha256": "96a57a01d44ff1d65d84e38b04aebb0a4e10eccb4845cb71f5a26f10abe7c5ac",
+    "commit": "",
+    "notes": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "build-essential",
+        "bison",
+        "flex",
+        "libxml2-dev",
+        "zlib1g-dev",
+        "m4",
+        "libgmp-dev",
+        "libboost-dev",
+        "pkg-config"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/z88dk"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/toolchain.tar.gz",
+          "into": "/opt/z88dk",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/z88dk && ./build.sh -l -z"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/z88dk/bin/zcc"
+        }
+      ],
+      "env": {
+        "ZCCCFG": "/opt/z88dk/lib/config",
+        "PATH": "/opt/z88dk/bin:${PATH}"
+      },
+      "root": "z88dk",
+      "title": "rebrew z88dk-2.4-sccz80",
+      "description": "z88dk-2.4-sccz80 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/zcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "+embedded",
+          "-compiler=sccz80"
+        ]
+      }
+    }
+  },
+  "ack-6.2-7afa32a-linux386": {
+    "family": "ack",
+    "host_dir": "ack/6.2-7afa32a-linux386",
+    "url": "https://codeload.github.com/davidgiven/ack/tar.gz/7afa32a0a0f13e865fa2e8104e442689005cd627",
+    "sha256": "142ad8834ed5409dda0fed8e3ddb1e50f72c772858ef1e2cc9570f13e9cc6ad3",
+    "commit": "7afa32a0a0f13e865fa2e8104e442689005cd627",
+    "notes": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "build-essential",
+        "flex",
+        "bison",
+        "lua5.3",
+        "lua-posix",
+        "python3",
+        "ninja-build"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/toolchain.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/ack"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/toolchain.tar.gz",
+          "into": "/opt/ack",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/ack && sed -i 's/^PLATS = all$/PLATS = linux386/' Makefile && make -j8 PREFIX=/opt/ack && make PREFIX=/opt/ack install"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/toolchain.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/ack/bin/ack"
+        }
+      ],
+      "env": {},
+      "root": "ack",
+      "title": "rebrew ack-6.2-7afa32a-linux386",
+      "description": "ack-6.2-7afa32a-linux386 pinned compiler toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/ack",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "-mlinux386"
+        ]
+      }
+    }
+  },
+  "ia16-gcc-6.3.0-20260612": {
+    "family": "ia16",
+    "host_dir": "ia16/6.3.0-20260612-msdos",
+    "url": "https://ppa.launchpadcontent.net/tkchia/build-ia16/ubuntu/pool/main/g/gcc-ia16-elf/gcc-ia16-elf_6.3.0-20260612.00-ppa260612104~noble_amd64.deb",
+    "sha256": "4a23a16d38366398b9c540745ccc46537d152517f96a324cf69c3d71db67e62d",
+    "commit": "",
+    "extra_pins": [
+      {
+        "url": "https://ppa.launchpadcontent.net/tkchia/build-ia16/ubuntu/pool/main/b/binutils-ia16-elf/binutils-ia16-elf_2.39-20260423.22-ppa260423231~noble_amd64.deb",
+        "sha256": "01112d3b45ac9ab04a750488caadb8c4855d99d95c7713c807dc34649c8c7c88"
+      },
+      {
+        "url": "https://ppa.launchpadcontent.net/tkchia/build-ia16/ubuntu/pool/main/libi/libi86-ia16-elf/libi86-ia16-elf_20260727-stage1gcc6.3.0-20260612.00-binutils2.39-20260423.22-ppa260727151~noble_amd64.deb",
+        "sha256": "233605e2175b8a30446f9acc6cef5b610d3c65b8ce091e7495269aa142b0d14c"
+      },
+      {
+        "url": "https://ppa.launchpadcontent.net/tkchia/build-ia16/ubuntu/pool/main/libn/libnewlib-ia16-elf/libnewlib-ia16-elf_2.4.0-20260316.15-stage1gcc6.3.0-20260612.00-binutils2.39-20260423.22-ppa260612104~noble_amd64.deb",
+        "sha256": "b6e88fbd5cd6cb40cebba748e6c39efb41f13b466ba71ebef77412bd2b81b0ba"
+      }
+    ],
+    "notes": [
+      "Linux-hosted segmented 16-bit x86 GCC with exact binutils, newlib and libi86 packages"
+    ],
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "libgmp10",
+        "libmpc3",
+        "libmpfr6",
+        "libstdc++6",
+        "zlib1g"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/ia16-gcc.deb"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/ia16-0.deb"
+        },
+        {
+          "pin": "extra1",
+          "as": "/tmp/ia16-1.deb"
+        },
+        {
+          "pin": "extra2",
+          "as": "/tmp/ia16-2.deb"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/ia16-6.3.0"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "apt-get update && apt-get install -y --no-install-recommends /tmp/ia16-gcc.deb /tmp/ia16-0.deb /tmp/ia16-1.deb /tmp/ia16-2.deb && rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/ia16-gcc.deb /tmp/ia16-0.deb /tmp/ia16-1.deb /tmp/ia16-2.deb"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /usr/bin/ia16-elf-gcc"
+        }
+      ],
+      "env": {},
+      "root": "ia16-6.3.0",
+      "title": "rebrew IA-16 GCC 6.3.0 (20260612)",
+      "description": "Pinned IA-16 GCC, binutils, newlib and libi86 for segmented 16-bit DOS code",
+      "entrypoint": "cc",
+      "binary": "/usr/bin/ia16-elf-gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "mintelf-gcc-15.2.0": {
+    "family": "mintelf",
+    "host_dir": "mintelf/15.2.0-atari",
+    "url": "https://tho-otto.de/download/mint/gcc-15.2.0-mintelf-20250810-bin-linux64.tar.xz",
+    "sha256": "1f86cc5caa9a5b2429b253bd2218bdf82973ef772260b1e692e19010b1ea6c34",
+    "commit": "",
+    "notes": [
+      "MiNT ELF ABI; GCC 15.2.0, binutils 2.45 and mintlib 0.60.1 with dated package revisions"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "libmpc3",
+        "libmpfr6",
+        "libgmp10",
+        "zlib1g",
+        "libzstd1"
+      ],
+      "root": "mintelf-15.2.0",
+      "binary": "/usr/bin/m68k-atari-mintelf-gcc",
+      "runner": "exec",
+      "entrypoint": "cc",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      },
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/part0.tar.xz"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/part1.tar.xz"
+        },
+        {
+          "pin": "extra1",
+          "as": "/tmp/part2.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/mintelf-15.2.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/part0.tar.xz",
+          "into": "/"
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/part1.tar.xz",
+          "into": "/"
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/part2.tar.xz",
+          "into": "/"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/part*.tar.xz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /usr/bin/m68k-atari-mintelf-gcc"
+        }
+      ],
+      "title": "rebrew MiNT ELF GCC 15.2.0",
+      "description": "Atari MiNT ELF cross compiler with pinned binutils and mintlib"
+    },
+    "extra_pins": [
+      {
+        "url": "https://tho-otto.de/download/mint/binutils-2.45-mintelf-20250812-bin-linux64.tar.xz",
+        "sha256": "e37c22f84baaf8ffc890a11265d4369498f9bc4e68aaac21dcef887d3655f025"
+      },
+      {
+        "url": "https://tho-otto.de/download/mint/mintlib-0.60.1-mintelf-20240718-dev.tar.xz",
+        "sha256": "0a9f4f61c976af26b3b4c2fdfbfcaaa19c671174a6a1c874496375f775ff33ec"
+      }
+    ]
+  },
+  "retro68-16.0.0-0cbd3cb-m68k": {
+    "family": "retro68",
+    "host_dir": "retro68/16.0.0-0cbd3cb-m68k-macos",
+    "url": "https://codeload.github.com/autc04/Retro68/tar.gz/0cbd3cb918a127a0d30a675b337f8f8e15062786",
+    "sha256": "c4775801b3d3825d6b4f5209751c6898277e199ccb7844ff02eae77b95a0f4b2",
+    "commit": "0cbd3cb918a127a0d30a675b337f8f8e15062786",
+    "notes": [
+      "Build uses open Multiversal Interfaces; Apple Universal Interfaces are neither fetched nor redistributed",
+      "Build parallelism capped at eight jobs"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "build-essential",
+        "cmake",
+        "libgmp-dev",
+        "libmpfr-dev",
+        "libmpc-dev",
+        "libboost-all-dev",
+        "bison",
+        "flex",
+        "texinfo",
+        "ruby",
+        "zlib1g-dev",
+        "pkg-config"
+      ],
+      "root": "retro68",
+      "binary": "bin/m68k-apple-macos-gcc",
+      "runner": "exec",
+      "entrypoint": "cc",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      },
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/retro68.tar.gz"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/multiversal.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/retro68-notices",
+            "/tmp/retro68-src",
+            "/tmp/retro68-build"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/retro68.tar.gz",
+          "into": "/tmp/retro68-src",
+          "strip": 1
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/multiversal.tar.gz",
+          "into": "/tmp/retro68-src/multiversal",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "sed -i 's/^BUILD_JOBS=.*/BUILD_JOBS=8/' /tmp/retro68-src/build-toolchain.bash"
+        },
+        {
+          "op": "script",
+          "run": "cd /tmp/retro68-build && /tmp/retro68-src/build-toolchain.bash --prefix=/opt/retro68 --no-ppc --multiversal --clean-after-build"
+        },
+        {
+          "op": "script",
+          "run": "cd /tmp/retro68-src && find . -type f \\( -name 'COPYING*' -o -name 'LICENSE*' \\) -exec cp --parents '{}' /opt/retro68-notices/ \\;"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /tmp/retro68-src /tmp/retro68-build /tmp/retro68.tar.gz /tmp/multiversal.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/retro68/bin/m68k-apple-macos-gcc"
+        }
+      ],
+      "title": "rebrew Retro68 m68k GCC 16.0.0",
+      "description": "Commit-pinned classic Macintosh m68k cross compiler with open Multiversal Interfaces"
+    },
+    "extra_pins": [
+      {
+        "url": "https://codeload.github.com/autc04/multiversal/tar.gz/580f3309649ad4c788c048be3dff2416d7ba49f3",
+        "sha256": "2534535e1eaca0a0bb360998528f0c8ba4c2e57189cf7bc56cd9e88c721aa507"
+      }
+    ]
+  },
+  "quickc-2.50": {
+    "family": "quickc",
+    "host_dir": "quickc/2.50-msdos",
+    "url": "https://dl-alt1.winworldpc.com/Microsoft%20QuickC%202.50%20(1990)%20(5.25-360k).7z",
+    "sha256": "922305575ba425158a7db1a49eceecd00481dc5a092db02eda3582d68447198a",
+    "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a",
+    "aliases": [],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "p7zip-full",
+        "gcc",
+        "libmspack-dev",
+        "libc6-dev"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/quickc.7z"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/mspack.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/quickc2.50",
+            "/opt/quickc-media",
+            "/tmp/quickc-disks",
+            "/tmp/mspack"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/mspack.tar.gz",
+          "into": "/tmp/mspack",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "gcc -I/tmp/mspack/libmspack/test /tmp/mspack/libmspack/examples/msexpand.c -lmspack -o /tmp/msexpand"
+        },
+        {
+          "op": "script",
+          "run": "7z x -y /tmp/quickc.7z -o/opt/quickc-media >/dev/null"
+        },
+        {
+          "op": "script",
+          "run": "for disk in /opt/quickc-media/*/*.img; do 7z x -y \"$disk\" -o/tmp/quickc-disks >/dev/null; done"
+        },
+        {
+          "op": "script",
+          "run": "cd /tmp/quickc-disks && find . -type f -name '*$' -exec sh -c 'for f do /tmp/msexpand \"$f\" \"${f%?}_\" || exit; done' sh {} +"
+        },
+        {
+          "op": "script",
+          "run": "cp -a /tmp/quickc-disks/. /opt/quickc2.50/ && find /opt/quickc2.50 -type f -name '*_' -exec sh -c 'for f do case \"$f\" in *.EX_) mv \"$f\" \"${f%?}E\";; *.HL_) mv \"$f\" \"${f%?}P\";; *.ER_) mv \"$f\" \"${f%?}R\";; *.H_) mv \"$f\" \"${f%?}\";; *.C_) mv \"$f\" \"${f%?}\";; *.LI_) mv \"$f\" \"${f%?}B\";; esac; done' sh {} +"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /tmp/quickc.7z /tmp/quickc-disks /tmp/mspack /tmp/mspack.tar.gz /tmp/msexpand"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -f /opt/quickc2.50/QCL.EXE"
+        }
+      ],
+      "env": {},
+      "root": "quickc2.50",
+      "title": "rebrew Microsoft QuickC 2.50",
+      "description": "Microsoft QuickC 2.50 16-bit DOS compiler",
+      "entrypoint": "quickc",
+      "binary": "QCL.EXE",
+      "runner": "dosbox",
+      "wrapper": {
+        "shape": "dosbox_compile",
+        "dir": "/opt/quickc2.50",
+        "tool": "quickc",
+        "command": "set INCLUDE=C:\\\\INCLUDE\nC:\\\\QCL.EXE /c $FLAGS SRC.C > C:\\\\quickcout.txt",
+        "log": "quickcout.txt",
+        "notes": [
+          "Compile one source with Microsoft QuickC 2.50 under DOSBox."
+        ],
+        "file": "quickc-wrapper.sh"
+      }
+    },
+    "notes": [
+      "Original eight floppy images retained under /opt/quickc-media; QBasic SZDD compression expanded with pinned libmspack example frontend and distribution libmspack"
+    ],
+    "extra_pins": [
+      {
+        "url": "https://codeload.github.com/kyz/libmspack/tar.gz/55d501976171397ccd5d5a7a1ca7da065b1d9a06",
+        "sha256": "6268bcb52c1a54052766641bd4a64fa953bf1cd78d2535965d67d349dbaa49a0"
+      }
+    ]
+  },
+  "devkitarm-16.1.0-1": {
+    "family": "devkitarm",
+    "host_dir": "devkitarm/16.1.0-1-elf",
+    "url": "https://downloads.devkitpro.org/packages/linux/x86_64/devkitarm-gcc-16.1.0-1-x86_64.pkg.tar.zst",
+    "sha256": "289be1a7a42321e02d8dad037acfdfbbe73cfe283b685b4d3860a2e946ea92d0",
+    "commit": "",
+    "extra_pins": [
+      {
+        "url": "https://downloads.devkitpro.org/packages/linux/x86_64/devkitarm-binutils-2.46.0-1-x86_64.pkg.tar.zst",
+        "sha256": "fbca692c5b30008bef6b54c6b6cb48b6a03a656d7cc07beafa4dc7fdaa5838cf"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkitarm-newlib-4.6.0.20260123-5-any.pkg.tar.zst",
+        "sha256": "d314c644c143bd5b104bd82cdc27602f6449cf907cb9c37ccfb8c0707182f89d"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkitarm-rules-1.6.0-4-any.pkg.tar.zst",
+        "sha256": "35023b2b5f07a2dcfb600063854c712206341fb5df3ffbaf8ff825d3cbc15fcc"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkitarm-crtls-1.2.6-1-any.pkg.tar.zst",
+        "sha256": "65faf10f62c219a1a8a3a182b0c4c56da7992599035ea32b3d79e39e79f964bb"
+      }
+    ],
+    "notes": [
+      "Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install"
+    ],
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "zstd",
+        "libmpc3",
+        "libmpfr6",
+        "libgmp10",
+        "zlib1g",
+        "libzstd1",
+        "python3"
+      ],
+      "root": "devkitpro",
+      "binary": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc",
+      "entrypoint": "cc",
+      "runner": "exec",
+      "env": {
+        "DEVKITPRO": "/opt/devkitpro",
+        "DEVKITARM": "/opt/devkitpro/devkitARM"
+      },
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      },
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/part0.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/part1.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra1",
+          "as": "/tmp/part2.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra2",
+          "as": "/tmp/part3.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra3",
+          "as": "/tmp/part4.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/devkitpro"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "for p in /tmp/part*.pkg.tar.zst; do tar --zstd --no-same-owner -xf \"$p\" -C / --exclude=.MTREE --exclude=.BUILDINFO --exclude=.PKGINFO; done"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/part*.pkg.tar.zst"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc"
+        }
+      ],
+      "title": "rebrew devkitARM GCC 16.1.0-1",
+      "description": "devkitARM GCC 16.1.0-1 native Linux cross compiler"
+    }
+  },
+  "devkita64-16.1.0-1": {
+    "family": "devkita64",
+    "host_dir": "devkita64/16.1.0-1-elf",
+    "url": "https://downloads.devkitpro.org/packages/linux/x86_64/devkita64-gcc-16.1.0-1-x86_64.pkg.tar.zst",
+    "sha256": "8192b899f0a5fcfe10d11fa63a631b45310c0c8f0b98d88c7c283c16e9d6b0fa",
+    "commit": "",
+    "extra_pins": [
+      {
+        "url": "https://downloads.devkitpro.org/packages/linux/x86_64/devkita64-binutils-2.46.0-1-x86_64.pkg.tar.zst",
+        "sha256": "0d61ad4946eb1080c6e645c41f0cfaac0a2eba5fec88426fef8f03363e933b5a"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkita64-newlib-4.6.0.20260123-4-any.pkg.tar.zst",
+        "sha256": "fc97ba1009a94b68f8714c3cc548ef697ca82687b72fe0c05a7ca3df81beb53e"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkita64-rules-1.1.1-1-any.pkg.tar.zst",
+        "sha256": "2649cf7827243447070073acc2aa2fee152a0592fc30e827ceed803c565a1ede"
+      }
+    ],
+    "notes": [
+      "Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install"
+    ],
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "zstd",
+        "libmpc3",
+        "libmpfr6",
+        "libgmp10",
+        "zlib1g",
+        "libzstd1",
+        "python3"
+      ],
+      "root": "devkitpro",
+      "binary": "/opt/devkitpro/devkitA64/bin/aarch64-none-elf-gcc",
+      "entrypoint": "cc",
+      "runner": "exec",
+      "env": {
+        "DEVKITPRO": "/opt/devkitpro",
+        "DEVKITA64": "/opt/devkitpro/devkitA64"
+      },
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      },
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/part0.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/part1.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra1",
+          "as": "/tmp/part2.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra2",
+          "as": "/tmp/part3.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/devkitpro"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "for p in /tmp/part*.pkg.tar.zst; do tar --zstd --no-same-owner -xf \"$p\" -C / --exclude=.MTREE --exclude=.BUILDINFO --exclude=.PKGINFO; done"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/part*.pkg.tar.zst"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/devkitpro/devkitA64/bin/aarch64-none-elf-gcc"
+        }
+      ],
+      "title": "rebrew devkitA64 GCC 16.1.0-1",
+      "description": "devkitA64 GCC 16.1.0-1 native Linux cross compiler"
+    }
+  },
+  "devkitppc-16.2.0-1": {
+    "family": "devkitppc",
+    "host_dir": "devkitppc/16.2.0-1-elf",
+    "url": "https://downloads.devkitpro.org/packages/linux/x86_64/devkitppc-gcc-16.2.0-1-x86_64.pkg.tar.zst",
+    "sha256": "d27ec75b8e309608495712f95357b68792cad9868aa2abe53e957c5538722549",
+    "commit": "",
+    "extra_pins": [
+      {
+        "url": "https://downloads.devkitpro.org/packages/linux/x86_64/devkitppc-binutils-2.47-2-x86_64.pkg.tar.zst",
+        "sha256": "b2f7096da00e56be9752ada2453c8d4b538dbb0bad2315fb4a1416f01187ab77"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkitppc-newlib-4.6.0.20260123-4-any.pkg.tar.zst",
+        "sha256": "2c5277c6b07a5558c9fd8e631d958c6d7784860aa55f5c320cb51371bc07e21b"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkitppc-rules-1.2.1-1-any.pkg.tar.zst",
+        "sha256": "0c3394da451c9dfb3b428d9d61b044eb1eafb947b2b5090ff88525f55c785278"
+      },
+      {
+        "url": "https://downloads.devkitpro.org/packages/devkitppc-crtls-2.1.0-1-any.pkg.tar.zst",
+        "sha256": "5a1144d515579eee73bb936ca36a8ea739b00d8cf32af3fa4dda21a039881bcd"
+      }
+    ],
+    "notes": [
+      "Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install"
+    ],
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "zstd",
+        "libmpc3",
+        "libmpfr6",
+        "libgmp10",
+        "zlib1g",
+        "libzstd1",
+        "python3"
+      ],
+      "root": "devkitpro",
+      "binary": "/opt/devkitpro/devkitPPC/bin/powerpc-eabi-gcc",
+      "entrypoint": "cc",
+      "runner": "exec",
+      "env": {
+        "DEVKITPRO": "/opt/devkitpro",
+        "DEVKITPPC": "/opt/devkitpro/devkitPPC"
+      },
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      },
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/part0.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra0",
+          "as": "/tmp/part1.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra1",
+          "as": "/tmp/part2.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra2",
+          "as": "/tmp/part3.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        },
+        {
+          "pin": "extra3",
+          "as": "/tmp/part4.pkg.tar.zst",
+          "user_agent": "dkp-pacman/6.0.2",
+          "transport": "urllib"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/devkitpro"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "for p in /tmp/part*.pkg.tar.zst; do tar --zstd --no-same-owner -xf \"$p\" -C / --exclude=.MTREE --exclude=.BUILDINFO --exclude=.PKGINFO; done"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/part*.pkg.tar.zst"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/devkitpro/devkitPPC/bin/powerpc-eabi-gcc"
+        }
+      ],
+      "title": "rebrew devkitPPC GCC 16.2.0-1",
+      "description": "devkitPPC GCC 16.2.0-1 native Linux cross compiler"
+    }
+  },
+  "watcom-2.0-20261001-win16": {
+    "family": "watcom",
+    "host_dir": "watcom/2.0-20261001-win16",
+    "url": "https://github.com/open-watcom/open-watcom-v2/releases/download/2026-10-01-Build/ow-snapshot.tar.xz",
+    "sha256": "e6aa1b1e40ac8bbf97658d2c70fff8a4242d6ca4a1c60806f2baa5317083d4fe",
+    "commit": "",
+    "recipe": {
+      "base": "base",
+      "apt": [],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/ow.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/watcom"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/ow.tar.xz",
+          "into": "/opt/watcom",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/ow.tar.xz"
+        },
+        {
+          "op": "guard",
+          "cmd": "ls /opt/watcom/binl/wcc"
+        }
+      ],
+      "env": {
+        "WATCOM": "/opt/watcom",
+        "INCLUDE": "/opt/watcom/h",
+        "PATH": "/opt/watcom/binl:$PATH"
+      },
+      "root": "watcom",
+      "title": "rebrew Open Watcom 2.0 (win16, native) 2026-10-01",
+      "description": "Open Watcom 2.0 (win16, native) toolchain image 2026-10-01",
+      "entrypoint": "wcc",
+      "binary": "binl/wcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [],
+        "notes": [
+          "wcc wrapper \u2014 native 16-bit Open Watcom compiler under the shared watchdog",
+          "contract (uses the wrapper-common helpers).",
+          "",
+          "Invoke:  wcc [flags...] <source.c>",
+          "",
+          "wcc is a native Linux binary, so there is no PE loader to select and",
+          "REBREW_RUNNER does not apply.  The run is still capped by",
+          "REBREW_RUNNER_TIMEOUT (seconds, default 600) so a hung compile fails",
+          "loudly like every other entrypoint."
+        ],
+        "set_e": true,
+        "file": "wcc-wrapper.sh"
+      }
+    },
+    "aliases": [],
+    "notes": [
+      "Dated 2026-10-01 snapshot; September profile kept separately"
+    ]
+  },
+  "watcom-2.0-20261001-win32": {
+    "family": "watcom",
+    "host_dir": "watcom/2.0-20261001-win32",
+    "url": "https://github.com/open-watcom/open-watcom-v2/releases/download/2026-10-01-Build/ow-snapshot.tar.xz",
+    "sha256": "e6aa1b1e40ac8bbf97658d2c70fff8a4242d6ca4a1c60806f2baa5317083d4fe",
+    "commit": "",
+    "recipe": {
+      "base": "base",
+      "apt": [],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/ow.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/watcom"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/ow.tar.xz",
+          "into": "/opt/watcom",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/ow.tar.xz"
+        },
+        {
+          "op": "guard",
+          "cmd": "ls /opt/watcom/binl/wcc386"
+        }
+      ],
+      "env": {
+        "WATCOM": "/opt/watcom",
+        "INCLUDE": "/opt/watcom/h",
+        "PATH": "/opt/watcom/binl:$PATH"
+      },
+      "root": "watcom",
+      "title": "rebrew Open Watcom 2.0 (win32, native) 2026-10-01",
+      "description": "Open Watcom 2.0 (win32, native) toolchain image 2026-10-01",
+      "entrypoint": "wcc386",
+      "binary": "binl/wcc386",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [],
+        "notes": [
+          "wcc386 wrapper \u2014 native Open Watcom compiler under the shared watchdog",
+          "contract (uses the wrapper-common helpers).",
+          "",
+          "Invoke:  wcc386 [flags...] <source.c>",
+          "",
+          "wcc386 is a native Linux binary, so there is no PE loader to select and",
+          "REBREW_RUNNER does not apply.  The run is still capped by",
+          "REBREW_RUNNER_TIMEOUT (seconds, default 600) so a hung compile fails",
+          "loudly like every other entrypoint."
+        ],
+        "set_e": true,
+        "file": "wcc386-wrapper.sh"
+      }
+    },
+    "aliases": [],
+    "notes": [
+      "Dated 2026-10-01 snapshot; September profile kept separately"
+    ]
+  },
+  "vbcc-0.9h-p2-amiga": {
+    "family": "vbcc",
+    "host_dir": "vbcc/0.9h-p2-amiga",
+    "url": "https://codeload.github.com/erique/vbcc_vasm_vlink/tar.gz/647720b664c0599a4b5b28b3232987673615fe11",
+    "sha256": "d9b4d46c27af0a98d5a49c5f6c494a40f21811caf877113bad8fc97dbf5c4a0e",
+    "commit": "647720b664c0599a4b5b28b3232987673615fe11",
+    "notes": [
+      "Unmodified upstream source/target archives retained under /opt/vbcc-sources; mirror packages VBCC 0.9h patch 2, target patch 3, VASM 2.0d and VLINK 0.18a",
+      "Amiga m68k Hunk object output; compile-only in Rebrew until a Hunk reader exists",
+      "VBCC/VASM/VLINK component licence restrictions apply; public availability does not imply unrestricted commercial use",
+      "VBCC datatype probing runs serially so every prompt receives the supplied default answer"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "build-essential",
+        "p7zip-full"
+      ],
+      "root": "vbcc",
+      "binary": "bin/vc",
+      "runner": "exec",
+      "entrypoint": "cc",
+      "env": {
+        "VBCC": "/opt/vbcc",
+        "PATH": "/opt/vbcc/bin:$PATH"
+      },
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": [
+          "+aos68k"
+        ]
+      },
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/vbcc.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/vbcc",
+            "/opt/vbcc-sources"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/vbcc.tar.gz",
+          "into": "/opt/vbcc-sources",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/vbcc-sources && tar xzf vbcc.tar.gz --no-same-owner && tar xzf vasm.tar.gz --no-same-owner && tar xzf vlink.tar.gz --no-same-owner && tar xzf vbcc_unix_config.tar.gz --no-same-owner -C vbcc && 7z x -y vbcc_target_m68k-amigaos.lha vbcc_target_m68k-amigaos/targets >/dev/null && cp -a vbcc_target_m68k-amigaos/targets vbcc/"
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/vbcc-sources/vbcc && mkdir -p bin && yes '' | make TARGET=m68k -j1"
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/vbcc-sources/vasm && make CPU=m68k SYNTAX=mot -j4"
+        },
+        {
+          "op": "script",
+          "run": "cd /opt/vbcc-sources/vlink && make -j4"
+        },
+        {
+          "op": "script",
+          "run": "cp -a /opt/vbcc-sources/vbcc/bin /opt/vbcc-sources/vbcc/config /opt/vbcc-sources/vbcc/targets /opt/vbcc/ && cp /opt/vbcc-sources/vasm/vasmm68k_mot /opt/vbcc-sources/vlink/vlink /opt/vbcc/bin/"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/vbcc.tar.gz"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/vbcc/bin/vc"
+        }
+      ],
+      "title": "rebrew VBCC 0.9h patch 2 for Amiga m68k",
+      "description": "Commit-pinned VBCC VASM VLINK build with retained original archives and Amiga m68k target"
+    }
   }
 }

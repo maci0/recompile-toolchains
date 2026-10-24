@@ -311,23 +311,49 @@ base_image_for() {
   esac
 }
 
-# Base images first, in dependency order — `base` (Debian + wine/wibo/dosbox)
-# is pulled in as a helper stage by every other base, and `base-noble`
-# (Ubuntu 24.04) is what `base-dosemu` builds FROM.  Any further base*/
-# directory discovered on disk is built after these, so a new layer that only
-# depends on `base` needs no edit here.  Bases are tagged :1.0 to match the
-# FROM ${BASE_IMAGE} defaults and the build-arg passed below, and must exist
-# before the pool starts because every toolchain image's FROM resolves against
-# one of them.  Backgrounded only so the pid is tracked and cleanup() can kill
-# a base build if the run is interrupted; each wait makes that build
-# effectively synchronous, with output still streaming.
-_extra_bases=""
-for _base_dir in "$ROOT"/base*/; do
-  [ -f "$_base_dir/Dockerfile" ] || continue
-  _name="$(basename "$_base_dir")"
-  case "$_name" in base | base-noble | base-dosemu) ;; *) _extra_bases="$_extra_bases $_name" ;; esac
+# Resolve the selection before building so unrelated bases cannot block it.
+dirs=()
+if [ $# -eq 0 ]; then
+  for d in "$ROOT"/*/*/; do
+    [ -f "$d/Dockerfile" ] || continue
+    rel="${d#"$ROOT"/}"
+    rel="${rel%/}"  # the glob yields a trailing slash — strip it
+    dirs+=("$rel")
+  done
+else
+  declare -A want=()
+  for arg in "$@"; do
+    dir="$(resolve_dir "$arg")"
+    [ -n "$dir" ] || { echo "unknown toolchain: $arg" >&2; exit 2; }
+    [ -n "${want[$dir]:-}" ] && continue  # duplicate args build once
+    want[$dir]=1
+    dirs+=("$dir")
+  done
+fi
+
+# Visit only the selected base dependencies, helpers before their consumers.
+base_order=()
+declare -A base_seen=()
+add_base() {
+  local ref="$1" name dependency dependencies
+  case "$ref" in
+    "$PREFIX"/*:1.0) name="${ref#"$PREFIX"/}"; name="${name%:1.0}" ;;
+    *) return ;;
+  esac
+  [ -f "$ROOT/$name/Dockerfile" ] || return 0
+  [ -z "${base_seen[$name]:-}" ] || return 0
+  base_seen[$name]=1
+  dependencies="$(sed -n 's/^ARG [A-Z_]*=\(rebrew\/[^ ]*\)$/\1/p' "$ROOT/$name/Dockerfile")"
+  while IFS= read -r dependency; do
+    [ -z "$dependency" ] || add_base "$PREFIX/${dependency#rebrew/}"
+  done <<<"$dependencies"
+  base_order+=("$name")
+}
+for dir in "${dirs[@]}"; do
+  selected_base="$(base_image_for "$dir")"
+  add_base "$selected_base"
 done
-for _base_name in base base-noble base-dosemu $_extra_bases; do
+for _base_name in "${base_order[@]}"; do
   _base_dir="$ROOT/$_base_name/"
   echo "==> building $PREFIX/$_base_name:1.0"
   set +e
@@ -349,25 +375,6 @@ for _base_name in base base-noble base-dosemu $_extra_bases; do
     exit 1
   fi
 done
-
-dirs=()
-if [ $# -eq 0 ]; then
-  for d in "$ROOT"/*/*/; do
-    [ -f "$d/Dockerfile" ] || continue
-    rel="${d#"$ROOT"/}"
-    rel="${rel%/}"  # the glob yields a trailing slash — strip it
-    dirs+=("$rel")
-  done
-else
-  declare -A want=()
-  for arg in "$@"; do
-    dir="$(resolve_dir "$arg")"
-    [ -n "$dir" ] || { echo "unknown toolchain: $arg" >&2; exit 2; }
-    [ -n "${want[$dir]:-}" ] && continue  # duplicate args build once
-    want[$dir]=1
-    dirs+=("$dir")
-  done
-fi
 
 build_pool "${dirs[@]}"
 echo "done."

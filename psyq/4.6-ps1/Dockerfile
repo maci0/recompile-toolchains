@@ -12,6 +12,10 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.title="rebrew PSY-Q 4.6 (PS1)" \
       org.opencontainers.image.description="PSY-Q 4.6 (Sony CCPSX.EXE + obj parser, PE/x86_32) toolchain image"
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends cpp dos2unix python3 \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psyq.tar.gz \
         "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq4.6.tar.gz" \
     && echo "635603e09a452c9c2923492fea8b8eb051959dd94f240933b88e94866814b894  /tmp/psyq.tar.gz" | sha256sum -c -

@@ -2,6 +2,31 @@
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-25
+
+### Added
+
+- Add 27 pinned compiler profiles: MSVC 12.0 Update 4, DJGPP, PSPDEV,
+  PS2DEV EE/IOP, Bootlin m68k, MiNT ELF, LLVM-MOS C64/NES, GBDK,
+  SDCC SM83/Z80/STM8/8051, cc65, z88dk, ACK, IA-16, Retro68,
+  devkitARM/devkitA64/devkitPPC, QuickC, VBCC, native64 Saturn and
+  the dated October Watcom snapshot. The catalog now contains 335 profiles
+  across 46 families; preserve existing compiler versions and variants.
+- Record repeatable smoke qualification for every canonical profile, source
+  pins, image identities, parity checks and remaining matching/runtime limits.
+
+### Fixed
+
+- Build only the selected images' required base chain; replace deleted FDPP
+  runtime package pins and retain rootless archive ownership safeguards.
+- Support POSIX object compilation for AGBCC, SHC and PSY-Q 4.6 pipelines
+  while preserving raw invocations, relative include paths and existing
+  outputs on failure. Preserve complete nested SHC support files.
+- Build PSY-Q 2.6.3's converter from pinned PCSX-Redux sources, handling
+  relocation 30 with code/data/relocation parity under DOSEMU and Daze.
+- Keep the papermario compiler's helper path and use pipes to exclude random
+  assembly filenames from debug metadata.
+
 ## [1.6.0] - 2026-10-24
 
 ### Fixed

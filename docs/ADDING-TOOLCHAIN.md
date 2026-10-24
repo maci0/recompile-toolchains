@@ -407,3 +407,25 @@ EOF
 | `notes` | optional authored documentation for the image: the catalog's Notes column, verbatim.  It lives here, not in the recipe, because re-deriving a recipe rewrites it. Anything the image does not render belongs at the profile level. |
 | `aliases` | extra names `build.sh` accepts for this profile |
 | `*_url`/`*_sha256`/`*_commit` | additional pinned sources the image needs |
+
+## Consumer registration and qualification
+
+A manifest entry does not register a compiler in Rebrew. Add its canonical
+`ToolchainSpec` in `rebrew/compiler/toolchain_data.py` with the exact image tag,
+absolute entrypoint, target bits and input/output argument dialect. Multi-stage
+wrappers accept one translation unit and use `arg_style="pipeline"`; that keeps
+batch compilation from silently dropping sources. SDCC profiles use `.rel`.
+
+Record a smoke fixture in `rebrew/toolchain_cli.py` only after two real compiles
+agree. Mask documented timestamp fields, never code or arbitrary differing
+bytes. Check optimized external calls, global data and the actual object
+format as well as the simple hash probe. Native ASxxxx, xo65, z88dk, ACK and
+Amiga Hunk objects need their own readers; producing an object does not prove
+that Rebrew can match it. LLVM-MOS needs `-fno-lto` to emit MOS ELF and still
+requires variable-width relocation support for matching.
+
+`rebrew toolchain build` and `build.sh` build the selected profile's full local
+base chain. Local DOSEMU runs require `/dev/kvm`; Recompile's container runners
+do not expose host devices, so select the corresponding Daze profiles there.
+The [2026-10-25 qualification](RELATED-WORK.md#ingestion-and-repairs--2026-10-25)
+records the current tested coverage and remaining limits.

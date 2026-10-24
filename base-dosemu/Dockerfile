@@ -60,11 +60,11 @@ RUN apt-get update \
         "https://launchpadlibrarian.net/860512428/fdpp_1.10-10002-1671-9282d8c+202605091902~ubuntu24.04.1_amd64.deb" \
     && echo "e1b2c238ef79c97ac588dfeec54cc8598890cd97e2e344dc4627258948d09d8d  /tmp/debs/fdpp.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libfdldr35.deb \
-        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdldr35_1.11-10003-1716-2f10d8a+202610122230~ubuntu24.04.1_amd64.deb" \
-    && echo "2521bd466c5e0b5ae0a2d2ca855f7bdc4f60b814677231daf06f559c3a646c3a  /tmp/debs/libfdldr35.deb" | sha256sum -c - \
+        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdldr35_1.11-10003-1717-f2e1f7d+202610211533~ubuntu24.04.1_amd64.deb" \
+    && echo "3eae90ee8f0d2f44f1c6b23bc5025ab29438fc11ff7cbd68e12ff331855239a0  /tmp/debs/libfdldr35.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libfdpp35.deb \
-        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdpp35_1.11-10003-1716-2f10d8a+202610122230~ubuntu24.04.1_amd64.deb" \
-    && echo "7299e263d0b5213e2bd5bf7f63389e9d7cd4901fef1483062a9361b16f173991  /tmp/debs/libfdpp35.deb" | sha256sum -c - \
+        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdpp35_1.11-10003-1717-f2e1f7d+202610211533~ubuntu24.04.1_amd64.deb" \
+    && echo "096d98ba5730dfd6e4030381e28f7ebd335e11579660765abf75dd549443af07  /tmp/debs/libfdpp35.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/comcom64.deb \
         "https://launchpadlibrarian.net/879631907/comcom64_0.5-0~202610040914+202610052207~ubuntu24.04.1_amd64.deb" \
     && echo "88deb90bc01279da57da12d131ff1a8fa7c9d4e2779c54aba8c624d085633357  /tmp/debs/comcom64.deb" | sha256sum -c - \

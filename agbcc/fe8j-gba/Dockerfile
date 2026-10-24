@@ -12,6 +12,10 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.title="rebrew agbcc FE8J (GBA)" \
       org.opencontainers.image.description="agbcc (laqieer FE8J fork, GBA, native x86_64) toolchain image"
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends binutils-arm-none-eabi cpp \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/agbcc.tar.gz \
         "https://github.com/laqieer/agbcc/releases/download/fe8j-v1/agbcc.tar.gz" \
     && echo "5bdeac906031476a341f09929d303c5834d8adda8dc00bd85934eb4b2463daa7  /tmp/agbcc.tar.gz" | sha256sum -c -

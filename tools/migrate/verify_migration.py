@@ -60,6 +60,33 @@ ACKNOWLEDGED: dict[str, tuple[str, str, str | None]] = {
 }
 
 
+#: Intentional post-migration repairs, qualified by the 2026-10-25 smoke and
+#: pipeline tests. Hash both files so unrelated recipe/wrapper edits still fail.
+QUALIFIED_REPAIRS: dict[str, str] = {
+    "agbcc": "4a6f97fb822577028ac3b9b720af643ca713c7212032c13a802a15d02c0f91b1",
+    "agbcc-arm-gba": "ab25fe10f7b18d58382ff95a3c9b9fbc698c42849475ba11bd58d58cd7fe2fd2",
+    "agbcc-fe8j": "7e555400b9e011ea248d1515832f8bbb8265eb9d3de9e29e565426014f1b3966",
+    "agbcc-old-gba": "81add2451c9e00f3c92556f28272b62ff08ef708b1e12a95ad35f7c24a40f6ca",
+    "agbccpp": "a0e71a23b0147c36847d9eb87ff0b97c6440140f51a6b59ce1cdc25b6e5eb202",
+    "gcc-2.8.1-pm": "f7d4c1539c74ab2d48142cdcafd73f6f941bb2e82009f2a2549e09bc8e0f7b36",
+    "ido-4.1": "6b0a18def4d67e7a84dafe6a1aa3dfa164cd68bce725e6753d528b48112ac7d7",
+    "msc-6.0": "6f967ae6409917976bc6602e3fe1612aa2bb6defaffa523142b20ed504fe87f8",
+    "psyq-2.6.3-221": "e0e494f1ac5914f91760f0f3e97ab5d9c07b981bd745e18b9a9f7f76035eb80a",
+    "psyq-4.6": "1376e8a007e5cbfd82baffdb44dc0d244f1f216930b392414520902095b95faa",
+    "shc-5.0r10": "71e97810f3db290931ba8232771ebea25378e0bdafabbfeccd2bdb0bbeb6a9c8",
+    "shc-5.0r26": "33bd8ca09e3804b0f7880435b2ccab03460705b5763b9b98d363d0b9b2122430",
+    "shc-5.0r28": "124cfede23cdf843c38150b2e028f5745b8db01f4b22cabe799ecb5737fc4061",
+    "shc-5.0r31": "277140f2d26755ee73e5bb4b4eaa1f5b3da35000be5954882f2858b0afbd421e",
+    "shc-5.0r32": "5c6de3db1a5f3afcdd4387da8f3483b4633993bd2141bd77b998e23db4ee13a0",
+    "shc-5.1r01": "5bba282b2377b8905a89aa6e30d2f1845bc5b30dbb9ba414f6493e4f49e66168",
+    "shc-5.1r03": "fe63e753e4c37b22e7c4b1dbba014df0fb6c65b3c2551e0b08a80370ff139b50",
+    "shc-5.1r04": "f2069c91fc9ff9f7c20e1a81f73d427398cc60fb179cb964125151fc7530926e",
+    "shc-5.1r08": "c41e9cf3bb832b937d9637a652472c18e20a82dc71e338d499a95dc52fa9e581",
+    "shc-5.1r11": "b2ffd1146afb6dbc689564ba2beda965d27ee9c89242add516816542324374fd",
+    "shc-5.1r13": "2650a6a49b5285f2d34de32561e8dbbcd480308c392da23e2c0e1983ecd2f749",
+}
+
+
 def checkout(rev: str, into: pathlib.Path) -> pathlib.Path:
     """Check ``rev`` out into ``into`` and return it.
 
@@ -254,6 +281,8 @@ def _canonical_tar(clause: str) -> str:
     tokens = clause.split(" ")
     if tokens[0] != "tar":
         return clause
+    # Numeric archive owners do not affect compiler contents; generation tests enforce this flag.
+    tokens = [arg for arg in tokens if arg != "--no-same-owner"]
     flags = [token for token in tokens[1:] if token.startswith("--")]
     rest = [token for token in tokens[1:] if not token.startswith("--")]
     return " ".join(["tar", *flags, *rest])
@@ -424,6 +453,11 @@ def main(argv: list[str]) -> int:
             )
             if not problems:
                 continue
+            if profile in QUALIFIED_REPAIRS:
+                data = (new_dir / "Dockerfile").read_bytes() + wrapper_text(new_dir)[1].encode()
+                if hashlib.sha256(data).hexdigest() == QUALIFIED_REPAIRS[profile]:
+                    acknowledged.append((profile, "qualified compiler pipeline or access repair"))
+                    continue
             if profile in ACKNOWLEDGED:
                 why, expected, wrapper_sha256 = ACKNOWLEDGED[profile]
                 if wrapper_sha256 is not None:

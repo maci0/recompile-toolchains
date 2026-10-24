@@ -51,6 +51,24 @@ PLATFORMS = (
 
 #: Family → one-line description for the catalog heading.
 FAMILIES = {
+    "vbcc": "VBCC, VASM and VLINK for Amiga m68k",
+    "sdcc": "Small Device C Compiler for 8-bit targets",
+    "cc65": "cc65 C compiler for 6502 systems",
+    "z88dk": "z88dk C toolchain for Z80 systems",
+    "ack": "Amsterdam Compiler Kit",
+    "ia16": "GCC for segmented 16-bit x86",
+    "mintelf": "Atari MiNT ELF cross compilers",
+    "retro68": "Classic Macintosh cross compilers with open interfaces",
+    "quickc": "Microsoft QuickC for DOS",
+    "devkitarm": "devkitPro ARM bare-metal toolchains",
+    "devkita64": "devkitPro AArch64 bare-metal toolchains",
+    "devkitppc": "devkitPro PowerPC bare-metal toolchains",
+    "bootlin": "Bootlin Linux cross-toolchains with pinned sysroots",
+    "djgpp": "Linux-hosted DJGPP GNU compilers for DOS",
+    "gbdk": "GBDK-2020 compilers and libraries for 8-bit consoles",
+    "llvm-mos": "LLVM-MOS 6502-family C/C++ cross-compilers",
+    "pspdev": "PSPDEV homebrew SDK toolchains",
+    "ps2dev": "PS2DEV homebrew EE and IOP SDK toolchains",
     "agbcc": "GBA decomp compilers (pret agbcc, the notyourav C++ fork, FE8J fork)",
     "agbccpp": "GBA decomp C++ compiler (notyourav/agbcc `cp` fork)",
     "armcc": "ARM Compiler for Nintendo 3DS",
@@ -67,7 +85,7 @@ FAMILIES = {
     "mingw": "MinGW-w64 GCC cross compilers (i686 PE, wine)",
     "ndk": "Android NDK cross toolchains (i686-linux-android)",
     "msc": "Microsoft C 5.1 (16-bit DOS)",
-    "msvc": "Microsoft Visual C/C++ 1.0-11.0",
+    "msvc": "Microsoft Visual C/C++ 1.0-12.0",
     "msvc-ppc": "Microsoft Visual C++ for Xbox 360 (PowerPC)",
     "mwcc": "CodeWarrior PowerPC compilers (GameCube / Wii)",
     "mwccarm": "CodeWarrior ARM compilers (Nintendo DS ARM9)",
@@ -88,6 +106,93 @@ _ENTRYPOINT = re.compile(r'^ENTRYPOINT \["/usr/local/bin/([^"]+)"\]$', re.MULTIL
 #: pins a URL whose source is not listed here, so provenance (and the
 #: licence class that goes with it) cannot be added silently.
 SOURCES: dict[str, tuple[str, str]] = {
+    "codeload.github.com/erique/vbcc_vasm_vlink": (
+        "Commit-pinned mirror retaining original VBCC/VASM/VLINK source and Amiga target archives",
+        "VBCC/VASM/VLINK component terms, including commercial-use and redistribution restrictions",
+    ),
+    "downloads.sourceforge.net/project/sdcc": (
+        "SDCC versioned native Linux release",
+        "GPL-2.0-or-later compiler; runtime exception and component terms",
+    ),
+    "codeload.github.com/cc65/cc65": (
+        "cc65 V2.19 source release (tools identify as 2.18)",
+        "zlib-style licence; component terms retained",
+    ),
+    "github.com/z88dk/z88dk": (
+        "z88dk v2.4 complete source release",
+        "Artistic-2.0, GPL and component licences retained",
+    ),
+    "codeload.github.com/davidgiven/ack": (
+        "Commit-pinned Amsterdam Compiler Kit source",
+        "BSD and component terms retained",
+    ),
+    "ppa.launchpadcontent.net/tkchia/build-ia16": (
+        "Dated IA-16 GCC, binutils, newlib and libi86 packages",
+        "GPL compiler/binutils; runtime exceptions and component terms",
+    ),
+    "tho-otto.de/download/mint": (
+        "Dated Atari MiNT ELF GCC, binutils and mintlib archives",
+        "GPL compiler/binutils; mintlib LGPL and component terms",
+    ),
+    "codeload.github.com/autc04/Retro68": (
+        "Commit-pinned Retro68 source; Apple Universal Interfaces excluded",
+        "GPL-3.0-or-later and component terms",
+    ),
+    "codeload.github.com/autc04/multiversal": (
+        "Commit-pinned open Multiversal Interfaces",
+        "MIT and component terms retained",
+    ),
+    "dl-alt1.winworldpc.com": (
+        "Preserved Microsoft QuickC 2.50 original floppy media",
+        "proprietary",
+    ),
+    "downloads.devkitpro.org/packages": (
+        "Versioned devkitPro split GCC, binutils, newlib, CRT and rule packages",
+        "GPL compiler/binutils; runtime exceptions and component terms",
+    ),
+    "codeload.github.com/grumpycoders/pcsx-redux": (
+        "Source-built PSY-Q object converter supporting GPREL16_LE",
+        "GPL-2.0-or-later converter; MIT support files",
+    ),
+    "codeload.github.com/serge1/ELFIO": ("Pinned ELFIO headers for the PSY-Q converter", "MIT"),
+    "codeload.github.com/fmtlib/fmt": ("Pinned fmt headers for the PSY-Q converter", "MIT"),
+    "codeload.github.com/Neargye/magic_enum": (
+        "Pinned enum headers for the PSY-Q converter",
+        "MIT",
+    ),
+    "codeload.github.com/Taywee/args": ("Pinned argument parser for the PSY-Q converter", "MIT"),
+    "codeload.github.com/kyz/libmspack": (
+        "Pinned SZDD/QBasic decompression frontend source",
+        "LGPL-2.1 and component terms",
+    ),
+    "github.com/heinermann/compilers": (
+        "Preserved Visual C++ 2013 Update 4 tools and runtime",
+        "proprietary",
+    ),
+    "github.com/andrewwutw/build-djgpp": (
+        "Linux-hosted DJGPP GCC and binutils cross-toolchain",
+        "GPL compiler and binutils; bundled runtime component terms",
+    ),
+    "github.com/pspdev/pspdev": (
+        "Dated PSP homebrew SDK bundle",
+        "GPL compiler and binutils; SDK and library component terms",
+    ),
+    "github.com/ps2dev/ps2dev": (
+        "PS2 homebrew EE and IOP SDK bundle",
+        "GPL compiler and binutils; SDK and library component terms",
+    ),
+    "toolchains.bootlin.com": (
+        "Versioned Buildroot cross-toolchain with sysroot, source and license references",
+        "GCC/binutils GPL; libc and component terms retained",
+    ),
+    "github.com/llvm-mos/llvm-mos-sdk": (
+        "LLVM-MOS compiler and target platform libraries",
+        "LLVM Apache-2.0 WITH LLVM-exception and component terms",
+    ),
+    "github.com/gbdk-2020/gbdk-2020": (
+        "GBDK-2020 with bundled SDCC and console libraries",
+        "GPL-2.0 with linking exception; LCC driver and component terms",
+    ),
     "github.com/mkst/daze": (
         "Daze 0.3.0 DOS runtime; release includes dependency notices and source references",
         "MIT source; GPL-2.0 release binaries with Unicorn and other dependencies",
@@ -279,7 +384,7 @@ SOURCES: dict[str, tuple[str, str]] = {
             "ROF → ELF) and `ChrisNonyminus`'s `convert_gas_syntax.py` (Apple cc1 "
             "assembler → GNU as)"
         ),
-        "MIT (gists)",
+        "No declared licence verified; do not infer MIT from public availability",
     ),
 }
 

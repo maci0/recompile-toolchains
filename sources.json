@@ -1819,6 +1819,70 @@
       }
     }
   },
+  "clang-23.1.4": {
+    "family": "clang",
+    "host_dir": "clang/23.1.4-linux-x64",
+    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.4/LLVM-23.1.4-Linux-X64.tar.xz",
+    "sha256": "25d814fda50d5fb0084b42be09605d8b1595d49d5e2e03a3345d7e112ff6f9f3",
+    "commit": "",
+    "recipe": {
+      "base": "base-noble",
+      "apt": [
+        "libc6-dev",
+        "libstdc++6",
+        "libtinfo6",
+        "libzstd1",
+        "zlib1g",
+        "libxml2",
+        "xz-utils"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/clang.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/clang-23.1.4"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/clang.tar.xz",
+          "into": "/opt/clang-23.1.4",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/clang.tar.xz"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/clang-23.1.4/bin/clang --version"
+        }
+      ],
+      "env": {},
+      "root": "clang-23.1.4",
+      "title": "rebrew Clang 23.1.4 (ELF/x86_64, native)",
+      "description": "Clang 23.1.4 (ELF/x86_64, native, LLVM release build) toolchain image",
+      "entrypoint": "clang",
+      "binary": "bin/clang",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
   "clang-3.9.1": {
     "family": "clang",
     "host_dir": "clang/3.9.1-switch",
@@ -3222,6 +3286,86 @@
       "root": "gcc-14.2.0",
       "title": "rebrew GCC 14.2.0 (ELF/x86_64, native, C)",
       "description": "GCC 14.2.0 (ELF/x86_64, C only, built from source) toolchain image",
+      "entrypoint": "gcc",
+      "binary": "bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "gcc-16.2.0": {
+    "family": "gcc",
+    "host_dir": "gcc/16.2.0-linux-x64",
+    "url": "https://ftp.gnu.org/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.xz",
+    "sha256": "e6738e29597f733270731aa90600f37ffdc045079dfc27ec7e8192cc81085c3e",
+    "commit": "",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "build-essential",
+        "libgmp-dev",
+        "libmpfr-dev",
+        "libmpc-dev",
+        "zlib1g-dev"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.xz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-16.2.0",
+            "/tmp/gcc-src",
+            "/tmp/gcc-build"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "xz",
+          "from": "/tmp/gcc.tar.xz",
+          "into": "/tmp/gcc-src",
+          "strip": 1
+        },
+        {
+          "op": "script",
+          "run": "cd /tmp/gcc-build"
+        },
+        {
+          "op": "script",
+          "run": "/tmp/gcc-src/configure --prefix=/opt/gcc-16.2.0 --enable-languages=c --disable-bootstrap --disable-multilib --disable-nls --disable-libsanitizer --with-system-zlib"
+        },
+        {
+          "op": "script",
+          "run": "make -j\"$(nproc)\""
+        },
+        {
+          "op": "script",
+          "run": "make install-strip"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /tmp/gcc.tar.xz /tmp/gcc-src /tmp/gcc-build"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/gcc-16.2.0/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-16.2.0",
+      "title": "rebrew GCC 16.2.0 (ELF/x86_64, native, C)",
+      "description": "GCC 16.2.0 (ELF/x86_64, C only, built from source) toolchain image",
       "entrypoint": "gcc",
       "binary": "bin/gcc",
       "runner": "exec",
@@ -9930,7 +10074,10 @@
         "validate_source": true,
         "argv": []
       }
-    }
+    },
+    "aliases": [
+      "msvc8.0sp1"
+    ]
   },
   "msvc-9.0": {
     "family": "msvc",
@@ -11166,6 +11313,73 @@
       "root": "mwcc-4.1-51213",
       "title": "rebrew MWCC 4.1-51213 (GameCube)",
       "description": "MWCC 4.1-51213 (CodeWarrior GameCube, PE/x86_32) toolchain image",
+      "entrypoint": "mwcceppc",
+      "binary": "mwcceppc.exe",
+      "runner": "wine",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    }
+  },
+  "mwcc-4.1-51213p1": {
+    "family": "mwcc",
+    "host_dir": "mwcc/4.1-51213p1-gc",
+    "url": "https://files.decomp.dev/compilers_20251118.zip",
+    "sha256": "69b0d4980a2eccea4ae6e70b486714b5190cb6c75e3bc7b8fb5878a8854d0d1c",
+    "commit": "1f528ebeaf198e747d75caffaa319985b3a33a2d",
+    "aliases": [
+      "mwcc_41_51213p1"
+    ],
+    "notes": [
+      "unpacked from `zip-subpath:GC/3.0a3p1`"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "unzip"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/compilers.zip"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/mwcc-4.1-51213p1"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "unzip -q /tmp/compilers.zip 'GC/3.0a3p1/*' -d /tmp/x"
+        },
+        {
+          "op": "cp",
+          "flags": "-a",
+          "from": "/tmp/x/GC/3.0a3p1/.",
+          "into": "/opt/mwcc-4.1-51213p1/"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /tmp/x /tmp/compilers.zip"
+        },
+        {
+          "op": "guard",
+          "cmd": "ls /opt/mwcc-4.1-51213p1/mwcceppc.exe"
+        }
+      ],
+      "env": {},
+      "root": "mwcc-4.1-51213p1",
+      "title": "rebrew MWCC 4.1-51213p1 (GameCube)",
+      "description": "MWCC 4.1-51213p1 (CodeWarrior GameCube, PE/x86_32) toolchain image",
       "entrypoint": "mwcceppc",
       "binary": "mwcceppc.exe",
       "runner": "wine",
@@ -17601,6 +17815,71 @@
       }
     }
   },
+  "saturn-cygnus-2.7-96Q3-native": {
+    "family": "saturn",
+    "host_dir": "saturn/cygnus-2.7-96Q3-native-saturn",
+    "url": "https://github.com/sozud/saturn-compiler-repro/releases/download/v1.0.0/cc1-native.tar.gz",
+    "sha256": "3f215db5c6c6040461b82b85f4d7564da59da3064d7c13b872c16ad9f5731497",
+    "commit": "",
+    "aliases": [
+      "cygnus-2.7-96Q3-native"
+    ],
+    "notes": [
+      "native Linux i386 compiler; host cpp -> cc1-native -> sh-elf-as; no KVM required",
+      "GNU assembler can add trailing SH NOP section padding relative to the DOS assembler; use the DOS profile when exact section padding is required"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "cpp",
+        "binutils-sh-elf"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/cc1.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/saturn-cygnus-native"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/cc1.tar.gz",
+          "into": "/opt/saturn-cygnus-native"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/cc1.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/saturn-cygnus-native/cc1-native"
+        },
+        {
+          "op": "guard",
+          "cmd": "test -x /opt/saturn-cygnus-native/cc1-native"
+        }
+      ],
+      "env": {},
+      "root": "saturn-cygnus-native",
+      "title": "rebrew Saturn Cygnus 2.7-96Q3 (native)",
+      "description": "Cygnus 2.7-96Q3 (SH-2, Sega Saturn, native Linux i386 reproduction) toolchain image",
+      "entrypoint": "cc",
+      "binary": "cc1-native",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "handwritten",
+        "why": "native Saturn preprocessing, cc1 and assembler pipeline",
+        "file": "cc-wrapper.sh"
+      }
+    }
+  },
   "shc-5.0r10": {
     "family": "shc",
     "host_dir": "shc/5.0r10-dreamcast",
@@ -18025,6 +18304,83 @@
         ]
       }
     }
+  },
+  "shc-5.0r32-sh2": {
+    "family": "shc",
+    "host_dir": "shc/5.0r32-saturn",
+    "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r32.tar.gz",
+    "sha256": "21f26227e48a2c9325f0aaf954e569b29db8db1dd1174aff32623017d713fdf5",
+    "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a",
+    "aliases": [
+      "shc-v5.0r32-sh2"
+    ],
+    "notes": [
+      "SH-2 big-endian ELF pipeline; converts ROF with 0xff padding"
+    ],
+    "helper_url": "https://gist.githubusercontent.com/masonc15/cb2354b439e35f1400c71edfca7171ca/raw/2556b4f781d49b167be0952b4420fadd2b5a313f/rof2elf.py",
+    "helper_sha256": "807f34336f9f3c803ccc2ab01fbd1630e4c7388c29a357fe2f5ba10d2c7dfdef",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "python3",
+        "dos2unix"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/shc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/opt/shc-5.0r32-sh2/rof2elf.py"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/shc-5.0r32-sh2"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/shc.tar.gz",
+          "into": "/opt/shc-5.0r32-sh2"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/shc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/shc-5.0r32-sh2/rof2elf.py /opt/shc-5.0r32-sh2/bin/*"
+        },
+        {
+          "op": "guard",
+          "cmd": "ls /opt/shc-5.0r32-sh2/bin/shc.exe"
+        }
+      ],
+      "env": {
+        "REBREW_RUNNER": "wibo"
+      },
+      "root": "shc-5.0r32-sh2",
+      "title": "rebrew SHC 5.0r32 (Saturn SH-2)",
+      "description": "SHC 5.0r32 (SH-2, Sega Saturn, PE compiler and ROF-to-ELF pipeline) toolchain image",
+      "entrypoint": "cc",
+      "binary": "bin/shc.exe",
+      "runner": "wibo",
+      "wrapper": {
+        "shape": "handwritten",
+        "why": "Saturn SH-2 compiler flags and ROF-to-ELF pipeline with 0xff padding",
+        "file": "cc-wrapper.sh"
+      }
+    },
+    "variant_of": "shc-5.0r32"
   },
   "shc-5.1r01": {
     "family": "shc",
@@ -19582,5 +19938,3505 @@
         "argv": []
       }
     }
+  },
+  "gcc-2.5.7-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.5.7-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.5.7.tar.gz",
+    "sha256": "1cb0a3421d117477acd24e693a80968d04f977717ac5acc963c92f74f1a1360a",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.5.7",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.5.7"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.5.7"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.5.7/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.5.7/cc1 /opt/gcc-2.5.7/cc1plus /opt/gcc-2.5.7/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.5.7/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.5.7/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.5.7/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.5.7/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.5.7/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.5.7/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.5.7",
+      "title": "rebrew GCC 2.5.7 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.5.7 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.5.7-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.5.7-psx-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.5.7-psx-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.5.7-psx.tar.gz",
+    "sha256": "0db1fb403c766e51b094354b9a136a6c1f01457aa41ccca28ac457b7cb67d871",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.5.7-psx",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/2.5.7"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.5.7-psx"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.5.7-psx/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.5.7-psx/cc1 /opt/gcc-2.5.7-psx/cc1plus /opt/gcc-2.5.7-psx/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/2.5.7/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.5.7-psx/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.5.7-psx/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.5.7/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.5.7/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/2.5.7/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.5.7-psx",
+      "title": "rebrew GCC 2.5.7-psx (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.5.7-psx (psx flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.5.7-psx",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.6.0-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.6.0-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.6.0.tar.gz",
+    "sha256": "ca226713b4a303b2782eeae11888355b1fe92c941f9f70cd3548c926346a893e",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.6.0",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.6.0"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.6.0/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.0/cc1 /opt/gcc-2.6.0/cc1plus /opt/gcc-2.6.0/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.0/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.0/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.0/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.0/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.0/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.0/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.6.0",
+      "title": "rebrew GCC 2.6.0 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.6.0 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.6.0-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.6.0-psx-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.6.0-psx-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.6.0-psx.tar.gz",
+    "sha256": "358dac949f0f566af9c6af93bba0d4ac04d56ca9df80c58bd66d81bbb50deceb",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.6.0-psx",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/2.6.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.6.0-psx"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.6.0-psx/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.0-psx/cc1 /opt/gcc-2.6.0-psx/cc1plus /opt/gcc-2.6.0-psx/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/2.6.0/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.0-psx/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.0-psx/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.6.0/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.6.0/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/2.6.0/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.6.0-psx",
+      "title": "rebrew GCC 2.6.0-psx (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.6.0-psx (psx flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.6.0-psx",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.6.3-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.6.3-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.6.3.tar.gz",
+    "sha256": "b80ecdc052ccf459a85f538773b1373a7bfa267cf779641fae447ef6debca2a4",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.6.3",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.3"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.6.3"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.6.3/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.3/cc1 /opt/gcc-2.6.3/cc1plus /opt/gcc-2.6.3/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.3/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.3/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.3/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.3/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.3/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.3/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.6.3",
+      "title": "rebrew GCC 2.6.3 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.6.3 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.6.3-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.6.3-ps1-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.6.3-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.6.3-psx.tar.gz",
+    "sha256": "01e6e8c4933414ea3f8d8e3bc766a1f5fafd4fc0110e0b75d1f691bd791989b1",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc263.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.6.3-ps1"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc263.tar.gz",
+          "into": "/opt/gcc-2.6.3-ps1"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc263.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.6.3-ps1/gcc"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/gcc-2.6.3-ps1/gcc --version"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/2.6.3"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.3-ps1/cc1 /opt/gcc-2.6.3-ps1/cc1plus /opt/gcc-2.6.3-ps1/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/2.6.3/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.3-ps1/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.6.3-ps1/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.6.3/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.6.3/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/2.6.3/ld"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.6.3-ps1",
+      "title": "rebrew GCC 2.6.3 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.6.3 (mips-sony-psx, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.6.3-ps1",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.0-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.0-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.0.tar.gz",
+    "sha256": "157a26ae5ecd60d395bf9ab0d9c8321920f62f789dec0223cb79ed6c9a96ee48",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.0-mipsel",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.7.0-mipsel"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.0-mipsel/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.0-mipsel/cc1 /opt/gcc-2.7.0-mipsel/cc1plus /opt/gcc-2.7.0-mipsel/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.0/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.0-mipsel/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.0-mipsel/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.0/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.0/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.0/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.0-mipsel",
+      "title": "rebrew GCC 2.7.0-mipsel (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.0-mipsel (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.0-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.1-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.1-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.1.tar.gz",
+    "sha256": "e13476a0539055faf9aefc846a1b6b774ec84b8f02bbecaff09b6ce0774ca746",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.1-mipsel",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.1"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.7.1-mipsel"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.1-mipsel/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.1-mipsel/cc1 /opt/gcc-2.7.1-mipsel/cc1plus /opt/gcc-2.7.1-mipsel/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.1/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.1-mipsel/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.1-mipsel/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.1/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.1/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.1/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.1-mipsel",
+      "title": "rebrew GCC 2.7.1-mipsel (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.1-mipsel (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.1-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.2-cdk-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.2-cdk-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.2-cdk.tar.gz",
+    "sha256": "42bb0df96db11a9b5d2e23d78bdc962791f40046280d3d360da93fe5eef6f0bb",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.2-cdk",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/cygnus-2.7.2-970404"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.7.2-cdk"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.2-cdk/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2-cdk/cc1 /opt/gcc-2.7.2-cdk/cc1plus /opt/gcc-2.7.2-cdk/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/cygnus-2.7.2-970404/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2-cdk/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2-cdk/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/cygnus-2.7.2-970404/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/cygnus-2.7.2-970404/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/cygnus-2.7.2-970404/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.2-cdk",
+      "title": "rebrew GCC 2.7.2-cdk (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.2-cdk (CDK/cygnus flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.2-cdk",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.2-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.2-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.2.tar.gz",
+    "sha256": "909b6b6834212e1e26a9b58b39dff54ea1a38c74afea788a75fe3bc62653d14d",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.2",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.7.2"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.2/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2/cc1 /opt/gcc-2.7.2/cc1plus /opt/gcc-2.7.2/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.2",
+      "title": "rebrew GCC 2.7.2 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.2 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.2-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.2-psx-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.2-psx-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.2-psx.tar.gz",
+    "sha256": "500a459b3485e885a8d302cac23c2a4632f3900e03a09153f6190699fd723571",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc272.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.2-psx",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/2.7.2"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc272.tar.gz",
+          "into": "/opt/gcc-2.7.2-psx"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc272.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.2-psx/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2-psx/cc1 /opt/gcc-2.7.2-psx/cc1plus /opt/gcc-2.7.2-psx/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/2.7.2/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2-psx/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2-psx/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.7.2/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.7.2/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/2.7.2/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.2-psx",
+      "title": "rebrew GCC 2.7.2 psx (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.2 (mips-sony-psx, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.2-psx",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.2.1-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.2.1-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.2.1.tar.gz",
+    "sha256": "8fdfcd95768eca36c1b373f16f57f78ab90877a71e2886f0a07422332d759755",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.2.1",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.1"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.7.2.1"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.2.1/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.1/cc1 /opt/gcc-2.7.2.1/cc1plus /opt/gcc-2.7.2.1/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.1/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.1/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.1/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.1/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.1/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.1/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.2.1",
+      "title": "rebrew GCC 2.7.2.1 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.2.1 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.2.1-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.2.2-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.2.2-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.2.2.tar.gz",
+    "sha256": "9f7ed2baae64dc0f2b3b1354914d34fee9aaaa3a3c5deda49a73b7183a9b5e28",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.2.2",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.2"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.7.2.2"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.2.2/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.2/cc1 /opt/gcc-2.7.2.2/cc1plus /opt/gcc-2.7.2.2/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.2/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.2/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.2/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.2/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.2/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.2/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.2.2",
+      "title": "rebrew GCC 2.7.2.2 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.2.2 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.2.2-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.7.2.3-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.7.2.3-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.7.2.3.tar.gz",
+    "sha256": "34e525c1feb9a6f4ef98b590e72dacb4c79a67c5f135db11d6a9cb62a5e74edb",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.7.2.3",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.7.2.3"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.7.2.3/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.3/cc1 /opt/gcc-2.7.2.3/cc1plus /opt/gcc-2.7.2.3/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.3/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.7.2.3/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.7.2.3/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.7.2.3",
+      "title": "rebrew GCC 2.7.2.3 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.7.2.3 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.7.2.3-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.8.0-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.8.0-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.8.0.tar.gz",
+    "sha256": "f4d0bea985cd53bc7ee43f366a4058c631071e925b6ba25fc919d15e7c6a8ba0",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.8.0",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.8.0"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.8.0/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.0/cc1 /opt/gcc-2.8.0/cc1plus /opt/gcc-2.8.0/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.0/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.0/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.0/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.0/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.0/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.0/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.8.0",
+      "title": "rebrew GCC 2.8.0 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.8.0 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.8.0-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.8.0-psx-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.8.0-psx-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.8.0-psx.tar.gz",
+    "sha256": "1a3c956fe8aea5ebdb251749d95de2c84f023530584d7bd663744b5ec24050b7",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.8.0-psx",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/2.8.0"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.8.0-psx"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.8.0-psx/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.0-psx/cc1 /opt/gcc-2.8.0-psx/cc1plus /opt/gcc-2.8.0-psx/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/2.8.0/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.0-psx/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.0-psx/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.8.0/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.8.0/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/2.8.0/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.8.0-psx",
+      "title": "rebrew GCC 2.8.0-psx (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.8.0-psx (psx flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.8.0-psx",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.8.1-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.8.1-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.8.1.tar.gz",
+    "sha256": "2421097de375a67939713480ea2aa17ce4df6c92cf0c476e68e9ac08c09c759e",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.8.1",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.1"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.8.1"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.8.1/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.1/cc1 /opt/gcc-2.8.1/cc1plus /opt/gcc-2.8.1/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.1/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.1/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.1/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.1/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.1/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.8.1/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.8.1",
+      "title": "rebrew GCC 2.8.1 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.8.1 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.8.1-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.8.1-psx-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.8.1-psx-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.8.1-psx.tar.gz",
+    "sha256": "f6f6e883942d4d3289d048236c672e71ed410e546aaae8ff655952f1567e1be0",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.8.1-psx",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/2.8.1"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.8.1-psx"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.8.1-psx/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.1-psx/cc1 /opt/gcc-2.8.1-psx/cc1plus /opt/gcc-2.8.1-psx/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/2.8.1/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.1-psx/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.8.1-psx/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.8.1/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.8.1/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/2.8.1/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.8.1-psx",
+      "title": "rebrew GCC 2.8.1-psx (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.8.1-psx (psx flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.8.1-psx",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.91.66-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.91.66-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.91.66.tar.gz",
+    "sha256": "3ab7b4aaa763a9b10d44c3f4b75a617f2aae38807fbd8ac5b61f9d73df5cfa85",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.91.66-mipsel",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/egcs-2.91.66"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.91.66-mipsel"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.91.66-mipsel/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.91.66-mipsel/cc1 /opt/gcc-2.91.66-mipsel/cc1plus /opt/gcc-2.91.66-mipsel/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/egcs-2.91.66/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.91.66-mipsel/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.91.66-mipsel/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/egcs-2.91.66/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/egcs-2.91.66/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/egcs-2.91.66/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.91.66-mipsel",
+      "title": "rebrew GCC 2.91.66-mipsel (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.91.66-mipsel (mipsel flavour (egcs), decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.91.66-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.91.66-psx-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.91.66-psx-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.91.66-psx.tar.gz",
+    "sha256": "f773a0a9659fa4ff74313ac4363d939312e8125675cd09ad9f8c1202f587f1fd",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.91.66-psx",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/egcs-2.91.66"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.91.66-psx"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.91.66-psx/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.91.66-psx/cc1 /opt/gcc-2.91.66-psx/cc1plus /opt/gcc-2.91.66-psx/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/egcs-2.91.66/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.91.66-psx/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.91.66-psx/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/egcs-2.91.66/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/egcs-2.91.66/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/egcs-2.91.66/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.91.66-psx",
+      "title": "rebrew GCC 2.91.66-psx (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.91.66-psx (psx flavour (egcs), decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.91.66-psx",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.95.2-mipsel-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.95.2-mipsel-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.95.2.tar.gz",
+    "sha256": "23da2192d39a6b829e8c5a26a1c8d211c4aa24849b71da088bc9a76e2e7ab781",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.95.2",
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.95.2"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc.tar.gz",
+          "into": "/opt/gcc-2.95.2"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.95.2/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.95.2/cc1 /opt/gcc-2.95.2/cc1plus /opt/gcc-2.95.2/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.95.2/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.95.2/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.95.2/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-linux-gnu/2.95.2/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-linux-gnu/2.95.2/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-linux-gnu/2.95.2/ld"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/cross/bin/gcc --version"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.95.2",
+      "title": "rebrew GCC 2.95.2 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.95.2 (mipsel flavour, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.95.2-mipsel",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "gcc-2.95.2-ps1-maspsx-4ffa8b5": {
+    "family": "gcc",
+    "host_dir": "gcc/2.95.2-maspsx-4ffa8b5-ps1",
+    "url": "https://github.com/decompals/old-gcc/releases/download/0.17/gcc-2.95.2-psx.tar.gz",
+    "sha256": "932ed3669710a82b12570c29c46ff42989b6505b2af10db84d4551d55dfc0b1c",
+    "commit": "b74211c9d959e9724802f3177c8229cd67202c87",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-mipsel-linux-gnu",
+        "python3"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/gcc2952.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/tmp/maspsx.tar.gz"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/gcc-2.95.2-ps1"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/gcc2952.tar.gz",
+          "into": "/opt/gcc-2.95.2-ps1"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/gcc2952.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/gcc-2.95.2-ps1/gcc"
+        },
+        {
+          "op": "check_run",
+          "cmd": "/opt/gcc-2.95.2-ps1/gcc --version"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/cross/bin",
+            "/opt/cross/lib/gcc-lib/mips-sony-psx/2.95.2"
+          ]
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.95.2-ps1/cc1 /opt/gcc-2.95.2-ps1/cc1plus /opt/gcc-2.95.2-ps1/cpp /opt/cross/lib/gcc-lib/mips-sony-psx/2.95.2/"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.95.2-ps1/gcc /opt/cross/bin/gcc"
+        },
+        {
+          "op": "script",
+          "run": "cp /opt/gcc-2.95.2-ps1/g++ /opt/cross/bin/g++"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/maspsx"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/maspsx.tar.gz",
+          "into": "/opt/maspsx",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/maspsx.tar.gz"
+        },
+        {
+          "op": "script",
+          "run": "printf '%s\\n' '#!/bin/sh' 'exec python3 /opt/maspsx/maspsx.py --run-assembler \"$@\"' > /opt/cross/lib/gcc-lib/mips-sony-psx/2.95.2/as"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/cross/lib/gcc-lib/mips-sony-psx/2.95.2/as"
+        },
+        {
+          "op": "link",
+          "target": "/usr/bin/mipsel-linux-gnu-ld",
+          "name": "/opt/cross/lib/gcc-lib/mips-sony-psx/2.95.2/ld"
+        }
+      ],
+      "env": {},
+      "root": "gcc-2.95.2-ps1",
+      "title": "rebrew GCC 2.95.2 (PS1) + maspsx 4ffa8b5",
+      "description": "GCC 2.95.2 (mips-sony-psx, decompals/old-gcc prebuilt, native x86_64) toolchain image with maspsx 4ffa8b5",
+      "entrypoint": "gcc",
+      "binary": "/opt/cross/bin/gcc",
+      "runner": "exec",
+      "wrapper": {
+        "shape": "passthrough",
+        "validate_source": false,
+        "argv": []
+      }
+    },
+    "variant_of": "gcc-2.95.2-ps1",
+    "helper_url": "https://codeload.github.com/mkst/maspsx/tar.gz/4ffa8b5106f9780d5d4aa7609f184949433ddbbc",
+    "helper_sha256": "c9d007c88bd2ac7f63ba65e8b7b07732a2b06034eba55b41c3ccfaacc926f464",
+    "notes": [
+      "ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version>"
+    ]
+  },
+  "psyq-2.6.3-221-daze-0.3.0": {
+    "family": "psyq",
+    "host_dir": "psyq/2.6.3-daze-0.3.0-ps1",
+    "url": "https://github.com/decompme/compilers/releases/download/compilers/psyq_263_221.tar.gz",
+    "sha256": "082a57e28efe06dc75f1c8be4f2b73ffa65ad5b995c6c345cf67b8dcd19192c5",
+    "commit": "",
+    "notes": [
+      "Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "cpp",
+        "dos2unix"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/psyq.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/usr/local/bin/daze"
+        },
+        {
+          "pin": "extra0",
+          "as": "/opt/daze-notices/BUILD-INFO.txt"
+        },
+        {
+          "pin": "extra1",
+          "as": "/opt/daze-notices/gcc-copyright"
+        },
+        {
+          "pin": "extra2",
+          "as": "/opt/daze-notices/glibc-copyright"
+        },
+        {
+          "pin": "extra3",
+          "as": "/opt/daze-notices/GPL-2.0.txt"
+        },
+        {
+          "pin": "extra4",
+          "as": "/opt/daze-notices/GPL-3.0.txt"
+        },
+        {
+          "pin": "extra5",
+          "as": "/opt/daze-notices/LGPL-2.1.txt"
+        },
+        {
+          "pin": "extra6",
+          "as": "/opt/daze-notices/LICENSE.md"
+        },
+        {
+          "pin": "extra7",
+          "as": "/opt/daze-notices/THIRD_PARTY_NOTICES.md"
+        },
+        {
+          "pin": "extra8",
+          "as": "/opt/daze-notices/unicorn-glib.txt"
+        },
+        {
+          "pin": "extra9",
+          "as": "/opt/daze-notices/unicorn-LGPL-2.0.txt"
+        },
+        {
+          "pin": "extra10",
+          "as": "/opt/daze-notices/unicorn-qemu.txt"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/usr/local/bin"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/daze-notices"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/psyq-2.6.3"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/psyq.tar.gz",
+          "into": "/opt/psyq-2.6.3"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/psyq.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/psyq-2.6.3/*.EXE"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /usr/local/bin/daze"
+        }
+      ],
+      "env": {},
+      "root": "psyq-2.6.3",
+      "title": "rebrew PSY-Q 2.6.3 (PlayStation 1, Daze 0.3.0)",
+      "description": "PSY-Q 2.6.3 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
+      "entrypoint": "cc",
+      "binary": "",
+      "runner": "daze",
+      "wrapper": {
+        "shape": "daze",
+        "file": "cc-wrapper.sh",
+        "notes": [
+          "Original DOS stages with explicit software emulation; every stage has a watchdog."
+        ]
+      }
+    },
+    "variant_of": "psyq-2.6.3-221",
+    "helper_url": "https://github.com/mkst/daze/releases/download/0.3.0/daze",
+    "helper_sha256": "4b6f55e5813a0752eedd1462ef4e3877a7ab0d0a244d806f3fab495bcee2894c",
+    "extra_pins": [
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/BUILD-INFO.txt",
+        "sha256": "34147e157731b3ba91ba492641dabe538567978349adfe4f1ce194355e62936e"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/gcc-copyright",
+        "sha256": "08c6f3dee4c19aa1e57eb7d4ad45829b2e99656313bd07fa0922e2553f500be5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/glibc-copyright",
+        "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-2.0.txt",
+        "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-3.0.txt",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LGPL-2.1.txt",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LICENSE.md",
+        "sha256": "62ff9cf06bc8ce267b99735069eb307bc72879af5dbddda5c826344696c54171"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/THIRD_PARTY_NOTICES.md",
+        "sha256": "bbe2d9f9528a2a6f3659921717104bbda950b5afa24272339adc3537b858be30"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-glib.txt",
+        "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-LGPL-2.0.txt",
+        "sha256": "b7993225104d90ddd8024fd838faf300bea5e83d91203eab98e29512acebd69c"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-qemu.txt",
+        "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
+      }
+    ]
+  },
+  "psyq-3.3-daze-0.3.0": {
+    "family": "psyq",
+    "host_dir": "psyq/3.3-daze-0.3.0-ps1",
+    "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.3.tar.gz",
+    "sha256": "6acc5bf3a2e406c35ec77b63f6f77986a2d61502906967f0f32ea75911e7f16f",
+    "commit": "",
+    "notes": [
+      "Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required"
+    ],
+    "parser_url": "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz",
+    "parser_sha256": "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "cpp",
+        "dos2unix"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/psyq.tar.gz"
+        },
+        {
+          "pin": "parser",
+          "as": "/tmp/parser.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/usr/local/bin/daze"
+        },
+        {
+          "pin": "extra0",
+          "as": "/opt/daze-notices/BUILD-INFO.txt"
+        },
+        {
+          "pin": "extra1",
+          "as": "/opt/daze-notices/gcc-copyright"
+        },
+        {
+          "pin": "extra2",
+          "as": "/opt/daze-notices/glibc-copyright"
+        },
+        {
+          "pin": "extra3",
+          "as": "/opt/daze-notices/GPL-2.0.txt"
+        },
+        {
+          "pin": "extra4",
+          "as": "/opt/daze-notices/GPL-3.0.txt"
+        },
+        {
+          "pin": "extra5",
+          "as": "/opt/daze-notices/LGPL-2.1.txt"
+        },
+        {
+          "pin": "extra6",
+          "as": "/opt/daze-notices/LICENSE.md"
+        },
+        {
+          "pin": "extra7",
+          "as": "/opt/daze-notices/THIRD_PARTY_NOTICES.md"
+        },
+        {
+          "pin": "extra8",
+          "as": "/opt/daze-notices/unicorn-glib.txt"
+        },
+        {
+          "pin": "extra9",
+          "as": "/opt/daze-notices/unicorn-LGPL-2.0.txt"
+        },
+        {
+          "pin": "extra10",
+          "as": "/opt/daze-notices/unicorn-qemu.txt"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/usr/local/bin"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/daze-notices"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/psyq-3.3"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/psyq.tar.gz",
+          "into": "/opt/psyq-3.3",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/psyq.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/psyq-3.3/*.EXE"
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/parser.tar.gz",
+          "into": "/opt/psyq-3.3"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/parser.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/psyq-3.3/psyq-obj-parser"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /usr/local/bin/daze"
+        }
+      ],
+      "env": {},
+      "root": "psyq-3.3",
+      "title": "rebrew PSY-Q 3.3 (PlayStation 1, Daze 0.3.0)",
+      "description": "PSY-Q 3.3 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
+      "entrypoint": "cc",
+      "binary": "",
+      "runner": "daze",
+      "wrapper": {
+        "shape": "daze",
+        "file": "cc-wrapper.sh",
+        "notes": [
+          "Original DOS stages with explicit software emulation; every stage has a watchdog."
+        ]
+      }
+    },
+    "variant_of": "psyq-3.3",
+    "helper_url": "https://github.com/mkst/daze/releases/download/0.3.0/daze",
+    "helper_sha256": "4b6f55e5813a0752eedd1462ef4e3877a7ab0d0a244d806f3fab495bcee2894c",
+    "extra_pins": [
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/BUILD-INFO.txt",
+        "sha256": "34147e157731b3ba91ba492641dabe538567978349adfe4f1ce194355e62936e"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/gcc-copyright",
+        "sha256": "08c6f3dee4c19aa1e57eb7d4ad45829b2e99656313bd07fa0922e2553f500be5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/glibc-copyright",
+        "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-2.0.txt",
+        "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-3.0.txt",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LGPL-2.1.txt",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LICENSE.md",
+        "sha256": "62ff9cf06bc8ce267b99735069eb307bc72879af5dbddda5c826344696c54171"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/THIRD_PARTY_NOTICES.md",
+        "sha256": "bbe2d9f9528a2a6f3659921717104bbda950b5afa24272339adc3537b858be30"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-glib.txt",
+        "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-LGPL-2.0.txt",
+        "sha256": "b7993225104d90ddd8024fd838faf300bea5e83d91203eab98e29512acebd69c"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-qemu.txt",
+        "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
+      }
+    ]
+  },
+  "psyq-3.5-daze-0.3.0": {
+    "family": "psyq",
+    "host_dir": "psyq/3.5-daze-0.3.0-ps1",
+    "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.5.tar.gz",
+    "sha256": "0f9dff42081ad3cc3a1e2f740797b99c28657c3cfe6406deb9de4d176bd5387e",
+    "commit": "",
+    "notes": [
+      "Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required"
+    ],
+    "parser_url": "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz",
+    "parser_sha256": "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "cpp",
+        "dos2unix"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/psyq.tar.gz"
+        },
+        {
+          "pin": "parser",
+          "as": "/tmp/parser.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/usr/local/bin/daze"
+        },
+        {
+          "pin": "extra0",
+          "as": "/opt/daze-notices/BUILD-INFO.txt"
+        },
+        {
+          "pin": "extra1",
+          "as": "/opt/daze-notices/gcc-copyright"
+        },
+        {
+          "pin": "extra2",
+          "as": "/opt/daze-notices/glibc-copyright"
+        },
+        {
+          "pin": "extra3",
+          "as": "/opt/daze-notices/GPL-2.0.txt"
+        },
+        {
+          "pin": "extra4",
+          "as": "/opt/daze-notices/GPL-3.0.txt"
+        },
+        {
+          "pin": "extra5",
+          "as": "/opt/daze-notices/LGPL-2.1.txt"
+        },
+        {
+          "pin": "extra6",
+          "as": "/opt/daze-notices/LICENSE.md"
+        },
+        {
+          "pin": "extra7",
+          "as": "/opt/daze-notices/THIRD_PARTY_NOTICES.md"
+        },
+        {
+          "pin": "extra8",
+          "as": "/opt/daze-notices/unicorn-glib.txt"
+        },
+        {
+          "pin": "extra9",
+          "as": "/opt/daze-notices/unicorn-LGPL-2.0.txt"
+        },
+        {
+          "pin": "extra10",
+          "as": "/opt/daze-notices/unicorn-qemu.txt"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/usr/local/bin"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/daze-notices"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/psyq-3.5"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/psyq.tar.gz",
+          "into": "/opt/psyq-3.5",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/psyq.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/psyq-3.5/*.EXE"
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/parser.tar.gz",
+          "into": "/opt/psyq-3.5"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/parser.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/psyq-3.5/psyq-obj-parser"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /usr/local/bin/daze"
+        }
+      ],
+      "env": {},
+      "root": "psyq-3.5",
+      "title": "rebrew PSY-Q 3.5 (PlayStation 1, Daze 0.3.0)",
+      "description": "PSY-Q 3.5 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
+      "entrypoint": "cc",
+      "binary": "",
+      "runner": "daze",
+      "wrapper": {
+        "shape": "daze",
+        "file": "cc-wrapper.sh",
+        "notes": [
+          "Original DOS stages with explicit software emulation; every stage has a watchdog."
+        ]
+      }
+    },
+    "variant_of": "psyq-3.5",
+    "helper_url": "https://github.com/mkst/daze/releases/download/0.3.0/daze",
+    "helper_sha256": "4b6f55e5813a0752eedd1462ef4e3877a7ab0d0a244d806f3fab495bcee2894c",
+    "extra_pins": [
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/BUILD-INFO.txt",
+        "sha256": "34147e157731b3ba91ba492641dabe538567978349adfe4f1ce194355e62936e"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/gcc-copyright",
+        "sha256": "08c6f3dee4c19aa1e57eb7d4ad45829b2e99656313bd07fa0922e2553f500be5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/glibc-copyright",
+        "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-2.0.txt",
+        "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-3.0.txt",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LGPL-2.1.txt",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LICENSE.md",
+        "sha256": "62ff9cf06bc8ce267b99735069eb307bc72879af5dbddda5c826344696c54171"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/THIRD_PARTY_NOTICES.md",
+        "sha256": "bbe2d9f9528a2a6f3659921717104bbda950b5afa24272339adc3537b858be30"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-glib.txt",
+        "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-LGPL-2.0.txt",
+        "sha256": "b7993225104d90ddd8024fd838faf300bea5e83d91203eab98e29512acebd69c"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-qemu.txt",
+        "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
+      }
+    ]
+  },
+  "psyq-3.6-daze-0.3.0": {
+    "family": "psyq",
+    "host_dir": "psyq/3.6-daze-0.3.0-ps1",
+    "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.6.tar.gz",
+    "sha256": "9445f4cd871ca85b764b8d2746b6122750af17ecfe2d6e8aae41d15461d8c41d",
+    "commit": "",
+    "notes": [
+      "Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required"
+    ],
+    "parser_url": "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz",
+    "parser_sha256": "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e",
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "cpp",
+        "dos2unix"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/psyq.tar.gz"
+        },
+        {
+          "pin": "parser",
+          "as": "/tmp/parser.tar.gz"
+        },
+        {
+          "pin": "helper",
+          "as": "/usr/local/bin/daze"
+        },
+        {
+          "pin": "extra0",
+          "as": "/opt/daze-notices/BUILD-INFO.txt"
+        },
+        {
+          "pin": "extra1",
+          "as": "/opt/daze-notices/gcc-copyright"
+        },
+        {
+          "pin": "extra2",
+          "as": "/opt/daze-notices/glibc-copyright"
+        },
+        {
+          "pin": "extra3",
+          "as": "/opt/daze-notices/GPL-2.0.txt"
+        },
+        {
+          "pin": "extra4",
+          "as": "/opt/daze-notices/GPL-3.0.txt"
+        },
+        {
+          "pin": "extra5",
+          "as": "/opt/daze-notices/LGPL-2.1.txt"
+        },
+        {
+          "pin": "extra6",
+          "as": "/opt/daze-notices/LICENSE.md"
+        },
+        {
+          "pin": "extra7",
+          "as": "/opt/daze-notices/THIRD_PARTY_NOTICES.md"
+        },
+        {
+          "pin": "extra8",
+          "as": "/opt/daze-notices/unicorn-glib.txt"
+        },
+        {
+          "pin": "extra9",
+          "as": "/opt/daze-notices/unicorn-LGPL-2.0.txt"
+        },
+        {
+          "pin": "extra10",
+          "as": "/opt/daze-notices/unicorn-qemu.txt"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/usr/local/bin"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/daze-notices"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/psyq-3.6"
+          ]
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/psyq.tar.gz",
+          "into": "/opt/psyq-3.6",
+          "strip": 1
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/psyq.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/psyq-3.6/*.EXE"
+        },
+        {
+          "op": "tar",
+          "compression": "gz",
+          "from": "/tmp/parser.tar.gz",
+          "into": "/opt/psyq-3.6"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm /tmp/parser.tar.gz"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/psyq-3.6/psyq-obj-parser"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /usr/local/bin/daze"
+        }
+      ],
+      "env": {},
+      "root": "psyq-3.6",
+      "title": "rebrew PSY-Q 3.6 (PlayStation 1, Daze 0.3.0)",
+      "description": "PSY-Q 3.6 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
+      "entrypoint": "cc",
+      "binary": "",
+      "runner": "daze",
+      "wrapper": {
+        "shape": "daze",
+        "file": "cc-wrapper.sh",
+        "notes": [
+          "Original DOS stages with explicit software emulation; every stage has a watchdog."
+        ]
+      }
+    },
+    "variant_of": "psyq-3.6",
+    "helper_url": "https://github.com/mkst/daze/releases/download/0.3.0/daze",
+    "helper_sha256": "4b6f55e5813a0752eedd1462ef4e3877a7ab0d0a244d806f3fab495bcee2894c",
+    "extra_pins": [
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/BUILD-INFO.txt",
+        "sha256": "34147e157731b3ba91ba492641dabe538567978349adfe4f1ce194355e62936e"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/gcc-copyright",
+        "sha256": "08c6f3dee4c19aa1e57eb7d4ad45829b2e99656313bd07fa0922e2553f500be5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/glibc-copyright",
+        "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-2.0.txt",
+        "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-3.0.txt",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LGPL-2.1.txt",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LICENSE.md",
+        "sha256": "62ff9cf06bc8ce267b99735069eb307bc72879af5dbddda5c826344696c54171"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/THIRD_PARTY_NOTICES.md",
+        "sha256": "bbe2d9f9528a2a6f3659921717104bbda950b5afa24272339adc3537b858be30"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-glib.txt",
+        "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-LGPL-2.0.txt",
+        "sha256": "b7993225104d90ddd8024fd838faf300bea5e83d91203eab98e29512acebd69c"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-qemu.txt",
+        "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
+      }
+    ]
+  },
+  "saturn-cygnus-2.7-96Q3-daze-0.3.0": {
+    "family": "saturn",
+    "host_dir": "saturn/cygnus-2.7-96Q3-daze-0.3.0-saturn",
+    "url": "https://github.com/sozud/saturn-compilers/archive/af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip",
+    "sha256": "f5460e3ea653a24fb011a94f2ce2c54b277877e60859ffc906b07dbbe6406595",
+    "commit": "af27f4aa6566c1b0fa5332b488e63d6ffd28bd48",
+    "notes": [
+      "Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required"
+    ],
+    "recipe": {
+      "base": "base",
+      "apt": [
+        "binutils-sh-elf",
+        "unzip",
+        "cpp",
+        "dos2unix"
+      ],
+      "fetch": [
+        {
+          "pin": "primary",
+          "as": "/tmp/tools/saturn.zip"
+        },
+        {
+          "pin": "helper",
+          "as": "/usr/local/bin/daze"
+        },
+        {
+          "pin": "extra0",
+          "as": "/opt/daze-notices/BUILD-INFO.txt"
+        },
+        {
+          "pin": "extra1",
+          "as": "/opt/daze-notices/gcc-copyright"
+        },
+        {
+          "pin": "extra2",
+          "as": "/opt/daze-notices/glibc-copyright"
+        },
+        {
+          "pin": "extra3",
+          "as": "/opt/daze-notices/GPL-2.0.txt"
+        },
+        {
+          "pin": "extra4",
+          "as": "/opt/daze-notices/GPL-3.0.txt"
+        },
+        {
+          "pin": "extra5",
+          "as": "/opt/daze-notices/LGPL-2.1.txt"
+        },
+        {
+          "pin": "extra6",
+          "as": "/opt/daze-notices/LICENSE.md"
+        },
+        {
+          "pin": "extra7",
+          "as": "/opt/daze-notices/THIRD_PARTY_NOTICES.md"
+        },
+        {
+          "pin": "extra8",
+          "as": "/opt/daze-notices/unicorn-glib.txt"
+        },
+        {
+          "pin": "extra9",
+          "as": "/opt/daze-notices/unicorn-LGPL-2.0.txt"
+        },
+        {
+          "pin": "extra10",
+          "as": "/opt/daze-notices/unicorn-qemu.txt"
+        }
+      ],
+      "steps": [
+        {
+          "op": "mkdir",
+          "paths": [
+            "/usr/local/bin"
+          ]
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/daze-notices"
+          ]
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /var/lib/apt/lists/*"
+        },
+        {
+          "op": "mkdir",
+          "paths": [
+            "/opt/saturn-cygnus",
+            "/tmp/tools"
+          ]
+        },
+        {
+          "op": "unzip",
+          "from": "/tmp/tools/saturn.zip",
+          "into": "/tmp/tools"
+        },
+        {
+          "op": "cp",
+          "flags": "-r",
+          "from": "/tmp/tools/saturn-compilers-af27f4aa6566c1b0fa5332b488e63d6ffd28bd48/cygnus-2.7-96Q3-bin/.",
+          "into": "/opt/saturn-cygnus/"
+        },
+        {
+          "op": "rm",
+          "cmd": "rm -rf /tmp/tools"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /opt/saturn-cygnus/*.EXE"
+        },
+        {
+          "op": "guard",
+          "cmd": "ls /opt/saturn-cygnus/OBJCOPY.EXE"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod +x /usr/local/bin/daze"
+        }
+      ],
+      "env": {},
+      "root": "saturn-cygnus",
+      "title": "rebrew Saturn Cygnus 2.7-96Q3 (Daze 0.3.0)",
+      "description": "Cygnus 2.7-96Q3 (SH-2, Sega Saturn, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
+      "entrypoint": "cc",
+      "runner": "daze",
+      "wrapper": {
+        "shape": "daze",
+        "file": "cc-wrapper.sh",
+        "notes": [
+          "Original DOS stages with explicit software emulation; every stage has a watchdog."
+        ]
+      }
+    },
+    "variant_of": "saturn-cygnus-2.7-96Q3",
+    "helper_url": "https://github.com/mkst/daze/releases/download/0.3.0/daze",
+    "helper_sha256": "4b6f55e5813a0752eedd1462ef4e3877a7ab0d0a244d806f3fab495bcee2894c",
+    "extra_pins": [
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/BUILD-INFO.txt",
+        "sha256": "34147e157731b3ba91ba492641dabe538567978349adfe4f1ce194355e62936e"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/gcc-copyright",
+        "sha256": "08c6f3dee4c19aa1e57eb7d4ad45829b2e99656313bd07fa0922e2553f500be5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/glibc-copyright",
+        "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-2.0.txt",
+        "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/GPL-3.0.txt",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LGPL-2.1.txt",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/LICENSE.md",
+        "sha256": "62ff9cf06bc8ce267b99735069eb307bc72879af5dbddda5c826344696c54171"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/THIRD_PARTY_NOTICES.md",
+        "sha256": "bbe2d9f9528a2a6f3659921717104bbda950b5afa24272339adc3537b858be30"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-glib.txt",
+        "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-LGPL-2.0.txt",
+        "sha256": "b7993225104d90ddd8024fd838faf300bea5e83d91203eab98e29512acebd69c"
+      },
+      {
+        "url": "https://github.com/mkst/daze/releases/download/0.3.0/unicorn-qemu.txt",
+        "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e"
+      }
+    ]
   }
 }

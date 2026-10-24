@@ -2,6 +2,21 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add 22 PS1 GCC variants with maspsx pinned at `4ffa8b5`, plus Daze 0.3.0
+  variants for four DOS PSY-Q compilers and Saturn Cygnus 2.7-96Q3. Daze uses
+  the Unicorn software backend and includes the release's dependency notices.
+  Existing GNU assembler and DOSEMU profiles keep their names and behavior.
+- MWCC 4.1 build 51213 patch 1, native Linux Saturn Cygnus 2.7-96Q3,
+  Saturn SHC 5.0r32 with SH-2 ELF conversion, GCC 16.2.0 and Clang 23.1.4.
+- The verified `msvc8.0sp1` alias for the existing MSVC 8.0 SP1 profile.
+
+### Fixed
+
+- Replace the deleted DOSEMU `libfdldr35` and `libfdpp35` downloads with
+  hash-verified versioned packages from the same PPA.
+
 ### Changed
 
 - Refresh the dependency lock and current CI interpreter selection; preserve the

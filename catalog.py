@@ -77,7 +77,7 @@ FAMILIES = {
     "psp-gcc": "Sony PSP allegrex GCC (decompme/compilers 1.3.1)",
     "psyq": "Sony PSY-Q SDK toolchains (PS1)",
     "pspsnc": "Sony PSP System Narrow compiler",
-    "shc": "Hitachi SuperH C compiler (Dreamcast)",
+    "shc": "Hitachi SuperH C compiler (Dreamcast / Saturn)",
     "watcom": "Open Watcom C/C++ (32- and 16-bit)",
 }
 
@@ -88,6 +88,14 @@ _ENTRYPOINT = re.compile(r'^ENTRYPOINT \["/usr/local/bin/([^"]+)"\]$', re.MULTIL
 #: pins a URL whose source is not listed here, so provenance (and the
 #: licence class that goes with it) cannot be added silently.
 SOURCES: dict[str, tuple[str, str]] = {
+    "github.com/mkst/daze": (
+        "Daze 0.3.0 DOS runtime; release includes dependency notices and source references",
+        "MIT source; GPL-2.0 release binaries with Unicorn and other dependencies",
+    ),
+    "codeload.github.com/mkst/maspsx": (
+        "Commit-pinned Modern ASPSX compatibility layer for PS1 GCC assembly",
+        "MIT",
+    ),
     "download.microsoft.com/download/vc60pro": (
         "Microsoft's Visual C++ 6.0 redistributable (native MSVCRT runtime for the tools)",
         "proprietary",
@@ -145,6 +153,10 @@ SOURCES: dict[str, tuple[str, str]] = {
             "before relying on it for a rebuild"
         ),
         "proprietary",
+    ),
+    "github.com/sozud/saturn-compiler-repro": (
+        "Native Linux reproductions of the Sega Saturn Cygnus 2.7-96Q3 compiler",
+        "GPL compiler sources; AGPL-3.0 reproduction tooling",
     ),
     "github.com/sozud": (
         (
@@ -257,6 +269,10 @@ SOURCES: dict[str, tuple[str, str]] = {
         ),
         "MIT-style (ncurses); the .deb is taken unmodified",
     ),
+    "gist.githubusercontent.com/masonc15": (
+        "Revision-pinned rof2elf.py fork with Saturn SH-2 0xff section padding support",
+        "No licence declared in the gist; fork of the existing Mc-muffin converter",
+    ),
     "gist.githubusercontent.com": (
         (
             "revision-pinned converter scripts: `Mc-muffin`'s `rof2elf.py` (SHC "
@@ -272,6 +288,15 @@ SOURCES: dict[str, tuple[str, str]] = {
 #: the rest explain why a same-version id is nevertheless a different build.
 #: (decompme id, our profile, status, evidence)
 EQUIVALENCES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        "msvc8.0sp1",
+        "msvc-8.0-sp1",
+        "verified alias",
+        (
+            "Drahsid/ffxiv_msvc8.0sp1@0d6f444c and archaic-msvc/msvc800_sp1@4b1bafba "
+            "have identical cl.exe, c1.dll, c1xx.dll and c2.dll Git blobs"
+        ),
+    ),
     (
         "msvc6.3",
         "msvc-6.0-sp3",
@@ -775,6 +800,7 @@ _RUNTIME = {
     "wibo": "wibo (default), wine via `REBREW_RUNNER=wine`",
     "dosbox": "DOSBox",
     "dosemu2": "dosemu2 (needs `--device /dev/kvm`)",
+    "daze": "Daze 0.3.0 (Unicorn, no KVM required)",
 }
 
 

@@ -33,6 +33,8 @@ _HANDWRITTEN = (
     "ido-4.1",
     "psyq-4.6",
     "saturn-cygnus-2.7-96Q3",
+    "saturn-cygnus-2.7-96Q3-native",
+    "shc-5.0r32-sh2",
 )
 
 _REQUIRED_RECIPE_KEYS = ("base", "fetch", "steps", "root", "entrypoint", "wrapper")

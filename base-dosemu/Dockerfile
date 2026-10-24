@@ -12,7 +12,7 @@
 # `base/` is Debian; the shared wrapper helpers are copied out of `base/` so
 # there is exactly one implementation of argument handling and error reporting.
 #
-# Every PPA package is pinned by a Launchpad librarian URL and sha256.
+# Every PPA package is pinned by a versioned PPA or Launchpad URL and sha256.
 # Superseded files can disappear, so a failed download requires an explicit
 # pin refresh and compiler smoke verification. The build never reads a PPA
 # index and never substitutes an unverified newer package.
@@ -60,11 +60,11 @@ RUN apt-get update \
         "https://launchpadlibrarian.net/860512428/fdpp_1.10-10002-1671-9282d8c+202605091902~ubuntu24.04.1_amd64.deb" \
     && echo "e1b2c238ef79c97ac588dfeec54cc8598890cd97e2e344dc4627258948d09d8d  /tmp/debs/fdpp.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libfdldr35.deb \
-        "https://launchpadlibrarian.net/876268288/libfdldr35_1.11-10003-1714-6fc57bc+202609081621~ubuntu24.04.1_amd64.deb" \
-    && echo "a250e93e6d323d208a7cc2a998bcd03e9510831bf670d2da94eb5f2b6820f49d  /tmp/debs/libfdldr35.deb" | sha256sum -c - \
+        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdldr35_1.11-10003-1716-2f10d8a+202610122230~ubuntu24.04.1_amd64.deb" \
+    && echo "2521bd466c5e0b5ae0a2d2ca855f7bdc4f60b814677231daf06f559c3a646c3a  /tmp/debs/libfdldr35.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libfdpp35.deb \
-        "https://launchpadlibrarian.net/876268289/libfdpp35_1.11-10003-1714-6fc57bc+202609081621~ubuntu24.04.1_amd64.deb" \
-    && echo "1baec8711043c75d1e29a4f260e926cb7343c9cc484f8c053970e0e0a7000a2a  /tmp/debs/libfdpp35.deb" | sha256sum -c - \
+        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdpp35_1.11-10003-1716-2f10d8a+202610122230~ubuntu24.04.1_amd64.deb" \
+    && echo "7299e263d0b5213e2bd5bf7f63389e9d7cd4901fef1483062a9361b16f173991  /tmp/debs/libfdpp35.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/comcom64.deb \
         "https://launchpadlibrarian.net/879631907/comcom64_0.5-0~202610040914+202610052207~ubuntu24.04.1_amd64.deb" \
     && echo "88deb90bc01279da57da12d131ff1a8fa7c9d4e2779c54aba8c624d085633357  /tmp/debs/comcom64.deb" | sha256sum -c - \

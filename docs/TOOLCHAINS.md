@@ -3,7 +3,7 @@
 
 # Toolchain catalog
 
-276 toolchains, one self-contained image each.  This file is generated
+308 toolchains, one self-contained image each.  This file is generated
 from `sources.json` and the toolchain Dockerfiles; see
 [ADDING-TOOLCHAIN.md](ADDING-TOOLCHAIN.md) to add another, and the
 [README](../README.md) for how to run the images.
@@ -20,18 +20,18 @@ the notes column flags the toolchains whose output needs a second step.
 | android-x86 | 2 |
 | dreamcast | 11 |
 | gba | 6 |
-| gc | 24 |
+| gc | 25 |
 | host | 2 |
 | linux-i386 | 1 |
-| linux-x64 | 4 |
+| linux-x64 | 6 |
 | macos | 4 |
 | msdos | 2 |
 | n64 | 23 |
 | nds | 24 |
-| ps1 | 32 |
+| ps1 | 58 |
 | ps2 | 40 |
 | psp | 13 |
-| saturn | 1 |
+| saturn | 4 |
 | switch | 4 |
 | wii | 10 |
 | wiiu | 1 |
@@ -100,6 +100,7 @@ LLVM clang: native ELF hosts and the Switch decomp builds
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/clang:16.0.4-linux-x64` | linux-x64 | `clang` | native | none | `clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz` `fd464333bd55` | none |
 | `rebrew/clang:18.1.8-linux-x64` | linux-x64 | `clang` | native | none | `clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz` `54ec30358afc` | none |
+| `rebrew/clang:23.1.4-linux-x64` | linux-x64 | `clang` | native | none | `LLVM-23.1.4-Linux-X64.tar.xz` `25d814fda50d` | none |
 | `rebrew/clang:3.9.1-switch` | switch | `clang` | native | none | `clang+llvm-3.9.1-x86_64-linux-gnu-debian8.tar.xz` `dbe2ad98cd9c` | none |
 | `rebrew/clang:4.0.1-switch` | switch | `clang` | native | none | `clang+llvm-4.0.1-x86_64-linux-gnu-debian8.tar.xz` `ca48a4def4cb` | none |
 | `rebrew/clang:8.0.0-switch` | switch | `clang` | native | none | `clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz` `0f5c314f375e` | none |
@@ -143,17 +144,29 @@ GNU/egcs and vendor GCC rebuilds (native and cross)
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/gcc:12.3.0-linux-x64` | linux-x64 | `gcc` | native | none | `gcc-12.3.0.tar.xz` `949a5d4f99e7` | none |
 | `rebrew/gcc:14.2.0-linux-x64` | linux-x64 | `gcc` | native | none | `gcc-14.2.0.tar.xz` `a7b39bc69cbf` | none |
+| `rebrew/gcc:16.2.0-linux-x64` | linux-x64 | `gcc` | native | none | `gcc-16.2.0.tar.xz` `e6738e29597f` | none |
+| `rebrew/gcc:2.5.7-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.5.7.tar.gz` `1cb0a3421d11` @ `b74211c9d959` | the same build as `gcc-2.5.7-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.5.7-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.5.7-mipsel` | `gcc-2.5.7.tar.gz` `1cb0a3421d11` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.5.7-psx-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.5.7-psx.tar.gz` `0db1fb403c76` @ `b74211c9d959` | the same build as `gcc-2.5.7-psx`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.5.7-psx-ps1` | ps1 | `gcc` | native | `gcc2.5.7-psx` | `gcc-2.5.7-psx.tar.gz` `0db1fb403c76` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.6.0-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.6.0.tar.gz` `ca226713b4a3` @ `b74211c9d959` | the same build as `gcc-2.6.0-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.6.0-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.6.0-mipsel` | `gcc-2.6.0.tar.gz` `ca226713b4a3` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.6.0-psx-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.6.0-psx.tar.gz` `358dac949f0f` @ `b74211c9d959` | the same build as `gcc-2.6.0-psx`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.6.0-psx-ps1` | ps1 | `gcc` | native | `gcc2.6.0-psx` | `gcc-2.6.0-psx.tar.gz` `358dac949f0f` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.6.3-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.6.3-psx.tar.gz` `01e6e8c49334` @ `b74211c9d959` | the same build as `gcc-2.6.3-ps1`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
+| `rebrew/gcc:2.6.3-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.6.3.tar.gz` `b80ecdc052cc` @ `b74211c9d959` | the same build as `gcc-2.6.3-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.6.3-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.6.3-mipsel` | `gcc-2.6.3.tar.gz` `b80ecdc052cc` @ `b74211c9d959` | none |
 | `rebrew/gcc:2.6.3-ps1` | ps1 | `gcc` | native | `gcc2.6.3-psx`, `gcc-2.6.3-psx` | `gcc-2.6.3-psx.tar.gz` `01e6e8c49334` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.7.0-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.0.tar.gz` `157a26ae5ecd` @ `b74211c9d959` | the same build as `gcc-2.7.0-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.0-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.7.0-mipsel` | `gcc-2.7.0.tar.gz` `157a26ae5ecd` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.7.1-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.1.tar.gz` `e13476a05390` @ `b74211c9d959` | the same build as `gcc-2.7.1-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.1-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.7.1-mipsel` | `gcc-2.7.1.tar.gz` `e13476a05390` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.7.2-cdk-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.2-cdk.tar.gz` `42bb0df96db1` @ `b74211c9d959` | the same build as `gcc-2.7.2-cdk`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.2-cdk-ps1` | ps1 | `gcc` | native | `gcc2.7.2-cdk` | `gcc-2.7.2-cdk.tar.gz` `42bb0df96db1` @ `b74211c9d959` | none |
 | `rebrew/gcc:2.7.2-kmc-n64` | n64 | `gcc` | native | `gcc2.7.2kmc` | `gcc-2.7.2-linux.tar.gz` `ff3e299c1d95` | pins a second source (binutils) |
+| `rebrew/gcc:2.7.2-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.2.tar.gz` `909b6b683421` @ `b74211c9d959` | the same build as `gcc-2.7.2-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.2-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.7.2-mipsel` | `gcc-2.7.2.tar.gz` `909b6b683421` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.7.2-psx-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.2-psx.tar.gz` `500a459b3485` @ `b74211c9d959` | the same build as `gcc-2.7.2-psx`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.2-psx-ps1` | ps1 | `gcc` | native | `gcc2.7.2-psx` | `gcc-2.7.2-psx.tar.gz` `500a459b3485` @ `b74211c9d959` | none |
 | `rebrew/gcc:2.7.2-sn0001-cxx-n64` | n64 | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `gcc2.7.2sn0001-cxx` | `n64_sn272_0001.tar.gz` `17c57ccd5f23` @ `0884197d3e4a` | the same build as `gcc-2.7.2-sn0001`, with a different front end; pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser`; C++ id: `cpp -lang-c++` into the C++ front end `cc1pln64.exe` |
 | `rebrew/gcc:2.7.2-sn0001-n64` | n64 | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `gcc2.7.2sn0001` | `n64_sn272_0001.tar.gz` `17c57ccd5f23` @ `0884197d3e4a` | pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser` |
@@ -161,19 +174,30 @@ GNU/egcs and vendor GCC rebuilds (native and cross)
 | `rebrew/gcc:2.7.2-sn0006-cxx-n64` | n64 | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `gcc2.7.2sn0006-cxx` | `n64_sn272_0006.tar.gz` `1a35a875278f` @ `0884197d3e4a` | the same build as `gcc-2.7.2-sn0006`, with a different front end; pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser`; C++ id: `cpp -lang-c++` into the C++ front end `cc1pln64.exe` |
 | `rebrew/gcc:2.7.2-sn0006-n64` | n64 | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `gcc2.7.2sn0006` | `n64_sn272_0006.tar.gz` `1a35a875278f` @ `0884197d3e4a` | pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser` |
 | `rebrew/gcc:2.7.2-snew-n64` | n64 | `cc` | native | `gcc2.7.2snew` | `SN64-gcc-2.7.2-970404-linux.tar.gz` `60abe17c2562` @ `0884197d3e4a` | none |
+| `rebrew/gcc:2.7.2.1-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.2.1.tar.gz` `8fdfcd95768e` @ `b74211c9d959` | the same build as `gcc-2.7.2.1-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.2.1-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.7.2.1-mipsel` | `gcc-2.7.2.1.tar.gz` `8fdfcd95768e` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.7.2.2-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.2.2.tar.gz` `9f7ed2baae64` @ `b74211c9d959` | the same build as `gcc-2.7.2.2-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.2.2-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.7.2.2-mipsel` | `gcc-2.7.2.2.tar.gz` `9f7ed2baae64` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.7.2.3-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.7.2.3.tar.gz` `34e525c1feb9` @ `b74211c9d959` | the same build as `gcc-2.7.2.3-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.7.2.3-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.7.2.3-mipsel` | `gcc-2.7.2.3.tar.gz` `34e525c1feb9` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.8.0-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.8.0.tar.gz` `f4d0bea985cd` @ `b74211c9d959` | the same build as `gcc-2.8.0-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.8.0-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.8.0-mipsel` | `gcc-2.8.0.tar.gz` `f4d0bea985cd` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.8.0-psx-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.8.0-psx.tar.gz` `1a3c956fe8ae` @ `b74211c9d959` | the same build as `gcc-2.8.0-psx`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.8.0-psx-ps1` | ps1 | `gcc` | native | `gcc2.8.0-psx` | `gcc-2.8.0-psx.tar.gz` `1a3c956fe8ae` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.8.1-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.8.1.tar.gz` `2421097de375` @ `b74211c9d959` | the same build as `gcc-2.8.1-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.8.1-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.8.1-mipsel` | `gcc-2.8.1.tar.gz` `2421097de375` @ `b74211c9d959` | none |
 | `rebrew/gcc:2.8.1-pm-n64` | n64 | `gcc` | native | `gcc2.8.1pm` | `linux.tar.gz` `1156cf0d6a88` | pins a second source (binutils) |
+| `rebrew/gcc:2.8.1-psx-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.8.1-psx.tar.gz` `f6f6e883942d` @ `b74211c9d959` | the same build as `gcc-2.8.1-psx`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.8.1-psx-ps1` | ps1 | `gcc` | native | `gcc2.8.1-psx` | `gcc-2.8.1-psx.tar.gz` `f6f6e883942d` @ `b74211c9d959` | none |
 | `rebrew/gcc:2.8.1-sn-cxx-n64` | n64 | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `gcc2.8.1sn-cxx` | `cc1n64.exe` `d90df1028c46` @ `0884197d3e4a` | the same build as `gcc-2.8.1-sn`, with a different front end; pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser`; C++ id: `cpp -lang-c++` into the C++ front end `cc1pln64.exe` |
 | `rebrew/gcc:2.8.1-sn-n64` | n64 | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `gcc2.8.1sn` | `cc1n64.exe` `d90df1028c46` @ `0884197d3e4a` | pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser` |
 | `rebrew/gcc:2.8.1-snew-cxx-n64` | n64 | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `gcc2.8.1snew-cxx` | `cc1n64.exe` `d90df1028c46` @ `0884197d3e4a` | the same build as `gcc-2.8.1-sn`, with a different front end; C++ id: `cpp -lang-c++` into the C++ front end `cc1pln64.exe` |
+| `rebrew/gcc:2.91.66-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.91.66.tar.gz` `3ab7b4aaa763` @ `b74211c9d959` | the same build as `gcc-2.91.66-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.91.66-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.91.66-mipsel` | `gcc-2.91.66.tar.gz` `3ab7b4aaa763` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.91.66-psx-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.91.66-psx.tar.gz` `f773a0a9659f` @ `b74211c9d959` | the same build as `gcc-2.91.66-psx`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.91.66-psx-ps1` | ps1 | `gcc` | native | `gcc2.91.66-psx` | `gcc-2.91.66-psx.tar.gz` `f773a0a9659f` @ `b74211c9d959` | none |
+| `rebrew/gcc:2.95.2-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.95.2-psx.tar.gz` `932ed3669710` @ `b74211c9d959` | the same build as `gcc-2.95.2-ps1`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
+| `rebrew/gcc:2.95.2-mipsel-maspsx-4ffa8b5-ps1` | ps1 | `gcc` | native | none | `gcc-2.95.2.tar.gz` `23da2192d39a` @ `b74211c9d959` | the same build as `gcc-2.95.2-mipsel`, with a different front end; pins a second source (converter script); ASPSX-compatible assembly through maspsx 4ffa8b5; select ASPSX behavior with -Wa,--aspsx-version=<version> |
 | `rebrew/gcc:2.95.2-mipsel-ps1` | ps1 | `gcc` | native | `gcc2.95.2-mipsel` | `gcc-2.95.2.tar.gz` `23da2192d39a` @ `b74211c9d959` | none |
 | `rebrew/gcc:2.95.2-ps1` | ps1 | `gcc` | native | `gcc2.95.2-psx` | `gcc-2.95.2-psx.tar.gz` `932ed3669710` @ `b74211c9d959` | none |
 | `rebrew/gcc:2.96-gba` | gba | `gcc` | native | `gcc2.96` | `gcc-2.96-20000731-armelf.tar.gz` `c0613784e1c3` | unpacked from `tar-root` |
@@ -283,7 +307,7 @@ Microsoft Visual C/C++ 1.0-11.0
 | `rebrew/msvc:7.1-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `44246ff2980d` @ `cf6260606463` | none |
 | `rebrew/msvc:7.1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.1` | `master` `618e876bc064` @ `2932d76fe417` | none |
 | `rebrew/msvc:8.0-portable-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0p` | `52c8293f8b8d6441c594cf096542290c17a4d70e.zip` `b138c1b3c99a` @ `52c8293f8b8d` | unpacked from `zip-strip1` |
-| `rebrew/msvc:8.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `9b53b515d798` @ `4b1bafba636f` | none |
+| `rebrew/msvc:8.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0sp1` | `master` `9b53b515d798` @ `4b1bafba636f` | none |
 | `rebrew/msvc:8.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0` | `master` `ab819164ebd9` @ `00ddaf58d097` | none |
 | `rebrew/msvc:9.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `33a66c779da3` @ `cebb3c9740c9` | none |
 | `rebrew/msvc:9.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `9121d184d9cb` @ `c9d710cef9a3` | none |
@@ -318,6 +342,7 @@ CodeWarrior PowerPC compilers (GameCube / Wii)
 | `rebrew/mwcc:2.4.7-92-gc` | gc | `mwcceppc` | wine, wibo via `REBREW_RUNNER=wibo` | `mwcc_247_92` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:GC/2.0` |
 | `rebrew/mwcc:2.4.7-92p1-wii` | wii | `mwcceppc` | wine, wibo via `REBREW_RUNNER=wibo` | `mwcc_247_92p1` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:GC/2.0p1` |
 | `rebrew/mwcc:4.1-51213-gc` | gc | `mwcceppc` | wine, wibo via `REBREW_RUNNER=wibo` | `mwcc_41_51213` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:GC/3.0a3` |
+| `rebrew/mwcc:4.1-51213p1-gc` | gc | `mwcceppc` | wine, wibo via `REBREW_RUNNER=wibo` | `mwcc_41_51213p1` | `compilers_20251118.zip` `69b0d4980a2e` @ `1f528ebeaf19` | unpacked from `zip-subpath:GC/3.0a3p1` |
 | `rebrew/mwcc:4.1-60126-gc` | gc | `mwcceppc` | wine, wibo via `REBREW_RUNNER=wibo` | `mwcc_41_60126` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:GC/3.0a3.2` |
 | `rebrew/mwcc:4.1-60209-gc` | gc | `mwcceppc` | wine, wibo via `REBREW_RUNNER=wibo` | `mwcc_41_60209` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:GC/3.0a3.3` |
 | `rebrew/mwcc:4.1-60831-gc` | gc | `mwcceppc` | wine, wibo via `REBREW_RUNNER=wibo` | `mwcc_41_60831` | `compilers_20251015.zip` `491cb62317c7` @ `0884197d3e4a` | unpacked from `zip-subpath:GC/3.0a5.2` |
@@ -455,9 +480,13 @@ Sony PSY-Q SDK toolchains (PS1)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/psyq:2.6.3-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq_263_221.tar.gz` `082a57e28efe` | the same build as `psyq-2.6.3-221`, with a different front end; pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
 | `rebrew/psyq:2.6.3-ps1` | ps1 | `cc` | dosemu2 (needs `--device /dev/kvm`) | `psyq_263_221` | `psyq_263_221.tar.gz` `082a57e28efe` | converts its Sony object with the image's `psyq-obj-parser`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
+| `rebrew/psyq:3.3-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq3.3.tar.gz` `6acc5bf3a2e4` | the same build as `psyq-3.3`, with a different front end; pins a second source (obj parser); pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
 | `rebrew/psyq:3.3-ps1` | ps1 | `cc` | dosemu2 (needs `--device /dev/kvm`) | `psyq3.3` | `psyq3.3.tar.gz` `6acc5bf3a2e4` | pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
+| `rebrew/psyq:3.5-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq3.5.tar.gz` `0f9dff42081a` | the same build as `psyq-3.5`, with a different front end; pins a second source (obj parser); pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
 | `rebrew/psyq:3.5-ps1` | ps1 | `cc` | dosemu2 (needs `--device /dev/kvm`) | `psyq3.5` | `psyq3.5.tar.gz` `0f9dff42081a` | pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
+| `rebrew/psyq:3.6-daze-0.3.0-ps1` | ps1 | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `psyq3.6.tar.gz` `9445f4cd871c` | the same build as `psyq-3.6`, with a different front end; pins a second source (obj parser); pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
 | `rebrew/psyq:3.6-ps1` | ps1 | `cc` | dosemu2 (needs `--device /dev/kvm`) | `psyq3.6` | `psyq3.6.tar.gz` `9445f4cd871c` | pins a second source (obj parser); converts its Sony object with the image's `psyq-obj-parser`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
 | `rebrew/psyq:4.0-ps1` | ps1 | `cc` | wine, wibo via `REBREW_RUNNER=wibo` | `psyq4.0` | `psyq4.0.tar.gz` `f25a4f6f044e` | pins a second source (obj parser); emits a Sony object; convert with the image's `psyq-obj-parser` |
 | `rebrew/psyq:4.1-ps1` | ps1 | `cc` | wine, wibo via `REBREW_RUNNER=wibo` | `psyq4.1` | `psyq4.1.tar.gz` `2a2650ceb5ea` | pins a second source (obj parser); emits a Sony object; convert with the image's `psyq-obj-parser` |
@@ -472,11 +501,13 @@ Sega Saturn SH-2 toolchains (Cygnus 2.7-96Q3)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| `rebrew/saturn:cygnus-2.7-96Q3-daze-0.3.0-saturn` | saturn | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip` `f5460e3ea653` @ `af27f4aa6566` | the same build as `saturn-cygnus-2.7-96Q3`, with a different front end; pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
+| `rebrew/saturn:cygnus-2.7-96Q3-native-saturn` | saturn | `cc` | native | `cygnus-2.7-96Q3-native` | `cc1-native.tar.gz` `3f215db5c6c6` | native Linux i386 compiler; host cpp -> cc1-native -> sh-elf-as; no KVM required; GNU assembler can add trailing SH NOP section padding relative to the DOS assembler; use the DOS profile when exact section padding is required |
 | `rebrew/saturn:cygnus-2.7-96Q3-saturn` | saturn | `cc` | dosemu2 (needs `--device /dev/kvm`) | `cygnus-2.7-96Q3` | `af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip` `f5460e3ea653` @ `af27f4aa6566` | unpacked from `zip-subpath:cygnus-2.7-96Q3-bin`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
 
 ## shc
 
-Hitachi SuperH C compiler (Dreamcast)
+Hitachi SuperH C compiler (Dreamcast / Saturn)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -485,6 +516,7 @@ Hitachi SuperH C compiler (Dreamcast)
 | `rebrew/shc:5.0r28-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r28` | `shc-v5.0r28.tar.gz` `27eebe4e3938` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
 | `rebrew/shc:5.0r31-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r31` | `shc-v5.0r31.tar.gz` `1b67fce97220` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
 | `rebrew/shc:5.0r32-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.0r32` | `shc-v5.0r32.tar.gz` `21f26227e48a` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
+| `rebrew/shc:5.0r32-saturn` | saturn | `cc` | wibo (default), wine via `REBREW_RUNNER=wine` | `shc-v5.0r32-sh2` | `shc-v5.0r32.tar.gz` `21f26227e48a` @ `0884197d3e4a` | the same build as `shc-5.0r32`, with a different front end; pins a second source (converter script); SH-2 big-endian ELF pipeline; converts ROF with 0xff padding |
 | `rebrew/shc:5.1r01-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r01` | `shc-v5.1r01.tar.gz` `d42a0ff0f7c4` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
 | `rebrew/shc:5.1r03-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r03` | `shc-v5.1r03.tar.gz` `a5c41c4b9499` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |
 | `rebrew/shc:5.1r04-dreamcast` | dreamcast | `shc` | wine, wibo via `REBREW_RUNNER=wibo` | `shc-v5.1r04` | `shc-v5.1r04.tar.gz` `277065890128` @ `0884197d3e4a` | pins a second source (converter script); emits a ROF `.obj`; convert with the image's `rof2elf.py` |

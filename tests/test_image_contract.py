@@ -112,7 +112,9 @@ class TestManifest(unittest.TestCase):
                 for line in path.read_text(encoding="utf-8").splitlines()
                 if not line.strip().startswith("#")
             )
-            if "rebrew_dosemu_run" in wrappers:
+            if "/usr/local/bin/daze" in wrappers:
+                observed = "daze"
+            elif "rebrew_dosemu_run" in wrappers:
                 observed = "dosemu2"
             elif "rebrew_dosbox_run" in wrappers or "rebrew_dosbox_compile" in wrappers:
                 observed = "dosbox"
@@ -205,8 +207,9 @@ class TestImageContract(unittest.TestCase):
             )
             if copied is None:
                 continue
+            entrypoint = lines[copied].split()[-1]
             for index, line in enumerate(lines):
-                if "chmod +x /usr/local/bin/" in line:
+                if f"chmod +x {entrypoint}" in line:
                     self.assertGreater(
                         index, copied, f"{d}: chmod of the entrypoint before its COPY"
                     )

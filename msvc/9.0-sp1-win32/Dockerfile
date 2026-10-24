@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc900_sp1.tar.gz \
     && echo "33a66c779da39ab40518f24b75656f1f93cb1837a3d65a9b79188f41c2f2bd97  /tmp/msvc900_sp1.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc9.0-sp1 \
-    && tar xzf /tmp/msvc900_sp1.tar.gz --strip-components=1 -C /opt/msvc9.0-sp1 \
+    && tar xzf /tmp/msvc900_sp1.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc9.0-sp1 \
     && rm /tmp/msvc900_sp1.tar.gz \
     && ls /opt/msvc9.0-sp1/VC/bin/cl.exe
 

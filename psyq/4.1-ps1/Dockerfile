@@ -29,10 +29,10 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/psyq-4.1 \
-    && tar xzf /tmp/psyq.tar.gz --strip-components=1 -C /opt/psyq-4.1 \
+    && tar xzf /tmp/psyq.tar.gz --no-same-owner --strip-components=1 -C /opt/psyq-4.1 \
     && rm /tmp/psyq.tar.gz \
     && ls /opt/psyq-4.1/CC1PSX.EXE \
-    && tar xzf /tmp/parser.tar.gz -C /opt/psyq-4.1 \
+    && tar xzf /tmp/parser.tar.gz --no-same-owner -C /opt/psyq-4.1 \
     && rm /tmp/parser.tar.gz \
     && chmod +x /opt/psyq-4.1/psyq-obj-parser
 

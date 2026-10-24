@@ -21,7 +21,7 @@ RUN mkdir -p /opt/ndk-r8e-4.4.3 /tmp/ndk && curl -fsSL --retry 3 --retry-all-err
     && echo "13c57455e63dfb17a98853792ba1063fc640605a4ef2db4ad33a654171f48267  /tmp/ndk/ndk.tar.bz2" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xjf /tmp/ndk/ndk.tar.bz2 --wildcards -C /opt/ndk-r8e-4.4.3 '*toolchains/x86-4.4.3/*' '*platforms/android-9/*' \
+    && tar xjf /tmp/ndk/ndk.tar.bz2 --no-same-owner --wildcards -C /opt/ndk-r8e-4.4.3 '*toolchains/x86-4.4.3/*' '*platforms/android-9/*' \
     && rm -rf /tmp/ndk \
     && ls /opt/ndk-r8e-4.4.3/toolchains/x86-4.4.3/prebuilt/linux-x86_64/bin/i686-linux-android-gcc
 

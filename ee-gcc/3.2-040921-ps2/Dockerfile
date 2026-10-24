@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ee-gcc.tar.xz \
     && echo "8c60ca7482523190e999524a7e4de2379dcf7ffee543c1b5663bfdf6a80ebf0f  /tmp/ee-gcc.tar.xz" | sha256sum -c -
 
 RUN mkdir -p /opt/ee-gcc-3.2-040921 \
-    && tar xJf /tmp/ee-gcc.tar.xz -C /opt/ee-gcc-3.2-040921 \
+    && tar xJf /tmp/ee-gcc.tar.xz --no-same-owner -C /opt/ee-gcc-3.2-040921 \
     && rm /tmp/ee-gcc.tar.xz \
     && chmod +x /opt/ee-gcc-3.2-040921/bin/ee-gcc \
     && /opt/ee-gcc-3.2-040921/bin/ee-gcc --version

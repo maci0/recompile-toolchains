@@ -19,7 +19,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/mwccpsp.tar.gz \
     && echo "a8a0bf3a0ec3545f6578717516aad0f262a40dd1538a6e462b77efc29e79a969  /tmp/mwccpsp.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwccpsp-3.0.1-210 \
-    && tar xzf /tmp/mwccpsp.tar.gz -C /opt/mwccpsp-3.0.1-210 \
+    && tar xzf /tmp/mwccpsp.tar.gz --no-same-owner -C /opt/mwccpsp-3.0.1-210 \
     && rm /tmp/mwccpsp.tar.gz \
     && ls /opt/mwccpsp-3.0.1-210/mwccpsp.exe
 

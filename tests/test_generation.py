@@ -49,6 +49,16 @@ class TestGeneration(unittest.TestCase):
         )
         self.assertEqual(stale, [], "run `make generate` to re-render these")
 
+    def test_tar_extraction_does_not_preserve_publisher_user_ids(self) -> None:
+        for path, text in generate.render_all(generate.manifest()).items():
+            if path.name == "Dockerfile":
+                for line in text.splitlines():
+                    if "tar x" in line:
+                        self.assertIn(" --no-same-owner", line, str(path))
+        for line in (_REPO / "base" / "Dockerfile").read_text().splitlines():
+            if "tar -x" in line:
+                self.assertIn(" --no-same-owner", line)
+
     def test_handwritten_wrappers_are_the_declared_ones(self) -> None:
         entries = generate.manifest()
         declared = {p for p, e in entries.items() if generate.handwritten_wrapper(e)}

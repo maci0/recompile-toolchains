@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/agbcc.tar.gz \
     && echo "bcf0197e3e27d8e08506a142e25fa68ea7f6679a98347a6406804eb3f9ff4d29  /tmp/agbcc.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/agbcc \
-    && tar xzf /tmp/agbcc.tar.gz -C /opt/agbcc \
+    && tar xzf /tmp/agbcc.tar.gz --no-same-owner -C /opt/agbcc \
     && rm /tmp/agbcc.tar.gz \
     && chmod +x /opt/agbcc/bin/agbcc \
     && ls /opt/agbcc/bin/agbcc

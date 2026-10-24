@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido71.tar.gz \
     && echo "0d411696e178fcca34c31c3bf02011b928d7fd9c1fa7f8bf45070e0781b58e15  /tmp/ido71.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/ido/7.1 \
-    && tar xzf /tmp/ido71.tar.gz -C /opt/ido/7.1 \
+    && tar xzf /tmp/ido71.tar.gz --no-same-owner -C /opt/ido/7.1 \
     && rm /tmp/ido71.tar.gz \
     && chmod +x /opt/ido/7.1/NCC \
     && ls /opt/ido/7.1/acpp

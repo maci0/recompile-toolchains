@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psp.tar.gz \
     && echo "788b6d2c0ed920da6b1e5a350d23dd7ea05820526e23f9b5b967b3b238ea2e2e  /tmp/psp.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/psp-gcc-1.3.1 /tmp/psp \
-    && tar xzf /tmp/psp.tar.gz -C /tmp/psp \
+    && tar xzf /tmp/psp.tar.gz --no-same-owner -C /tmp/psp \
     && cp -r /tmp/psp/. /opt/psp-gcc-1.3.1/ \
     && cp -r /tmp/psp/psp/bin /tmp/psp/psp/include /opt/psp-gcc-1.3.1/ \
     && cp -r /tmp/psp/psp/lib/. /opt/psp-gcc-1.3.1/lib/ \

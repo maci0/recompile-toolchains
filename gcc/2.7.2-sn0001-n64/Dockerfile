@@ -27,10 +27,10 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
     && echo "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e  /tmp/parser.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xzf /tmp/tools/n64_sn272_0001.tar.gz -C /opt/gcc-2.7.2-sn0001 \
+    && tar xzf /tmp/tools/n64_sn272_0001.tar.gz --no-same-owner -C /opt/gcc-2.7.2-sn0001 \
     && rm -rf /tmp/tools \
     && chmod +x /opt/gcc-2.7.2-sn0001/*.exe \
-    && tar xzf /tmp/parser.tar.gz -C /opt/gcc-2.7.2-sn0001 \
+    && tar xzf /tmp/parser.tar.gz --no-same-owner -C /opt/gcc-2.7.2-sn0001 \
     && rm /tmp/parser.tar.gz \
     && chmod +x /opt/gcc-2.7.2-sn0001/psyq-obj-parser
 

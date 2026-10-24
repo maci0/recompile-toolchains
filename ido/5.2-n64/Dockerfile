@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido.tar.xz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/ido-5.2 \
-    && tar xJf /tmp/ido.tar.xz -C /opt/ido-5.2 \
+    && tar xJf /tmp/ido.tar.xz --no-same-owner -C /opt/ido-5.2 \
     && rm /tmp/ido.tar.xz \
     && chmod +x /opt/ido-5.2/usr/bin/qemu-irix \
     && /opt/ido-5.2/usr/bin/qemu-irix --version 2>&1 | head -1 || true

@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/gcc.tar.xz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/gcc-12.3.0 /tmp/gcc-src /tmp/gcc-build \
-    && tar xJf /tmp/gcc.tar.xz --strip-components=1 -C /tmp/gcc-src \
+    && tar xJf /tmp/gcc.tar.xz --no-same-owner --strip-components=1 -C /tmp/gcc-src \
     && cd /tmp/gcc-build \
     && /tmp/gcc-src/configure --prefix=/opt/gcc-12.3.0 --enable-languages=c --disable-bootstrap --disable-multilib --disable-nls --disable-libsanitizer --with-system-zlib \
     && make -j"$(nproc)" \

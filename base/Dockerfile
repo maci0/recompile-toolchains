@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/libfaketime.tar.gz \
         "https://codeload.github.com/wolfcw/libfaketime/tar.gz/86b37fde2fed7336ea2d0c17928e3015a55d9b4a" \
     && echo "d98aa7beeb21344b3612f60cbfe08196541a2ef25525b3774b11871493a4726e  /tmp/libfaketime.tar.gz" | sha256sum -c - \
-    && mkdir /tmp/faketime && tar -xzf /tmp/libfaketime.tar.gz -C /tmp/faketime --strip-components=1 \
+    && mkdir /tmp/faketime && tar -xzf /tmp/libfaketime.tar.gz --no-same-owner -C /tmp/faketime --strip-components=1 \
     && make -C /tmp/faketime/src libfaketime.so.1 \
     && install -Dm0644 /tmp/faketime/src/libfaketime.so.1 /clock/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 \
     && make -C /tmp/faketime/src clean \

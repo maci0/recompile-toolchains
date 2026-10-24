@@ -21,7 +21,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ow.tar.xz \
     && echo "bac354f3c75ffa49ff8d70a44e475de7e7c1823fff04b80c14787bd0792c9bdf  /tmp/ow.tar.xz" | sha256sum -c -
 
 RUN mkdir -p /opt/watcom \
-    && tar xJf /tmp/ow.tar.xz --strip-components=1 -C /opt/watcom \
+    && tar xJf /tmp/ow.tar.xz --no-same-owner --strip-components=1 -C /opt/watcom \
     && rm /tmp/ow.tar.xz \
     && ls /opt/watcom/binl/wcc
 

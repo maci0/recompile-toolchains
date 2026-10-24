@@ -17,7 +17,7 @@ RUN mkdir -p /opt/gcc-egcs-1.1.2-4 /tmp/tools && curl -fsSL --retry 3 --retry-al
     && echo "c8d0adeecbe655db1631df5dea58781f4aa738f9762b907f58a6e70740d1815a  /tmp/tools/egcs.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xzf /tmp/tools/egcs.tar.gz -C /opt/gcc-egcs-1.1.2-4 \
+    && tar xzf /tmp/tools/egcs.tar.gz --no-same-owner -C /opt/gcc-egcs-1.1.2-4 \
     && rm -rf /tmp/tools
 
 COPY cc-wrapper.sh /usr/local/bin/cc

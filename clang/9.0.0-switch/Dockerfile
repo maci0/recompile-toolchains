@@ -28,10 +28,10 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/libtinfo5.deb \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/clang-9.0.0 /tmp/tinfo5 \
-    && tar xJf /tmp/clang.tar.xz --strip-components=1 -C /opt/clang-9.0.0 \
+    && tar xJf /tmp/clang.tar.xz --no-same-owner --strip-components=1 -C /opt/clang-9.0.0 \
     && cd /tmp/tinfo5 \
     && ar x /tmp/libtinfo5.deb data.tar.xz \
-    && tar xJf data.tar.xz \
+    && tar xJf data.tar.xz --no-same-owner \
     && cp lib/x86_64-linux-gnu/libtinfo.so.5* /opt/clang-9.0.0/lib/ \
     && rm -rf /tmp/tinfo5 /tmp/clang.tar.xz /tmp/libtinfo5.deb \
     && LD_LIBRARY_PATH=/opt/clang-9.0.0/lib /opt/clang-9.0.0/bin/clang --version

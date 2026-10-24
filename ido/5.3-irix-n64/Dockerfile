@@ -25,10 +25,10 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido_root.tar.xz \
     && echo "d0d8a0deb1508fb1d3e91d5eaaded16a267af0be8e98aac7a104ba1bf4f677fb  /tmp/ido_root.tar.xz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xf /tmp/ido/ssb.tar -C /opt/ido-irix-5.3 \
+    && tar xf /tmp/ido/ssb.tar --no-same-owner -C /opt/ido-irix-5.3 \
     && rm -rf /tmp/ido \
     && ls /opt/ido-irix-5.3/usr/lib/driver \
-    && tar xJf /tmp/ido_root.tar.xz -C /tmp \
+    && tar xJf /tmp/ido_root.tar.xz --no-same-owner -C /tmp \
     && cp /tmp/ido_root/usr/bin/qemu-irix /opt/ido-irix-5.3/usr/bin/qemu-irix \
     && rm -rf /tmp/ido_root.tar.xz /tmp/ido_root \
     && chmod +x /opt/ido-irix-5.3/usr/bin/qemu-irix \

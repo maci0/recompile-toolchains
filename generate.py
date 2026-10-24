@@ -250,13 +250,12 @@ def wrapper_filename(entry: dict[str, object]) -> str:
 
 
 def _render_steps(profile: str, steps: list[dict[str, object]]) -> list[str]:
-    """Emit the recipe's operations, in order and verbatim.
+    """Emit the recipe's operations, in order, with archive ownership normalized.
 
-    The generator never invents commands: `mkdir`, cleanup `rm` and the `ls`
-    guards are explicit ops in the recipe, so a generated image is exactly the
-    image the recipe describes.  The invariants that matter (every download is
-    cleaned up, the compiler binary is guarded) are checked by `validate()`
-    rather than silently added here.
+    Recipes choose commands and order; archive ownership is normalized to the
+    build user because publisher IDs are not runtime identities. `mkdir`, cleanup
+    `rm` and `ls` guards remain explicit recipe operations. Download cleanup and
+    compiler guards are checked by `validate()`.
     """
     out: list[str] = []
     for step in steps:
@@ -270,7 +269,11 @@ def _render_steps(profile: str, steps: list[dict[str, object]]) -> list[str]:
             # the first member name as a member, so `tar xzf a.tar b/c --strip-
             # components=1` fails with exit 2 on the option.
             middle = f" {members}" if members else ""
-            out.append(f"tar x{flag}f {step['from']}{strip}{wild} -C {step['into']}{middle}")
+            # Compiler archive owner IDs belong to the publisher, not the image runtime.
+            out.append(
+                f"tar x{flag}f {step['from']} --no-same-owner{strip}{wild} "
+                f"-C {step['into']}{middle}"
+            )
         elif op == "unzip":
             out.append(f"unzip -q {step['from']} -d {step['into']}")
         elif op == "cp":

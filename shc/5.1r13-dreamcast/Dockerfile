@@ -24,7 +24,7 @@ RUN mkdir -p /opt/shc-5.1r13 && curl -fsSL --retry 3 --retry-all-errors -o /opt/
         "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py" \
     && echo "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821  /opt/shc-5.1r13/rof2elf.py" | sha256sum -c -
 
-RUN tar xzf /tmp/shc.tar.gz -C /opt/shc-5.1r13 \
+RUN tar xzf /tmp/shc.tar.gz --no-same-owner -C /opt/shc-5.1r13 \
     && rm /tmp/shc.tar.gz \
     && chmod +x /opt/shc-5.1r13/rof2elf.py /opt/shc-5.1r13/bin/*.exe \
     && ls /opt/shc-5.1r13/bin/shc.exe \

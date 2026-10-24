@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ghs.tar.gz \
     && echo "41cd0a4723acfbddf8f70a9c3ff84bce7e85087b1d1ccef8bbf5f03d82c2b520  /tmp/ghs.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/ghs-5.3.22 \
-    && tar xzf /tmp/ghs.tar.gz -C /opt/ghs-5.3.22 \
+    && tar xzf /tmp/ghs.tar.gz --no-same-owner -C /opt/ghs-5.3.22 \
     && rm /tmp/ghs.tar.gz \
     && ls /opt/ghs-5.3.22/bin/cxppc.exe
 

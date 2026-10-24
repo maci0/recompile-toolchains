@@ -16,7 +16,7 @@ RUN mkdir -p /opt/msc51 /tmp/msc && curl -fsSL --retry 3 --retry-all-errors -o /
         "https://github.com/decompme/compilers/releases/download/compilers/msc-5.1.tar.gz" \
     && echo "97ca199c20ad09629ae7be0a653faac56612e0e03ed700a92dbfb75958207311  /tmp/msc/msc.tar.gz" | sha256sum -c -
 
-RUN tar xzf /tmp/msc/msc.tar.gz -C /opt/msc51 \
+RUN tar xzf /tmp/msc/msc.tar.gz --no-same-owner -C /opt/msc51 \
     && rm -rf /tmp/msc \
     && ls /opt/msc51/BIN/CL.EXE
 

@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc400.tar.gz \
     && echo "4996b91a8e075715238817ad567994b8dbf830d25d2c6e0fefe7adacc5b4ddec  /tmp/msvc400.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc4.0 \
-    && tar xzf /tmp/msvc400.tar.gz --strip-components=1 -C /opt/msvc4.0 \
+    && tar xzf /tmp/msvc400.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc4.0 \
     && rm /tmp/msvc400.tar.gz \
     && ls /opt/msvc4.0/BIN/CL.EXE
 

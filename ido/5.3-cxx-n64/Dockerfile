@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido.tar.xz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/ido-5.3-c++ \
-    && tar xJf /tmp/ido.tar.xz -C /opt/ido-5.3-c++ \
+    && tar xJf /tmp/ido.tar.xz --no-same-owner -C /opt/ido-5.3-c++ \
     && rm /tmp/ido.tar.xz \
     && chmod +x /opt/ido-5.3-c++/usr/bin/qemu-irix \
     && ls /opt/ido-5.3-c++/usr/lib/CC

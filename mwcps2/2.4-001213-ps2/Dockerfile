@@ -19,7 +19,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/mwcps2.tar.gz \
     && echo "0ebe09436b4163c3a109b0431517281501d2de1bd5a0b049d33057710a943e3e  /tmp/mwcps2.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwcps2-2.4-001213 \
-    && tar xzf /tmp/mwcps2.tar.gz -C /opt/mwcps2-2.4-001213 \
+    && tar xzf /tmp/mwcps2.tar.gz --no-same-owner -C /opt/mwcps2-2.4-001213 \
     && rm /tmp/mwcps2.tar.gz \
     && ls /opt/mwcps2-2.4-001213/mwccps2.exe
 

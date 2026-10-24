@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/delphi10.tar.gz \
     && echo "24cd23f0ef555f3582eda27b4bb655e17215366b556dfaabd9f2ba5daf61b55e  /tmp/delphi10.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/delphi10/DELPHI \
-    && tar xzf /tmp/delphi10.tar.gz --strip-components=1 -C /opt/delphi10 \
+    && tar xzf /tmp/delphi10.tar.gz --no-same-owner --strip-components=1 -C /opt/delphi10 \
     && rm /tmp/delphi10.tar.gz \
     && mv /opt/delphi10/delphi-lib /opt/delphi10/DELPHI/LIB \
     && ls /opt/delphi10/DCC.EXE

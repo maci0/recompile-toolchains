@@ -27,7 +27,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/vc6-runtime.exe \
     && echo "c2eb91d9c4448d50e46a32fecbcc3b418706d002beab9b5f4981de552098cee7  /tmp/vc6-runtime.exe" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc6.0-sp5-crt \
-    && tar xzf /tmp/msvc600_sp5.tar.gz --strip-components=1 -C /opt/msvc6.0-sp5-crt \
+    && tar xzf /tmp/msvc600_sp5.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc6.0-sp5-crt \
     && rm /tmp/msvc600_sp5.tar.gz \
     && cp /opt/msvc6.0-sp5-crt/Common/MSDev98/Bin/MSPDB60.DLL /opt/msvc6.0-sp5-crt/VC98/Bin/ \
     && ls /opt/msvc6.0-sp5-crt/VC98/Bin/CL.EXE /opt/msvc6.0-sp5-crt/VC98/Bin/MSPDB60.DLL \

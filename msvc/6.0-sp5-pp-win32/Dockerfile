@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc600_sp5_vcpp.tar.gz \
     && echo "1bbf177489054698fd5d29bf042692efdb5bec8719f9dc889b9b1c618c645991  /tmp/msvc600_sp5_vcpp.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc6.0-sp5-pp \
-    && tar xzf /tmp/msvc600_sp5_vcpp.tar.gz --strip-components=1 -C /opt/msvc6.0-sp5-pp \
+    && tar xzf /tmp/msvc600_sp5_vcpp.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc6.0-sp5-pp \
     && rm /tmp/msvc600_sp5_vcpp.tar.gz \
     && cp /opt/msvc6.0-sp5-pp/Common/MSDev98/Bin/MSPDB60.DLL /opt/msvc6.0-sp5-pp/VC98/Bin/ \
     && ls /opt/msvc6.0-sp5-pp/VC98/Bin/CL.EXE /opt/msvc6.0-sp5-pp/VC98/Bin/ml.exe /opt/msvc6.0-sp5-pp/VC98/Include/xmmintrin.h /opt/msvc6.0-sp5-pp/VC98/Include/emmintrin.h /opt/msvc6.0-sp5-pp/VC98/PPreadme.htm

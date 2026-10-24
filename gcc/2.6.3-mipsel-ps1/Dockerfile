@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/gcc.tar.gz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/gcc-2.6.3 /opt/cross/bin /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.3 \
-    && tar xzf /tmp/gcc.tar.gz -C /opt/gcc-2.6.3 \
+    && tar xzf /tmp/gcc.tar.gz --no-same-owner -C /opt/gcc-2.6.3 \
     && rm /tmp/gcc.tar.gz \
     && chmod +x /opt/gcc-2.6.3/gcc \
     && cp /opt/gcc-2.6.3/cc1 /opt/gcc-2.6.3/cc1plus /opt/gcc-2.6.3/cpp /opt/cross/lib/gcc-lib/mips-linux-gnu/2.6.3/ \

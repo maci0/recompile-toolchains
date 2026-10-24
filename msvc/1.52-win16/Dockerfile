@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc152.tar.gz \
     && echo "18fbdb547aa6a6cdbb3a77b00b5453f6fd9ae2b543a1c4842552643384e4711b  /tmp/msvc152.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc152 \
-    && tar xzf /tmp/msvc152.tar.gz --strip-components=1 -C /opt/msvc152 \
+    && tar xzf /tmp/msvc152.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc152 \
     && rm /tmp/msvc152.tar.gz \
     && ls /opt/msvc152/BIN/CL.EXE
 

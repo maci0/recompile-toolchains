@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
     && echo "ad2ea68afff2be25d21a1d51a75e8a0eea8f259018e6580622355cd01b95676b  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/ee-gcc-2.9-990721 \
-    && tar xJf /tmp/compiler.tar.gz -C /opt/ee-gcc-2.9-990721 \
+    && tar xJf /tmp/compiler.tar.gz --no-same-owner -C /opt/ee-gcc-2.9-990721 \
     && rm /tmp/compiler.tar.gz \
     && ls /opt/ee-gcc-2.9-990721/bin/ee-gcc
 

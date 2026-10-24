@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc500.tar.gz \
     && echo "46745771c0805310212415450f097134f3871d1786434e86c080e0b8cb9a38fb  /tmp/msvc500.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc5.0 \
-    && tar xzf /tmp/msvc500.tar.gz --strip-components=1 -C /opt/msvc5.0 \
+    && tar xzf /tmp/msvc500.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc5.0 \
     && rm /tmp/msvc500.tar.gz \
     && ls /opt/msvc5.0/bin/cl.exe
 

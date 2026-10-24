@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc1000.tar.gz \
     && echo "5f0b4486eb68e0069bb11506bcc8834710ac92ac1e7f311b3e4400a9d5d9409f  /tmp/msvc1000.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc10.0 \
-    && tar xzf /tmp/msvc1000.tar.gz --strip-components=1 -C /opt/msvc10.0 \
+    && tar xzf /tmp/msvc1000.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc10.0 \
     && rm /tmp/msvc1000.tar.gz \
     && ls /opt/msvc10.0/VC/bin/cl.exe
 

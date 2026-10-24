@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
     && echo "84016c5899358f65bb320081087f7fb82e32fd5f4ab25733bec094d4baa9728a  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/iop-gcc-2.95.2-102 \
-    && tar xzf /tmp/compiler.tar.gz -C /opt/iop-gcc-2.95.2-102 \
+    && tar xzf /tmp/compiler.tar.gz --no-same-owner -C /opt/iop-gcc-2.95.2-102 \
     && rm /tmp/compiler.tar.gz \
     && ls /opt/iop-gcc-2.95.2-102/bin/iop-gcc.exe
 

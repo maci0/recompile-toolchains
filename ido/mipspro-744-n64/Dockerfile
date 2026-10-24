@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido.tar.xz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/ido-mipspro-744 \
-    && tar xJf /tmp/ido.tar.xz -C /opt/ido-mipspro-744 \
+    && tar xJf /tmp/ido.tar.xz --no-same-owner -C /opt/ido-mipspro-744 \
     && rm /tmp/ido.tar.xz \
     && chmod +x /opt/ido-mipspro-744/usr/bin/qemu-irix \
     && ls /opt/ido-mipspro-744/usr/lib/driver

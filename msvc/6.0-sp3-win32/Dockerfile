@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc6.0-sp3.tar.gz \
     && echo "f753adfa8a29d8b03fb67bbcaadd3e41d672b86e5e17e32084bd1b60a1771ab4  /tmp/msvc6.0-sp3.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc6.0-sp3 \
-    && tar xzf /tmp/msvc6.0-sp3.tar.gz --strip-components=1 -C /opt/msvc6.0-sp3 \
+    && tar xzf /tmp/msvc6.0-sp3.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc6.0-sp3 \
     && rm /tmp/msvc6.0-sp3.tar.gz \
     && ls /opt/msvc6.0-sp3/VC98/Bin/CL.EXE
 

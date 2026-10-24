@@ -38,6 +38,11 @@ existing settings such as `REBREW_TOOLCHAINS_DIR`, `REBREW_BUILD_JOBS` and
 `REBREW_RUNNER` keep their names. The repository rename does not change
 image identities or consumer configuration.
 
+Compiler archive extraction uses `tar --no-same-owner`: the build's root user
+owns installed payloads, rather than importing unrelated numeric IDs from the
+publisher's archive. Images still run as the non-root `rebrew` user. This lets
+rootless engines unpack the images with ordinary subordinate UID/GID ranges.
+
 ## Why
 
 These are the same images [rebrew](https://github.com/maci0/rebrew) uses for

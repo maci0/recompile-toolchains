@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psyq.tar.gz \
     && echo "082a57e28efe06dc75f1c8be4f2b73ffa65ad5b995c6c345cf67b8dcd19192c5  /tmp/psyq.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/psyq-2.6.3 \
-    && tar xzf /tmp/psyq.tar.gz -C /opt/psyq-2.6.3 \
+    && tar xzf /tmp/psyq.tar.gz --no-same-owner -C /opt/psyq-2.6.3 \
     && rm /tmp/psyq.tar.gz \
     && chmod +x /opt/psyq-2.6.3/*.EXE
 

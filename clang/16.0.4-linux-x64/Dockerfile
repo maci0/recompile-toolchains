@@ -22,7 +22,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/clang.tar.xz \
 
 RUN rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/clang-16.0.4 \
-    && tar xJf /tmp/clang.tar.xz --strip-components=1 -C /opt/clang-16.0.4 \
+    && tar xJf /tmp/clang.tar.xz --no-same-owner --strip-components=1 -C /opt/clang-16.0.4 \
     && rm /tmp/clang.tar.xz \
     && /opt/clang-16.0.4/bin/clang --version
 

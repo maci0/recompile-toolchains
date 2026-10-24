@@ -25,7 +25,7 @@ RUN mkdir -p /opt/shc-5.0r10 && curl -fsSL --retry 3 --retry-all-errors -o /opt/
     && echo "f5a52b69b619e206172da4dc74182ecc97eeac5dcfcf5466c537af5ea6310821  /opt/shc-5.0r10/rof2elf.py" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \
-    && tar xzf /tmp/shc.tar.gz -C /opt/shc-5.0r10 \
+    && tar xzf /tmp/shc.tar.gz --no-same-owner -C /opt/shc-5.0r10 \
     && rm /tmp/shc.tar.gz \
     && chmod +x /opt/shc-5.0r10/rof2elf.py /opt/shc-5.0r10/bin/* \
     && ls /opt/shc-5.0r10/bin/shc.exe

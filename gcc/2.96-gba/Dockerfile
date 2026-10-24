@@ -17,7 +17,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/gcc296.tar.gz \
     && echo "c0613784e1c3b228512db2abebdce1e7b8afc211dc904d9ae23b913fd9025af9  /tmp/gcc296.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/camelot-2.96 \
-    && tar xzf /tmp/gcc296.tar.gz -C /opt/camelot-2.96 \
+    && tar xzf /tmp/gcc296.tar.gz --no-same-owner -C /opt/camelot-2.96 \
     && rm /tmp/gcc296.tar.gz \
     && ln -s /opt/camelot-2.96/usr/local/lib/gcc-lib /usr/local/lib/gcc-lib \
     && ln -s /opt/camelot-2.96/usr/local/arm-elf /usr/local/arm-elf \

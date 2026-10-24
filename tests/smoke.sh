@@ -80,7 +80,7 @@ run_case() {
             chmod 644 "$work/t.c"
             ;;
     esac
-    rm -f "$work/t.o" "$work/t.obj" "$work"/t.EXE "$work"/T.EXE
+    rm -f "$work/t.o" "$work/t.obj" "$work/t.OBJ" "$work/T.OBJ" "$work/t.EXE" "$work/T.EXE"
     if ! ./build.sh "$host_dir" >"$work/build.log" 2>&1; then
         echo "FAIL $profile: build failed" >&2
         tail -20 "$work/build.log" >&2
@@ -104,26 +104,12 @@ run_case() {
         fail=1
         return 0
     fi
-    # `file` is the cheap check that the object is for the intended target —
-    # a compiler that silently emits an empty object fails here.  Some Sony
-    # objects have no file(1) magic (`psyq-4.6` reports `data`), so a case
-    # with an empty fragment instead checks the artifact's first bytes carry
-    # the producer's magic — here `LNK`, the Sony linker signature every
-    # CCPSX output starts with (verified byte-varying across sources, so this
-    # is not a stub check passing on a constant).
+    # Identify the target as well as checking that the compiler emitted bytes.
     kind="$(file -b "$artifact")"
     if [ -n "$expect" ] && ! printf '%s' "$kind" | grep -q "$expect"; then
         echo "FAIL $profile: object is '$kind' (wanted $expect)" >&2
         fail=1
         return 0
-    fi
-    if [ "$profile" = "psyq-4.6" ]; then
-        if ! head -c 3 "$artifact" | grep -q "LNK"; then
-            echo "FAIL $profile: object has no LNK magic" >&2
-            fail=1
-            return 0
-        fi
-        kind="$kind (LNK magic ok)"
     fi
     if [ "$profile" = "delphi-1.0" ]; then
         delphi_module_names "$tag"
@@ -168,6 +154,8 @@ run_case() {
                 *) ;;
             esac
             # Failed stages must leave an existing output intact.
+            # The container owns its output; unlink it before the host writes a fixture.
+            rm -f "$work/t.o"
             printf 'keep existing output\n' > "$work/t.o"
             cp "$work/t.o" "$work/expected"
             printf 'this is not C;\n' > "$work/t.c"
@@ -237,7 +225,7 @@ if [ "$#" -gt 0 ]; then
             msc-6.0) run_case "$profile" 't.c' 't.obj' 'relocatable' ;;
             delphi-1.0) run_case "$profile" 't.dpr' 't.exe' 'MS-DOS' ;;
             *-maspsx-4ffa8b5) run_case "$profile" '-c t.c -o t.o' t.o 'MIPS' ;;
-            psyq-*-daze-0.3.0) run_case "$profile" '-c t.c -o t.o' t.o 'MIPS' ;;
+            psyq-4.6|psyq-*-daze-0.3.0) run_case "$profile" '-c t.c -o t.o' t.o 'MIPS' ;;
             saturn-*-daze-0.3.0) run_case "$profile" '-c t.c -o t.o' t.o 'Renesas SH' ;;
             mwcc-4.1-51213p1) run_case "$profile" '-c t.c -o t.o' t.o 'PowerPC' ;;
             saturn-cygnus-2.7-96Q3-native|shc-5.0r32-sh2)
@@ -271,7 +259,7 @@ borland-5.6|-c t.c|t.obj|relocatable|
 msc-6.0|t.c|t.obj|relocatable|
 delphi-1.0|t.dpr|t.exe|MS-DOS|
 psyq-4.0|-c t.c -o t.o|t.o|MIPS|
-psyq-4.6|-c t.c -o t.o|t.o||
+psyq-4.6|-c t.c -o t.o|t.o|MIPS|
 gcc-2.7.2-snew|-c t.c -o t.o|t.o|MIPS|
 gcc-2.8.1-snew-cxx|-c t.c -o t.o|t.o|MIPS|
 gcc-2.8.1-sn|-c t.c -o t.o|t.o|MIPS|

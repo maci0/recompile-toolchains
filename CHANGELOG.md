@@ -24,6 +24,8 @@
   outputs on failure. Preserve complete nested SHC support files.
 - Build PSY-Q 2.6.3's converter from pinned PCSX-Redux sources, handling
   relocation 30 with code/data/relocation parity under DOSEMU and Daze.
+- Validate the PSY-Q ELF adapter in CI smoke tests and recreate host-owned
+  failure fixtures safely when the runner and compiler container use different UIDs.
 - Keep the papermario compiler's helper path and use pipes to exclude random
   assembly filenames from debug metadata.
 

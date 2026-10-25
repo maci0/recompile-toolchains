@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-10-25
+
+### Changed
+
+- Require Python 3.15 and pin contributor and CI interpreters to 3.15.1.
+
 ## [1.8.0] - 2026-10-25
 
 ### Changed

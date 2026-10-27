@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-10-27
+
+### Changed
+
+- Load `json` with a `lazy import` in `catalog.py`.
+- Cancel superseded CI runs per workflow and ref, and cache uv downloads in
+  the lint, pins and smoke workflows.
+
 ## [1.9.0] - 2026-10-25
 
 ### Changed

@@ -1,26 +1,19 @@
 # recompile-toolchains
 
-Standalone docker images for legacy and modern C compilers: MSVC 1.0–12.0 Update 4
-(every preserved service pack), Borland C/C++ (Turbo C 2.0, Turbo C++ 3.1,
-bcc32 5.5), Watcom C (Open Watcom 2.0, 32- and 16-bit), Delphi 1.0, MinGW-w64
-GCC (i686 PE), GNU GCC (ELF/x86_64), Clang (ELF/x86_64), the SGI IDO
-reimplementations and the original IRIX IDO under qemu-irix (N64), the
-Apple/PowerPC-Darwin cross compilers (macOS) and the console decomp
-toolchains: GCC 2.6.3/2.7.2/2.8.1/2.95.2 + PSY-Q 4.5/4.6
-(PS1), GCC 2.7.2 KMC and 2.8.1 papermario (N64), agbcc/agbccpp/FE8J and GCC
-2.96 Camelot (GBA), MWCC 2.3.3 b163 / 2.4.2 b81 / 2.4.7 92p1 / 4.3 b213,
-MWCCARM (NDS ARM9) and ProDG 3.9.3 (GameCube/Wii), MWCPS2 3.0.3, EE-GCC
-2.95.3-136 and IOP-GCC 2.8.1 (PS2), MWCCPSP and ARM Compiler (PSP/3DS),
-Green Hills 5.3.22 (Wii U), SHC 5.1r08/5.1r11/5.1r13 (Dreamcast), MSVC for
-Xbox 360 (PowerPC) and clang
-3.9.1/4.0.1/8.0.0/9.0.0 (Switch).  Each image is a self-contained compiler
-container: the runtime (wine / wibo / DOSBox / native Linux) and the compiler
-are baked in, and the entrypoint is the compiler wrapper; you just mount a
-workdir and pass compiler flags.
+Standalone docker images for legacy and modern C compilers: Microsoft C,
+QuickC and MSVC (16-bit through 12.0, with preserved service packs), Borland
+and Turbo C, Watcom, Delphi 1.0, Intel C++, MinGW-w64, GNU GCC and Clang;
+DOS and retro compilers (DJGPP, ia16, ACK, cc65, llvm-mos, SDCC, z88dk, GBDK,
+vbcc, Retro68 and others); and the console decomp toolchains for N64, PS1,
+PS2, PSP, GBA, NDS, 3DS, GameCube, Wii, Wii U, Dreamcast, Saturn, Xbox 360 and
+Switch.  Each image is a self-contained compiler container: the runtime (wine,
+wibo, DOSBox, dosemu2, Daze, qemu-irix or native Linux) and the compiler are
+baked in, and the entrypoint is the compiler wrapper; you just mount a workdir
+and pass compiler flags.
 
 The complete list (every image with its entrypoint, runtime, aliases and
-pin) is the generated [toolchain catalog](docs/TOOLCHAINS.md) (which states
-the current count); how to add another is
+pin) is the generated [toolchain catalog](docs/TOOLCHAINS.md), which states
+the current count; how to add another is
 [docs/ADDING-TOOLCHAIN.md](docs/ADDING-TOOLCHAIN.md).
 
 This repo is the *build source*: Dockerfiles, the shared `base` image,
@@ -68,9 +61,10 @@ host) and `rebrew/base-dosemu` (base-noble + dosemu2 + dj64, for the 16-bit DOS
 toolchains).  Each Dockerfile declares the one it needs in its `ARG BASE_IMAGE=`
 default, and `build.sh` honours it, so an image never inherits a runtime it does
 not use.  Naming is normalized everywhere: a toolchain
-lives in `<family>/<version>-<platform>` (platform suffixes: `win16`,
-`win32`, `linux-x64`, or the console; `n64`, `ps1`, `ps2`, `gba`, `nds`,
-`3ds`, `psp`, `gc`, `wii`, `wiiu`, `dreamcast`, `saturn`, `x360`, `switch`), its
+lives in `<family>/<version>-<platform>` (platform suffixes such as `win16`,
+`win32`, `linux-x64`, `msdos`, a CPU such as `z80`, or the console: `n64`,
+`ps1`, `ps2`, `gba`, `nds`, `3ds`, `psp`, `gc`, `wii`, `wiiu`, `dreamcast`,
+`saturn`, `x360`, `switch`; the catalog lists every one), its
 manifest key in `sources.json` is
 `<family>-<version>[-<variant>]`, and its image tag is
 `<PREFIX>/<family>:<version>-<platform>`.  Every profile may also carry
@@ -297,7 +291,9 @@ branch commit, layout and any aliases.  The community compiler ids and
 version mappings follow
 [decompme/compilers](https://github.com/decompme/compilers) (pinned at
 `0884197d`), which is where the preserved console compilers are catalogued.
-Per-family notes:
+Notes on selected families follow. The generated
+[provenance record](docs/PROVENANCE.md) lists every upstream and the
+[catalog](docs/TOOLCHAINS.md) every profile and pin.
 
 - **MSVC 1.0–12.0 Update 4**: `archaic-msvc` (github.com/archaic-msvc) preservation
   repos, plus `archaic-toolchains/msvc400` and the `archaic-toolchains`
@@ -313,7 +309,7 @@ Per-family notes:
 - **MinGW-w64 GCC 14.2.0/16.2.0**: `niXman/mingw-builds-binaries` release
   assets (i686-w64-mingw32 target, `.7z`); the driver is a Windows PE binary,
   so the image runs it under wine.
-- **GNU GCC 12.3.0/14.2.0**: `ftp.gnu.org` release tarballs, compiled C-only
+- **GNU GCC 12.3.0/14.2.0/16.2.0**: `ftp.gnu.org` release tarballs, compiled C-only
   inside the image (`--enable-languages=c --disable-bootstrap
   --disable-multilib --with-system-zlib`).
 - **Clang 16.0.4/18.1.8**: LLVM's official prebuilt x86_64 Linux release
@@ -368,11 +364,7 @@ Per-family notes:
   `license.dat`.  Windows PE, wibo by default.
 - **MWCCPSP (PSP)**: the `mwccpsp_3.0.1_210` decompme/compilers release
   asset; Windows PE, wibo by default (its LMGR licensing path fails under
-  wine).  `psp-gcc-1.7.1` is catalogued but **not** implemented: the pinned
-  asset (re-verified 2026-09-15, sha256 `55d4267b…f3484`) ships 0-byte
-  `psp/bin/{ar,as,g++,ld,nm,ranlib,strip}` and none of the
-  `pspspecs`/`pspfixup`/`psplibgen` scripts the driver hard-codes, so it
-  cannot compile as shipped.
+  wine).
 - **Green Hills 5.3.22 (Wii U)**: the `ghs5.3.22` decompme/compilers release
   asset (PowerPC `bin/cxppc.exe` toolset); Windows PE, wine/wibo.
 - **IDO 5.2/6.0 (N64)**: `LLONSIT/qemu-irix-helpers` tarballs at branch
@@ -389,10 +381,8 @@ Per-family notes:
 - **SHC 5.1r08/5.1r11 (Dreamcast)**: `decompme/compilers` release assets
   (r08 ships uppercase `SHC.EXE`) plus the revision-pinned `rof2elf.py` gist.
 
-Catalogued upstream but deliberately not shipped: DOS-based PSY-Q 3.x and
-Saturn Cygnus (their DJGPP-stub DOS binaries need DOSEMU, which bookworm does
-not package), IDO 4.1, `psp-gcc` and Intel C++ 5.0.1: are listed with their
-concrete reasons in
+Upstream entries that do not produce a working image here, such as
+`psp-gcc-1.7.1`, are listed with their concrete reasons in the generated
 [docs/PROVENANCE.md](docs/PROVENANCE.md#catalogued-but-not-shipped).
 
 Every Dockerfile curls its own source and verifies the sha256 inside the

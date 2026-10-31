@@ -1,6 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [1.11.0] - 2026-11-01
+
+### Changed
+
+- Maintenance release: catalog reload and provenance sync.
 
 ## [1.10.0] - 2026-10-27
 

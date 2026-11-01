@@ -13,6 +13,7 @@ SHELL_SCRIPTS := $(shell git ls-files --cached --others --exclude-standard '*.sh
 
 .PHONY: lint test docs generate verify smoke pins
 lint:
+	uv lock --check
 	shellcheck $(SHELL_SCRIPTS)
 	ruff check .
 	ruff format --check .

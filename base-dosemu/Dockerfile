@@ -54,8 +54,8 @@ RUN apt-get update \
 RUN apt-get update \
     && mkdir -p /tmp/debs \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/dosemu2.deb \
-        "https://launchpadlibrarian.net/880873282/dosemu2_2.0~pre9-10377-b683aeb53+202610131505~ubuntu24.04.1_amd64.deb" \
-    && echo "aebb1f5b3eba515e0b2d49f897bbf2b225a2f9a4179c79cb2d814ef569d1ea5b  /tmp/debs/dosemu2.deb" | sha256sum -c - \
+        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/d/dosemu2/dosemu2_2.0~pre9-10398-3fc7a2d5e+202610251018~ubuntu24.04.1_amd64.deb" \
+    && echo "030f19f2e60a39b93411fb689bec732ef7fc7b2021af1f7f200166ad215b6cea  /tmp/debs/dosemu2.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/fdpp.deb \
         "https://launchpadlibrarian.net/860512428/fdpp_1.10-10002-1671-9282d8c+202605091902~ubuntu24.04.1_amd64.deb" \
     && echo "e1b2c238ef79c97ac588dfeec54cc8598890cd97e2e344dc4627258948d09d8d  /tmp/debs/fdpp.deb" | sha256sum -c - \
@@ -75,8 +75,8 @@ RUN apt-get update \
         "https://launchpadlibrarian.net/879631484/dj64_0.5-0~202610031149+202610052030~ubuntu24.04.1_amd64.deb" \
     && echo "a59151ebc5c6201544f9870095397e417dbac7b8f4fdef522fa6fda684c77476  /tmp/debs/dj64.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/djstub.deb \
-        "https://launchpadlibrarian.net/878048879/djstub_0.9-0~202609240014+202609240117~ubuntu24.04.1_all.deb" \
-    && echo "207f8a28e7be896f256c1519a69269ae1dfcbc9667bf2eecbbf976e88e122033  /tmp/debs/djstub.deb" | sha256sum -c - \
+        "https://ppa.launchpadcontent.net/stsp-0/dj64/ubuntu/pool/main/d/djstub/djstub_0.9-0~202610151314+202610151601~ubuntu24.04.1_all.deb" \
+    && echo "7fe066839810615a6c0a1b3e761006e1f4fecc6a711de131b37bc6f0058a7d6c  /tmp/debs/djstub.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libdjstub64-0.deb \
         "https://launchpadlibrarian.net/878032061/libdjstub64-0_0.5-0~202609232118~ubuntu24.04.1_amd64.deb" \
     && echo "62ccf36ab4ce966f7917772eff3d66d5c4ca5d9702b4c4bf85fc7e6987c29217  /tmp/debs/libdjstub64-0.deb" | sha256sum -c - \

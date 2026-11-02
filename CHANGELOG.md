@@ -6,6 +6,8 @@
 
 ### Changed
 
+- Refresh removed DOSEMU2 and djstub downloads to verified upstream artifacts.
+
 - Update Ruff to 0.17.3, mypy to 2.4.1, Python to 3.15.2 and pinned CI actions.
 
 ## [1.11.0] - 2026-11-01

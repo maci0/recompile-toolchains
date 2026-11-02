@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+## [1.11.1] - 2026-11-02
+
+### Changed
+
+- Update Ruff to 0.17.3, mypy to 2.4.1, Python to 3.15.2 and pinned CI actions.
+
 ## [1.11.0] - 2026-11-01
 
 ### Changed

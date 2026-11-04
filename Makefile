@@ -25,6 +25,7 @@ test:
 
 docs:
 	uv run python catalog.py
+	uv run python toolchains.py
 
 # Re-render every Dockerfile and wrapper from sources.json.  `make test` fails
 # when the committed files differ from their rendering, so a hand edit to a

@@ -6,9 +6,16 @@ its own sha256-verified source at build time.
 
 ```
 <family>/<version>-<platform>/Dockerfile      the image recipe + entrypoint wrapper
-sources.json                                  the pin: url, sha256, commit, aliases
-docs/TOOLCHAINS.md                            generated catalog (make docs)
+sources.json                                  the pin, aliases and consumer fields
+toolchains.json                               generated machine-readable catalog (make docs)
+docs/TOOLCHAINS.md                            generated human catalog (make docs)
 ```
+
+`toolchains.json` is the release artifact consumers (rebrew, recompile, the Go
+backend and compiler-detector) read instead of keeping a copy of
+`sources.json`. It carries `flags_style`, `arg_style`, `obj_ext`, `bits` and
+`tool_root` from the manifest beside the pin, target and runtime class, so
+every image must declare the consumer fields.
 
 Read [TOOLCHAINS.md](TOOLCHAINS.md) for what already exists, and the
 [README](../README.md) for how consumers run the images.
@@ -138,6 +145,14 @@ $EDITOR sources.json      # add the profile with its `recipe`
 make generate             # writes <host_dir>/Dockerfile and its wrapper
 make test                 # fails if either differs from its rendering
 ```
+
+Every profile also declares the consumer fields `flags_style` (`msvc` or
+`posix`), `arg_style` (`msvc`, `posix`, `pipeline`, `dos`, `borland` or
+`watcom`), `obj_ext` (the object extension the driver emits) and, when it is
+known, `bits` (8, 16, 32 or 64) and `tool_root` (the container directory
+holding the command-line tools).  They render into `toolchains.json`;
+`make test` refuses a profile that omits `flags_style`, `arg_style` or
+`obj_ext`.
 
 The recipe fields:
 

@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-11-04
+
+### Changed
+
+- Roll up the removed DOS runtime download pin fixes and development tool updates as a minor release.
+
 ## [1.11.1] - 2026-11-02
 
 ### Changed

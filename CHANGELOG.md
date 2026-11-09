@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-11-09
+
 ### Added
 
 - `toolchains.json`, the generated machine-readable catalogue of every profile (pin, image tag, target, runtime class, entrypoint, aliases and the consumer fields `flags_style`, `arg_style`, `obj_ext`, `bits`, `tool_root`), rendered from `sources.json` by `make docs` and checked by `make test`.

@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/toolchain.zip \
-        "https://github.com/heinermann/compilers/releases/download/msvc12/msvc12.zip" \
+        "https://github.com/archaic-toolchains/msvc1200_u4/releases/download/2026-11-10/msvc12.zip" \
     && echo "2adc1d97b342b6d14113b43321cc965c2afec5b9ff575c04a70c6d5c6e119f43  /tmp/toolchain.zip" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc12.0-u4 \

@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psyq.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/psyq_263_221.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psyq_263_221.tar.gz" \
     && echo "082a57e28efe06dc75f1c8be4f2b73ffa65ad5b995c6c345cf67b8dcd19192c5  /tmp/psyq.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /usr/local/bin && curl -fsSL --retry 3 --retry-all-errors -o /usr/local/bin/daze \

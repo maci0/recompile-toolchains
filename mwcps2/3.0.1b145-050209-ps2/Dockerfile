@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
 ENV REBREW_RUNNER=wibo
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b145-050209.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b145-050209.tar.gz" \
     && echo "d021f7d02ab63da770c13dc246637276141321ca08221ee2333a7acadf82482b  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwcps2-3.0.1b145-050209 /tmp/x \

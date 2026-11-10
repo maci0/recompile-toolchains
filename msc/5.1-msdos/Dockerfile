@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Microsoft C 5.1 (16-bit DOS compiler, DOSBox) toolchain image"
 
 RUN mkdir -p /opt/msc51 /tmp/msc && curl -fsSL --retry 3 --retry-all-errors -o /tmp/msc/msc.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/msc-5.1.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/msc-5.1.tar.gz" \
     && echo "97ca199c20ad09629ae7be0a653faac56612e0e03ed700a92dbfb75958207311  /tmp/msc/msc.tar.gz" | sha256sum -c -
 
 RUN tar xzf /tmp/msc/msc.tar.gz --no-same-owner -C /opt/msc51 \

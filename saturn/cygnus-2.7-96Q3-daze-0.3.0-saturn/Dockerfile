@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/saturn-cygnus /tmp/tools && curl -fsSL --retry 3 --retry-all-errors -o /tmp/tools/saturn.zip \
-        "https://github.com/sozud/saturn-compilers/archive/af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip" \
+        "https://github.com/archaic-toolchains/saturn-cygnus/releases/download/2026-11-10/saturn-compilers-af27f4aa6566.zip" \
     && echo "f5460e3ea653a24fb011a94f2ce2c54b277877e60859ffc906b07dbbe6406595  /tmp/tools/saturn.zip" | sha256sum -c -
 
 RUN mkdir -p /usr/local/bin && curl -fsSL --retry 3 --retry-all-errors -o /usr/local/bin/daze \

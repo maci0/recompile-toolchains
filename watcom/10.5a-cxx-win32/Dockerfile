@@ -16,7 +16,7 @@ ENV WATCOM=/opt/watcom-10.5a-cxx \
     INCLUDE=/opt/watcom-10.5a-cxx/h
 
 RUN mkdir -p /opt/watcom-10.5a-cxx /tmp/watcom && curl -fsSL --retry 3 --retry-all-errors -o /tmp/watcom/watcom.tar.gz \
-        "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.5a.tar.gz" \
+        "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.5a.tar.gz" \
     && echo "fd82fd36594f1f1333d2b8a4b87956c1dfaacd2c9b3535db556bcf482f81adab  /tmp/watcom/watcom.tar.gz" | sha256sum -c -
 
 RUN tar xzf /tmp/watcom/watcom.tar.gz --no-same-owner -C /opt/watcom-10.5a-cxx \

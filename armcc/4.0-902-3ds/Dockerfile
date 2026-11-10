@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/armcc.zip \
-        "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip" \
     && echo "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb  /tmp/armcc.zip" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

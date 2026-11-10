@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="PSPSNC 1.2.7503.0 (Sony PSP, PE/x86_32) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/pspsnc_1.2.7503.0.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/pspsnc_1.2.7503.0.tar.gz" \
     && echo "0d10a4b387e45b62369eea21b6693fc5517335033bf65e65aa7b543a916f4d6d  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/pspsnc-1.2.7503.0 \

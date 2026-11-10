@@ -23,7 +23,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc600_sp5.tar.gz \
     && echo "a95a9c17cbcbe0d97a3e80ef9596f12404eb28f36bab24e89aabcbe37acbbef6  /tmp/msvc600_sp5.tar.gz" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/vc6-runtime.exe \
-        "https://download.microsoft.com/download/vc60pro/Update/2/W9XNT4/EN-US/VC6RedistSetup_deu.exe" \
+        "https://github.com/archaic-toolchains/vc6redist/releases/download/2026-11-10/VC6RedistSetup_deu.exe" \
     && echo "c2eb91d9c4448d50e46a32fecbcc3b418706d002beab9b5f4981de552098cee7  /tmp/vc6-runtime.exe" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc6.0-sp5-crt \

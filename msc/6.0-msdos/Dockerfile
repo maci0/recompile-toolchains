@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Microsoft C 6.0 (16-bit DOS compiler, DOSBox) toolchain image"
 
 RUN mkdir -p /opt/msc60 /tmp/msc && curl -fsSL --retry 3 --retry-all-errors -o /tmp/msc/msc.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/msc600.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/msc600.tar.gz" \
     && echo "d918ee76b25f1e7c55fdcde6de37d4f47ad72e3e69c93e2323802fa951bd60c4  /tmp/msc/msc.tar.gz" | sha256sum -c -
 
 RUN tar xzf /tmp/msc/msc.tar.gz --no-same-owner -C /opt/msc60 \

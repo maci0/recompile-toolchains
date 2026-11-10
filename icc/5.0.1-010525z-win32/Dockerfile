@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
 ENV REBREW_RUNNER=wibo
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/icc.tar.gz \
-        "https://github.com/bwrsandman/icc5.0.1.010525Z/releases/download/v1/icc5.0.1-010525z.tar.gz" \
+        "https://github.com/archaic-toolchains/icc501/releases/download/2026-11-10/icc5.0.1-010525z.tar.gz" \
     && echo "2661672232e8845004f40d8aaba15f19cde36750b72b3a864aa21f6a0d196564  /tmp/icc.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/icc-5.0.1 \

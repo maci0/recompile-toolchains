@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
 ENV WINEPATH="Z:\\opt\\ee-gcc-3.2-030210-beta2\\dll"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc3.2-030210-beta2.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc3.2-030210-beta2.tar.gz" \
     && echo "5244521973d3fa9712cc9f945e6e45c489d69d846ca6639b0c07c3e885a923a1  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/ee-gcc-3.2-030210-beta2 \

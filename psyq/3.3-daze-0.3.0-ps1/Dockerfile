@@ -17,11 +17,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psyq.tar.gz \
-        "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.3.tar.gz" \
+        "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.3.tar.gz" \
     && echo "6acc5bf3a2e406c35ec77b63f6f77986a2d61502906967f0f32ea75911e7f16f  /tmp/psyq.tar.gz" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psyq-obj-parser.tar.gz" \
     && echo "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e  /tmp/parser.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /usr/local/bin && curl -fsSL --retry 3 --retry-all-errors -o /usr/local/bin/daze \

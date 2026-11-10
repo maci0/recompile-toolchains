@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
 ENV REBREW_RUNNER=wibo
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ps2_compilers.tar.xz" \
     && echo "f337a65a4fbab5cf0e335efe266dcbc7cf69b19c665c6b3a8924736df151a02a  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwcps2-2.3-991202 /tmp/x \

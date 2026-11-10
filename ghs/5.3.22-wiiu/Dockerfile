@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Green Hills C/C++ 5.3.22 (Wii U PowerPC, PE/x86_32) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ghs.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/ghs5.3.22.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ghs5.3.22.tar.gz" \
     && echo "41cd0a4723acfbddf8f70a9c3ff84bce7e85087b1d1ccef8bbf5f03d82c2b520  /tmp/ghs.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/ghs-5.3.22 \

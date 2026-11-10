@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="PSP GCC 1.3.1 (mipsallegrex, PS1-family MIPS, 32-bit host) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psp.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/psp-gcc-1.3.1.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psp-gcc-1.3.1.tar.gz" \
     && echo "788b6d2c0ed920da6b1e5a350d23dd7ea05820526e23f9b5b967b3b238ea2e2e  /tmp/psp.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/psp-gcc-1.3.1 /tmp/psp \

@@ -180,7 +180,7 @@
         "armcc_40_771"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -208,7 +208,7 @@
         "armcc_40_821"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -236,7 +236,7 @@
         "armcc_40_865"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -264,7 +264,7 @@
         "armcc_40_902"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -292,7 +292,7 @@
         "armcc_41_1049"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -320,7 +320,7 @@
         "armcc_41_1440"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -348,7 +348,7 @@
         "armcc_41_1454"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -376,7 +376,7 @@
         "armcc_41_561"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -404,7 +404,7 @@
         "armcc_41_713"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -432,7 +432,7 @@
         "armcc_41_791"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -460,7 +460,7 @@
         "armcc_41_844"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -488,7 +488,7 @@
         "armcc_41_894"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -516,7 +516,7 @@
         "armcc_41_921"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -544,7 +544,7 @@
         "armcc_504_82"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/armcc.zip?2026-03-04",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/armcc.zip",
         "sha256": "bda0cea5b13a9c3f08322fa76f9f9dcda59bda290f57f1a06e05cd80044fafdb",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -622,7 +622,7 @@
         "bcc2.0"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/bcc2.0.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/bcc2.0.tar.gz",
         "sha256": "6a8bb50e1d390e05ea8ef5ea076035eadda32eb1640b5b802538f2c3933565c3",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -676,7 +676,7 @@
         "bcc3.1"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/bcc3.1.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/bcc3.1.tar.gz",
         "sha256": "1fad5133fbe034f00e263e114993fbbcea5ff9ee061449b34e78704ed95af6fc",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -728,7 +728,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://codeload.github.com/earthsiege2/borland-cpp-ide/tar.gz/09bcecc81184",
+        "url": "https://github.com/archaic-toolchains/borland-cpp-ide/releases/download/2026-11-10/borland-cpp-ide-09bcecc81184.tar.gz",
         "sha256": "8e5a93db99330b816646a14bdfa1c90d2e80a41810ce8c65f4942378cb621882",
         "commit": "09bcecc81184"
       },
@@ -1094,7 +1094,7 @@
         "ee-gcc2.9-990721"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-990721.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.9-990721.tar.xz",
         "sha256": "ad2ea68afff2be25d21a1d51a75e8a0eea8f259018e6580622355cd01b95676b",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1122,7 +1122,7 @@
         "ee-gcc2.9-991111"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-991111.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.9-991111.tar.xz",
         "sha256": "99cb5db603cd985b50fc6851157020ad69489f2227309ccf825bd43ac7bc19dd",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1150,7 +1150,7 @@
         "ee-gcc2.9-991111-01"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-991111-01.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.9-991111-01.tar.xz",
         "sha256": "ed684fd98f89d36b0121caab311052089103e3b36241fcef4338cc9ea41c75b8",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1178,7 +1178,7 @@
         "ee-gcc2.9-991111-01-dtls13010"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-991111-01-dtls13010.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.9-991111-01-dtls13010.tar.gz",
         "sha256": "3ab52a7ea962100f2a7df3e04d3e7a758aad669eb365251682e769b755d9d586",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1206,7 +1206,7 @@
         "ee-gcc2.9-991111a"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-991111a.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.9-991111a.tar.xz",
         "sha256": "f07d1f38afa847197fb816237dbce64e79b2d37b738cb93fa4df3ac7aa1d16f3",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1234,7 +1234,7 @@
         "ee-gcc2.9-991111b-r4"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-991111.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.9-991111.tar.gz",
         "sha256": "9ebbb042eb1e5d33d772293c5e9286a54dbec29865a3d7fbb398c97436f33583",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1262,7 +1262,7 @@
         "ee-gcc2.95.2-273a"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ps2_compilers.tar.xz",
         "sha256": "f337a65a4fbab5cf0e335efe266dcbc7cf69b19c665c6b3a8924736df151a02a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1290,7 +1290,7 @@
         "ee-gcc2.95.2-274"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ps2_compilers.tar.xz",
         "sha256": "f337a65a4fbab5cf0e335efe266dcbc7cf69b19c665c6b3a8924736df151a02a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1318,7 +1318,7 @@
         "ee-gcc2.95.3-107"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ps2_compilers.tar.xz",
         "sha256": "f337a65a4fbab5cf0e335efe266dcbc7cf69b19c665c6b3a8924736df151a02a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1346,7 +1346,7 @@
         "ee-gcc2.95.3-114"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ps2_compilers.tar.xz",
         "sha256": "f337a65a4fbab5cf0e335efe266dcbc7cf69b19c665c6b3a8924736df151a02a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1374,7 +1374,7 @@
         "ee-gcc2.95.3-136"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.95.3-136.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.95.3-136.tar.gz",
         "sha256": "3b6ae6897229ad005aaf1b0afaa1f3cb46e74b4c21a42e01130c07c0c598067f",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1402,7 +1402,7 @@
         "ee-gcc2.96"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.96.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.96.tar.xz",
         "sha256": "0590d2ca9da8f5903889d66761220d14b47a8d14ba987ca53db84a1650a1fd0a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1430,7 +1430,7 @@
         "ee-gcc3.2-030210-beta2"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc3.2-030210-beta2.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc3.2-030210-beta2.tar.gz",
         "sha256": "5244521973d3fa9712cc9f945e6e45c489d69d846ca6639b0c07c3e885a923a1",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1458,7 +1458,7 @@
         "ee-gcc3.2-030926"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc3.2-030926.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc3.2-030926.tar.gz",
         "sha256": "6b92b61e40f80835b165d14fadd57d4046dbee82195599f791626180fe79b8e9",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -1486,7 +1486,7 @@
         "ee-gcc3.2-040921"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc3.2-040921.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc3.2-040921.tar.xz",
         "sha256": "8c60ca7482523190e999524a7e4de2379dcf7ffee543c1b5663bfdf6a80ebf0f",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -2252,7 +2252,7 @@
         "gcc2.7.2sn0001"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/n64_sn272_0001.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/n64_sn272_0001.tar.gz",
         "sha256": "17c57ccd5f2305fe5445c576d4cc2c1fea681dd78b29dd3d1f15c5ca0fdf2cea",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -2280,7 +2280,7 @@
         "gcc2.7.2sn0001-cxx"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/n64_sn272_0001.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/n64_sn272_0001.tar.gz",
         "sha256": "17c57ccd5f2305fe5445c576d4cc2c1fea681dd78b29dd3d1f15c5ca0fdf2cea",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -2337,7 +2337,7 @@
         "gcc2.7.2sn0006"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/n64_sn272_0006.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/n64_sn272_0006.tar.gz",
         "sha256": "1a35a875278f38bfc285c2bd80b782cec38859dedfd925d8b8a2f1733ba9acad",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -2365,7 +2365,7 @@
         "gcc2.7.2sn0006-cxx"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/n64_sn272_0006.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/n64_sn272_0006.tar.gz",
         "sha256": "1a35a875278f38bfc285c2bd80b782cec38859dedfd925d8b8a2f1733ba9acad",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -2835,7 +2835,7 @@
         "gcc2.8.1sn"
       ],
       "source": {
-        "url": "https://github.com/marijnvdwerf/sn64/releases/download/1%2C0%2C0%2C2/cc1n64.exe",
+        "url": "https://github.com/archaic-toolchains/sn64/releases/download/2026-11-10/cc1n64.exe",
         "sha256": "d90df1028c46d826e37146dbcc3e3385f78c59e05a9ddd952daa94c9ad379d9c",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -2863,7 +2863,7 @@
         "gcc2.8.1sn-cxx"
       ],
       "source": {
-        "url": "https://github.com/marijnvdwerf/sn64/releases/download/1%2C0%2C0%2C2/cc1n64.exe",
+        "url": "https://github.com/archaic-toolchains/sn64/releases/download/2026-11-10/cc1n64.exe",
         "sha256": "d90df1028c46d826e37146dbcc3e3385f78c59e05a9ddd952daa94c9ad379d9c",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -2892,7 +2892,7 @@
         "gcc2.8.1snew-cxx"
       ],
       "source": {
-        "url": "https://github.com/marijnvdwerf/sn64/releases/download/1%2C0%2C0%2C2/cc1n64.exe",
+        "url": "https://github.com/archaic-toolchains/sn64/releases/download/2026-11-10/cc1n64.exe",
         "sha256": "d90df1028c46d826e37146dbcc3e3385f78c59e05a9ddd952daa94c9ad379d9c",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -3389,7 +3389,7 @@
         "ghs5.3.22"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ghs5.3.22.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ghs5.3.22.tar.gz",
         "sha256": "41cd0a4723acfbddf8f70a9c3ff84bce7e85087b1d1ccef8bbf5f03d82c2b520",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -3443,7 +3443,7 @@
         "icc5.0.1-010525z"
       ],
       "source": {
-        "url": "https://github.com/bwrsandman/icc5.0.1.010525Z/releases/download/v1/icc5.0.1-010525z.tar.gz",
+        "url": "https://github.com/archaic-toolchains/icc501/releases/download/2026-11-10/icc5.0.1-010525z.tar.gz",
         "sha256": "2661672232e8845004f40d8aaba15f19cde36750b72b3a864aa21f6a0d196564",
         "commit": null
       },
@@ -3471,7 +3471,7 @@
         "ido4.1"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ido4.1.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ido4.1.tar.gz",
         "sha256": "16008087602fe1a39cdd7880a3c6987891ddb594cce4416670f2e96456e9b4d4",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -3499,7 +3499,7 @@
         "ido5.2"
       ],
       "source": {
-        "url": "https://github.com/LLONSIT/qemu-irix-helpers/raw/d577d1654ca4b57585af59849cb067c0148874d7/qemu/ido5.2.tar.xz",
+        "url": "https://github.com/archaic-toolchains/irix-ido/releases/download/2026-11-10/ido5.2.tar.xz",
         "sha256": "870cd946d31d6abee24d47926328d15909771520240a0a4f5cb7d27aea90e1ad",
         "commit": "d577d1654ca4b57585af59849cb067c0148874d7"
       },
@@ -3557,7 +3557,7 @@
         "ido5.3-cxx"
       ],
       "source": {
-        "url": "https://github.com/LLONSIT/qemu-irix-helpers/raw/d577d1654ca4b57585af59849cb067c0148874d7/qemu/ido5.3_c++.tar.xz",
+        "url": "https://github.com/archaic-toolchains/irix-ido/releases/download/2026-11-10/ido5.3_c-.tar.xz",
         "sha256": "851426c63ffb0688c702793113c2d9aa3c703c7a4e9d4240fc99d1862f79e4b9",
         "commit": "d577d1654ca4b57585af59849cb067c0148874d7"
       },
@@ -3587,7 +3587,7 @@
         "ssb_ido5.3"
       ],
       "source": {
-        "url": "https://github.com/LLONSIT/qemu-irix-helpers/raw/d577d1654ca4b57585af59849cb067c0148874d7/qemu/ssb_ido5.3.tar",
+        "url": "https://github.com/archaic-toolchains/irix-ido/releases/download/2026-11-10/ssb_ido5.3.tar",
         "sha256": "a8a5bfa1713cc63c157ed4d61d0fb19f2d2ab10612fd9df2ceeb1de517cda4d4",
         "commit": "d577d1654ca4b57585af59849cb067c0148874d7"
       },
@@ -3642,7 +3642,7 @@
         "ido6.0_irix"
       ],
       "source": {
-        "url": "https://github.com/LLONSIT/qemu-irix-helpers/raw/d577d1654ca4b57585af59849cb067c0148874d7/qemu/ido6.0.tar.xz",
+        "url": "https://github.com/archaic-toolchains/irix-ido/releases/download/2026-11-10/ido6.0.tar.xz",
         "sha256": "c56d4be020bdaf76310ceec455ebc0d443fb7a46c740491f74898b04f6a60356",
         "commit": "d577d1654ca4b57585af59849cb067c0148874d7"
       },
@@ -3755,7 +3755,7 @@
         "mips_pro_744_irix"
       ],
       "source": {
-        "url": "https://github.com/LLONSIT/qemu-irix-helpers/raw/d577d1654ca4b57585af59849cb067c0148874d7/qemu/mipspro7.4.4.tar.xz",
+        "url": "https://github.com/archaic-toolchains/irix-ido/releases/download/2026-11-10/mipspro7.4.4.tar.xz",
         "sha256": "df33be0d9605b00b44070e567121fc00283a9b1f97763403f0898d2216028d24",
         "commit": "d577d1654ca4b57585af59849cb067c0148874d7"
       },
@@ -3783,7 +3783,7 @@
         "iop-gcc2.8.1"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/iop-gcc2.8.1.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/iop-gcc2.8.1.tar.gz",
         "sha256": "1f602e146f5be218cb3c84cda615432035bcf4a4f1a5f249164163a456ac929a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -3811,7 +3811,7 @@
         "iop-gcc2.95.2-102"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/iop-gcc2.95.2-102.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/iop-gcc2.95.2-102.tar.gz",
         "sha256": "84016c5899358f65bb320081087f7fb82e32fd5f4ab25733bec094d4baa9728a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -3969,7 +3969,7 @@
         "msc5.1"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/msc-5.1.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/msc-5.1.tar.gz",
         "sha256": "97ca199c20ad09629ae7be0a653faac56612e0e03ed700a92dbfb75958207311",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -3997,7 +3997,7 @@
         "msc600"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/msc600.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/msc600.tar.gz",
         "sha256": "d918ee76b25f1e7c55fdcde6de37d4f47ad72e3e69c93e2323802fa951bd60c4",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -4180,7 +4180,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/heinermann/compilers/releases/download/msvc12/msvc12.zip",
+        "url": "https://github.com/archaic-toolchains/msvc1200_u4/releases/download/2026-11-10/msvc12.zip",
         "sha256": "2adc1d97b342b6d14113b43321cc965c2afec5b9ff575c04a70c6d5c6e119f43",
         "commit": null
       },
@@ -4677,7 +4677,7 @@
         "msvc6.0"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/msvcwin9x/msvc6.0.tar.gz",
+        "url": "https://github.com/archaic-toolchains/msvc600-win9x/releases/download/2026-11-10/msvc6.0.tar.gz",
         "sha256": "5c81e9c2ab0ac5545022c1418a23392cb514db950cf6dcb1f48327270403fcd3",
         "commit": null
       },
@@ -4871,7 +4871,7 @@
         "msvc8.0p"
       ],
       "source": {
-        "url": "https://github.com/widberg/msvc8.0/archive/52c8293f8b8d6441c594cf096542290c17a4d70e.zip",
+        "url": "https://github.com/archaic-toolchains/msvc800-portable/releases/download/2026-11-10/msvc8.0-52c8293f8b8d.zip",
         "sha256": "b138c1b3c99a8a2b9c4324add058e0ddfda5def81f0ef821b10cbfcf383b2084",
         "commit": "52c8293f8b8d6441c594cf096542290c17a4d70e"
       },
@@ -4981,7 +4981,7 @@
         "msvc_ppc_14.00.2110"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5009,7 +5009,7 @@
         "msvc_ppc_16.00.11886.00"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5037,7 +5037,7 @@
         "mwcc_233_144"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5065,7 +5065,7 @@
         "mwcc_233_159"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5093,7 +5093,7 @@
         "mwcc_233_159p1"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5122,7 +5122,7 @@
         "mwcc233_163"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5150,7 +5150,7 @@
         "mwcc_233_163e"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20240706.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20240706.zip",
         "sha256": "399889e059cc86804267eb9376c9c2c4e197d7204936421c45e35fb6c01256c5",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5178,7 +5178,7 @@
         "mwcc_233_163n"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5206,7 +5206,7 @@
         "mwcc_242_53"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5234,7 +5234,7 @@
         "mwcc_242_81"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5262,7 +5262,7 @@
         "mwcc_242_81r"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5290,7 +5290,7 @@
         "mwcc_247_105"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5318,7 +5318,7 @@
         "mwcc_247_107"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5346,7 +5346,7 @@
         "mwcc_247_108"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5374,7 +5374,7 @@
         "mwcc_247_92"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5402,7 +5402,7 @@
         "mwcc_247_92p1"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5430,7 +5430,7 @@
         "mwcc_41_51213"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5458,7 +5458,7 @@
         "mwcc_41_51213p1"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251118.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251118.zip",
         "sha256": "69b0d4980a2eccea4ae6e70b486714b5190cb6c75e3bc7b8fb5878a8854d0d1c",
         "commit": "1f528ebeaf198e747d75caffaa319985b3a33a2d"
       },
@@ -5486,7 +5486,7 @@
         "mwcc_41_60126"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5514,7 +5514,7 @@
         "mwcc_41_60209"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5542,7 +5542,7 @@
         "mwcc_41_60831"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5570,7 +5570,7 @@
         "mwcc_42_127"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5598,7 +5598,7 @@
         "mwcc_42_140"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5626,7 +5626,7 @@
         "mwcc_42_142"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5654,7 +5654,7 @@
         "mwcc_42_60308"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5682,7 +5682,7 @@
         "mwcc_42_60422"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5710,7 +5710,7 @@
         "mwcc_43_145"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5738,7 +5738,7 @@
         "mwcc_43_151"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5766,7 +5766,7 @@
         "mwcc_43_172"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5794,7 +5794,7 @@
         "mwcc_43_188"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5822,7 +5822,7 @@
         "mwcc_43_202"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5850,7 +5850,7 @@
         "mwcc_43_213"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5878,7 +5878,7 @@
         "mwcc_20_56"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcc_20_56.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcc_20_56.tar.gz",
         "sha256": "91e10b9826bb985641a6db075da444a51bf25dd53df3216cb8bc05548561ec45",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5906,7 +5906,7 @@
         "mwcc_20_72"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5934,7 +5934,7 @@
         "mwcc_20_79"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5962,7 +5962,7 @@
         "mwcc_20_82"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -5990,7 +5990,7 @@
         "mwcc_20_84"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6018,7 +6018,7 @@
         "mwcc_20_87"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6046,7 +6046,7 @@
         "mwcc_30_114"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6074,7 +6074,7 @@
         "mwcc_30_123"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6102,7 +6102,7 @@
         "mwcc_30_126"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6130,7 +6130,7 @@
         "mwcc_30_131"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6158,7 +6158,7 @@
         "mwcc_30_133"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6186,7 +6186,7 @@
         "mwcc_30_134"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6214,7 +6214,7 @@
         "mwcc_30_136"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6242,7 +6242,7 @@
         "mwcc_30_137"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6270,7 +6270,7 @@
         "mwcc_30_138"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6298,7 +6298,7 @@
         "mwcc_30_139"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6326,7 +6326,7 @@
         "mwcc_40_1018"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6354,7 +6354,7 @@
         "mwcc_40_1024"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6382,7 +6382,7 @@
         "mwcc_40_1026"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6410,7 +6410,7 @@
         "mwcc_40_1027"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6438,7 +6438,7 @@
         "mwcc_40_1028"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6466,7 +6466,7 @@
         "mwcc_40_1034"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6494,7 +6494,7 @@
         "mwcc_40_1036"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6522,7 +6522,7 @@
         "mwcc_40_1051"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip",
         "sha256": "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6550,7 +6550,7 @@
         "mwccpsp_3.0.1_121"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_121.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_121.tar.gz",
         "sha256": "44836bb4d19fbe216b55fbd638420c000f7dd373c84493de0e732e85f81656af",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6578,7 +6578,7 @@
         "mwccpsp_3.0.1_134"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_134.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_134.tar.gz",
         "sha256": "a4a00c2450ee2b6f7be29fc73470446994fcf2b1b1003b8ac34568f3358e1c99",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6606,7 +6606,7 @@
         "mwccpsp_3.0.1_139"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_139.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_139.tar.gz",
         "sha256": "932bae1cdd95df8e1c593af14c19c90c21ad8e2662d6cc5e537269543d8bdd8f",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6634,7 +6634,7 @@
         "mwccpsp_3.0.1_147"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_147.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_147.tar.gz",
         "sha256": "7b9c917d50f804617eb50897cb5b68e1f287f6f676f28078c04a9054b2e4586e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6662,7 +6662,7 @@
         "mwccpsp_3.0.1_151"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_151.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_151.tar.gz",
         "sha256": "168ee268ebd9a9dc756886c90b4fdd577b13b57ecad025c8b7d98acf47d3f76f",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6690,7 +6690,7 @@
         "mwccpsp_3.0.1_180"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_180.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_180.tar.gz",
         "sha256": "2d4ff76e4e5c9bd938dbc627e4219583d6119bc4af30548df43e06221ab7b32b",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6718,7 +6718,7 @@
         "mwccpsp_3.0.1_192"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_192.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_192.tar.gz",
         "sha256": "e68e0a281f90e0c5a96cd04defe01eabfad4b5592807bba983495fa07c1d55b3",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6746,7 +6746,7 @@
         "mwccpsp_3.0.1_201"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_201.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_201.tar.gz",
         "sha256": "1bf4b06615f56e6ca5b78287e8fab5c7737f5cd5766d1df052829d737928dbc8",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6774,7 +6774,7 @@
         "mwccpsp_3.0.1_205"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_205.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_205.tar.gz",
         "sha256": "ace61d4641fcdff55c08b7560c95915b20243f0f18023c3d4ce99fe37c5cdb00",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6802,7 +6802,7 @@
         "mwccpsp_3.0.1_210"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_210.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_210.tar.gz",
         "sha256": "a8a0bf3a0ec3545f6578717516aad0f262a40dd1538a6e462b77efc29e79a969",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6830,7 +6830,7 @@
         "mwccpsp_3.0.1_219"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwccpsp_3.0.1_219.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccpsp_3.0.1_219.tar.gz",
         "sha256": "81a2a8664d779901f6fa2f298b663b4b0feeb1d7f6613fd14531f51e66926d78",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6856,7 +6856,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ps2_compilers.tar.xz",
         "sha256": "f337a65a4fbab5cf0e335efe266dcbc7cf69b19c665c6b3a8924736df151a02a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6882,7 +6882,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-2.3.3-000906.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-2.3.3-000906.tar.gz",
         "sha256": "c2a4e463f8f7b324350d6bfb26d6daed83f4d5cb46df8b20dcfec8617b22ad5d",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6908,7 +6908,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-2.4-001213.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-2.4-001213.tar.gz",
         "sha256": "0ebe09436b4163c3a109b0431517281501d2de1bd5a0b049d33057710a943e3e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6934,7 +6934,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0-011126.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0-011126.tar.gz",
         "sha256": "b83fef398fd765aaeb48576dae0fa0751bf9c1496036d0d878e7a2a0e71c2a7f",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6960,7 +6960,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1-020123.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1-020123.tar.gz",
         "sha256": "72d823d85943c92ca13378e93d56ac1870298ccbfda0ef8a2efb9650692e968c",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -6986,7 +6986,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b103-040528.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b103-040528.tar.gz",
         "sha256": "a6db36760445e18da840bda70f3e7b97dc563ba421d13651c121e8867013c0c9",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7012,7 +7012,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b119-040914.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b119-040914.tar.gz",
         "sha256": "5c6984d5d52f21b62b6bc9161749bde7bb14e136fbee41f0f4df7fcee7b06c13",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7038,7 +7038,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b145-050209.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b145-050209.tar.gz",
         "sha256": "d021f7d02ab63da770c13dc246637276141321ca08221ee2333a7acadf82482b",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7064,7 +7064,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b151-050317.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b151-050317.tar.gz",
         "sha256": "5050a211954f0828cf1c0f56333943407d20f7e85bc68b23e3c539bb5d8ee947",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7090,7 +7090,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b198-051011.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b198-051011.tar.gz",
         "sha256": "436af8060249e7ea0aa2dfa98a86b4667ee3716b3384cca577c52c5b68e4934a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7116,7 +7116,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b205-051227.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b205-051227.tar.gz",
         "sha256": "456cdfc1894f20bcaecc627ff674222888f093c3ec37c91e4f0fe6baae3b5a9d",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7142,7 +7142,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b210-060308.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b210-060308.tar.gz",
         "sha256": "456746b70862a744a0be75585a4e163a142111843661cbb7e483230dd85502c5",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7168,7 +7168,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b44-030325.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b44-030325.tar.gz",
         "sha256": "90d99e3e6272369215b317548fe2626694aa1ead57cec0251f7343d266d9b0ed",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7194,7 +7194,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b51-030512.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b51-030512.tar.gz",
         "sha256": "985fce55737848ce46c145cd357df247a3cd12d1c944d8cc325cfe46cde5a124",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7220,7 +7220,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b74-030811.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b74-030811.tar.gz",
         "sha256": "5c14bea69f68cf46498a4eab3e18ea89aff289e6e12c613c55ff2d05b06dd23c",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7246,7 +7246,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b75-030916.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b75-030916.tar.gz",
         "sha256": "f665dc6ce76f3551097a87cd1c36672d93cd23b10021ca412fbd23d38e3444d8",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7272,7 +7272,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b87-031208.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b87-031208.tar.gz",
         "sha256": "3718581319518c9a3cece4ded2951a5e7828123c069c9bbc4d854e8b1c46b718",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7298,7 +7298,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.1b95-040309.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.1b95-040309.tar.gz",
         "sha256": "6f9357a1e74b48e43466c8bcb7af9b1b3d69fa870eb9b37269708cd579351bbc",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7327,7 +7327,7 @@
         "mwcps2_303"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0.3-020716.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0.3-020716.tar.gz",
         "sha256": "63f89baae691403294724178efbcfc9e1b9ac48151536b6a321b17eb8f9970e5",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7353,7 +7353,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ps2_compilers.tar.xz",
         "sha256": "f337a65a4fbab5cf0e335efe266dcbc7cf69b19c665c6b3a8924736df151a02a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7379,7 +7379,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0b38-030307.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0b38-030307.tar.gz",
         "sha256": "db3d0606c77d4335d2ad884a1285a4bc3b9e68cdd6161dd46d6e2a2cd3313276",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7405,7 +7405,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0b50-030527.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0b50-030527.tar.gz",
         "sha256": "74afc8c7cc13d129d3da205ebaed749a3f5eb789a321c7a669709f11d3d7c653",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7431,7 +7431,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/mwcps2-3.0b52-030722.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcps2-3.0b52-030722.tar.gz",
         "sha256": "5c2f5f96c0a360cc6d4fc866226768f7ab9b290777bcd5cadeeba030b1d596a5",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7459,7 +7459,7 @@
         "ndk-r8e-gcc-4.4.3"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/android-ndk-r8e-linux-x86_64-gcc-4.4.3.tar.bz2",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/android-ndk-r8e-linux-x86_64-gcc-4.4.3.tar.bz2",
         "sha256": "13c57455e63dfb17a98853792ba1063fc640605a4ef2db4ad33a654171f48267",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7487,7 +7487,7 @@
         "ndk-r8e-gcc-4.7"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/android-ndk-r8e-linux-x86_64.tar.bz2",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/android-ndk-r8e-linux-x86_64.tar.bz2",
         "sha256": "126dce67022049dca1be063ea0f8a6c07070f9f0b139339fc9e6a8ff617ed7fc",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7515,7 +7515,7 @@
         "prodg_35"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7543,7 +7543,7 @@
         "prodg_35_b140"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7571,7 +7571,7 @@
         "prodg_37"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7599,7 +7599,7 @@
         "prodg_381"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7627,7 +7627,7 @@
         "prodg_393"
       ],
       "source": {
-        "url": "https://files.decomp.dev/compilers_20251015.zip",
+        "url": "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip",
         "sha256": "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7705,7 +7705,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/psp-gcc-1.3.1.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psp-gcc-1.3.1.tar.gz",
         "sha256": "788b6d2c0ed920da6b1e5a350d23dd7ea05820526e23f9b5b967b3b238ea2e2e",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7759,7 +7759,7 @@
         "pspsnc_1.2.7503.0"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/pspsnc_1.2.7503.0.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/pspsnc_1.2.7503.0.tar.gz",
         "sha256": "0d10a4b387e45b62369eea21b6693fc5517335033bf65e65aa7b543a916f4d6d",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -7787,7 +7787,7 @@
         "psyq_263_221"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/psyq_263_221.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psyq_263_221.tar.gz",
         "sha256": "082a57e28efe06dc75f1c8be4f2b73ffa65ad5b995c6c345cf67b8dcd19192c5",
         "commit": null
       },
@@ -7813,7 +7813,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/psyq_263_221.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psyq_263_221.tar.gz",
         "sha256": "082a57e28efe06dc75f1c8be4f2b73ffa65ad5b995c6c345cf67b8dcd19192c5",
         "commit": null
       },
@@ -7842,7 +7842,7 @@
         "psyq3.3"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.3.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.3.tar.gz",
         "sha256": "6acc5bf3a2e406c35ec77b63f6f77986a2d61502906967f0f32ea75911e7f16f",
         "commit": null
       },
@@ -7868,7 +7868,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.3.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.3.tar.gz",
         "sha256": "6acc5bf3a2e406c35ec77b63f6f77986a2d61502906967f0f32ea75911e7f16f",
         "commit": null
       },
@@ -7897,7 +7897,7 @@
         "psyq3.5"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.5.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.5.tar.gz",
         "sha256": "0f9dff42081ad3cc3a1e2f740797b99c28657c3cfe6406deb9de4d176bd5387e",
         "commit": null
       },
@@ -7923,7 +7923,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.5.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.5.tar.gz",
         "sha256": "0f9dff42081ad3cc3a1e2f740797b99c28657c3cfe6406deb9de4d176bd5387e",
         "commit": null
       },
@@ -7952,7 +7952,7 @@
         "psyq3.6"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.6.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.6.tar.gz",
         "sha256": "9445f4cd871ca85b764b8d2746b6122750af17ecfe2d6e8aae41d15461d8c41d",
         "commit": null
       },
@@ -7978,7 +7978,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.6.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.6.tar.gz",
         "sha256": "9445f4cd871ca85b764b8d2746b6122750af17ecfe2d6e8aae41d15461d8c41d",
         "commit": null
       },
@@ -8007,7 +8007,7 @@
         "psyq4.0"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq4.0.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq4.0.tar.gz",
         "sha256": "f25a4f6f044eb1b344bbbd3291aa9a4fc1a1124fc637eae9522c0a117d940e28",
         "commit": null
       },
@@ -8035,7 +8035,7 @@
         "psyq4.1"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq4.1.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq4.1.tar.gz",
         "sha256": "2a2650ceb5eaa73fdc581bec4a85ccaa6ff9eeea8a4810be25a638f3cd2ebac4",
         "commit": null
       },
@@ -8063,7 +8063,7 @@
         "psyq4.3"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq4.3.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq4.3.tar.gz",
         "sha256": "577038d66507d3aa5423de0ba3f540e121a4f60f637f4794aa4350135d4f9a46",
         "commit": null
       },
@@ -8091,7 +8091,7 @@
         "psyq4.4"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq4.4.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq4.4.tar.gz",
         "sha256": "72e73934bab0d51933eb95af514afb14f3d432f01530eac3ddb16dfbb57ab66c",
         "commit": null
       },
@@ -8149,7 +8149,7 @@
         "psyq4.6"
       ],
       "source": {
-        "url": "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq4.6.tar.gz",
+        "url": "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq4.6.tar.gz",
         "sha256": "635603e09a452c9c2923492fea8b8eb051959dd94f240933b88e94866814b894",
         "commit": null
       },
@@ -8229,7 +8229,7 @@
         "cygnus-2.7-96Q3"
       ],
       "source": {
-        "url": "https://github.com/sozud/saturn-compilers/archive/af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip",
+        "url": "https://github.com/archaic-toolchains/saturn-cygnus/releases/download/2026-11-10/saturn-compilers-af27f4aa6566.zip",
         "sha256": "f5460e3ea653a24fb011a94f2ce2c54b277877e60859ffc906b07dbbe6406595",
         "commit": "af27f4aa6566c1b0fa5332b488e63d6ffd28bd48"
       },
@@ -8255,7 +8255,7 @@
       },
       "aliases": [],
       "source": {
-        "url": "https://github.com/sozud/saturn-compilers/archive/af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip",
+        "url": "https://github.com/archaic-toolchains/saturn-cygnus/releases/download/2026-11-10/saturn-compilers-af27f4aa6566.zip",
         "sha256": "f5460e3ea653a24fb011a94f2ce2c54b277877e60859ffc906b07dbbe6406595",
         "commit": "af27f4aa6566c1b0fa5332b488e63d6ffd28bd48"
       },
@@ -8442,7 +8442,7 @@
         "shc-v5.0r10"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r10.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.0r10.tar.gz",
         "sha256": "1932570b2f751c26b18e5c7f3a7f9ab453aa05a13d1c06787e60fba7711d0016",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8470,7 +8470,7 @@
         "shc-v5.0r26"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r26.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.0r26.tar.gz",
         "sha256": "a065c9b6bfe60af986c72c2d863b0b067fe839605b1131460ff786a8e0badc0d",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8498,7 +8498,7 @@
         "shc-v5.0r28"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r28.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.0r28.tar.gz",
         "sha256": "27eebe4e3938b7a5e3b5f6d921501d1ec0eed862f2f7743f9ff1032fc2ec5789",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8526,7 +8526,7 @@
         "shc-v5.0r31"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r31.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.0r31.tar.gz",
         "sha256": "1b67fce972207f3c72c72e1fd85db0371a5ef504f886a618079b25f1889e936b",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8554,7 +8554,7 @@
         "shc-v5.0r32"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r32.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.0r32.tar.gz",
         "sha256": "21f26227e48a2c9325f0aaf954e569b29db8db1dd1174aff32623017d713fdf5",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8582,7 +8582,7 @@
         "shc-v5.0r32-sh2"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r32.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.0r32.tar.gz",
         "sha256": "21f26227e48a2c9325f0aaf954e569b29db8db1dd1174aff32623017d713fdf5",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8611,7 +8611,7 @@
         "shc-v5.1r01"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.1r01.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.1r01.tar.gz",
         "sha256": "d42a0ff0f7c43bd19319cbc926cfb5b96f76827d6aafb995857b60b76c863cc0",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8639,7 +8639,7 @@
         "shc-v5.1r03"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.1r03.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.1r03.tar.gz",
         "sha256": "a5c41c4b9499c7593d141ee99fcbb9bf3519dbb803cdec9f22318b84b19a06ea",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8667,7 +8667,7 @@
         "shc-v5.1r04"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.1r04.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.1r04.tar.gz",
         "sha256": "277065890128db57816d40a968d510c6a7f9e3c97929d75fd45226755eebb34d",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8695,7 +8695,7 @@
         "shc-v5.1r08"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.1r08.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.1r08.tar.gz",
         "sha256": "2bcc5598a71a429d5e79ae12c9f69adee8950051da2db74c87769144fb80b814",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8723,7 +8723,7 @@
         "shc-v5.1r11"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.1r11.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.1r11.tar.gz",
         "sha256": "5fda932494434e31dd8b50754ba7b76c4bd1fb32a0e7c595b2f0d67ecaa5de39",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8751,7 +8751,7 @@
         "shc-v5.1r13"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.1r13.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.1r13.tar.gz",
         "sha256": "0da9982adc576171d93ceeeedff15c946fc570b0473e39b388e18d9e4ee1427a",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8805,7 +8805,7 @@
         "wcc10.0a"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/wcc10.0a.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/wcc10.0a.tar.gz",
         "sha256": "920a9674d1b10f227ae65171c187212b06d7fc38b263313922615c4f5e9b24a6",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8833,7 +8833,7 @@
         "wpp10.0a"
       ],
       "source": {
-        "url": "https://github.com/decompme/compilers/releases/download/compilers/wcc10.0a.tar.gz",
+        "url": "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/wcc10.0a.tar.gz",
         "sha256": "920a9674d1b10f227ae65171c187212b06d7fc38b263313922615c4f5e9b24a6",
         "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a"
       },
@@ -8862,7 +8862,7 @@
         "wcc10.5"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.5.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.5.tar.gz",
         "sha256": "70acc3b4b4729e44c149b53553a3c35aa4070ed34d6790b034273506d5c5b3fb",
         "commit": null
       },
@@ -8890,7 +8890,7 @@
         "wpp10.5"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.5.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.5.tar.gz",
         "sha256": "70acc3b4b4729e44c149b53553a3c35aa4070ed34d6790b034273506d5c5b3fb",
         "commit": null
       },
@@ -8919,7 +8919,7 @@
         "wcc10.5a"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.5a.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.5a.tar.gz",
         "sha256": "fd82fd36594f1f1333d2b8a4b87956c1dfaacd2c9b3535db556bcf482f81adab",
         "commit": null
       },
@@ -8947,7 +8947,7 @@
         "wpp10.5a"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.5a.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.5a.tar.gz",
         "sha256": "fd82fd36594f1f1333d2b8a4b87956c1dfaacd2c9b3535db556bcf482f81adab",
         "commit": null
       },
@@ -8976,7 +8976,7 @@
         "wcc10.6"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.6.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.6.tar.gz",
         "sha256": "c455edf32dc73f29c2b4e0aa5c6988768809641033ef54700725242711b04e29",
         "commit": null
       },
@@ -9004,7 +9004,7 @@
         "wpp10.6"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.6.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.6.tar.gz",
         "sha256": "c455edf32dc73f29c2b4e0aa5c6988768809641033ef54700725242711b04e29",
         "commit": null
       },
@@ -9033,7 +9033,7 @@
         "wcc11.0"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc11.0.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc11.0.tar.gz",
         "sha256": "6ecbf03ad4d71285f5813c34a4f551720eec0dfb09996a7dda7cb591963df325",
         "commit": null
       },
@@ -9061,7 +9061,7 @@
         "wpp11.0"
       ],
       "source": {
-        "url": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc11.0.tar.gz",
+        "url": "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc11.0.tar.gz",
         "sha256": "6ecbf03ad4d71285f5813c34a4f551720eec0dfb09996a7dda7cb591963df325",
         "commit": null
       },

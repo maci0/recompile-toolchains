@@ -19,7 +19,7 @@ RUN apt-get update \
 ENV REBREW_RUNNER=wibo
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/mwccarm.zip \
-        "https://github.com/decompme/compilers/releases/download/compilers/mwccarm.zip" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwccarm.zip" \
     && echo "dc386e37b2176e960954a733de928337d9b7e7620b9e94228008c31774339ace  /tmp/mwccarm.zip" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

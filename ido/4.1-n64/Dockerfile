@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido41.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/ido4.1.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ido4.1.tar.gz" \
     && echo "16008087602fe1a39cdd7880a3c6987891ddb594cce4416670f2e96456e9b4d4  /tmp/ido41.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

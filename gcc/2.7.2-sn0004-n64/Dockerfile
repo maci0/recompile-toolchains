@@ -27,7 +27,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /opt/gcc-2.7.2-sn0004/asn64.exe \
     && echo "1e04e1195f6504fe711c3db67ad94eb50d47f2a0f21e87dbbe20cbac4d83db39  /opt/gcc-2.7.2-sn0004/asn64.exe" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psyq-obj-parser.tar.gz" \
     && echo "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e  /tmp/parser.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

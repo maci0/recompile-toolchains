@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc6.tar.gz \
-        "https://github.com/OmniBlade/decomp.me/releases/download/msvcwin9x/msvc6.0.tar.gz" \
+        "https://github.com/archaic-toolchains/msvc600-win9x/releases/download/2026-11-10/msvc6.0.tar.gz" \
     && echo "5c81e9c2ab0ac5545022c1418a23392cb514db950cf6dcb1f48327270403fcd3  /tmp/msvc6.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

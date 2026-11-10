@@ -13,11 +13,11 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="PSY-Q 3.6 (MIPS R3000, PS1, DOS binaries under dosemu2) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psyq.tar.gz \
-        "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq3.6.tar.gz" \
+        "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq3.6.tar.gz" \
     && echo "9445f4cd871ca85b764b8d2746b6122750af17ecfe2d6e8aae41d15461d8c41d  /tmp/psyq.tar.gz" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psyq-obj-parser.tar.gz" \
     && echo "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e  /tmp/parser.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/psyq-3.6 \

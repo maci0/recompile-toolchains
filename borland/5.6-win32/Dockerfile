@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Borland C++ 5.6 (win32, wine) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/bcc56.tar.gz \
-        "https://codeload.github.com/earthsiege2/borland-cpp-ide/tar.gz/09bcecc81184" \
+        "https://github.com/archaic-toolchains/borland-cpp-ide/releases/download/2026-11-10/borland-cpp-ide-09bcecc81184.tar.gz" \
     && echo "8e5a93db99330b816646a14bdfa1c90d2e80a41810ce8c65f4942378cb621882  /tmp/bcc56.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/bcc56 \

@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
 ENV REBREW_RUNNER=wibo
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/mwccarm.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/mwcc_20_56.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/mwcc_20_56.tar.gz" \
     && echo "91e10b9826bb985641a6db075da444a51bf25dd53df3216cb8bc05548561ec45  /tmp/mwccarm.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/mwccarm-2.0-56 \

@@ -20,11 +20,11 @@ ENV PSYQ_ROOT=/opt/psyq-4.1 \
     REBREW_RUNNER=wibo
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/psyq.tar.gz \
-        "https://github.com/mkst/esa/releases/download/psyq-binaries/psyq4.1.tar.gz" \
+        "https://github.com/archaic-toolchains/psyq/releases/download/2026-11-10/psyq4.1.tar.gz" \
     && echo "2a2650ceb5eaa73fdc581bec4a85ccaa6ff9eeea8a4810be25a638f3cd2ebac4  /tmp/psyq.tar.gz" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/parser.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/psyq-obj-parser.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/psyq-obj-parser.tar.gz" \
     && echo "353495f13f6756773cd905ba3a0743843232f95719e306fc6ee56cbf7d731a3e  /tmp/parser.tar.gz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

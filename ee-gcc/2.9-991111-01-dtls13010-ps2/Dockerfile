@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="EE-GCC 2.9-991111-01-dtls13010 (PS2 Emotion Engine, native i386) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-991111-01-dtls13010.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/ee-gcc2.9-991111-01-dtls13010.tar.gz" \
     && echo "3ab52a7ea962100f2a7df3e04d3e7a758aad669eb365251682e769b755d9d586  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/ee-gcc-2.9-991111-01-dtls13010 \

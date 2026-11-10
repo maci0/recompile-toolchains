@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="IOP-GCC 2.95.2 build 102 (PS2 IOP, PE/x86_32) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compiler.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/iop-gcc2.95.2-102.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/iop-gcc2.95.2-102.tar.gz" \
     && echo "84016c5899358f65bb320081087f7fb82e32fd5f4ab25733bec094d4baa9728a  /tmp/compiler.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/iop-gcc-2.95.2-102 \

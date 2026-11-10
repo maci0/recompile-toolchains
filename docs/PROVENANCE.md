@@ -23,19 +23,19 @@ listed here, so a new upstream cannot arrive undocumented.
 
 | Upstream | What it hosts | Licence class | Toolchains |
 | --- | --- | --- | --- |
-| `github.com/decompme` | decomp.me's compiler release assets (`decompme/compilers`: the vendor MWCCARM/ARMCC/MWCPS2/MWCCCPSP/SHC/PSY-Q/IRIX tools (proprietary) plus the Apache-2.0/GPL Android NDK repacks and psyq-obj-parser) | proprietary | 133 |
+| `github.com/archaic-toolchains/decompme-compilers` | our copy of decomp.me's compiler release assets (`decompme/compilers`: the vendor MWCCARM/ARMCC/MWCPS2/MWCCCPSP/SHC/PSY-Q/IRIX tools (proprietary) plus the Apache-2.0/GPL Android NDK repacks and psyq-obj-parser) | proprietary | 133 |
 | `github.com/mkst/daze` | Daze 0.3.0 DOS runtime; release includes dependency notices and source references | MIT source; GPL-2.0 release binaries with Unicorn and other dependencies | 5 |
 | `github.com/decompals` | decompals rebuilds: `ido-static-recomp` (IDO for Linux), `old-gcc` (PS1/N64 GCC), `mips-gcc-2.7.2`, `mips-binutils-2.6` | GPL (rebuilds of GPL toolchains) | 53 |
-| `files.decomp.dev` | dated decomp.me compiler bundles (the GameCube/Wii MWCC, ProDG and Xbox 360 MSVC trees; older dates stay addressable) | proprietary | 37 |
+| `github.com/archaic-toolchains/decompdev-compilers` | our copies of the dated files.decomp.dev compiler bundles (the GameCube/Wii MWCC, ProDG and Xbox 360 MSVC trees), which that host rotates | proprietary | 37 |
 | `github.com/archaic-msvc` | our own preservation repos for the archived 32-bit Microsoft VC++ trees (`msvc1000` … `msvc900`, every service pack) | proprietary | 23 |
 | `codeload.github.com/mkst/maspsx` | Commit-pinned Modern ASPSX compatibility layer for PS1 GCC assembly | MIT | 22 |
 | `gist.githubusercontent.com` | revision-pinned converter scripts: `Mc-muffin`'s `rof2elf.py` (SHC ROF → ELF) and `ChrisNonyminus`'s `convert_gas_syntax.py` (Apple cc1 assembler → GNU as) | No declared licence verified; do not infer MIT from public availability | 15 |
 | `downloads.devkitpro.org/packages` | Versioned devkitPro split GCC, binutils, newlib, CRT and rule packages | GPL compiler/binutils; runtime exceptions and component terms | 3 |
 | `github.com/archaic-toolchains` | our own preservation repos: reconstructed 16-bit MSVC / Turbo C / Delphi trees, the MSVC 4.0 and service-pack repos, Borland C++ 5.5, and the original QuickC 2.50 floppy media | proprietary | 14 |
-| `github.com/mkst` | `mkst/esa` `psyq-binaries`: the PSY-Q SDK releases (CCPSX/CC1PSX/ASPSX) | proprietary | 11 |
-| `github.com/OmniBlade` | `OmniBlade/decomp.me` preservation releases: the DOS-era Watcom C/C++ 10.5/10.5a/10.6/11.0 trees (and the `msvcwin9x` repacks) | proprietary | 10 |
-| `github.com/marijnvdwerf` | `marijnvdwerf/sn64` release assets (the 2.8.1 cc1n64 / asn64) | proprietary | 3 |
-| `github.com/LLONSIT` | `qemu-irix-helpers`: the static qemu-irix user-mode emulator plus the original IRIX IDO / MIPSpro trees, commit-pinned | mixed: GPL emulator, proprietary IRIX binaries | 5 |
+| `github.com/archaic-toolchains/psyq` | our copies of `mkst/esa` `psyq-binaries` (the PSY-Q SDK releases: CCPSX/CC1PSX/ASPSX) and of `FoxdieTeam/psyq_sdk` at commit 91719fa5 (the PSY-Q 4.5 headers and libraries) | proprietary | 12 |
+| `github.com/archaic-toolchains/watcom1x` | our copy of `OmniBlade/decomp.me` release `wcc10.5`: the DOS-era Watcom C/C++ 10.5/10.5a/10.6/11.0 trees | proprietary | 8 |
+| `github.com/archaic-toolchains/sn64` | our copy of the `marijnvdwerf/sn64` release assets (the 2.8.1 cc1n64 / cc1pln64 / asn64) | proprietary | 3 |
+| `github.com/archaic-toolchains/irix-ido` | our copy of `LLONSIT/qemu-irix-helpers` at commit d577d165: the original IRIX IDO / MIPSpro trees, each with the static qemu-irix user-mode emulator | mixed: GPL emulator, proprietary IRIX binaries | 5 |
 | `downloads.sourceforge.net/project/sdcc` | SDCC versioned native Linux release | GPL-2.0-or-later compiler; runtime exception and component terms | 4 |
 | `github.com/ChrisNonyminus` | `ChrisNonyminus/powerpc-darwin-cross`: Apple cc1/cc1plus cross builds (powerpc-apple-darwin) | GPL (Apple GCC sources) | 4 |
 | `github.com/open-watcom` | Open Watcom v2 release snapshots | Sybase Open Watcom licence | 4 |
@@ -53,35 +53,36 @@ listed here, so a new upstream cannot arrive undocumented.
 | `codeload.github.com/serge1/ELFIO` | Pinned ELFIO headers for the PSY-Q converter | MIT | 2 |
 | `github.com/Mr-Wiseguy` | `Mr-Wiseguy/pcsx-redux` N64 release assets (cc1n64.exe, asn64.exe) | GPL | 1 |
 | `github.com/RocketRet` | `RocketRet/modern-asn64`: the Python assembler driver used by the SNEW build | MIT | 2 |
+| `github.com/archaic-toolchains/saturn-cygnus` | our copy of `sozud/saturn-compilers` at commit af27f4aa: the Sega Saturn Cygnus 2.7-96Q3 compiler and SDK media | proprietary | 2 |
 | `github.com/llvm-mos/llvm-mos-sdk` | LLVM-MOS compiler and target platform libraries | LLVM Apache-2.0 WITH LLVM-exception and component terms | 2 |
 | `github.com/niXman` | `niXman/mingw-builds-binaries`: prebuilt MinGW-w64 | GPL | 2 |
 | `github.com/pmret` | `gcc-papermario` / `binutils-papermario`: N64 rebuilds for the Paper Mario decomp | GPL | 1 |
 | `github.com/ps2dev/ps2dev` | PS2 homebrew EE and IOP SDK bundle | GPL compiler and binutils; SDK and library component terms | 2 |
-| `github.com/sozud` | `sozud/saturn-compilers`: the Sega Saturn Cygnus 2.7-96Q3 compiler and SDK media, commit-pinned | proprietary | 2 |
 | `github.com/sozud/saturn-compiler-repro` | Native Linux reproductions of the Sega Saturn Cygnus 2.7-96Q3 compiler | GPL compiler sources; AGPL-3.0 reproduction tooling | 2 |
-| `FoxdieTeam` | `FoxdieTeam/psyq_sdk`: the PSY-Q 4.5 headers and libraries (commit-pinned tarball; the codeload archive hashes the same on repeat fetches, so the pin is sha256-verified like every other) | proprietary | 1 |
 | `codeload.github.com/autc04/Retro68` | Commit-pinned Retro68 source; Apple Universal Interfaces excluded | GPL-3.0-or-later and component terms | 1 |
 | `codeload.github.com/autc04/multiversal` | Commit-pinned open Multiversal Interfaces | MIT and component terms retained | 1 |
 | `codeload.github.com/cc65/cc65` | cc65 V2.19 source release (tools identify as 2.18) | zlib-style licence; component terms retained | 1 |
 | `codeload.github.com/davidgiven/ack` | Commit-pinned Amsterdam Compiler Kit source | BSD and component terms retained | 1 |
 | `codeload.github.com/erique/vbcc_vasm_vlink` | Commit-pinned mirror retaining original VBCC/VASM/VLINK source and Amiga target archives | VBCC/VASM/VLINK component terms, including commercial-use and redistribution restrictions | 1 |
 | `codeload.github.com/kyz/libmspack` | Pinned SZDD/QBasic decompression frontend source | LGPL-2.1 and component terms | 1 |
-| `download.microsoft.com/download/vc60pro` | Microsoft's Visual C++ 6.0 redistributable (native MSVCRT runtime for the tools) | proprietary | 1 |
-| `earthsiege2` | `earthsiege2/borland-cpp-ide`: an archive of abandoned Borland C++ installations (the Borland C++ 5.6 command-line tree is extracted from it here) | proprietary | 1 |
 | `gist.githubusercontent.com/masonc15` | Revision-pinned rof2elf.py fork with Saturn SH-2 0xff section padding support | No licence declared in the gist; fork of the existing Mc-muffin converter | 1 |
 | `github.com/AngheloAlf` | `AngheloAlf/egcs_1.1.2-4`: the N64 EGCS tree (mips-linux-gcc driver) | GPL | 1 |
+| `github.com/OmniBlade` | `OmniBlade/decomp.me` preservation releases: the DOS-era Watcom C/C++ 10.5/10.5a/10.6/11.0 trees (and the `msvcwin9x` repacks) | proprietary | 1 |
 | `github.com/SBird1337` | `SBird1337/camelot-gcc`: Camelot GCC 2.96 (GBA) | GPL | 1 |
 | `github.com/andrewwutw/build-djgpp` | Linux-hosted DJGPP GCC and binutils cross-toolchain | GPL compiler and binutils; bundled runtime component terms | 1 |
-| `github.com/bwrsandman` | `bwrsandman/icc5.0.1.010525Z`: the Intel C++ 5.0.1 (build 010525Z) tree, extracted from the archive.org item `latest-versions-of-c` (`data1.cab` md5 e8dd2defb4754dafe9295f2087a52be0).  A personal repository with one release, so the pin is sha256-verified and the same content also exists as git blobs (codeload fallback); mirror it before relying on it for a rebuild | proprietary | 1 |
+| `github.com/archaic-toolchains/borland-cpp-ide` | our copy of `earthsiege2/borland-cpp-ide` at commit 09bcecc8: an archive of abandoned Borland C++ installations (the Borland C++ 5.6 command-line tree is extracted from it here) | proprietary | 1 |
+| `github.com/archaic-toolchains/icc501` | our copy of `bwrsandman/icc5.0.1.010525Z` release `v1`: the Intel C++ 5.0.1 (build 010525Z) tree, extracted from the archive.org item `latest-versions-of-c` | proprietary | 1 |
+| `github.com/archaic-toolchains/msvc1200_u4` | our copy of `heinermann/compilers` release `msvc12`: the preserved Visual C++ 2013 Update 4 tools and runtime | proprietary | 1 |
+| `github.com/archaic-toolchains/msvc600-win9x` | our copy of `OmniBlade/decomp.me` release `msvcwin9x`: the Visual C++ 6.0 and 6.0 SP3 Windows 9x repacks | proprietary | 1 |
+| `github.com/archaic-toolchains/msvc800-portable` | our copy of `widberg/msvc8.0` at commit 52c8293f: portable (patched) MSVC 8.0 repacks | proprietary | 1 |
+| `github.com/archaic-toolchains/vc6redist` | our copy of Microsoft's Visual C++ 6.0 redistributable from download.microsoft.com (native MSVCRT runtime for the tools) | proprietary | 1 |
 | `github.com/devwizard64` | `devwizard64/gcc4.4.0-mips64-elf`: a prebuilt mips64-elf GCC 4.4.0 tree | GPL | 1 |
 | `github.com/gbdk-2020/gbdk-2020` | GBDK-2020 with bundled SDCC and console libraries | GPL-2.0 with linking exception; LCC driver and component terms | 1 |
-| `github.com/heinermann/compilers` | Preserved Visual C++ 2013 Update 4 tools and runtime | proprietary | 1 |
 | `github.com/laqieer` | `laqieer/agbcc`: the FE8J agbcc fork | GPL | 1 |
 | `github.com/notyourav` | `notyourav/agbcc`: the agbcc C++ frontend fork | GPL | 1 |
 | `github.com/pspdev/pspdev` | Dated PSP homebrew SDK bundle | GPL compiler and binutils; SDK and library component terms | 1 |
 | `github.com/z88dk/z88dk` | z88dk v2.4 complete source release | Artistic-2.0, GPL and component licences retained | 1 |
 | `toolchains.bootlin.com` | Versioned Buildroot cross-toolchain with sysroot, source and license references | GCC/binutils GPL; libc and component terms retained | 1 |
-| `widberg` | `widberg/msvc8.0`: portable (patched) MSVC 8.0 repacks, commit-pinned per variant | proprietary | 1 |
 
 ## Shared bases
 

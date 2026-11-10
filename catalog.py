@@ -161,10 +161,6 @@ SOURCES: dict[str, tuple[str, str]] = {
         "Pinned SZDD/QBasic decompression frontend source",
         "LGPL-2.1 and component terms",
     ),
-    "github.com/heinermann/compilers": (
-        "Preserved Visual C++ 2013 Update 4 tools and runtime",
-        "proprietary",
-    ),
     "github.com/andrewwutw/build-djgpp": (
         "Linux-hosted DJGPP GCC and binutils cross-toolchain",
         "GPL compiler and binutils; bundled runtime component terms",
@@ -197,10 +193,6 @@ SOURCES: dict[str, tuple[str, str]] = {
         "Commit-pinned Modern ASPSX compatibility layer for PS1 GCC assembly",
         "MIT",
     ),
-    "download.microsoft.com/download/vc60pro": (
-        "Microsoft's Visual C++ 6.0 redistributable (native MSVCRT runtime for the tools)",
-        "proprietary",
-    ),
     "github.com/archaic-msvc": (
         (
             "our own preservation repos for the archived 32-bit Microsoft VC++ trees "
@@ -216,18 +208,93 @@ SOURCES: dict[str, tuple[str, str]] = {
         ),
         "proprietary",
     ),
-    "github.com/decompme": (
+    "github.com/archaic-toolchains/watcom1x": (
         (
-            "decomp.me's compiler release assets (`decompme/compilers`: the vendor "
-            "MWCCARM/ARMCC/MWCPS2/MWCCCPSP/SHC/PSY-Q/IRIX tools (proprietary) plus the "
-            "Apache-2.0/GPL Android NDK repacks and psyq-obj-parser)"
+            "our copy of `OmniBlade/decomp.me` release `wcc10.5`: the DOS-era Watcom C/C++ "
+            "10.5/10.5a/10.6/11.0 trees"
         ),
         "proprietary",
     ),
-    "files.decomp.dev": (
+    "github.com/archaic-toolchains/msvc600-win9x": (
         (
-            "dated decomp.me compiler bundles (the GameCube/Wii MWCC, ProDG and "
-            "Xbox 360 MSVC trees; older dates stay addressable)"
+            "our copy of `OmniBlade/decomp.me` release `msvcwin9x`: the Visual C++ 6.0 and 6.0 SP3 "
+            "Windows 9x repacks"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/msvc1200_u4": (
+        (
+            "our copy of `heinermann/compilers` release `msvc12`: the preserved Visual C++ 2013 "
+            "Update 4 tools and runtime"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/irix-ido": (
+        (
+            "our copy of `LLONSIT/qemu-irix-helpers` at commit d577d165: the original IRIX IDO / "
+            "MIPSpro trees, each with the static qemu-irix user-mode emulator"
+        ),
+        "mixed: GPL emulator, proprietary IRIX binaries",
+    ),
+    "github.com/archaic-toolchains/borland-cpp-ide": (
+        (
+            "our copy of `earthsiege2/borland-cpp-ide` at commit 09bcecc8: an archive of abandoned "
+            "Borland C++ installations (the Borland C++ 5.6 command-line tree is extracted from it "
+            "here)"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/msvc800-portable": (
+        ("our copy of `widberg/msvc8.0` at commit 52c8293f: portable (patched) MSVC 8.0 repacks"),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/saturn-cygnus": (
+        (
+            "our copy of `sozud/saturn-compilers` at commit af27f4aa: the Sega Saturn Cygnus "
+            "2.7-96Q3 compiler and SDK media"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/psyq": (
+        (
+            "our copies of `mkst/esa` `psyq-binaries` (the PSY-Q SDK releases: CCPSX/CC1PSX/ASPSX) "
+            "and of `FoxdieTeam/psyq_sdk` at commit 91719fa5 (the PSY-Q 4.5 headers and libraries)"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/sn64": (
+        (
+            "our copy of the `marijnvdwerf/sn64` release assets (the 2.8.1 cc1n64 / cc1pln64 / "
+            "asn64)"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/icc501": (
+        (
+            "our copy of `bwrsandman/icc5.0.1.010525Z` release `v1`: the Intel C++ 5.0.1 (build "
+            "010525Z) tree, extracted from the archive.org item `latest-versions-of-c`"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/vc6redist": (
+        (
+            "our copy of Microsoft's Visual C++ 6.0 redistributable from download.microsoft.com "
+            "(native MSVCRT runtime for the tools)"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/decompdev-compilers": (
+        (
+            "our copies of the dated files.decomp.dev compiler bundles (the GameCube/Wii MWCC, "
+            "ProDG and Xbox 360 MSVC trees), which that host rotates"
+        ),
+        "proprietary",
+    ),
+    "github.com/archaic-toolchains/decompme-compilers": (
+        (
+            "our copy of decomp.me's compiler release assets (`decompme/compilers`: the vendor "
+            "MWCCARM/ARMCC/MWCPS2/MWCCCPSP/SHC/PSY-Q/IRIX tools (proprietary) plus the "
+            "Apache-2.0/GPL Android NDK repacks and psyq-obj-parser)"
         ),
         "proprietary",
     ),
@@ -238,38 +305,9 @@ SOURCES: dict[str, tuple[str, str]] = {
         ),
         "GPL (rebuilds of GPL toolchains)",
     ),
-    "github.com/LLONSIT": (
-        (
-            "`qemu-irix-helpers`: the static qemu-irix user-mode emulator plus the "
-            "original IRIX IDO / MIPSpro trees, commit-pinned"
-        ),
-        "mixed: GPL emulator, proprietary IRIX binaries",
-    ),
-    "github.com/bwrsandman": (
-        (
-            "`bwrsandman/icc5.0.1.010525Z`: the Intel C++ 5.0.1 (build 010525Z) "
-            "tree, extracted from the archive.org item `latest-versions-of-c` "
-            "(`data1.cab` md5 e8dd2defb4754dafe9295f2087a52be0).  A personal "
-            "repository with one release, so the pin is sha256-verified and the "
-            "same content also exists as git blobs (codeload fallback); mirror it "
-            "before relying on it for a rebuild"
-        ),
-        "proprietary",
-    ),
     "github.com/sozud/saturn-compiler-repro": (
         "Native Linux reproductions of the Sega Saturn Cygnus 2.7-96Q3 compiler",
         "GPL compiler sources; AGPL-3.0 reproduction tooling",
-    ),
-    "github.com/sozud": (
-        (
-            "`sozud/saturn-compilers`: the Sega Saturn Cygnus 2.7-96Q3 "
-            "compiler and SDK media, commit-pinned"
-        ),
-        "proprietary",
-    ),
-    "github.com/mkst": (
-        "`mkst/esa` `psyq-binaries`: the PSY-Q SDK releases (CCPSX/CC1PSX/ASPSX)",
-        "proprietary",
     ),
     "github.com/archaic-toolchains/dosemu2-noble": (
         (
@@ -282,14 +320,6 @@ SOURCES: dict[str, tuple[str, str]] = {
         ),
         "GPL",
     ),
-    "FoxdieTeam": (
-        (
-            "`FoxdieTeam/psyq_sdk`: the PSY-Q 4.5 headers and libraries "
-            "(commit-pinned tarball; the codeload archive hashes the same on "
-            "repeat fetches, so the pin is sha256-verified like every other)"
-        ),
-        "proprietary",
-    ),
     "github.com/pmret": (
         ("`gcc-papermario` / `binutils-papermario`: N64 rebuilds for the Paper Mario decomp"),
         "GPL",
@@ -297,10 +327,6 @@ SOURCES: dict[str, tuple[str, str]] = {
     "github.com/Mr-Wiseguy": (
         "`Mr-Wiseguy/pcsx-redux` N64 release assets (cc1n64.exe, asn64.exe)",
         "GPL",
-    ),
-    "github.com/marijnvdwerf": (
-        "`marijnvdwerf/sn64` release assets (the 2.8.1 cc1n64 / asn64)",
-        "proprietary",
     ),
     "github.com/RocketRet": (
         "`RocketRet/modern-asn64`: the Python assembler driver used by the SNEW build",
@@ -329,18 +355,6 @@ SOURCES: dict[str, tuple[str, str]] = {
     "github.com/open-watcom": (
         "Open Watcom v2 release snapshots",
         "Sybase Open Watcom licence",
-    ),
-    "widberg": (
-        ("`widberg/msvc8.0`: portable (patched) MSVC 8.0 repacks, commit-pinned per variant"),
-        "proprietary",
-    ),
-    "earthsiege2": (
-        (
-            "`earthsiege2/borland-cpp-ide`: an archive of abandoned Borland C++ "
-            "installations (the Borland C++ 5.6 command-line tree is extracted "
-            "from it here)"
-        ),
-        "proprietary",
     ),
     "github.com/OmniBlade": (
         (

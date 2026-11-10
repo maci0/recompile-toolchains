@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/ndk-r8e-4.7 /tmp/ndk && curl -fsSL --retry 3 --retry-all-errors -o /tmp/ndk/ndk.tar.bz2 \
-        "https://github.com/decompme/compilers/releases/download/compilers/android-ndk-r8e-linux-x86_64.tar.bz2" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/android-ndk-r8e-linux-x86_64.tar.bz2" \
     && echo "126dce67022049dca1be063ea0f8a6c07070f9f0b139339fc9e6a8ff617ed7fc  /tmp/ndk/ndk.tar.bz2" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

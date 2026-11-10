@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/ido.tar.xz \
-        "https://github.com/LLONSIT/qemu-irix-helpers/raw/d577d1654ca4b57585af59849cb067c0148874d7/qemu/ido6.0.tar.xz" \
+        "https://github.com/archaic-toolchains/irix-ido/releases/download/2026-11-10/ido6.0.tar.xz" \
     && echo "c56d4be020bdaf76310ceec455ebc0d443fb7a46c740491f74898b04f6a60356  /tmp/ido.tar.xz" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

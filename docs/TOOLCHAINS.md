@@ -106,7 +106,7 @@ Borland Turbo C/C++ (DOS and Win32)
 | `rebrew/borland:3.1-decompme-win16` | win16 | `bcc` | DOSBox | `bcc3.1` | `bcc3.1.tar.gz` `1fad5133fbe0` @ `0884197d3e4a` | none |
 | `rebrew/borland:3.1-win16` | win16 | `tcc` | DOSBox | none | `main` `3d534741ebdc` @ `ba6af878392b` | none |
 | `rebrew/borland:5.5-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `e9319c390430` @ `fcdcaf5bc41f` | none |
-| `rebrew/borland:5.6-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `09bcecc81184` `8e5a93db9933` @ `09bcecc81184` | unpacked from `tar-subset` |
+| `rebrew/borland:5.6-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `borland-cpp-ide-09bcecc81184.tar.gz` `8e5a93db9933` @ `09bcecc81184` | unpacked from `tar-subset` |
 
 ## cc65
 
@@ -306,7 +306,7 @@ SGI IDO MIPS compilers for N64 (recompiled and IRIX originals)
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/ido:4.1-n64` | n64 | `cc` | native | `ido4.1` | `ido4.1.tar.gz` `16008087602f` @ `0884197d3e4a` | none |
 | `rebrew/ido:5.2-n64` | n64 | `cc` | native | `ido5.2` | `ido5.2.tar.xz` `870cd946d31d` @ `d577d1654ca4` | none |
-| `rebrew/ido:5.3-cxx-n64` | n64 | `cc` | native | `ido5.3_c++`, `ido5.3_c++_irix`, `ido5.3-cxx` | `ido5.3_c++.tar.xz` `851426c63ffb` @ `d577d1654ca4` | entered through the vendor C++ driver (`usr/lib/CC`): `.C`/`.cc` only, `.cpp` is silently ignored |
+| `rebrew/ido:5.3-cxx-n64` | n64 | `cc` | native | `ido5.3_c++`, `ido5.3_c++_irix`, `ido5.3-cxx` | `ido5.3_c-.tar.xz` `851426c63ffb` @ `d577d1654ca4` | entered through the vendor C++ driver (`usr/lib/CC`): `.C`/`.cc` only, `.cpp` is silently ignored |
 | `rebrew/ido:5.3-irix-n64` | n64 | `cc` | native | `ido5.3_irix`, `ido5.3_asm_irix`, `ssb_ido5.3` | `ssb_ido5.3.tar` `a8a5bfa1713c` @ `d577d1654ca4` | none |
 | `rebrew/ido:5.3-linux` | host | `cc` | native | `ido5.3_linux` | `ido-5.3-recomp-linux.tar.gz` `ab5c741561f8` @ `9c242adc890b` | none |
 | `rebrew/ido:5.3-n64` | n64 | `cc` | native | `ido5.3` | `ido-5.3-recomp-linux.tar.gz` `ab5c741561f8` @ `9c242adc890b` | none |
@@ -396,7 +396,7 @@ Microsoft Visual C/C++ 1.0-12.0
 | `rebrew/msvc:7.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.0` | `master` `5f75462fb613` @ `97fe4cdeaeb0` | none |
 | `rebrew/msvc:7.1-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `44246ff2980d` @ `cf6260606463` | none |
 | `rebrew/msvc:7.1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.1` | `master` `618e876bc064` @ `2932d76fe417` | none |
-| `rebrew/msvc:8.0-portable-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0p` | `52c8293f8b8d6441c594cf096542290c17a4d70e.zip` `b138c1b3c99a` @ `52c8293f8b8d` | unpacked from `zip-strip1` |
+| `rebrew/msvc:8.0-portable-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0p` | `msvc8.0-52c8293f8b8d.zip` `b138c1b3c99a` @ `52c8293f8b8d` | unpacked from `zip-strip1` |
 | `rebrew/msvc:8.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0sp1` | `master` `9b53b515d798` @ `4b1bafba636f` | none |
 | `rebrew/msvc:8.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0` | `master` `ab819164ebd9` @ `00ddaf58d097` | none |
 | `rebrew/msvc:9.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `33a66c779da3` @ `cebb3c9740c9` | none |
@@ -624,10 +624,10 @@ Sega Saturn SH-2 toolchains (Cygnus 2.7-96Q3)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/saturn:cygnus-2.7-96Q3-daze-0.3.0-saturn` | saturn | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip` `f5460e3ea653` @ `af27f4aa6566` | the same build as `saturn-cygnus-2.7-96Q3`, with a different front end; pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
+| `rebrew/saturn:cygnus-2.7-96Q3-daze-0.3.0-saturn` | saturn | `cc` | Daze 0.3.0 (Unicorn, no KVM required) | none | `saturn-compilers-af27f4aa6566.zip` `f5460e3ea653` @ `af27f4aa6566` | the same build as `saturn-cygnus-2.7-96Q3`, with a different front end; pins a second source (converter script); Original DOS compiler stages under Daze 0.3.0, fixed Unicorn backend; no /dev/kvm or PPA runtime required |
 | `rebrew/saturn:cygnus-2.7-96Q3-native-saturn` | saturn | `cc` | native | `cygnus-2.7-96Q3-native` | `cc1-native.tar.gz` `3f215db5c6c6` | native Linux i386 compiler; host cpp -> cc1-native -> sh-elf-as; no KVM required; GNU assembler can add trailing SH NOP section padding relative to the DOS assembler; use the DOS profile when exact section padding is required |
 | `rebrew/saturn:cygnus-2.7-96Q3-native64-saturn` | saturn | `cc` | native | none | `cc1-native64.tar.gz` `67f8072355ea` | Native Linux x86-64 compiler reproduction; qualified separately from native32 and DOS |
-| `rebrew/saturn:cygnus-2.7-96Q3-saturn` | saturn | `cc` | dosemu2 (needs `--device /dev/kvm`) | `cygnus-2.7-96Q3` | `af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip` `f5460e3ea653` @ `af27f4aa6566` | unpacked from `zip-subpath:cygnus-2.7-96Q3-bin`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
+| `rebrew/saturn:cygnus-2.7-96Q3-saturn` | saturn | `cc` | dosemu2 (needs `--device /dev/kvm`) | `cygnus-2.7-96Q3` | `saturn-compilers-af27f4aa6566.zip` `f5460e3ea653` @ `af27f4aa6566` | unpacked from `zip-subpath:cygnus-2.7-96Q3-bin`; 1994 DJGPP `go32` DOS binaries run under dosemu2 (DOSBox cannot load their stub), so the container needs `--device /dev/kvm` |
 
 ## sdcc
 

@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/shc.tar.gz \
-        "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r10.tar.gz" \
+        "https://github.com/archaic-toolchains/decompme-compilers/releases/download/2026-11-10/shc-v5.0r10.tar.gz" \
     && echo "1932570b2f751c26b18e5c7f3a7f9ab453aa05a13d1c06787e60fba7711d0016  /tmp/shc.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/shc-5.0r10 && curl -fsSL --retry 3 --retry-all-errors -o /opt/shc-5.0r10/rof2elf.py \

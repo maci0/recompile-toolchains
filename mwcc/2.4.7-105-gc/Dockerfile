@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/compilers.zip \
-        "https://files.decomp.dev/compilers_20251015.zip" \
+        "https://github.com/archaic-toolchains/decompdev-compilers/releases/download/2026-11-10/compilers_20251015.zip" \
     && echo "491cb62317c7f3669ac283ae159e82e3c97a5713b78299571ba4cf023dc7e95e  /tmp/compilers.zip" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

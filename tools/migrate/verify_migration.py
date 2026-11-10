@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import collections
 import hashlib
+import json
 import pathlib
 import re
 import shutil
@@ -58,6 +59,37 @@ ACKNOWLEDGED: dict[str, tuple[str, str, str | None]] = {
         "b570e4c8e2aee8cace91ac323f5728e18f275ed73602b0af8f51a65a5c34a3eb",
     ),
 }
+
+
+#: archaic-toolchains mirrors (mirror URL -> upstream URL) of third-party media, byte for byte
+#: the files their upstreams served, so every sha256 pin stayed.  verify reads a mirror URL as its
+#: upstream: moving a pin to its mirror is no migration difference, and every other one still is.
+MIRRORS: dict[str, str] = json.loads(
+    (REPO / "tools" / "migrate" / "mirrors.json").read_text(encoding="utf-8")
+)
+
+
+def unmirrored(directory: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
+    """*directory*, or a copy at *into* whose text files name each mirror URL's upstream."""
+    texts: dict[pathlib.Path, str] = {}
+    for path in directory.rglob("*"):
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:  # a binary COPY source: no URL to put back
+            continue
+        if any(mirror in text for mirror in MIRRORS):
+            texts[path.relative_to(directory)] = text
+    if not texts:
+        return directory
+    shutil.copytree(directory, into)
+    for rel, original in texts.items():
+        text = original
+        for mirror, upstream in MIRRORS.items():
+            text = text.replace(mirror, upstream)
+        (into / rel).write_text(text, encoding="utf-8")
+    return into
 
 
 #: Intentional post-migration repairs, qualified by the 2026-10-25 smoke and
@@ -445,6 +477,7 @@ def main(argv: list[str]) -> int:
                 print(f"  {profile}: no generated Dockerfile at {host}", file=sys.stderr)
                 differ.append((profile, [f"missing {host}/Dockerfile"]))
                 continue
+            new_dir = unmirrored(new_dir, tmp / "unmirrored" / host)
             problems = (
                 diff(old_dir, new_dir)
                 + clause_diff(old_dir, new_dir)

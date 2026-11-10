@@ -47,3 +47,29 @@ class TestMigration(unittest.TestCase):
                 self.assertEqual(migration.main(["--baseline", "test"]), 0)
                 (new / "cc.sh").write_text('#!/bin/sh\nexec unreviewed "$@"\n')
                 self.assertEqual(migration.main(["--baseline", "test"]), 1)
+
+    def test_a_mirror_url_reads_as_its_upstream(self) -> None:
+        upstream = "https://upstream.example/cc.tar.gz"
+        mirror = "https://github.com/archaic-toolchains/cc/releases/download/2026-11-10/cc.tar.gz"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            old, new = root / "old" / "tool", root / "new" / "tool"
+            for directory, url in [(old, upstream), (new, mirror)]:
+                directory.mkdir(parents=True)
+                (directory / "Dockerfile").write_text(
+                    f'FROM scratch\nRUN curl -fsSL -o /tmp/cc.tar.gz "{url}"\n'
+                    'ENTRYPOINT ["/usr/local/bin/cc"]\n'
+                )
+            with (
+                patch.object(migration, "REPO", new.parent),
+                patch.object(migration, "checkout", return_value=old.parent),
+                patch.object(migration, "discard"),
+                patch.object(
+                    migration.generate, "manifest", return_value={"test": {"host_dir": "tool"}}
+                ),
+                redirect_stdout(StringIO()),
+            ):
+                with patch.object(migration, "MIRRORS", {mirror: upstream}):
+                    self.assertEqual(migration.main(["--baseline", "test"]), 0)
+                with patch.object(migration, "MIRRORS", {}):
+                    self.assertEqual(migration.main(["--baseline", "test"]), 1)

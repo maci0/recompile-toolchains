@@ -47,42 +47,44 @@ RUN apt-get update \
         libstdc++6 libx11-6 libxext6 python3 tar \
     && rm -rf /var/lib/apt/lists/*
 
-# dosemu2 + the FreeDOS++ kernel (fdpp) + the dj64 DPMI host, from the two
-# PPAs decomp.me's own backend uses.  apt installs the local files so their
+# dosemu2 + the FreeDOS++ kernel (fdpp) + the dj64 DPMI host: builds from the two
+# PPAs decomp.me's own backend uses, downloaded from our copies in
+# archaic-toolchains/dosemu2-noble, since the PPAs delete superseded builds and
+# a pinned one stops downloading within weeks.  apt installs the local files so their
 # handful of Ubuntu-native dependencies resolve from the archive (the lists
 # removed by the layer above are refreshed first).
 RUN apt-get update \
     && mkdir -p /tmp/debs \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/dosemu2.deb \
-        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/d/dosemu2/dosemu2_2.0~pre9-10398-3fc7a2d5e+202610251018~ubuntu24.04.1_amd64.deb" \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/dosemu2.deb" \
     && echo "030f19f2e60a39b93411fb689bec732ef7fc7b2021af1f7f200166ad215b6cea  /tmp/debs/dosemu2.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/fdpp.deb \
-        "https://launchpadlibrarian.net/860512428/fdpp_1.10-10002-1671-9282d8c+202605091902~ubuntu24.04.1_amd64.deb" \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/fdpp.deb" \
     && echo "e1b2c238ef79c97ac588dfeec54cc8598890cd97e2e344dc4627258948d09d8d  /tmp/debs/fdpp.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libfdldr35.deb \
-        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdldr35_1.11-10003-1717-f2e1f7d+202610211533~ubuntu24.04.1_amd64.deb" \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/libfdldr35.deb" \
     && echo "3eae90ee8f0d2f44f1c6b23bc5025ab29438fc11ff7cbd68e12ff331855239a0  /tmp/debs/libfdldr35.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libfdpp35.deb \
-        "https://ppa.launchpadcontent.net/dosemu2/ppa/ubuntu/pool/main/f/fdpp/libfdpp35_1.11-10003-1717-f2e1f7d+202610211533~ubuntu24.04.1_amd64.deb" \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/libfdpp35.deb" \
     && echo "096d98ba5730dfd6e4030381e28f7ebd335e11579660765abf75dd549443af07  /tmp/debs/libfdpp35.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/comcom64.deb \
-        "https://launchpadlibrarian.net/879631907/comcom64_0.5-0~202610040914+202610052207~ubuntu24.04.1_amd64.deb" \
-    && echo "88deb90bc01279da57da12d131ff1a8fa7c9d4e2779c54aba8c624d085633357  /tmp/debs/comcom64.deb" | sha256sum -c - \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/comcom64.deb" \
+    && echo "a936b0cd6bb277b1390c69b446d1c40aaae66b709214d7d84b7af39fea21598b  /tmp/debs/comcom64.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/comcom32.deb \
-        "https://launchpadlibrarian.net/879631904/comcom32_0.5-0~202610040914+202610052207~ubuntu24.04.1_all.deb" \
-    && echo "f7b6ef20b573be739d81abc6ab282663f610755c4be4197d62c46bce8f17a873  /tmp/debs/comcom32.deb" | sha256sum -c - \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/comcom32.deb" \
+    && echo "59908a1a15fa1b588fa2f02535ac6c956872d6cc6ccead1d283f8297f64d0f33  /tmp/debs/comcom32.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/dj64.deb \
-        "https://launchpadlibrarian.net/879631484/dj64_0.5-0~202610031149+202610052030~ubuntu24.04.1_amd64.deb" \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/dj64.deb" \
     && echo "a59151ebc5c6201544f9870095397e417dbac7b8f4fdef522fa6fda684c77476  /tmp/debs/dj64.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/djstub.deb \
-        "https://ppa.launchpadcontent.net/stsp-0/dj64/ubuntu/pool/main/d/djstub/djstub_0.9-0~202610151314+202610151601~ubuntu24.04.1_all.deb" \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/djstub.deb" \
     && echo "7fe066839810615a6c0a1b3e761006e1f4fecc6a711de131b37bc6f0058a7d6c  /tmp/debs/djstub.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libdjstub64-0.deb \
-        "https://launchpadlibrarian.net/878032061/libdjstub64-0_0.5-0~202609232118~ubuntu24.04.1_amd64.deb" \
-    && echo "62ccf36ab4ce966f7917772eff3d66d5c4ca5d9702b4c4bf85fc7e6987c29217  /tmp/debs/libdjstub64-0.deb" | sha256sum -c - \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/libdjstub64-0.deb" \
+    && echo "4c978839c9cf37fb3ed010febeed4f01f0e737296a5f6901f134aeab47cd37da  /tmp/debs/libdjstub64-0.deb" | sha256sum -c - \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/libdjdev64-0.deb \
-        "https://launchpadlibrarian.net/878032060/libdjdev64-0_0.5-0~202609232118~ubuntu24.04.1_amd64.deb" \
-    && echo "0b286a3f2c7639a2b5bcaf4641d5a8cf06e81c4998f1f809f2ace44021de5756  /tmp/debs/libdjdev64-0.deb" | sha256sum -c - \
+        "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/libdjdev64-0.deb" \
+    && echo "7b5c53170e2445884d83de0e5d7462daab09398473fd1dda929beafedb4245cd  /tmp/debs/libdjdev64-0.deb" | sha256sum -c - \
     && apt-get install -y --no-install-recommends /tmp/debs/dosemu2.deb /tmp/debs/fdpp.deb \
         /tmp/debs/libfdldr35.deb /tmp/debs/libfdpp35.deb /tmp/debs/comcom64.deb \
         /tmp/debs/comcom32.deb /tmp/debs/dj64.deb /tmp/debs/djstub.deb \

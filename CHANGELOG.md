@@ -4,6 +4,7 @@
 
 ### Changed
 
+- `base-dosemu` downloads its ten dosemu2, fdpp, dj64 and comcom `.deb` files from our copies in `archaic-toolchains/dosemu2-noble` (release `2026-11-10`), not from the Launchpad PPAs, which delete superseded builds: four of the pinned ones were gone, so `base-dosemu` and every 16-bit DOS image on it could not be built. Six keep their sha256; `comcom32`, `comcom64`, `libdjstub64-0` and `libdjdev64-0` move to the PPAs' 2026-10-16 rebuilds of the same upstream versions.
 - `quickc-2.50` downloads its floppy media from our preservation repo `archaic-toolchains/quickc250` (release `2.50`), byte for byte the WinWorld archive it pinned before, so the sha256 is unchanged. WinWorld's direct mirror URL now answers 404 unless a session from its download page comes with the request, which failed `make pins`.
 
 ## [1.13.0] - 2026-11-09

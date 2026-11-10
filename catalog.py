@@ -271,19 +271,14 @@ SOURCES: dict[str, tuple[str, str]] = {
         "`mkst/esa` `psyq-binaries`: the PSY-Q SDK releases (CCPSX/CC1PSX/ASPSX)",
         "proprietary",
     ),
-    "ppa.launchpadcontent.net/dosemu2/ppa": (
+    "github.com/archaic-toolchains/dosemu2-noble": (
         (
-            "the `dosemu2/ppa` packages `dosemu2` (x86 virtualisation for DOS), "
-            "`fdpp`/`libfdpp35`/`libfdldr35` (the FreeDOS++ kernel) and "
-            "`comcom64`/`comcom32`, the DOS runtime the 16-bit toolchains run on"
-        ),
-        "GPL",
-    ),
-    "ppa.launchpadcontent.net/stsp-0/dj64": (
-        (
-            "the `stsp-0/dj64` PPA: the dj64 DPMI host (`dj64`, `djstub`, "
-            "`libdjstub64-0`, `libdjdev64-0`) that lets DJGPP `go32` binaries "
-            "run under dosemu2"
+            "our copies of the `dosemu2/ppa` and `stsp-0/dj64` PPA builds: "
+            "`dosemu2` (x86 virtualisation for DOS), `fdpp`/`libfdpp35`/"
+            "`libfdldr35` (the FreeDOS++ kernel), `comcom64`/`comcom32`, and the "
+            "dj64 DPMI host (`dj64`, `djstub`, `libdjstub64-0`, `libdjdev64-0`) "
+            "that lets DJGPP `go32` binaries run under dosemu2: the DOS runtime the "
+            "16-bit toolchains run on"
         ),
         "GPL",
     ),

@@ -89,8 +89,7 @@ These upstreams are not pinned by any profile; they are what the
 shared base images install, and each base Dockerfile carries the
 sha256-pinned package list:
 
-- `ppa.launchpadcontent.net/dosemu2/ppa` hosts the `dosemu2/ppa` packages `dosemu2` (x86 virtualisation for DOS), `fdpp`/`libfdpp35`/`libfdldr35` (the FreeDOS++ kernel) and `comcom64`/`comcom32`, the DOS runtime the 16-bit toolchains run on (GPL)
-- `ppa.launchpadcontent.net/stsp-0/dj64` hosts the `stsp-0/dj64` PPA: the dj64 DPMI host (`dj64`, `djstub`, `libdjstub64-0`, `libdjdev64-0`) that lets DJGPP `go32` binaries run under dosemu2 (GPL)
+- `github.com/archaic-toolchains/dosemu2-noble` hosts our copies of the `dosemu2/ppa` and `stsp-0/dj64` PPA builds: `dosemu2` (x86 virtualisation for DOS), `fdpp`/`libfdpp35`/`libfdldr35` (the FreeDOS++ kernel), `comcom64`/`comcom32`, and the dj64 DPMI host (`dj64`, `djstub`, `libdjstub64-0`, `libdjdev64-0`) that lets DJGPP `go32` binaries run under dosemu2: the DOS runtime the 16-bit toolchains run on (GPL)
 
 ## Community id mappings
 

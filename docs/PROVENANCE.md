@@ -31,7 +31,7 @@ listed here, so a new upstream cannot arrive undocumented.
 | `codeload.github.com/mkst/maspsx` | Commit-pinned Modern ASPSX compatibility layer for PS1 GCC assembly | MIT | 22 |
 | `gist.githubusercontent.com` | revision-pinned converter scripts: `Mc-muffin`'s `rof2elf.py` (SHC ROF → ELF) and `ChrisNonyminus`'s `convert_gas_syntax.py` (Apple cc1 assembler → GNU as) | No declared licence verified; do not infer MIT from public availability | 15 |
 | `downloads.devkitpro.org/packages` | Versioned devkitPro split GCC, binutils, newlib, CRT and rule packages | GPL compiler/binutils; runtime exceptions and component terms | 3 |
-| `github.com/archaic-toolchains` | our own preservation repos: reconstructed 16-bit MSVC / Turbo C / Delphi trees, the MSVC 4.0 and service-pack repos, and Borland C++ 5.5 | proprietary | 13 |
+| `github.com/archaic-toolchains` | our own preservation repos: reconstructed 16-bit MSVC / Turbo C / Delphi trees, the MSVC 4.0 and service-pack repos, Borland C++ 5.5, and the original QuickC 2.50 floppy media | proprietary | 14 |
 | `github.com/mkst` | `mkst/esa` `psyq-binaries`: the PSY-Q SDK releases (CCPSX/CC1PSX/ASPSX) | proprietary | 11 |
 | `github.com/OmniBlade` | `OmniBlade/decomp.me` preservation releases: the DOS-era Watcom C/C++ 10.5/10.5a/10.6/11.0 trees (and the `msvcwin9x` repacks) | proprietary | 10 |
 | `github.com/marijnvdwerf` | `marijnvdwerf/sn64` release assets (the 2.8.1 cc1n64 / asn64) | proprietary | 3 |
@@ -66,7 +66,6 @@ listed here, so a new upstream cannot arrive undocumented.
 | `codeload.github.com/davidgiven/ack` | Commit-pinned Amsterdam Compiler Kit source | BSD and component terms retained | 1 |
 | `codeload.github.com/erique/vbcc_vasm_vlink` | Commit-pinned mirror retaining original VBCC/VASM/VLINK source and Amiga target archives | VBCC/VASM/VLINK component terms, including commercial-use and redistribution restrictions | 1 |
 | `codeload.github.com/kyz/libmspack` | Pinned SZDD/QBasic decompression frontend source | LGPL-2.1 and component terms | 1 |
-| `dl-alt1.winworldpc.com` | Preserved Microsoft QuickC 2.50 original floppy media | proprietary | 1 |
 | `download.microsoft.com/download/vc60pro` | Microsoft's Visual C++ 6.0 redistributable (native MSVCRT runtime for the tools) | proprietary | 1 |
 | `earthsiege2` | `earthsiege2/borland-cpp-ide`: an archive of abandoned Borland C++ installations (the Borland C++ 5.6 command-line tree is extracted from it here) | proprietary | 1 |
 | `gist.githubusercontent.com/masonc15` | Revision-pinned rof2elf.py fork with Saturn SH-2 0xff section padding support | No licence declared in the gist; fork of the existing Mc-muffin converter | 1 |

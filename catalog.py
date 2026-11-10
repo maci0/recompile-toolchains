@@ -142,10 +142,6 @@ SOURCES: dict[str, tuple[str, str]] = {
         "Commit-pinned open Multiversal Interfaces",
         "MIT and component terms retained",
     ),
-    "dl-alt1.winworldpc.com": (
-        "Preserved Microsoft QuickC 2.50 original floppy media",
-        "proprietary",
-    ),
     "downloads.devkitpro.org/packages": (
         "Versioned devkitPro split GCC, binutils, newlib, CRT and rule packages",
         "GPL compiler/binutils; runtime exceptions and component terms",
@@ -215,7 +211,8 @@ SOURCES: dict[str, tuple[str, str]] = {
     "github.com/archaic-toolchains": (
         (
             "our own preservation repos: reconstructed 16-bit MSVC / Turbo C / Delphi "
-            "trees, the MSVC 4.0 and service-pack repos, and Borland C++ 5.5"
+            "trees, the MSVC 4.0 and service-pack repos, Borland C++ 5.5, and the "
+            "original QuickC 2.50 floppy media"
         ),
         "proprietary",
     ),

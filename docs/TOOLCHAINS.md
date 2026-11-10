@@ -608,7 +608,7 @@ Microsoft QuickC for DOS
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/quickc:2.50-msdos` | msdos | `quickc` | DOSBox | none | `Microsoft%20QuickC%202.50%20(1990)%20(5.25-360k).7z` `922305575ba4` @ `0884197d3e4a` | Original eight floppy images retained under /opt/quickc-media; QBasic SZDD compression expanded with pinned libmspack example frontend and distribution libmspack |
+| `rebrew/quickc:2.50-msdos` | msdos | `quickc` | DOSBox | none | `quickc-2.50-5.25-360k.7z` `922305575ba4` @ `0884197d3e4a` | Original eight floppy images retained under /opt/quickc-media; QBasic SZDD compression expanded with pinned libmspack example frontend and distribution libmspack |
 
 ## retro68
 

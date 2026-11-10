@@ -26307,7 +26307,7 @@
     "arg_style": "dos",
     "obj_ext": ".obj",
     "bits": 16,
-    "url": "https://dl-alt1.winworldpc.com/Microsoft%20QuickC%202.50%20(1990)%20(5.25-360k).7z",
+    "url": "https://github.com/archaic-toolchains/quickc250/releases/download/2.50/quickc-2.50-5.25-360k.7z",
     "sha256": "922305575ba425158a7db1a49eceecd00481dc5a092db02eda3582d68447198a",
     "commit": "0884197d3e4a27ee0e274f17ca5b03d8bee94d0a",
     "aliases": [],

@@ -17,7 +17,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/quickc.7z \
-        "https://dl-alt1.winworldpc.com/Microsoft%20QuickC%202.50%20(1990)%20(5.25-360k).7z" \
+        "https://github.com/archaic-toolchains/quickc250/releases/download/2.50/quickc-2.50-5.25-360k.7z" \
     && echo "922305575ba425158a7db1a49eceecd00481dc5a092db02eda3582d68447198a  /tmp/quickc.7z" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/mspack.tar.gz \

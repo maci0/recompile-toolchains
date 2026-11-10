@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `quickc-2.50` downloads its floppy media from our preservation repo `archaic-toolchains/quickc250` (release `2.50`), byte for byte the WinWorld archive it pinned before, so the sha256 is unchanged. WinWorld's direct mirror URL now answers 404 unless a session from its download page comes with the request, which failed `make pins`.
+
 ## [1.13.0] - 2026-11-09
 
 ### Added

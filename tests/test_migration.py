@@ -22,6 +22,26 @@ class TestMigration(unittest.TestCase):
             clauses("RUN tar xzf input --strip-components=1"), clauses("RUN tar xzf input")
         )
 
+    def test_user_and_workdir_changes_are_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            old, new = root / "old", root / "new"
+            old.mkdir()
+            new.mkdir()
+            for instruction, before, after, field in (
+                ("USER", "builder", "root", "user"),
+                ("WORKDIR", "/work", "/other", "workdir"),
+            ):
+                with self.subTest(instruction=instruction):
+                    (old / "Dockerfile").write_text(f"FROM scratch\n{instruction} {before}\n")
+                    (new / "Dockerfile").write_text(f"FROM scratch\n{instruction} {after}\n")
+                    self.assertEqual(
+                        migration.diff(old, new), [f"{field}: {before!r} -> {after!r}"]
+                    )
+                    (new / "Dockerfile").write_text("FROM scratch\n")
+                    self.assertTrue(migration.diff(old, new))
+                    self.assertEqual(migration.diff(old, old), [])
+
     def test_qualified_repair_rejects_later_edits(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

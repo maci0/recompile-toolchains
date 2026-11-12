@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Detect USER and WORKDIR changes in the migration verifier.
+
 ### Changed
 
 - The third-party proprietary toolchain media now download from our copies in the `archaic-toolchains` org (release `2026-11-10` of `watcom1x`, `msvc600-win9x`, `msvc1200_u4`, `irix-ido`, `borland-cpp-ide`, `msvc800-portable`, `saturn-cygnus`, `psyq`, `sn64`, `icc501`, `vc6redist`, `decompdev-compilers` and `decompme-compilers`), byte for byte the files their upstreams served, so every sha256 is unchanged: 215 pins in `sources.json`. Personal repositories, rotating bundle hosts and vendor download pages had already lost the QuickC media and the dosemu builds. Open-source upstreams keep their own URLs. Each mirror's README names the upstream URL of every file, and `tools/migrate/mirrors.json` records each mirror URL's upstream, which `make verify` compares against the migration baseline in its place.

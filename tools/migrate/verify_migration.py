@@ -235,6 +235,8 @@ class Semantics(TypedDict):
     labels: dict[str, str]
     delivery: list[str]
     entrypoint: str
+    user: str
+    workdir: str
 
 
 def semantics(d: pathlib.Path) -> Semantics:
@@ -247,6 +249,8 @@ def semantics(d: pathlib.Path) -> Semantics:
     labels: dict[str, str] = {}
     delivery: list[str] = []
     entrypoint = ""
+    user = ""
+    workdir = ""
     for ins in instructions(text):
         verb = ins.split(" ", 1)[0].upper()
         if verb == "ARG":
@@ -262,6 +266,10 @@ def semantics(d: pathlib.Path) -> Semantics:
             # documentation that rots; a wrong title/description is a defect
             # like any other.
             labels.update(re.findall(r"(org\.opencontainers\.image\.[a-z]+)=\"([^\"]*)\"", ins))
+        elif verb == "USER":
+            user = ins.split(" ", 1)[1]
+        elif verb == "WORKDIR":
+            workdir = ins.split(" ", 1)[1]
         elif verb == "ENV":
             env.update(re.findall(r"([A-Z_][A-Z0-9_]*)=(\S+)", ins[4:]))
         elif verb == "RUN":
@@ -292,6 +300,8 @@ def semantics(d: pathlib.Path) -> Semantics:
         "labels": labels,
         "delivery": delivery,
         "entrypoint": entrypoint,
+        "user": user,
+        "workdir": workdir,
     }
 
 

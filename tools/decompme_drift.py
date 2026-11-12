@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Where this catalogue stands against decomp.me's.
 
-    python3 tools/decompme_drift.py [--values <local values.yaml>] [--quiet]
+    python3 tools/decompme_drift.py [--values <local values.yaml>]
 
 decomp.me is the compatibility target: a compiler id its front end accepts is
 an id a user may arrive with, and `build.sh <alias>` is how they get an image

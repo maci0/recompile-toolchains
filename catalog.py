@@ -17,6 +17,7 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+from urllib.parse import urlsplit
 lazy import json
 
 REPO = Path(__file__).resolve().parent
@@ -876,7 +877,17 @@ def source_of(url: str) -> str:
     host prefixes, so a more specific one (``host/org/repo``) must beat the
     generic host (``host``) regardless of how the table is written.
     """
-    return max((key for key in SOURCES if key in url), key=len, default="")
+    parsed = urlsplit(url)
+    upstream = (parsed.hostname or "") + parsed.path
+    candidates = [upstream]
+    # GitHub source archives retain the repository's upstream attribution.
+    if parsed.hostname == "codeload.github.com":
+        candidates.append("github.com" + parsed.path)
+    return max(
+        (key for key in SOURCES if any(c == key or c.startswith(key + "/") for c in candidates)),
+        key=len,
+        default="",
+    )
 
 
 def manifest() -> dict[str, dict[str, object]]:

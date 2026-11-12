@@ -5,6 +5,7 @@
 ### Fixed
 
 - Detect USER and WORKDIR changes in the migration verifier.
+- Match catalog provenance to the download host and path instead of URL substrings.
 
 ### Changed
 

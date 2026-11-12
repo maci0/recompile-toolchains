@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import re
 import unittest
+from unittest.mock import patch
 
 import catalog  # repo root is on sys.path under `python -m unittest discover`
 
@@ -89,6 +90,24 @@ class TestCatalog(unittest.TestCase):
             self.assertEqual(catalog.source_of("https://elsewhere.test/x"), "")
         finally:
             catalog.SOURCES = original
+
+    def test_source_of_requires_an_upstream_host_and_path(self) -> None:
+        for url in (
+            "https://elsewhere.test/github.com/decompme/toolchain.tar.gz",
+            "https://elsewhere.test/?source=github.com/decompme/toolchain.tar.gz",
+            "https://github.com.evil.test/decompme/toolchain.tar.gz",
+            "https://github.com/decompme-unrelated/toolchain.tar.gz",
+            "https://github.com@elsewhere.test/decompme/toolchain.tar.gz",
+        ):
+            with (
+                self.subTest(url=url),
+                patch.object(catalog, "SOURCES", {"github.com/decompme": ("compiler", "MIT")}),
+            ):
+                self.assertEqual(catalog.source_of(url), "")
+                self.assertEqual(
+                    catalog.source_of("https://codeload.github.com/decompme/compilers/tar.gz/main"),
+                    "github.com/decompme",
+                )
 
     def test_every_documented_community_id_resolves(self) -> None:
         """A row in EQUIVALENCES is a promise that `build.sh <id>` works.

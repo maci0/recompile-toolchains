@@ -68,8 +68,8 @@ PINS="$(awk -F'"' '
 
 # Each pinned url/sha256 also appears verbatim in the host_dir's Dockerfile
 # (its curl + sha256sum RUN is what actually builds the image), so the two
-# are kept in sync by hand.  Verify they agree before building anything: a
-# one-sided edit must fail the run, not fetch something sources.json does
+# are rendered from sources.json by generate.py. Verify they agree before
+# building anything: a one-sided edit must fail, not fetch something the manifest does
 # not pin.
 while IFS=$'\t' read -r profile dir url sha _aliases; do
   if [ -z "$profile" ] || [ -z "$dir" ] || [ -z "$url" ] || [ -z "$sha" ]; then

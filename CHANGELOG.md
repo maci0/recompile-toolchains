@@ -4,6 +4,8 @@
 
 ### Fixed
 
+- Reject all-zero watchdog timeout values such as 00 instead of disabling the deadline.
+
 - Detect USER and WORKDIR changes in the migration verifier.
 - Detect changed or removed download checksum checks in migration verification.
 - Match catalog provenance to the download host and path instead of URL substrings.

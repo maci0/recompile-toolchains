@@ -105,7 +105,9 @@ out=$(sh -c '. '"$WC"'; rebrew_timeout_secs 600 "" KNOB')
 check "empty timeout knob takes the default" "600" "$out"
 out=$(sh -c '. '"$WC"'; rebrew_timeout_secs 600 90 KNOB')
 check "valid timeout knob passes through" "90" "$out"
-for bad in 0 -1 abc 1x; do
+out=$(sh -c '. '"$WC"'; rebrew_timeout_secs 600 0009 KNOB')
+check "leading-zero positive timeout passes through" "0009" "$out"
+for bad in 0 00 000 -1 abc 1x; do
   out=$(sh -c '. '"$WC"'; rebrew_timeout_secs 600 "$1" KNOB' sh "$bad" 2>&1)
   st=$?
   case "$out" in

@@ -23,13 +23,12 @@ rebrew_die() {
 rebrew_timeout_secs() {
     if [ -n "$2" ]; then
         case "$2" in
-            '' | *[!0-9]* | 0)
-                echo "rebrew: $3 must be a positive integer of seconds (got '$2')" >&2
-                return 1
-                ;;
-            *) ;;  # valid timeout passes through unchanged
+            *[!0-9]*) ;;
+            *[1-9]*) printf '%s' "$2"; return ;;
+            *) ;;
         esac
-        printf '%s' "$2"
+        echo "rebrew: $3 must be a positive integer of seconds (got '$2')" >&2
+        return 1
     else
         printf '%s' "$1"
     fi

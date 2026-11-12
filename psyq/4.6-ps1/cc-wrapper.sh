@@ -49,4 +49,4 @@ printf '[ccpsx]\ncompiler_path=Z:/opt/psyq-4.6\nassembler_path=Z:/opt/psyq-4.6\n
 [ -s output.o ] || rebrew_die "compiler pipeline produced no ELF object"
 target=$(mktemp "${out}.tmp.XXXXXX")
 cp --preserve=mode -- output.o "$target"
-mv -f -- "$target" "$out"
+mv -fT -- "$target" "$out"

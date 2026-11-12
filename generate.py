@@ -714,7 +714,7 @@ __STAGES__
 [ -s output.o ] || rebrew_die "compiler pipeline produced no ELF object"
 target=$(mktemp "${out}.tmp.XXXXXX")
 cp --preserve=mode -- output.o "$target"
-mv -f -- "$target" "$out"
+mv -fT -- "$target" "$out"
 """
     if family in {"agbcc", "agbccpp"}:
         stages = (
@@ -791,7 +791,7 @@ run_dos C:/{assembler}.EXE {as_flags} D:/output.s -o D:/output.obj
 [ -s output.o ] || rebrew_die "converter produced no ELF object"
 target=$(mktemp "${out}.tmp.XXXXXX")
 cp --preserve=mode -- output.o "$target"
-mv -f -- "$target" "$out"
+mv -fT -- "$target" "$out"
 """
     root = f"/opt/{install_root(entry)}"
     saturn = family == "saturn"

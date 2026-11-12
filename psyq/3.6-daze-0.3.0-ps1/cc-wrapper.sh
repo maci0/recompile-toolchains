@@ -50,4 +50,4 @@ run_dos C:/ASPSX.EXE -quiet D:/output.s -o D:/output.obj
 [ -s output.o ] || rebrew_die "converter produced no ELF object"
 target=$(mktemp "${out}.tmp.XXXXXX")
 cp --preserve=mode -- output.o "$target"
-mv -f -- "$target" "$out"
+mv -fT -- "$target" "$out"

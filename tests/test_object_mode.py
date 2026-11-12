@@ -72,9 +72,75 @@ class TestObjectMode(unittest.TestCase):
             self.assertEqual(failed.returncode, 7)
             self.assertEqual(output.read_bytes(), b"ELF object\n")
             before = source.read_bytes()
-            self.assertNotEqual(run("-c", str(source), "-o", str(source)).returncode, 0)
+            self.assertNotEqual(
+                run("-c", "-Iheaders", str(source), "-o", str(source)).returncode, 0
+            )
             self.assertEqual(source.read_bytes(), before)
             self.assertNotEqual(run("-c", str(source), "-o").returncode, 0)
+            self.assertEqual(list(work.glob("*.tmp.*")), [])
+            output_directory = work / "objects"
+            output_directory.mkdir()
+            link = work / "objects-link"
+            link.symlink_to(output_directory, target_is_directory=True)
+            for destination in (output_directory, link):
+                with self.subTest(destination=destination.name):
+                    result = run("-c", "-Iheaders", str(source), "-o", str(destination))
+                    self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertEqual(list(output_directory.iterdir()), [])
+
+    def test_daze_refuses_directory_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            tools = {
+                "daze": (
+                    '#!/bin/sh\nwhile [ "$#" -gt 0 ]; do\n'
+                    '  if [ "$1" = -o ]; then printf "stage\\n" > "${2#D:/}"; exit; fi\n'
+                    "  shift\ndone\nexit 2\n"
+                ),
+                "unix2dos": '#!/bin/sh\ncp -- "$3" "$4"\n',
+                "convert": '#!/bin/sh\ncp -- "$1" "$3"\n',
+            }
+            for name, script in tools.items():
+                tool = work / name
+                tool.write_text(script)
+                tool.chmod(0o755)
+            profile = "psyq-3.3-daze-0.3.0"
+            entry = generate.manifest()[profile]
+            body = generate.render_wrapper(profile, entry)
+            body = body.replace(
+                "/usr/local/lib/rebrew/wrapper-common.sh",
+                str(generate.REPO / "base/wrapper-common.sh"),
+            )
+            body = body.replace("/usr/local/bin/daze", str(work / "daze"))
+            body = body.replace(
+                f"/opt/{generate.install_root(entry)}/psyq-obj-parser", str(work / "convert")
+            )
+            wrapper = work / "cc"
+            wrapper.write_text(body)
+            wrapper.chmod(0o755)
+            source = work / "input.c"
+            source.write_text("int x;\n")
+            output_directory = work / "objects"
+            output_directory.mkdir()
+            link = work / "objects-link"
+            link.symlink_to(output_directory, target_is_directory=True)
+            for destination in (work / "result.o", output_directory, link):
+                with self.subTest(destination=destination.name):
+                    result = subprocess.run(  # noqa: S603 (generated wrapper, stub tools)
+                        [str(wrapper), "-c", str(source), "-o", str(destination)],
+                        cwd=work,
+                        env=dict(os.environ, PATH=f"{work}:{os.environ['PATH']}"),
+                        capture_output=True,
+                        text=True,
+                        timeout=10,
+                        check=False,
+                    )
+                    if destination.name == "result.o":
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                        self.assertEqual(destination.read_bytes(), b"stage\n")
+                    else:
+                        self.assertNotEqual(result.returncode, 0, result.stderr)
+                        self.assertEqual(list(output_directory.iterdir()), [])
             self.assertEqual(list(work.glob("*.tmp.*")), [])
 
 

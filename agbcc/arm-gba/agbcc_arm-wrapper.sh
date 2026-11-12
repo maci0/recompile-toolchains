@@ -47,4 +47,4 @@ cd "$work"
 [ -s output.o ] || rebrew_die "compiler pipeline produced no ELF object"
 target=$(mktemp "${out}.tmp.XXXXXX")
 cp --preserve=mode -- output.o "$target"
-mv -f -- "$target" "$out"
+mv -fT -- "$target" "$out"

@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Refuse directory output targets in generated ELF adapters instead of moving an object inside them.
 - Build explicitly selected base images once, with their dependency chain and canonical tags.
 
 - Reject all-zero image build concurrency and timeout settings before running Docker.

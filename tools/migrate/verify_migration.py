@@ -94,31 +94,33 @@ def unmirrored(directory: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
 
 #: Intentional post-migration repairs, qualified by the 2026-10-25 smoke and
 #: pipeline tests. Hash both files so unrelated recipe/wrapper edits still fail.
+# Guarded ELF output repair: mv -f to mv -fT refuses directories and symlink-to-directory
+# targets instead of moving a temp-named object into them.
 QUALIFIED_REPAIRS: dict[str, str] = {
     # PSY-Q 4.5 adds SDK byte pin 495697696a3288866d83ff7b7aff423560ffaffd3e212274417f3348cc0b29f8;
     # the baseline pinned only its git commit, without an archive checksum.
     "psyq-4.5": "1a6ae9efb83a75e9a1028f7dd5ad6c08865d6120035984f1fa628f33c29f52b2",
-    "agbcc": "4a6f97fb822577028ac3b9b720af643ca713c7212032c13a802a15d02c0f91b1",
-    "agbcc-arm-gba": "ab25fe10f7b18d58382ff95a3c9b9fbc698c42849475ba11bd58d58cd7fe2fd2",
-    "agbcc-fe8j": "7e555400b9e011ea248d1515832f8bbb8265eb9d3de9e29e565426014f1b3966",
-    "agbcc-old-gba": "81add2451c9e00f3c92556f28272b62ff08ef708b1e12a95ad35f7c24a40f6ca",
-    "agbccpp": "a0e71a23b0147c36847d9eb87ff0b97c6440140f51a6b59ce1cdc25b6e5eb202",
+    "agbcc": "f30f40e876bbcbfcdf16aa32f8c28ec4e7ecb321f8894f15ef0cee0e1ab99a9a",
+    "agbcc-arm-gba": "02a869208c6591c9e35f2043048d66da0f8cb4970dc98c578b554633e053d645",
+    "agbcc-fe8j": "693ed5d51032890920e5ee0146ce53957966ba9c728689216c66bc04443050e3",
+    "agbcc-old-gba": "74f028cd719034d83608501562ef96163213bafb9fbc3b57e4ce0ec49367eefa",
+    "agbccpp": "bd9ba1351e3334233802ddfa71dcffec9fa5b895e75c91a270188f0de5a19c1b",
     "gcc-2.8.1-pm": "f7d4c1539c74ab2d48142cdcafd73f6f941bb2e82009f2a2549e09bc8e0f7b36",
     "ido-4.1": "6b0a18def4d67e7a84dafe6a1aa3dfa164cd68bce725e6753d528b48112ac7d7",
     "msc-6.0": "6f967ae6409917976bc6602e3fe1612aa2bb6defaffa523142b20ed504fe87f8",
     "psyq-2.6.3-221": "e0e494f1ac5914f91760f0f3e97ab5d9c07b981bd745e18b9a9f7f76035eb80a",
-    "psyq-4.6": "1376e8a007e5cbfd82baffdb44dc0d244f1f216930b392414520902095b95faa",
-    "shc-5.0r10": "71e97810f3db290931ba8232771ebea25378e0bdafabbfeccd2bdb0bbeb6a9c8",
-    "shc-5.0r26": "33bd8ca09e3804b0f7880435b2ccab03460705b5763b9b98d363d0b9b2122430",
-    "shc-5.0r28": "124cfede23cdf843c38150b2e028f5745b8db01f4b22cabe799ecb5737fc4061",
-    "shc-5.0r31": "277140f2d26755ee73e5bb4b4eaa1f5b3da35000be5954882f2858b0afbd421e",
-    "shc-5.0r32": "5c6de3db1a5f3afcdd4387da8f3483b4633993bd2141bd77b998e23db4ee13a0",
-    "shc-5.1r01": "5bba282b2377b8905a89aa6e30d2f1845bc5b30dbb9ba414f6493e4f49e66168",
-    "shc-5.1r03": "fe63e753e4c37b22e7c4b1dbba014df0fb6c65b3c2551e0b08a80370ff139b50",
-    "shc-5.1r04": "f2069c91fc9ff9f7c20e1a81f73d427398cc60fb179cb964125151fc7530926e",
-    "shc-5.1r08": "c41e9cf3bb832b937d9637a652472c18e20a82dc71e338d499a95dc52fa9e581",
-    "shc-5.1r11": "b2ffd1146afb6dbc689564ba2beda965d27ee9c89242add516816542324374fd",
-    "shc-5.1r13": "2650a6a49b5285f2d34de32561e8dbbcd480308c392da23e2c0e1983ecd2f749",
+    "psyq-4.6": "88638dfdc721a4669ab8bd84cefb128537a30974261e7026b986974786e51ec3",
+    "shc-5.0r10": "396959d62ca8c0785186efd53cdab980b8bea19e9fce00b56ad07761318e7fb0",
+    "shc-5.0r26": "b852c2877f39d5e61cc2f463662c37618cc446a057f622deecdf04a00a777794",
+    "shc-5.0r28": "03aaba23e9c11e05dfb358d4d9a5b0ee62177b501463c7af2de0d3f8e9d6fa7f",
+    "shc-5.0r31": "51ae9aee7e54e28d07d4f46c777f5067165f3576a0aa6f4d0b3420e19ecbe169",
+    "shc-5.0r32": "ba6176dc10a0825c0cf374c76e6a996429dbf60045d85462711c2f9202b25623",
+    "shc-5.1r01": "aa2ed9e96ad0c00fa1328d04e8806a37bd023cf8038209ad75d9efb50080dc52",
+    "shc-5.1r03": "e353b7388c1284b98c37baaad9283ea17c16daff01b627857a3a57538547c717",
+    "shc-5.1r04": "3c52a86886b98ce0ef7bd12398a66fe094e7630b5b0dca6a2cf81fc6f6f20a60",
+    "shc-5.1r08": "516bdd7887388a0e141cde9b46c5b45d0edfa8682676f7004ab60a6713434d21",
+    "shc-5.1r11": "44644e1fcb011d87fc83fcf8614819828a7ff77b2f53ca3cc36d0beb8373a768",
+    "shc-5.1r13": "44ecfcacec78570ac09cd649aed0669f903c749f4b73301e972621f802125ff8",
 }
 
 

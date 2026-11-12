@@ -219,6 +219,10 @@ def instructions(text: str) -> list[str]:
     return out
 
 
+def _inline_wrapper(instruction: str) -> bool:
+    return instruction.startswith("RUN printf ") and "> /usr/local/bin/" in instruction
+
+
 def wrapper_text(d: pathlib.Path) -> tuple[str, str]:
     parsed = instructions((d / "Dockerfile").read_text())
     entrypoint = semantics(d)["entrypoint"]
@@ -228,7 +232,7 @@ def wrapper_text(d: pathlib.Path) -> tuple[str, str]:
             return match[1], source.read_text()
     lines: list[str] = []
     for ins in parsed:
-        if ins.startswith("RUN printf "):
+        if _inline_wrapper(ins):
             for quoted in re.findall(r"'((?:[^']|'\\'')*)'", ins):
                 chunk = quoted.replace("'\\''", "'")
                 if not chunk.startswith("%s"):
@@ -301,7 +305,7 @@ def semantics(d: pathlib.Path) -> Semantics:
             body = ins[4:]
             # A printf'd inline wrapper and its trailing `chmod` share one RUN;
             # only the printf itself is wrapper text, the rest is image setup.
-            if body.startswith("printf"):
+            if _inline_wrapper(ins):
                 body = body.split("> /usr/local/bin/", 1)[-1]
                 body = body[body.find("&&") + 2 :] if "&&" in body else ""
             if "curl" in body:
@@ -375,7 +379,7 @@ def _run_clauses(text: str) -> list[str]:
     for ins in instructions(text):
         # the inline-wrapper RUN of a pre-migration file is wrapper text, and
         # the wrapper is compared as a wrapper
-        if not ins.startswith("RUN ") or ins.startswith("RUN printf"):
+        if not ins.startswith("RUN ") or _inline_wrapper(ins):
             continue
         for part in ins[4:].split("&&"):
             clause = part.strip()

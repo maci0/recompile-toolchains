@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Verify ordinary printf installation steps instead of treating every printf as an entrypoint wrapper.
+
 - Compare complete base-image references and Docker build stages in migration verification.
 
 - Compare complete quoted, escaped and legacy Dockerfile environment values during migration verification.

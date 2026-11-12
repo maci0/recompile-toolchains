@@ -15,6 +15,19 @@ migration = importlib.import_module("tools.migrate.verify_migration")
 
 
 class TestMigration(unittest.TestCase):
+    def test_printf_configuration_is_compared_as_an_install_step(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            for quote in ("'", '"'):
+                with self.subTest(quote=quote):
+                    recipe = f"RUN printf {quote}%s{quote} {quote}before{quote} > /tmp/config\n"
+                    (old / "Dockerfile").write_text(recipe)
+                    (new / "Dockerfile").write_text(recipe.replace("before", "after"))
+                    self.assertTrue(migration.clause_diff(old, new))
+                    self.assertEqual(migration.wrapper_text(old), ("", "\n"))
+
     def test_base_image_and_from_changes_are_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             old, new = Path(temporary) / "old", Path(temporary) / "new"

@@ -5,9 +5,9 @@
 #   ./build.sh msvc-6.0       # build one (dir name: msvc/6.0-win32 or the tag suffix)
 #   ./build.sh 6.0-win32       # ...also accepted
 #
-# The base image is built first; the toolchain images depend only on it and
-# are independent of each other, so after it they run REBREW_BUILD_JOBS at a
-# time (default 4).  Every build downloads its pinned source tarball, so a
+# Required base images build first in dependency order. The selected
+# toolchains then run REBREW_BUILD_JOBS at a time (default 4).
+# Every build downloads its pinned source tarball, so a
 # full sweep is network-bound and parallelism cuts wall-clock roughly by the
 # job count.  Set REBREW_BUILD_JOBS=1 for strictly sequential builds.
 #

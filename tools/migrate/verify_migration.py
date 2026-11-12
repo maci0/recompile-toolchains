@@ -340,6 +340,14 @@ def install_clauses(text: str) -> list[str]:
     command the same way twice.  The classified stage missed a truncated
     `ln -s "$(ldconfig -p | awk …)"` for exactly that reason.
     """
+    return [
+        _canonical_tar(clause)
+        for clause in _run_clauses(text)
+        if not any(pattern.match(clause) for pattern in _DROPPED_CLAUSES)
+    ]
+
+
+def _run_clauses(text: str) -> list[str]:
     out: list[str] = []
     for ins in instructions(text):
         # the inline-wrapper RUN of a pre-migration file is wrapper text, and
@@ -348,11 +356,8 @@ def install_clauses(text: str) -> list[str]:
             continue
         for part in ins[4:].split("&&"):
             clause = re.sub(r"\s+", " ", part).strip()
-            if clause and not any(pattern.match(clause) for pattern in _DROPPED_CLAUSES):
-                out.append(_canonical_tar(clause))
-    # in file order: an install step that moved is a behaviour change, and this
-    # is the only stage that can see it now that the classified `ops`
-    # comparison is gone
+            if clause:
+                out.append(clause)
     return out
 
 
@@ -423,7 +428,8 @@ _CHECKSUM_CLAUSE = re.compile(r'^echo "[0-9a-f]{64} ([^\"]+)"')
 def clause_diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:
     """Raw install clauses that changed, beyond the ones already accounted for."""
     old = install_clauses((old_dir / "Dockerfile").read_text(encoding="utf-8"))
-    new = install_clauses((new_dir / "Dockerfile").read_text(encoding="utf-8"))
+    new_text = (new_dir / "Dockerfile").read_text(encoding="utf-8")
+    new = install_clauses(new_text)
     # Generation groups downloads and checks before installation. Compare
     # checks independently, but never accept one that moved after its file's use.
     problems = _differences(
@@ -436,13 +442,17 @@ def clause_diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:
         [c for c in old if not _CHECKSUM_CLAUSE.match(c)],
         [c for c in new if not _CHECKSUM_CLAUSE.match(c)],
     )
-    for index, clause in enumerate(new):
+    # Apt and chmod clauses still count as uses even when compared elsewhere.
+    raw_new = _run_clauses(new_text)
+    for index, clause in enumerate(raw_new):
         if match := _CHECKSUM_CLAUSE.match(clause):
             path = match[1]
             reference = re.compile(rf"(?<![\w./-]){re.escape(path)}(?![\w./-])")
             if any(
-                reference.search(previous) and not _CHECKSUM_CLAUSE.match(previous)
-                for previous in new[:index]
+                reference.search(previous)
+                and not _CHECKSUM_CLAUSE.match(previous)
+                and not previous.startswith("curl ")
+                for previous in raw_new[:index]
             ):
                 problems.append(f"checksum follows use: {path}")
     return problems

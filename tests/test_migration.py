@@ -64,8 +64,17 @@ class TestMigration(unittest.TestCase):
             (old / "Dockerfile").write_text("RUN mkdir -p /opt/compiler\n" + check + extract)
             (new / "Dockerfile").write_text(check + "RUN mkdir -p /opt/compiler\n" + extract)
             self.assertEqual(migration.clause_diff(old, new), [])
-            (new / "Dockerfile").write_text("RUN mkdir -p /opt/compiler\n" + extract + check)
-            self.assertIn("checksum follows use: /tmp/compiler", migration.clause_diff(old, new))
+            for use in (
+                extract,
+                "RUN apt-get install -y --no-install-recommends /tmp/compiler\n",
+                "RUN cp /tmp/compiler /opt/compiler\n",
+            ):
+                with self.subTest(use=use):
+                    (old / "Dockerfile").write_text("RUN mkdir -p /opt/compiler\n" + check + use)
+                    (new / "Dockerfile").write_text("RUN mkdir -p /opt/compiler\n" + use + check)
+                    self.assertIn(
+                        "checksum follows use: /tmp/compiler", migration.clause_diff(old, new)
+                    )
 
     def test_qualified_repair_rejects_later_edits(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

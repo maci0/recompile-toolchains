@@ -240,6 +240,7 @@ class Semantics(TypedDict):
     """The instruction-by-instruction meaning of one Dockerfile + wrapper."""
 
     base: str
+    stages: list[str]
     apt: list[str]
     pins: list[str]
     env: dict[str, str]
@@ -254,6 +255,7 @@ def semantics(d: pathlib.Path) -> Semantics:
     """What the image *does*, independent of formatting or comments."""
     text = (d / "Dockerfile").read_text()
     base = "base"
+    stages: list[str] = []
     apt: list[str] = []
     pins: list[str] = []
     env: dict[str, str] = {}
@@ -265,9 +267,11 @@ def semantics(d: pathlib.Path) -> Semantics:
     for ins in instructions(text):
         verb = ins.split(" ", 1)[0].upper()
         if verb == "ARG":
-            m = re.match(r"ARG BASE_IMAGE=rebrew/(\S+):", ins)
+            m = re.match(r"ARG BASE_IMAGE=(\S+)", ins)
             if m:
                 base = m.group(1)
+        elif verb == "FROM":
+            stages.append(ins.split(" ", 1)[1])
         elif verb == "ENTRYPOINT":
             m = re.search(r'"(/usr/local/bin/[^"]+)"', ins)
             if m:
@@ -315,6 +319,7 @@ def semantics(d: pathlib.Path) -> Semantics:
                     delivery.append(cmd)
     return {
         "base": base,
+        "stages": stages,
         "apt": apt,
         "pins": pins,
         "env": env,
@@ -485,6 +490,7 @@ def diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:
     # file to copy, which is the failure this would otherwise hide.
     keys = (
         "base",
+        "stages",
         "apt",
         "pins",
         "env",

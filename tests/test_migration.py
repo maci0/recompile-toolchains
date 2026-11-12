@@ -15,6 +15,24 @@ migration = importlib.import_module("tools.migrate.verify_migration")
 
 
 class TestMigration(unittest.TestCase):
+    def test_base_image_and_from_changes_are_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            recipe = "ARG BASE_IMAGE=rebrew/base:1.0\nFROM ${BASE_IMAGE}\n"
+            (old / "Dockerfile").write_text(recipe)
+            (new / "Dockerfile").write_text(recipe)
+            self.assertEqual(migration.diff(old, new), [])
+            for changed in (
+                recipe.replace("FROM ${BASE_IMAGE}", "FROM scratch"),
+                recipe.replace("base:1.0", "base:unreviewed"),
+                recipe.replace("base:1.0", "base:1.0@sha256:" + "a" * 64),
+            ):
+                with self.subTest(changed=changed):
+                    (new / "Dockerfile").write_text(changed)
+                    self.assertTrue(migration.diff(old, new))
+
     def test_complete_environment_values_are_compared(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             old, new = Path(temporary) / "old", Path(temporary) / "new"

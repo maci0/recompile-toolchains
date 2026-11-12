@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Compare complete base-image references and Docker build stages in migration verification.
+
 - Compare complete quoted, escaped and legacy Dockerfile environment values during migration verification.
 
 - Read tab-separated Dockerfile instruction keywords without altering quoted argument spaces.

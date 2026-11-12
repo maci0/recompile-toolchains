@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Preserve quoted argument spacing when comparing migrated compiler wrappers.
+
 - Verify mixed-case Dockerfile instructions instead of silently skipping added build steps.
 
 - Verify the copied entrypoint wrapper instead of the first sibling shell file in migration checks.

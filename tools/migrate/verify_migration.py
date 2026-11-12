@@ -384,7 +384,7 @@ def wrapper_lines(directory: pathlib.Path) -> list[str]:
     out: list[str] = []
     buf = ""
     for raw in text.splitlines():
-        stripped = re.sub(r"\s+", " ", raw.strip())
+        stripped = raw.strip()
         if not stripped or stripped == "#":
             continue
         if stripped.startswith("#!"):
@@ -397,7 +397,7 @@ def wrapper_lines(directory: pathlib.Path) -> list[str]:
                 buf = ""
             if stripped.startswith((generate.MARKER, "# Entrypoint —", "# shellcheck source=")):
                 continue
-            out.append(stripped)
+            out.append(re.sub(r"\s+", " ", stripped))
             continue
         buf = f"{buf} {stripped}" if buf else stripped
         if buf.endswith("\\"):

@@ -15,6 +15,22 @@ migration = importlib.import_module("tools.migrate.verify_migration")
 
 
 class TestMigration(unittest.TestCase):
+    def test_wrapper_quoted_argument_spacing_is_significant(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            for directory in (old, new):
+                directory.mkdir()
+                (directory / "Dockerfile").write_text(
+                    'FROM scratch\nCOPY cc.sh /usr/local/bin/cc\nENTRYPOINT ["/usr/local/bin/cc"]\n'
+                )
+                (directory / "cc.sh").write_text('#!/bin/sh\nexec cc "-DVALUE=a b" "$@"\n')
+            self.assertEqual(migration.wrapper_diff(old, new), [])
+            (old / "cc.sh").write_text('#!/bin/sh\n#   compiler argv\nexec cc "-DVALUE=a b" "$@"\n')
+            (new / "cc.sh").write_text('#!/bin/sh\n# compiler argv\nexec cc "-DVALUE=a b" "$@"\n')
+            self.assertEqual(migration.wrapper_diff(old, new), [])
+            (new / "cc.sh").write_text('#!/bin/sh\n# compiler argv\nexec cc "-DVALUE=a  b" "$@"\n')
+            self.assertTrue(migration.wrapper_diff(old, new))
+
     def test_archive_ownership_normalization_preserves_other_flags(self) -> None:
         clauses = migration.install_clauses
         self.assertEqual(clauses("RUN tar xzf input --no-same-owner"), clauses("RUN tar xzf input"))

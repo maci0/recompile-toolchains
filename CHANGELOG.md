@@ -7,6 +7,7 @@
 - Detect USER and WORKDIR changes in the migration verifier.
 - Detect changed or removed download checksum checks in migration verification.
 - Match catalog provenance to the download host and path instead of URL substrings.
+- Reject unknown profile or base selections in the download pin checker.
 
 ### Changed
 

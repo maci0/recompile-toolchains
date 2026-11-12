@@ -17,7 +17,7 @@ outage must not look like a broken manifest.  Run it by hand (`make pins`) or
 on the weekly schedule in .github/workflows/pins.yml.
 
 Usage:  python3 tests/check_pins.py [profile ...]
-Exit:   0 all pinned URLs resolve, 1 otherwise.
+Exit:   0 all pinned URLs resolve, 1 a check failed, 2 an unknown selection.
 """
 
 from __future__ import annotations
@@ -106,13 +106,18 @@ def main(argv: list[str]) -> int:
 
     manifest = catalog.manifest()
     wanted = set(argv)
+    bases = base_pins()
+    unknown = wanted - (set(manifest) | {label for label, _url in bases})
+    if unknown:
+        print(f"pins: no such profile or base: {', '.join(sorted(unknown))}", file=sys.stderr)
+        return 2
     jobs: list[tuple[str, str]] = [
         (profile, url)
         for profile, entry in manifest.items()
         if not wanted or profile in wanted
         for url in catalog.urls_of(entry)
     ]
-    jobs += [(label, url) for label, url in base_pins() if not wanted or label in wanted]
+    jobs += [(label, url) for label, url in bases if not wanted or label in wanted]
     # One thread per check; the URL list is small (~320) so collect-then-sort
     # keeps the output deterministic — diffable week to week — regardless of
     # which thread finishes first.

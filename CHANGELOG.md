@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Compare complete quoted, escaped and legacy Dockerfile environment values during migration verification.
+
 - Read tab-separated Dockerfile instruction keywords without altering quoted argument spaces.
 
 - Preserve quoted Dockerfile argument spacing when verifying install steps and inline wrappers.

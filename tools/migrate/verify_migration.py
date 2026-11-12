@@ -282,7 +282,17 @@ def semantics(d: pathlib.Path) -> Semantics:
         elif verb == "WORKDIR":
             workdir = ins.split(" ", 1)[1]
         elif verb == "ENV":
-            env.update(re.findall(r"([A-Z_][A-Z0-9_]*)=(\S+)", ins[4:]))
+            name, *values = ins[4:].split(maxsplit=1)
+            if "=" not in name:
+                env[name] = values[0] if values else ""
+            else:
+                # Keep quote and escape syntax so expansion changes cannot compare equal.
+                env.update(
+                    re.findall(
+                        r"""(?:^|\s)([^\s=]+)=((?:'[^']*'|"(?:\\.|[^"\\])*"|\\.|[^\s'"\\])*)""",
+                        ins[4:],
+                    )
+                )
         elif verb == "RUN":
             body = ins[4:]
             # A printf'd inline wrapper and its trailing `chmod` share one RUN;

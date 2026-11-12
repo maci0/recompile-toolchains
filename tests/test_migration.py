@@ -15,6 +15,30 @@ migration = importlib.import_module("tools.migrate.verify_migration")
 
 
 class TestMigration(unittest.TestCase):
+    def test_complete_environment_values_are_compared(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            for recipe in (
+                'ENV NOTE="same before" OTHER=kept\n',
+                "ENV NOTE='same before' OTHER=kept\n",
+                "ENV NOTE=same\\ before OTHER=kept\n",
+                "ENV note=before OTHER=kept\n",
+                "ENV NOTE same before\n",
+            ):
+                with self.subTest(recipe=recipe):
+                    (old / "Dockerfile").write_text(recipe)
+                    (new / "Dockerfile").write_text(recipe)
+                    self.assertEqual(migration.diff(old, new), [])
+                    (new / "Dockerfile").write_text(recipe.replace("before", "after"))
+                    self.assertTrue(migration.diff(old, new))
+            (new / "Dockerfile").write_text('ENV MESSAGE="OTHER=quoted words" EMPTY= LAST=kept\n')
+            self.assertEqual(
+                migration.semantics(new)["env"],
+                {"MESSAGE": '"OTHER=quoted words"', "EMPTY": "", "LAST": "kept"},
+            )
+
     def test_install_and_inline_wrapper_argument_spacing_is_significant(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             old, new = Path(temporary) / "old", Path(temporary) / "new"

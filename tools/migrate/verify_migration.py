@@ -173,7 +173,7 @@ def copy_sources(directory: pathlib.Path) -> list[str]:
     """
     problems: list[str] = []
     text = (directory / "Dockerfile").read_text(encoding="utf-8")
-    for line in text.splitlines():
+    for line in instructions(text):
         m = re.match(r"COPY\s+(?:--from=\S+\s+)?(\S+)\s+(\S+)", line.strip())
         if m and not m.group(1).startswith("$") and not (directory / m.group(1)).exists():
             problems.append(f"COPY {m.group(1)} has no such file")
@@ -213,6 +213,9 @@ def instructions(text: str) -> list[str]:
         buf = ""
     if buf:
         out.append(re.sub(r"\s+", " ", buf))
+    for index, instruction in enumerate(out):
+        verb, separator, arguments = instruction.partition(" ")
+        out[index] = verb.upper() + separator + arguments
     return out
 
 

@@ -116,6 +116,46 @@ class TestMigration(unittest.TestCase):
             )
             self.assertEqual(migration.wrapper_text(root), ("last.sh", "#!/bin/sh\nexec last\n"))
 
+    def test_instruction_case_preserves_arguments_and_copy_checks(self) -> None:
+        self.assertEqual(
+            migration.instructions("from scratch\nrUn echo KeepCase\n"),
+            ["FROM scratch", "RUN echo KeepCase"],
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "Dockerfile").write_text("from scratch\ncopy absent.sh /usr/local/bin/cc\n")
+            self.assertEqual(migration.copy_sources(root), ["COPY absent.sh has no such file"])
+
+    def test_lowercase_run_and_copy_changes_are_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            old, new = root / "old" / "tool", root / "new" / "tool"
+            recipe = (
+                'FROM scratch\nCOPY cc.sh /usr/local/bin/cc\nENTRYPOINT ["/usr/local/bin/cc"]\n'
+            )
+            for directory in (old, new):
+                directory.mkdir(parents=True)
+                (directory / "Dockerfile").write_text(recipe)
+                (directory / "cc.sh").write_text("#!/bin/sh\nexec original\n")
+            (new / "zzz.sh").write_text("#!/bin/sh\nexec unreviewed\n")
+            with (
+                patch.object(migration, "REPO", new.parent),
+                patch.object(migration, "checkout", return_value=old.parent),
+                patch.object(migration, "discard"),
+                patch.object(
+                    migration.generate, "manifest", return_value={"test": {"host_dir": "tool"}}
+                ),
+                redirect_stdout(StringIO()),
+            ):
+                self.assertEqual(migration.main(["--baseline", "test"]), 0)
+                for instruction in (
+                    "rUn touch /tmp/unreviewed\n",
+                    "cOpY zzz.sh /usr/local/bin/cc\n",
+                ):
+                    with self.subTest(instruction=instruction):
+                        (new / "Dockerfile").write_text(recipe + instruction)
+                        self.assertEqual(migration.main(["--baseline", "test"]), 1)
+
     def test_a_mirror_url_reads_as_its_upstream(self) -> None:
         upstream = "https://upstream.example/cc.tar.gz"
         mirror = "https://github.com/archaic-toolchains/cc/releases/download/2026-11-10/cc.tar.gz"

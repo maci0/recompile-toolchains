@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Preserve quoted Dockerfile argument spacing when verifying install steps and inline wrappers.
+
 - Preserve quoted argument spacing when comparing migrated compiler wrappers.
 
 - Verify mixed-case Dockerfile instructions instead of silently skipping added build steps.

@@ -15,6 +15,25 @@ migration = importlib.import_module("tools.migrate.verify_migration")
 
 
 class TestMigration(unittest.TestCase):
+    def test_install_and_inline_wrapper_argument_spacing_is_significant(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            for recipe in (
+                'RUN touch "/tmp/a b"\n',
+                (
+                    "RUN printf '%s\\n' '#!/bin/sh' 'exec cc \"-DVALUE=a b\" \"$@\"' "
+                    "> /usr/local/bin/cc\n"
+                ),
+            ):
+                with self.subTest(recipe=recipe):
+                    (old / "Dockerfile").write_text(recipe)
+                    (new / "Dockerfile").write_text(recipe.replace("a b", "a  b"))
+                    self.assertTrue(
+                        migration.clause_diff(old, new) + migration.wrapper_diff(old, new)
+                    )
+
     def test_wrapper_quoted_argument_spacing_is_significant(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             old, new = Path(temporary) / "old", Path(temporary) / "new"

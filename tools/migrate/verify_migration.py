@@ -209,10 +209,10 @@ def instructions(text: str) -> list[str]:
         if buf.endswith("\\"):
             buf = buf[:-1].rstrip()
             continue
-        out.append(re.sub(r"\s+", " ", buf))
+        out.append(buf)
         buf = ""
     if buf:
-        out.append(re.sub(r"\s+", " ", buf))
+        out.append(buf)
     for index, instruction in enumerate(out):
         verb, separator, arguments = instruction.partition(" ")
         out[index] = verb.upper() + separator + arguments
@@ -363,7 +363,7 @@ def _run_clauses(text: str) -> list[str]:
         if not ins.startswith("RUN ") or ins.startswith("RUN printf"):
             continue
         for part in ins[4:].split("&&"):
-            clause = re.sub(r"\s+", " ", part).strip()
+            clause = part.strip()
             if clause:
                 out.append(clause)
     return out
@@ -430,7 +430,7 @@ def wrapper_diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:
     return _differences("wrapper line", wrapper_lines(old_dir), wrapper_lines(new_dir))
 
 
-_CHECKSUM_CLAUSE = re.compile(r'^echo "[0-9a-f]{64} ([^\"]+)"')
+_CHECKSUM_CLAUSE = re.compile(r'^echo "[0-9a-f]{64} +([^\"]+)"')
 
 
 def clause_diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:

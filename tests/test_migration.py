@@ -42,6 +42,18 @@ class TestMigration(unittest.TestCase):
                     self.assertTrue(migration.diff(old, new))
                     self.assertEqual(migration.diff(old, old), [])
 
+    def test_checksum_changes_are_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            check = f'RUN echo "{"a" * 64}  /tmp/compiler" | sha256sum -c -\n'
+            (old / "Dockerfile").write_text(check)
+            for changed in (check.replace("a" * 64, "b" * 64), check.split(" | ")[0], ""):
+                with self.subTest(changed=changed):
+                    (new / "Dockerfile").write_text(changed)
+                    self.assertTrue(migration.clause_diff(old, new))
+
     def test_qualified_repair_rejects_later_edits(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

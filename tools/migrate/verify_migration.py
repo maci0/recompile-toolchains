@@ -306,11 +306,10 @@ def semantics(d: pathlib.Path) -> Semantics:
 
 
 #: Clauses that are the same command written by a different mechanism, or that
-#: another stage already compares: the download, its in-build hash check, the
+#: another stage already compares: the download, the
 #: entrypoint's delivery, and the apt bookkeeping.
 _DROPPED_CLAUSES = (
     re.compile(r"^curl -fsSL"),
-    re.compile(r'^echo "[0-9a-f]{64} '),
     re.compile(r"^chmod \+x /usr/local/bin/"),
     re.compile(r"^rm -rf /var/lib/apt/lists"),
     re.compile(r"^apt-get (update|install)"),

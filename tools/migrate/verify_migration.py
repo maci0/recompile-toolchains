@@ -251,6 +251,7 @@ class Semantics(TypedDict):
     labels: dict[str, str]
     delivery: list[str]
     entrypoint: str
+    entrypoint_command: str
     user: str
     workdir: str
 
@@ -266,6 +267,7 @@ def semantics(d: pathlib.Path) -> Semantics:
     labels: dict[str, str] = {}
     delivery: list[str] = []
     entrypoint = ""
+    entrypoint_command = ""
     user = ""
     workdir = ""
     for ins in instructions(text):
@@ -277,6 +279,7 @@ def semantics(d: pathlib.Path) -> Semantics:
         elif verb == "FROM":
             stages.append(ins.split(" ", 1)[1])
         elif verb == "ENTRYPOINT":
+            entrypoint_command = ins.split(" ", 1)[1]
             m = re.search(r'"(/usr/local/bin/[^"]+)"', ins)
             if m:
                 entrypoint = pathlib.Path(m.group(1)).name
@@ -330,6 +333,7 @@ def semantics(d: pathlib.Path) -> Semantics:
         "labels": labels,
         "delivery": delivery,
         "entrypoint": entrypoint,
+        "entrypoint_command": entrypoint_command,
         "user": user,
         "workdir": workdir,
     }
@@ -501,6 +505,7 @@ def diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:
         "labels",
         "delivery",
         "entrypoint",
+        "entrypoint_command",
         "user",
         "workdir",
     )

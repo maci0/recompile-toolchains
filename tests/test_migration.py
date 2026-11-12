@@ -15,6 +15,23 @@ migration = importlib.import_module("tools.migrate.verify_migration")
 
 
 class TestMigration(unittest.TestCase):
+    def test_complete_entrypoint_command_is_compared(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            recipe = 'ENTRYPOINT ["/usr/local/bin/cc"]\n'
+            (old / "Dockerfile").write_text(recipe)
+            (new / "Dockerfile").write_text(recipe)
+            self.assertEqual(migration.diff(old, new), [])
+            for changed in (
+                'ENTRYPOINT ["/usr/local/bin/cc", "--unreviewed"]\n',
+                'ENTRYPOINT ["/usr/local/bin/other/cc"]\n',
+            ):
+                with self.subTest(changed=changed):
+                    (new / "Dockerfile").write_text(changed)
+                    self.assertTrue(migration.diff(old, new))
+
     def test_printf_configuration_is_compared_as_an_install_step(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             old, new = Path(temporary) / "old", Path(temporary) / "new"

@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Compare the complete Docker entrypoint path and arguments during migration verification.
+
 - Verify ordinary printf installation steps instead of treating every printf as an entrypoint wrapper.
 
 - Compare complete base-image references and Docker build stages in migration verification.

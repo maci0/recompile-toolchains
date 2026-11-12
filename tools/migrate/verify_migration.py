@@ -214,8 +214,8 @@ def instructions(text: str) -> list[str]:
     if buf:
         out.append(buf)
     for index, instruction in enumerate(out):
-        verb, separator, arguments = instruction.partition(" ")
-        out[index] = verb.upper() + separator + arguments
+        verb, *arguments = instruction.split(maxsplit=1)
+        out[index] = verb.upper() + (" " + arguments[0] if arguments else "")
     return out
 
 

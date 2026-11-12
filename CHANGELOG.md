@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Read tab-separated Dockerfile instruction keywords without altering quoted argument spaces.
+
 - Preserve quoted Dockerfile argument spacing when verifying install steps and inline wrappers.
 
 - Preserve quoted argument spacing when comparing migrated compiler wrappers.

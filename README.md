@@ -331,8 +331,8 @@ Notes on selected families follow. The generated
   statically linked x86_64 builds of the psx-flavour compilers (commit-pinned
   source, `b74211c9`).
 - **PSY-Q 4.5 (PS1)**: the SDK's gcc 2.8.1-psx compiler from `decompals/old-gcc`
-  plus the psyq_4.5 headers/libs from the `FoxdieTeam/psyq_sdk` preservation
-  repo (commit-pinned branch tarball).
+  plus the psyq_4.5 headers/libs from the SHA-256-pinned
+  `archaic-toolchains/psyq` SDK release asset.
 - **agbcc / agbccpp (GBA)**: the `pret/agbcc` `release` asset and the
   `notyourav/agbcc` `cp`-tag asset (the C++ frontend lives in the fork).
   Both tags are rebuilt on pushes to their branches; moving tags, re-pinned
@@ -391,9 +391,10 @@ Upstream entries that do not produce a working image here, such as
 `psp-gcc-1.7.1`, are listed with their concrete reasons in the generated
 [docs/PROVENANCE.md](docs/PROVENANCE.md#catalogued-but-not-shipped).
 
-Every Dockerfile curls its own source and verifies the sha256 inside the
-build, so a build is reproducible from this repo alone (the four `.7z`/
-`.tar.xz` acquisitions above are content-addressed by their release tag).
+Toolchain payload downloads are verified against their manifest SHA-256 pins
+inside the build. Building also requires the base images and packages named
+by the recipes; download verification alone does not establish reproducible
+image bytes.
 
 ## Copyright
 

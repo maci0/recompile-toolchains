@@ -112,10 +112,12 @@ Rules the contract tests enforce (`tests/test_image_contract.py`):
   than fetching something the manifest does not pin.
 - Prefer immutable URLs: commit-pinned codeload/raw URLs, dated release
   assets, tag-pinned release assets.
-- **codeload tar.gz streams are not byte-stable**: a commit-pinned
-  codeload URL can hash differently between downloads. Pin the commit
-  instead and pipe the download straight into `tar` (see
-  `psyq/4.5-ps1/Dockerfile` for the pattern and its comment).
+- **A source commit does not replace a byte checksum.** Keep the SHA-256
+  pin for every download, including secondary SDKs and helpers. If archive
+  bytes change, qualify the replacement and update its pin or use a qualified
+  release asset; do not stream an unchecked download into `tar`. The PSY-Q
+  4.5 recipe uses a SHA-256-verified SDK release asset. The generator refuses
+  any download whose manifest entry has no checksum.
 
 ## 2. Name it
 

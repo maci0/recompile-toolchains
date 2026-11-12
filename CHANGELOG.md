@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Align the contributor checksum instructions and PSY-Q SDK source notes with the verified downloads the generator requires.
+
 ### Fixed
 
 - Verify mixed-case Dockerfile instructions instead of silently skipping added build steps.

@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Reject all-zero image build concurrency and timeout settings before running Docker.
 - Reject all-zero watchdog timeout values such as 00 instead of disabling the deadline.
 
 - Detect USER and WORKDIR changes in the migration verifier.

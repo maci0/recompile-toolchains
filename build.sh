@@ -25,12 +25,12 @@ PREFIX="${PREFIX:-rebrew}"
 # positive integers; garbage fails fast instead of misbehaving downstream.
 require_positive_int() {
   case "$2" in
-    *[!0-9]* | 0)
-      echo "$1 (got '$2')" >&2
-      exit 2
-      ;;
-    *) ;;  # valid: passes through
+    *[!0-9]*) ;;
+    *[1-9]*) return ;;
+    *) ;;
   esac
+  echo "$1 (got '$2')" >&2
+  exit 2
 }
 JOBS="${REBREW_BUILD_JOBS:-4}"
 require_positive_int "REBREW_BUILD_JOBS must be a positive integer" "$JOBS"

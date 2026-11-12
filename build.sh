@@ -192,10 +192,6 @@ tag_for() {
   family="${dir%%/*}"
   verarch="${dir#*/}"
   local tag="$PREFIX/$family:$verarch"
-  # The shared base is always tagged :1.0 — every toolchain Dockerfile's
-  # FROM/BASE_IMAGE and the --build-arg below point at it, so a manual
-  # `./build.sh base` rebuild must land on that same tag.
-  [ "$dir" = "base" ] && tag="$PREFIX/base:1.0"
   printf '%s' "$tag"
 }
 
@@ -349,9 +345,16 @@ add_base() {
   done <<<"$dependencies"
   base_order+=("$name")
 }
+toolchain_dirs=()
 for dir in "${dirs[@]}"; do
-  selected_base="$(base_image_for "$dir")"
-  add_base "$selected_base"
+  if [[ "$dir" != */* ]]; then
+    # Explicit base selections use the same dependency walk as inherited bases.
+    add_base "$PREFIX/$dir:1.0"
+  else
+    selected_base="$(base_image_for "$dir")"
+    add_base "$selected_base"
+    toolchain_dirs+=("$dir")
+  fi
 done
 for _base_name in "${base_order[@]}"; do
   _base_dir="$ROOT/$_base_name/"
@@ -376,5 +379,5 @@ for _base_name in "${base_order[@]}"; do
   fi
 done
 
-build_pool "${dirs[@]}"
+build_pool "${toolchain_dirs[@]}"
 echo "done."

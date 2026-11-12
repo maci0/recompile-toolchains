@@ -4,6 +4,8 @@
 
 ### Fixed
 
+- Build explicitly selected base images once, with their dependency chain and canonical tags.
+
 - Reject all-zero image build concurrency and timeout settings before running Docker.
 - Reject all-zero watchdog timeout values such as 00 instead of disabling the deadline.
 - Reject unknown generator options before a misspelled check can rewrite generated files.

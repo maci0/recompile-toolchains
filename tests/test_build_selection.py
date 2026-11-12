@@ -39,6 +39,48 @@ class TestBuildSelection(unittest.TestCase):
                         self.assertIn(f"{knob} must be a positive integer", result.stderr)
                         self.assertFalse(log.exists())
 
+    def test_explicit_base_selection_builds_its_dependencies_once(self) -> None:
+        cases = (
+            ("base", ["base"]),
+            ("base-noble", ["base", "base-noble"]),
+            ("base-dosemu", ["base", "base-noble", "base-dosemu"]),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            docker = work / "docker"
+            docker.write_text('#!/bin/sh\nprintf "%s\\n" "$*" >> "$BUILD_CALLS"\n')
+            docker.chmod(0o755)
+            log = work / "calls"
+            env = dict(os.environ, PATH=f"{work}:{os.environ['PATH']}", BUILD_CALLS=str(log))
+            env["PREFIX"] = "test-registry/team"
+            for selected, bases in cases:
+                with self.subTest(selected=selected):
+                    log.unlink(missing_ok=True)
+                    result = subprocess.run(  # noqa: S603  (tracked builder, stubbed docker)
+                        [str(_REPO / "build.sh"), selected],
+                        env=env,
+                        capture_output=True,
+                        text=True,
+                        timeout=60,
+                        check=False,
+                    )
+                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                    calls = [line.split() for line in log.read_text().splitlines()]
+                    self.assertEqual([Path(call[-1]).name for call in calls], bases)
+                    self.assertEqual(
+                        [call[call.index("-t") + 1] for call in calls],
+                        [f"test-registry/team/{base}:1.0" for base in bases],
+                    )
+                    self.assertTrue(
+                        all("HELPER_IMAGE=test-registry/team/base:1.0" in call for call in calls)
+                    )
+                    self.assertTrue(
+                        all(
+                            "NOBLE_IMAGE=test-registry/team/base-noble:1.0" in call
+                            for call in calls
+                        )
+                    )
+
     def test_base_dependency_selection(self) -> None:
         cases = (
             ("gcc-14.2.0", ["base"]),

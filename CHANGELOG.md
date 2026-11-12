@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.15.0] - 2026-11-13
+
+- Consolidate main and record release qualification and cleanup.
+
 ## [1.14.0] - 2026-11-12
 
 ### Changed

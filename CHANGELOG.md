@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Verify installation commands following an inline wrapper's printf during migration checks.
+
 - Compare the complete Docker entrypoint path and arguments during migration verification.
 
 - Verify ordinary printf installation steps instead of treating every printf as an entrypoint wrapper.

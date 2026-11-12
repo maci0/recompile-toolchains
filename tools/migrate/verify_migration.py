@@ -381,11 +381,13 @@ def install_clauses(text: str) -> list[str]:
 def _run_clauses(text: str) -> list[str]:
     out: list[str] = []
     for ins in instructions(text):
-        # the inline-wrapper RUN of a pre-migration file is wrapper text, and
-        # the wrapper is compared as a wrapper
-        if not ins.startswith("RUN ") or _inline_wrapper(ins):
+        if not ins.startswith("RUN "):
             continue
-        for part in ins[4:].split("&&"):
+        body = ins[4:]
+        if _inline_wrapper(ins):
+            # Only the printf is wrapper text; later commands still install the image.
+            body = body.split("> /usr/local/bin/", 1)[-1].partition("&&")[2]
+        for part in body.split("&&"):
             clause = part.strip()
             if clause:
                 out.append(clause)

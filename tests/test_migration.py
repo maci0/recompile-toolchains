@@ -15,6 +15,26 @@ migration = importlib.import_module("tools.migrate.verify_migration")
 
 
 class TestMigration(unittest.TestCase):
+    def test_install_steps_after_inline_wrapper_are_compared(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            recipe = (
+                "RUN printf '%s\\n' '#!/bin/sh' 'exec cc' > /usr/local/bin/cc "
+                "&& chmod +x /usr/local/bin/cc && touch /opt/before\n"
+                'ENTRYPOINT ["/usr/local/bin/cc"]\n'
+            )
+            (old / "Dockerfile").write_text(recipe)
+            (new / "Dockerfile").write_text(recipe)
+            self.assertEqual(migration.clause_diff(old, new), [])
+            (new / "Dockerfile").write_text(recipe.replace("/opt/before", "/opt/after"))
+            self.assertTrue(
+                migration.diff(old, new)
+                + migration.clause_diff(old, new)
+                + migration.wrapper_diff(old, new)
+            )
+
     def test_complete_entrypoint_command_is_compared(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             old, new = Path(temporary) / "old", Path(temporary) / "new"

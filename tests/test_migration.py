@@ -54,6 +54,19 @@ class TestMigration(unittest.TestCase):
                     (new / "Dockerfile").write_text(changed)
                     self.assertTrue(migration.clause_diff(old, new))
 
+    def test_checksum_may_move_before_but_not_after_use(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old, new = Path(temporary) / "old", Path(temporary) / "new"
+            old.mkdir()
+            new.mkdir()
+            check = f'RUN echo "{"a" * 64}  /tmp/compiler" | sha256sum -c -\n'
+            extract = "RUN tar xzf /tmp/compiler -C /opt/compiler\n"
+            (old / "Dockerfile").write_text("RUN mkdir -p /opt/compiler\n" + check + extract)
+            (new / "Dockerfile").write_text(check + "RUN mkdir -p /opt/compiler\n" + extract)
+            self.assertEqual(migration.clause_diff(old, new), [])
+            (new / "Dockerfile").write_text("RUN mkdir -p /opt/compiler\n" + extract + check)
+            self.assertIn("checksum follows use: /tmp/compiler", migration.clause_diff(old, new))
+
     def test_qualified_repair_rejects_later_edits(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

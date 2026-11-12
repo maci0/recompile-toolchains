@@ -414,14 +414,35 @@ def wrapper_diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:
     return _differences("wrapper line", wrapper_lines(old_dir), wrapper_lines(new_dir))
 
 
+_CHECKSUM_CLAUSE = re.compile(r'^echo "[0-9a-f]{64} ([^\"]+)"')
+
+
 def clause_diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:
     """Raw install clauses that changed, beyond the ones already accounted for."""
     old = install_clauses((old_dir / "Dockerfile").read_text(encoding="utf-8"))
     new = install_clauses((new_dir / "Dockerfile").read_text(encoding="utf-8"))
-    # order-sensitive, and that is why the classified `ops` comparison could
-    # go: a reordered install clause is a behaviour change, and this reports it
-    # on the clause itself instead of on a normalised copy of it
-    return _differences("clause", old, new)
+    # Generation groups downloads and checks before installation. Compare
+    # checks independently, but never accept one that moved after its file's use.
+    problems = _differences(
+        "checksum",
+        sorted(c for c in old if _CHECKSUM_CLAUSE.match(c)),
+        sorted(c for c in new if _CHECKSUM_CLAUSE.match(c)),
+    )
+    problems += _differences(
+        "clause",
+        [c for c in old if not _CHECKSUM_CLAUSE.match(c)],
+        [c for c in new if not _CHECKSUM_CLAUSE.match(c)],
+    )
+    for index, clause in enumerate(new):
+        if match := _CHECKSUM_CLAUSE.match(clause):
+            path = match[1]
+            reference = re.compile(rf"(?<![\w./-]){re.escape(path)}(?![\w./-])")
+            if any(
+                reference.search(previous) and not _CHECKSUM_CLAUSE.match(previous)
+                for previous in new[:index]
+            ):
+                problems.append(f"checksum follows use: {path}")
+    return problems
 
 
 def diff(old_dir: pathlib.Path, new_dir: pathlib.Path) -> list[str]:

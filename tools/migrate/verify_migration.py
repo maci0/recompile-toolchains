@@ -95,6 +95,9 @@ def unmirrored(directory: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
 #: Intentional post-migration repairs, qualified by the 2026-10-25 smoke and
 #: pipeline tests. Hash both files so unrelated recipe/wrapper edits still fail.
 QUALIFIED_REPAIRS: dict[str, str] = {
+    # PSY-Q 4.5 adds SDK byte pin 495697696a3288866d83ff7b7aff423560ffaffd3e212274417f3348cc0b29f8;
+    # the baseline pinned only its git commit, without an archive checksum.
+    "psyq-4.5": "1a6ae9efb83a75e9a1028f7dd5ad6c08865d6120035984f1fa628f33c29f52b2",
     "agbcc": "4a6f97fb822577028ac3b9b720af643ca713c7212032c13a802a15d02c0f91b1",
     "agbcc-arm-gba": "ab25fe10f7b18d58382ff95a3c9b9fbc698c42849475ba11bd58d58cd7fe2fd2",
     "agbcc-fe8j": "7e555400b9e011ea248d1515832f8bbb8265eb9d3de9e29e565426014f1b3966",

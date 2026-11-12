@@ -1144,6 +1144,9 @@ def provenance(entries: dict[str, dict[str, object]]) -> str:
 
 def main(argv: list[str]) -> int:
     """Write the catalog, or (``--check``) verify the committed copy."""
+    if set(argv) - {"--check"}:
+        print("usage: catalog.py [--check]", file=sys.stderr)
+        return 2
     entries = manifest()
     rendered = render(entries)
     rendered_provenance = provenance(entries)

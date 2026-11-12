@@ -6,6 +6,7 @@
 
 - Reject all-zero image build concurrency and timeout settings before running Docker.
 - Reject all-zero watchdog timeout values such as 00 instead of disabling the deadline.
+- Reject unknown generator options before a misspelled check can rewrite generated files.
 
 - Detect USER and WORKDIR changes in the migration verifier.
 - Detect changed or removed download checksum checks in migration verification.

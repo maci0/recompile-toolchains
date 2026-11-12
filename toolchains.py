@@ -273,6 +273,9 @@ def dump(data: dict[str, object]) -> str:
 
 def main(argv: list[str]) -> int:
     """Write the artifact, or (``--check``) verify the committed copy."""
+    if set(argv) - {"--check"}:
+        print("usage: toolchains.py [--check]", file=sys.stderr)
+        return 2
     text = dump(render(catalog.manifest()))
     if "--check" in argv:
         current = ARTIFACT.read_text(encoding="utf-8") if ARTIFACT.exists() else ""

@@ -900,6 +900,9 @@ def render_all(entries: dict[str, dict[str, object]]) -> dict[pathlib.Path, str]
 
 
 def main(argv: list[str]) -> int:
+    if set(argv) - {"--check"}:
+        print("usage: generate.py [--check]", file=sys.stderr)
+        return 2
     entries = manifest()
     try:
         rendered = render_all(entries)

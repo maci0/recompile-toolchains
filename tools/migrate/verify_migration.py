@@ -217,11 +217,14 @@ def instructions(text: str) -> list[str]:
 
 
 def wrapper_text(d: pathlib.Path) -> tuple[str, str]:
-    sibs = sorted(p for p in d.glob("*.sh") if p.is_file())
-    if sibs:
-        return sibs[0].name, sibs[0].read_text()
+    parsed = instructions((d / "Dockerfile").read_text())
+    entrypoint = semantics(d)["entrypoint"]
+    for ins in reversed(parsed):
+        match = re.fullmatch(r"COPY (\S+\.sh) /usr/local/bin/" + re.escape(entrypoint), ins)
+        if match and (source := d / match[1]).is_file():
+            return match[1], source.read_text()
     lines: list[str] = []
-    for ins in instructions((d / "Dockerfile").read_text()):
+    for ins in parsed:
         if ins.startswith("RUN printf "):
             for quoted in re.findall(r"'((?:[^']|'\\'')*)'", ins):
                 chunk = quoted.replace("'\\''", "'")

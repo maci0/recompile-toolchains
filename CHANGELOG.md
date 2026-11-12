@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Verify the copied entrypoint wrapper instead of the first sibling shell file in migration checks.
 - Refuse directory output targets in generated ELF adapters instead of moving an object inside them.
 - Build explicitly selected base images once, with their dependency chain and canonical tags.
 

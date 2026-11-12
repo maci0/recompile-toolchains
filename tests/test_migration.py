@@ -99,8 +99,22 @@ class TestMigration(unittest.TestCase):
                 redirect_stdout(StringIO()),
             ):
                 self.assertEqual(migration.main(["--baseline", "test"]), 0)
+                acknowledged = (new / "cc.sh").read_text()
                 (new / "cc.sh").write_text('#!/bin/sh\nexec unreviewed "$@"\n')
                 self.assertEqual(migration.main(["--baseline", "test"]), 1)
+                (new / "aaa.sh").write_text(acknowledged)
+                self.assertEqual(migration.main(["--baseline", "test"]), 1)
+
+    def test_wrapper_reader_follows_the_final_entrypoint_copy(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name in ("aaa", "first", "last"):
+                (root / f"{name}.sh").write_text(f"#!/bin/sh\nexec {name}\n")
+            (root / "Dockerfile").write_text(
+                "FROM scratch\nCOPY first.sh /usr/local/bin/cc\n"
+                'COPY last.sh /usr/local/bin/cc\nENTRYPOINT ["/usr/local/bin/cc"]\n'
+            )
+            self.assertEqual(migration.wrapper_text(root), ("last.sh", "#!/bin/sh\nexec last\n"))
 
     def test_a_mirror_url_reads_as_its_upstream(self) -> None:
         upstream = "https://upstream.example/cc.tar.gz"

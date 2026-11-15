@@ -9,3 +9,6 @@
 *.py text eol=lf
 Dockerfile text eol=lf
 sources.json text eol=lf
+# Consumers pin these bytes by sha256; a CRLF checkout would change them.
+toolchains.json text eol=lf
+toolchains.json.sha256 text eol=lf

@@ -4,8 +4,9 @@
 # wrapper-common.sh runner/watchdog contract with stub runners and the
 # generated toolchain catalog against the manifest.
 #
-# `make docs` regenerates docs/TOOLCHAINS.md from sources.json + the
-# Dockerfiles; `make test` fails when the committed copy is stale.
+# `make docs` regenerates docs/TOOLCHAINS.md, toolchains.json and
+# toolchains.json.sha256 from sources.json + the Dockerfiles; `make test`
+# fails when a committed copy is stale.
 # Every .sh in the repo, tracked or not: a freshly added wrapper must be
 # linted before it is committed, not after (git ls-files alone would skip it).
 # --others --exclude-standard keeps the .gitignore'd trees out.

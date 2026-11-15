@@ -9,9 +9,15 @@ every reader depends on.
 
 from __future__ import annotations
 
+import contextlib
+import hashlib
+import io
 import json
 import re
+import tempfile
 import unittest
+from pathlib import Path
+from unittest import mock
 
 import catalog
 import toolchains
@@ -27,6 +33,43 @@ class TestToolchainsArtifact(unittest.TestCase):
         expected = toolchains.dump(toolchains.render(catalog.manifest()))
         actual = toolchains.ARTIFACT.read_text(encoding="utf-8")
         self.assertEqual(actual, expected, "run `make docs` to regenerate toolchains.json")
+
+    def test_published_checksum_names_the_committed_artifact(self) -> None:
+        # The digest a consumer pins sits at a stable path beside the
+        # artifact, in `sha256sum -c` form, so nobody computes it by hand.
+        digest = hashlib.sha256(toolchains.ARTIFACT.read_bytes()).hexdigest()
+        self.assertEqual(
+            toolchains.CHECKSUM.read_text(encoding="utf-8"),
+            f"{digest}  toolchains.json\n",
+            "run `make docs` to regenerate toolchains.json.sha256",
+        )
+
+    def test_check_refuses_a_stale_checksum(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            stale = Path(tmp) / "toolchains.json.sha256"
+            stale.write_text(f"{'0' * 64}  toolchains.json\n", encoding="utf-8")
+            err = io.StringIO()
+            with (
+                mock.patch.object(toolchains, "CHECKSUM", stale),
+                contextlib.redirect_stderr(err),
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                self.assertEqual(toolchains.main(["--check"]), 1)
+        self.assertIn("stale: toolchains.json.sha256", err.getvalue())
+
+    def test_write_publishes_the_checksum(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            artifact = Path(tmp) / "toolchains.json"
+            checksum = Path(tmp) / "toolchains.json.sha256"
+            with (
+                mock.patch.object(toolchains, "ARTIFACT", artifact),
+                mock.patch.object(toolchains, "CHECKSUM", checksum),
+                mock.patch.object(toolchains, "REPO", Path(tmp)),
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                self.assertEqual(toolchains.main([]), 0)
+            digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+            self.assertEqual(checksum.read_text(encoding="utf-8"), f"{digest}  toolchains.json\n")
 
     def test_artifact_has_every_manifest_profile(self) -> None:
         data = json.loads(toolchains.ARTIFACT.read_text(encoding="utf-8"))

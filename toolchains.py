@@ -5,15 +5,18 @@ The catalogue is derived from the same two inputs as ``docs/TOOLCHAINS.md``:
 consumer fields every image declares) and each ``<family>/<version>-<platform>/
 Dockerfile`` (the wrapper the image exposes).  The release artifact is pinned
 by its own sha256 in the consumers that vendor it; see
-[ADR 0010](../../docs/adr/0010-cross-tool-architecture-decisions.md).
+[ADR 0010](../../docs/adr/0010-cross-tool-architecture-decisions.md).  That
+sha256 is published beside it as ``toolchains.json.sha256``, in the form
+``sha256sum -c`` reads.
 
 Usage:
-    python toolchains.py            # rewrite toolchains.json
-    python toolchains.py --check     # exit 1 when the committed copy differs
+    python toolchains.py            # rewrite toolchains.json and its .sha256
+    python toolchains.py --check     # exit 1 when a committed copy differs
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -23,6 +26,7 @@ import catalog
 
 REPO = Path(__file__).resolve().parent
 ARTIFACT = REPO / "toolchains.json"
+CHECKSUM = REPO / "toolchains.json.sha256"
 
 SCHEMA_VERSION = 1
 
@@ -271,21 +275,33 @@ def dump(data: dict[str, object]) -> str:
     return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
 
 
+def checksum(text: str) -> str:
+    """The ``sha256sum`` line for *text* written as ``toolchains.json``."""
+    return f"{hashlib.sha256(text.encode('utf-8')).hexdigest()}  {ARTIFACT.name}\n"
+
+
 def main(argv: list[str]) -> int:
-    """Write the artifact, or (``--check``) verify the committed copy."""
+    """Write the artifact and its checksum, or (``--check``) verify both."""
     if set(argv) - {"--check"}:
         print("usage: toolchains.py [--check]", file=sys.stderr)
         return 2
     text = dump(render(catalog.manifest()))
+    outputs = ((ARTIFACT, text), (CHECKSUM, checksum(text)))
     if "--check" in argv:
-        current = ARTIFACT.read_text(encoding="utf-8") if ARTIFACT.exists() else ""
-        if current != text:
-            print("stale: toolchains.json; run `make docs`", file=sys.stderr)
+        stale = [
+            path.name
+            for path, expected in outputs
+            if (path.read_text(encoding="utf-8") if path.exists() else "") != expected
+        ]
+        for name in stale:
+            print(f"stale: {name}; run `make docs`", file=sys.stderr)
+        if stale:
             return 1
-        print("toolchains.json is up to date")
+        print("toolchains.json and toolchains.json.sha256 are up to date")
         return 0
-    ARTIFACT.write_text(text, encoding="utf-8")
-    print(f"wrote {ARTIFACT.relative_to(REPO)}")
+    for path, expected in outputs:
+        path.write_text(expected, encoding="utf-8")
+        print(f"wrote {path.relative_to(REPO)}")
     return 0
 
 

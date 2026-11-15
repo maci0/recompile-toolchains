@@ -270,6 +270,26 @@ The [2026-10-25 ingestion report](docs/RELATED-WORK.md#ingestion-and-repairs--20
   entrypoint, aliases and consumer fields.  **Generated** from `sources.json`
   + the Dockerfiles by `make docs` and verified by `make test`; consumers
   vendor it by sha256 instead of keeping another copy of the manifest.
+  [toolchains.json.sha256](toolchains.json.sha256) beside it is that sha256
+  in `sha256sum -c` form, generated and checked with it.
+
+### Vendoring toolchains.json
+
+Every release tag publishes both files at a stable path,
+`https://raw.githubusercontent.com/maci0/recompile-toolchains/<tag>/toolchains.json`
+and the same path with `.sha256`.  A consumer fetches the pair, verifies it,
+and pins the release tag and the hex digest in its own tree, so neither the
+file nor its hash is copied by hand:
+
+```sh
+tag=v1.16.0
+base=https://raw.githubusercontent.com/maci0/recompile-toolchains/$tag
+curl -fsSL -O "$base/toolchains.json" -O "$base/toolchains.json.sha256"
+sha256sum -c toolchains.json.sha256   # toolchains.json: OK
+```
+
+Releases before 1.16.0 publish `toolchains.json` only (1.15.0's sha256 is
+`f850d0755b68d489fc501575a199e4ad94d6e6098bee1fb838cd24d85c84970a`).
 
 ## Sources & provenance
 

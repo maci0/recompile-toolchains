@@ -8,6 +8,7 @@ its own sha256-verified source at build time.
 <family>/<version>-<platform>/Dockerfile      the image recipe + entrypoint wrapper
 sources.json                                  the pin, aliases and consumer fields
 toolchains.json                               generated machine-readable catalog (make docs)
+toolchains.json.sha256                        its sha256 for consumers (make docs)
 docs/TOOLCHAINS.md                            generated human catalog (make docs)
 ```
 

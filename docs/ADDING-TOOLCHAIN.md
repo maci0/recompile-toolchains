@@ -329,7 +329,7 @@ make docs
 
 ```bash
 ./build.sh <profile-or-alias>          # e.g. ./build.sh mwcc_233_163
-mkdir -p /tmp/smoke && cd /tmp/smoke
+mkdir -p .scratch/smoke && cd .scratch/smoke   # on disk, ignored by git
 printf 'int f(void){return 42;}\n' > t.c
 docker run --rm -v "$PWD":/work -w /work rebrew/<family>:<ver>-<platform> <flags>
 file t.o                               # an object of the right target, or the documented artifact

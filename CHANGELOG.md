@@ -4,7 +4,11 @@
 
 ### Added
 
-- `make images` (`tests/check_images.py`) checks images already built, in the local engine or, with `REGISTRY=<url>`, in a registry (manifest and config only). It fails when an image's build history does not verify its catalogue entry's `source.sha256` (`MISMATCH`), verifies no sha256 at all (`NO-SUMS`), lacks the compiler directory its recipe names (`NO-COMPILER`), or when two entries that claim different compiler versions (family and version) hold byte-identical compiler directories (`SAME-COMPILER`, local images; ids of one version that share binaries, such as service packs that left the compiler unchanged, print as `alias`). A re-pin does not rebuild the images built before it: the LAN registry's `rebrew/msvc:7.0-win32`, built on 2026-09-12 while `msvc-7.0` still pinned `archaic-msvc/msvc710`, served the 7.1 compiler under the 7.0 tag after the pin moved to `msvc700` on 2026-09-13. The check reports it as `MISMATCH` and, beside `msvc-7.1`, as `SAME-COMPILER`.
+- `make images` (`tests/check_images.py`) checks images already built, in the local engine or, with `REGISTRY=<url>`, in a registry (manifest and config only). It fails when an image's build history does not verify its catalogue entry's `source.sha256` (`MISMATCH`), verifies no sha256 at all (`NO-SUMS`), lacks the compiler directory its recipe names (`NO-COMPILER`), or when two entries that claim different compiler versions (family and version) hold byte-identical compiler directories (`SAME-COMPILER`, local images; ids of one version that share binaries, such as service packs that left the compiler unchanged, print as `alias`). A DOSBox recipe's compiler directory is the one its command runs (`C:\BIN\CL.EXE`); on the rebuilt 16-bit images the check reports `msvc-1.5` and `msvc-1.52` as one compiler (C/C++ 8.00c, byte-identical `BIN`). A re-pin does not rebuild the images built before it: the LAN registry's `rebrew/msvc:7.0-win32`, built on 2026-09-12 while `msvc-7.0` still pinned `archaic-msvc/msvc710`, served the 7.1 compiler under the 7.0 tag after the pin moved to `msvc700` on 2026-09-13. The check reports it as `MISMATCH` and, beside `msvc-7.1`, as `SAME-COMPILER`.
+
+### Changed
+
+- The README and `docs/TOOLCHAINS.md` say what an entry is: a recipe and the tag `./build.sh` gives its image, not a published image. A deployment runs the ids whose images its runtime holds; `make images` lists them.
 
 ### Fixed
 

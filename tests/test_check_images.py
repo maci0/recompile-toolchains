@@ -223,6 +223,17 @@ class TestDistinctCompilers(unittest.TestCase):
         self.assertIn("alias         msvc-7.0 msvc-7.0-rtm: identical binaries", out)
         self.assertIn("alias         msvc-6.0 msvc-6.0-sp1: identical binaries", out)
 
+    def test_a_dosbox_compiler_is_compared_too(self) -> None:
+        # The DOSBox recipes name no `binary`; their command runs C:\BIN\CL.EXE.
+        same = _tree({"CL.EXE": b"8.00c", "C23216.EXE": b"c2"})
+        code, out = self._run(
+            {"rebrew/msvc:1.5-win16": same, "rebrew/msvc:1.52-win16": same},
+            ["msvc-1.5", "msvc-1.52"],
+        )
+        self.assertEqual(code, 1)
+        self.assertIn("SAME-COMPILER msvc-1.5 msvc-1.52", out)
+        self.assertNotIn("unchecked", out)
+
     def test_an_image_without_its_compiler_directory_fails(self) -> None:
         code, out = self._run({}, ["msvc-7.0"])
         self.assertEqual(code, 1)

@@ -17,7 +17,8 @@ Two checks, both read-only:
    its compiler to the pin.  Both fail.  Read from the local engine, or with
    `--registry URL` from a registry's manifest and config (no layers).
 2. Distinct compilers (local engine only: it reads the files).  The directory
-   holding each image's compiler binary is hashed file by file; two entries
+   holding each image's compiler binary (the recipe's `binary`, or the
+   `C:\\...\\X.EXE` a DOSBox command runs) is hashed file by file; two entries
    whose directories are byte-identical while their family or version differ
    fail as `SAME-COMPILER`.  Byte-identical entries of one family and version
    print as `alias` and pass: a service pack that left the compiler binaries
@@ -76,6 +77,8 @@ _CHUNK_BYTES = 1 << 20
 #: The checksum line generate.py renders (and the hand-written recipes before it
 #: used): `echo "<sha256>  <file>" | sha256sum -c -`.
 _RECIPE_SUM = re.compile(r'([0-9a-f]{64}) +[^\s"]+"? *\| *sha256sum -c')
+#: The compiler a DOSBox command runs: `C:\\BIN\\CL.EXE` gives `BIN`.
+_DOS_COMPILER = re.compile(r"C:\\+([A-Za-z0-9_]+(?:\\+[A-Za-z0-9_]+)*)\\+[A-Za-z0-9_]+\.EXE")
 _HTTP_NOT_FOUND = 404
 _HTTP_OK = 200
 _HTTP_CREATED = 201
@@ -307,7 +310,6 @@ def entries() -> dict[str, Entry]:
     """Every catalogue entry, from the rows toolchains.json publishes."""
     sys.path.insert(0, str(REPO))
     import catalog
-    import generate
     import toolchains
 
     prefix = os.environ.get("PREFIX", "rebrew")
@@ -317,18 +319,34 @@ def entries() -> dict[str, Entry]:
         image, source = row["image"], row["source"]
         if not isinstance(image, dict) or not isinstance(source, dict):
             raise CheckError(f"{profile}: catalogue row has no image or source")
-        binary = generate.recipe(entry).get("binary")
         found[profile] = Entry(
             tag=f"{prefix}/{str(image['tag']).removeprefix('rebrew/')}",
             sha256=str(source["sha256"]),
             claim=(str(row["family"]), str(row["version"])),
-            compiler_dir=(
-                str(Path(generate.binary_path(entry)).parent)
-                if isinstance(binary, str) and binary
-                else ""
-            ),
+            compiler_dir=compiler_dir(entry),
         )
     return found
+
+
+def compiler_dir(entry: Json) -> str:
+    """The in-image directory of the entry's compiler, or "" when the recipe names none.
+
+    A DOSBox recipe names its compiler as a `C:\\...\\X.EXE` path in its command,
+    with C: mounted from the wrapper's `dir`.
+    """
+    import generate
+
+    recipe = generate.recipe(entry)
+    binary = recipe.get("binary")
+    if isinstance(binary, str) and binary:
+        return str(Path(generate.binary_path(entry)).parent)
+    wrapper = recipe.get("wrapper")
+    if not isinstance(wrapper, dict) or wrapper.get("shape") != "dosbox_compile":
+        return ""
+    match = _DOS_COMPILER.search(str(wrapper.get("command", "")))
+    if match is None:
+        return ""
+    return "/".join([str(wrapper.get("dir", "")), *re.split(r"\\+", match.group(1))])
 
 
 def recipe_pins(

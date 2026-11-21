@@ -372,7 +372,7 @@ Microsoft Visual C/C++ 1.0-12.0
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/msvc:1.0-win16` | win16 | `cl10` | DOSBox | none | `main` `4858446b957f` @ `0cd3d8a20241` | none |
 | `rebrew/msvc:1.5-win16` | win16 | `cl15` | DOSBox | none | `main` `5cd1e4d9fd70` @ `3649e12977c1` | none |
-| `rebrew/msvc:1.52-win16` | win16 | `cl16` | DOSBox | none | `main` `18fbdb547aa6` @ `3beb967dfc07` | none |
+| `rebrew/msvc:1.52-win16` | win16 | `cl16` | DOSBox | none | `main` `18fbdb547aa6` @ `3beb967dfc07` | the same compiler binaries as `msvc-1.5`: identical objects |
 | `rebrew/msvc:10.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `2e5fbb9b71ed` @ `09a53c11f781` | none |
 | `rebrew/msvc:10.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `5f0b4486eb68` @ `f8977e2cacbe` | none |
 | `rebrew/msvc:11.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `adba1882eb07` @ `89087a636aea` | none |

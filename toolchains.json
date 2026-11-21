@@ -4086,7 +4086,8 @@
         "tool_root": null
       },
       "arch": "x86_16",
-      "bits": 16
+      "bits": 16,
+      "same_compiler_as": "msvc-1.5"
     },
     {
       "id": "msvc-10.0",

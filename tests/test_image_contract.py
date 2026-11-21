@@ -20,6 +20,7 @@ from pathlib import Path
 
 import catalog  # repo root is on sys.path under `python -m unittest discover`
 import generate
+import toolchains
 
 _REPO = Path(__file__).resolve().parents[1]
 
@@ -172,6 +173,25 @@ class TestManifest(unittest.TestCase):
             # in the wrapper's reason rather than in a `binary` field: compare
             # the recipes as a whole.
             self.assertNotEqual(entry["recipe"], other["recipe"], f"{profile}: same as {base}")
+
+    def test_same_compiler_names_another_version_of_the_family(self) -> None:
+        """`same_compiler_as` declares two product versions with one compiler.
+
+        `make images` verifies the binaries; this pins the declaration itself:
+        it names a real, undeclared entry of the same family and another
+        version (one version under two ids needs no declaration).
+        """
+        rows = {
+            profile: toolchains.row(profile, entry) for profile, entry in catalog.manifest().items()
+        }
+        for profile, row in rows.items():
+            other = row.get("same_compiler_as")
+            if not isinstance(other, str):
+                continue
+            self.assertIn(other, rows, f"{profile}: same_compiler_as names nothing")
+            self.assertNotIn("same_compiler_as", rows[other], f"{profile}: {other} declares too")
+            self.assertEqual(rows[other]["family"], row["family"], f"{profile}: another family")
+            self.assertNotEqual(rows[other]["version"], row["version"], f"{profile}: one version")
 
     def test_every_dockerfile_has_a_manifest_entry(self) -> None:
         """Reverse sweep: a Dockerfile whose download pins nothing is a gap."""

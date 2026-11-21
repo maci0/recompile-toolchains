@@ -258,6 +258,9 @@ def row(profile: str, entry: dict[str, object]) -> dict[str, object]:
     variant = _text(entry, "variant_of")
     if variant:
         out["variant_of"] = variant
+    same = _text(entry, "same_compiler_as")
+    if same:
+        out["same_compiler_as"] = same
     return out
 
 

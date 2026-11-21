@@ -20,9 +20,12 @@ Two checks, both read-only:
    holding each image's compiler binary (the recipe's `binary`, or the
    `C:\\...\\X.EXE` a DOSBox command runs) is hashed file by file; two entries
    whose directories are byte-identical while their family or version differ
-   fail as `SAME-COMPILER`.  Byte-identical entries of one family and version
-   print as `alias` and pass: a service pack that left the compiler binaries
-   unchanged (`msvc-6.0`, `-sp1`, `-sp2`) or a second id for one tree.
+   fail as `SAME-COMPILER`, unless one declares the other in `same_compiler_as`
+   (two product versions, one compiler: `msvc-1.52` and `msvc-1.5`).  A
+   declaration whose binaries differ fails as `DIFFERENT`.  Byte-identical
+   entries of one family and version print as `alias` and pass: a service pack
+   that left the compiler binaries unchanged (`msvc-6.0`, `-sp1`, `-sp2`) or a
+   second id for one tree.
 
 Images the engine or registry does not hold print as `absent` and pass: which
 images a host carries is that host's choice.  Images keep `rebrew/` as their
@@ -304,6 +307,8 @@ class Entry:
     claim: tuple[str, str]
     #: The in-image directory holding the compiler binary; "" when the recipe names none.
     compiler_dir: str
+    #: The entry whose compiler binaries this one declares it shares; "" when none.
+    same_compiler_as: str
 
 
 def entries() -> dict[str, Entry]:
@@ -324,6 +329,7 @@ def entries() -> dict[str, Entry]:
             sha256=str(source["sha256"]),
             claim=(str(row["family"]), str(row["version"])),
             compiler_dir=compiler_dir(entry),
+            same_compiler_as=str(row.get("same_compiler_as", "")),
         )
     return found
 
@@ -386,7 +392,7 @@ def recipe_pins(
 
 def distinct_compilers(found: dict[str, Entry], present: list[str]) -> int:
     """Check 2: print byte-identical compiler directories; count the failures."""
-    groups: dict[str, list[str]] = {}
+    digests: dict[str, str] = {}
     failures = 0
     for profile in present:
         entry = found[profile]
@@ -398,14 +404,35 @@ def distinct_compilers(found: dict[str, Entry], present: list[str]) -> int:
             failures += 1
             print(f"NO-COMPILER   {profile:30s} {entry.tag}: no {entry.compiler_dir} in the image")
             continue
+        digests[profile] = digest
+    for profile, digest in sorted(digests.items()):
+        same = found[profile].same_compiler_as
+        if not same:
+            continue
+        if same not in digests:
+            print(f"unverified    {profile:30s} same_compiler_as {same}, which has no image here")
+        elif digests[same] == digest:
+            print(f"declared      {profile} {same}: identical binaries ({digest[:12]})")
+        else:
+            failures += 1
+            print(
+                f"DIFFERENT     {profile} {same}: same_compiler_as is declared, "
+                f"but the binaries differ ({digest[:12]}, {digests[same][:12]})"
+            )
+    groups: dict[str, list[str]] = {}
+    for profile, digest in digests.items():
         groups.setdefault(digest, []).append(profile)
     for digest, members in sorted(groups.items()):
         if len(members) == 1:
             continue
-        claims = sorted({found[profile].claim for profile in members})
-        names = " ".join(members)
+        # A member that declares another member of the group is accounted for.
+        undeclared = [p for p in members if found[p].same_compiler_as not in members]
+        claims = sorted({found[profile].claim for profile in undeclared})
+        names = " ".join(sorted(members))
         if len(claims) == 1:
-            print(f"alias         {names}: identical binaries ({digest[:12]}), one claimed version")
+            if len(undeclared) > 1:
+                same = f"identical binaries ({digest[:12]}), one claimed version"
+                print(f"alias         {names}: {same}")
             continue
         failures += 1
         said = "; ".join(" ".join(filter(None, claim)) for claim in claims)

@@ -406,7 +406,9 @@ fails on an image whose build history does not verify its entry's
 `source.sha256` (`MISMATCH`, or `NO-SUMS` for a recipe that verified
 nothing), on byte-identical compiler binaries under two entries that claim
 different compiler versions (`SAME-COMPILER`, local images only; ids of one
-family and version that share binaries print as `alias`), and on an image
+family and version that share binaries print as `alias`), unless one declares
+the other in `same_compiler_as`; on a declaration whose binaries differ
+(`DIFFERENT`); and on an image
 without the compiler directory its recipe names (`NO-COMPILER`).  Its
 `absent` lines list every profile with no image under its **current** tag: a
 rename that updates the manifest but leaves the old tag behind is invisible
@@ -424,6 +426,7 @@ manifest entry and no image.
 | `recipe` | everything the Dockerfile is rendered from: base, apt, fetch, steps, env, root, binary, entrypoint, runner, wrapper, labels (see step 3) |
 | `notes` | optional authored documentation for the image: the catalog's Notes column, verbatim.  It lives here, not in the recipe, because re-deriving a recipe rewrites it. Anything the image does not render belongs at the profile level. |
 | `aliases` | extra names `build.sh` accepts for this profile |
+| `same_compiler_as` | optional: the profile whose compiler binaries this one ships byte for byte.  Two product versions, one compiler: they produce identical objects (`msvc-1.52` names `msvc-1.5`, both C/C++ 8.00c).  Published in `toolchains.json`; `make images` fails if the binaries differ |
 | `*_url`/`*_sha256`/`*_commit` | additional pinned sources the image needs |
 
 ## Consumer registration and qualification

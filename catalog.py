@@ -947,6 +947,9 @@ def _notes(entry: dict[str, object]) -> str:
     base = _text(entry, "variant_of")
     if base:
         notes.append(f"the same build as `{base}`, with a different front end")
+    same = _text(entry, "same_compiler_as")
+    if same:
+        notes.append(f"the same compiler binaries as `{same}`: identical objects")
     for field, what in (
         ("binutils_url", "binutils"),
         ("parser_url", "obj parser"),

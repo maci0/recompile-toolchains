@@ -225,14 +225,48 @@ class TestDistinctCompilers(unittest.TestCase):
 
     def test_a_dosbox_compiler_is_compared_too(self) -> None:
         # The DOSBox recipes name no `binary`; their command runs C:\BIN\CL.EXE.
+        # msvc-1.0 declares no shared compiler with msvc-1.5.
+        same = _tree({"CL.EXE": b"8.00c", "C23216.EXE": b"c2"})
+        code, out = self._run(
+            {"rebrew/msvc:1.0-win16": same, "rebrew/msvc:1.5-win16": same},
+            ["msvc-1.0", "msvc-1.5"],
+        )
+        self.assertEqual(code, 1)
+        self.assertIn("SAME-COMPILER msvc-1.0 msvc-1.5", out)
+        self.assertNotIn("unchecked", out)
+
+    def test_a_declared_shared_compiler_passes(self) -> None:
+        # sources.json: msvc-1.52 same_compiler_as msvc-1.5.
         same = _tree({"CL.EXE": b"8.00c", "C23216.EXE": b"c2"})
         code, out = self._run(
             {"rebrew/msvc:1.5-win16": same, "rebrew/msvc:1.52-win16": same},
             ["msvc-1.5", "msvc-1.52"],
         )
+        self.assertEqual(code, 0, out)
+        self.assertIn("declared      msvc-1.52 msvc-1.5: identical binaries", out)
+        self.assertNotIn("SAME-COMPILER", out)
+
+    def test_a_declared_shared_compiler_with_other_binaries_fails(self) -> None:
+        code, out = self._run(
+            {
+                "rebrew/msvc:1.5-win16": _tree({"CL.EXE": b"8.00c"}),
+                "rebrew/msvc:1.52-win16": _tree({"CL.EXE": b"8.00d"}),
+            },
+            ["msvc-1.5", "msvc-1.52"],
+        )
         self.assertEqual(code, 1)
-        self.assertIn("SAME-COMPILER msvc-1.5 msvc-1.52", out)
-        self.assertNotIn("unchecked", out)
+        self.assertIn(
+            "DIFFERENT     msvc-1.52 msvc-1.5: same_compiler_as is declared, "
+            "but the binaries differ",
+            out,
+        )
+
+    def test_a_declaration_without_the_other_image_is_unverified(self) -> None:
+        code, out = self._run(
+            {"rebrew/msvc:1.52-win16": _tree({"CL.EXE": b"8.00c"})}, ["msvc-1.52"]
+        )
+        self.assertEqual(code, 0, out)
+        self.assertIn("unverified    msvc-1.52", out)
 
     def test_an_image_without_its_compiler_directory_fails(self) -> None:
         code, out = self._run({}, ["msvc-7.0"])

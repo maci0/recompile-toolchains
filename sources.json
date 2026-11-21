@@ -8931,7 +8931,8 @@
         ],
         "file": "cl16-wrapper.sh"
       }
-    }
+    },
+    "same_compiler_as": "msvc-1.5"
   },
   "msvc-10.0": {
     "family": "msvc",

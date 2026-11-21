@@ -29,7 +29,9 @@ command -v file >/dev/null 2>&1 || {
     exit 1
 }
 
-work="$(mktemp -d "${TMPDIR:-/tmp}/rebrew-smoke.XXXXXX")"
+# Scratch lives in the repository's ignored .scratch/, on disk: never a tmpfs.
+mkdir -p "$REPO/.scratch"
+work="$(mktemp -d "$REPO/.scratch/smoke.XXXXXX")"
 trap 'rm -rf "$work"' EXIT
 # The toolchain images drop to uid 1000 (`rebrew`), so the mount must be
 # readable *and writable* by that uid.  `mktemp -d` is 0700, and a CI runner's
@@ -41,12 +43,12 @@ chmod 777 "$work"
 
 fail=0
 
-# host_dir_of <profile> — the manifest's install directory, or empty.
-host_dir_of() {
-    python3 - "$1" <<'EOF'
+# manifest_field <profile> <key> — a manifest field of the profile, or empty.
+manifest_field() {
+    python3 - "$1" "$2" <<'EOF'
 import json, sys
 entry = json.load(open("sources.json")).get(sys.argv[1])
-print(entry["host_dir"] if entry else "")
+print(entry.get(sys.argv[2], "") if entry else "")
 EOF
 }
 
@@ -62,7 +64,7 @@ run_case() {
     artifact_name="$3"
     expect="$4"
     shift 4
-    host_dir="$(host_dir_of "$profile")"
+    host_dir="$(manifest_field "$profile" host_dir)"
     if [ -z "$host_dir" ]; then
         echo "FAIL $profile: not in sources.json" >&2
         fail=1
@@ -232,7 +234,17 @@ if [ "$#" -gt 0 ]; then
                 run_case "$profile" '-c t.c -o t.o' t.o 'Renesas SH' ;;
             gcc-16.2.0|clang-23.1.4)
                 run_case "$profile" '-c t.c -o t.o' t.o 'x86-64' ;;
-            *) run_case "$profile" '-c t.c -o t.o' t.o '' ;;
+            *)
+                # The image's argument dialect decides the invocation: `cl`
+                # ignores `-o` and writes t.obj, so a POSIX call reads as
+                # "no object produced" for every MSVC image.
+                case "$(manifest_field "$profile" arg_style)" in
+                    msvc) run_case "$profile" '/c t.c' t.obj 'COFF' ;;
+                    borland) run_case "$profile" '-c t.c' t.obj '' ;;
+                    dos) run_case "$profile" 't.c' t.obj '' ;;
+                    *) run_case "$profile" '-c t.c -o t.o' t.o '' ;;
+                esac
+                ;;
         esac
     done
 else

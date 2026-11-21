@@ -9,6 +9,8 @@
 ### Fixed
 
 - `msvc-7.0-rtm` installs into `/opt/msvc7.0-rtm`, the directory its `tool_root` names and the published `rebrew/msvc:7.0-rtm-win32` image uses. The generated recipe installed into `/opt/msvc7.0`, so a rebuilt image's compiler worked while consumers that derive `INCLUDE` and `LIB` from `tool_root` pointed at a directory the image lacked. `make test` now fails when a `tool_root` lies outside its recipe's install root.
+- `tests/smoke.sh <profile>` invokes a selected profile that has no case of its own in its argument dialect: `/c t.c` for `msvc`, `-c t.c` for `borland`, `t.c` for `dos`. It passed `-c t.c -o t.o` to every such profile, so `cl` wrote `t.obj` and every selected MSVC image failed with "no object produced".
+- `tests/smoke.sh` keeps its scratch directory under the repository's ignored `.scratch/` instead of `${TMPDIR:-/tmp}`.
 
 ## [1.16.0] - 2026-11-18
 

@@ -18,9 +18,10 @@ Two checks, both read-only:
    `--registry URL` from a registry's manifest and config (no layers).
 2. Distinct compilers (local engine only: it reads the files).  The directory
    holding each image's compiler binary is hashed file by file; two entries
-   whose directories are byte-identical while their family, version or service
-   pack differ fail as `SAME-COMPILER`.  Byte-identical entries that claim the
-   same compiler print as `alias` and pass.
+   whose directories are byte-identical while their family or version differ
+   fail as `SAME-COMPILER`.  Byte-identical entries of one family and version
+   print as `alias` and pass: a service pack that left the compiler binaries
+   unchanged (`msvc-6.0`, `-sp1`, `-sp2`) or a second id for one tree.
 
 Images the engine or registry does not hold print as `absent` and pass: which
 images a host carries is that host's choice.  Images keep `rebrew/` as their
@@ -296,8 +297,8 @@ class Entry:
 
     tag: str
     sha256: str
-    #: The compiler the entry says it is: family, version and service pack.
-    claim: tuple[str, str, str]
+    #: The compiler version the entry says it is: family and version.
+    claim: tuple[str, str]
     #: The in-image directory holding the compiler binary; "" when the recipe names none.
     compiler_dir: str
 
@@ -320,7 +321,7 @@ def entries() -> dict[str, Entry]:
         found[profile] = Entry(
             tag=f"{prefix}/{str(image['tag']).removeprefix('rebrew/')}",
             sha256=str(source["sha256"]),
-            claim=(str(row["family"]), str(row["version"]), str(row.get("service_pack", ""))),
+            claim=(str(row["family"]), str(row["version"])),
             compiler_dir=(
                 str(Path(generate.binary_path(entry)).parent)
                 if isinstance(binary, str) and binary
@@ -386,9 +387,7 @@ def distinct_compilers(found: dict[str, Entry], present: list[str]) -> int:
         claims = sorted({found[profile].claim for profile in members})
         names = " ".join(members)
         if len(claims) == 1:
-            print(
-                f"alias         {names}: identical binaries ({digest[:12]}), one claimed compiler"
-            )
+            print(f"alias         {names}: identical binaries ({digest[:12]}), one claimed version")
             continue
         failures += 1
         said = "; ".join(" ".join(filter(None, claim)) for claim in claims)

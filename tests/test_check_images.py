@@ -206,14 +206,22 @@ class TestDistinctCompilers(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("compiler binaries, 2 images: 0 failing", out)
 
-    def test_two_ids_for_one_claimed_compiler_print_as_alias(self) -> None:
+    def test_ids_of_one_claimed_version_print_as_alias(self) -> None:
+        # A second id for one tree, and service packs that left cl/c1/c2 alone.
         same = _tree({"cl.exe": b"13.00.9466"})
+        vc6 = _tree({"CL.EXE": b"12.00.8168"})
         code, out = self._run(
-            {"rebrew/msvc:7.0-win32": same, "rebrew/msvc:7.0-rtm-win32": same},
-            ["msvc-7.0", "msvc-7.0-rtm"],
+            {
+                "rebrew/msvc:7.0-win32": same,
+                "rebrew/msvc:7.0-rtm-win32": same,
+                "rebrew/msvc:6.0-win32": vc6,
+                "rebrew/msvc:6.0-sp1-win32": vc6,
+            },
+            ["msvc-7.0", "msvc-7.0-rtm", "msvc-6.0", "msvc-6.0-sp1"],
         )
         self.assertEqual(code, 0, out)
         self.assertIn("alias         msvc-7.0 msvc-7.0-rtm: identical binaries", out)
+        self.assertIn("alias         msvc-6.0 msvc-6.0-sp1: identical binaries", out)
 
     def test_an_image_without_its_compiler_directory_fails(self) -> None:
         code, out = self._run({}, ["msvc-7.0"])

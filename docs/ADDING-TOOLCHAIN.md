@@ -405,7 +405,8 @@ publishing (nothing in CI can do it; it needs Docker or the registry).  It
 fails on an image whose build history does not verify its entry's
 `source.sha256` (`MISMATCH`, or `NO-SUMS` for a recipe that verified
 nothing), on byte-identical compiler binaries under two entries that claim
-different compilers (`SAME-COMPILER`, local images only), and on an image
+different compiler versions (`SAME-COMPILER`, local images only; ids of one
+family and version that share binaries print as `alias`), and on an image
 without the compiler directory its recipe names (`NO-COMPILER`).  Its
 `absent` lines list every profile with no image under its **current** tag: a
 rename that updates the manifest but leaves the old tag behind is invisible

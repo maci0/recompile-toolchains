@@ -106,7 +106,7 @@ look like a broken manifest).
 
 `make images` checks images already built: each one's build history must
 verify its catalogue entry's `source.sha256`, and two entries that claim
-different compilers must not hold byte-identical compiler binaries.  It
+different compiler versions must not hold byte-identical compiler binaries.  It
 reads the local engine, or a registry with `make images REGISTRY=<url>`
 (manifest and config only, so the binary comparison needs local images).
 A tag built before a re-pin keeps serving the old compiler until it is

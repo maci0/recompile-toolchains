@@ -278,6 +278,9 @@ The [2026-10-25 ingestion report](docs/RELATED-WORK.md#ingestion-and-repairs--20
   entrypoint, aliases and consumer fields.  **Generated** from `sources.json`
   + the Dockerfiles by `make docs` and verified by `make test`; consumers
   vendor it by sha256 instead of keeping another copy of the manifest.
+  A row is a recipe and the tag `./build.sh` gives its image; it does not
+  say the image is published anywhere.  A deployment runs the ids whose
+  images its runtime holds (`make images` lists them).
   [toolchains.json.sha256](toolchains.json.sha256) beside it is that sha256
   in `sha256sum -c` form, generated and checked with it.
 

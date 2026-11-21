@@ -18,6 +18,9 @@ import unittest
 from collections.abc import Mapping
 from pathlib import Path
 
+import catalog  # repo root is on sys.path under `python -m unittest discover`
+import generate
+
 _REPO = Path(__file__).resolve().parents[1]
 
 _OCI_LABELS = ("source", "licenses", "title", "description")
@@ -86,6 +89,23 @@ class TestManifest(unittest.TestCase):
             # snapshot is republished continuously).
             if "refs/heads/" in entry["url"]:
                 self.assertTrue(entry["commit"], f"{profile}: branch pin without a commit")
+
+    def test_tool_root_is_inside_the_install_root(self) -> None:
+        """Consumers derive the compiler's INCLUDE and LIB from `tool_root`.
+
+        `msvc-7.0-rtm` declared `/opt/msvc7.0-rtm/Vc7/bin` while its recipe
+        installed into `/opt/msvc7.0`, so headers and libraries resolved to a
+        directory a rebuilt image would not have.
+        """
+        for profile, entry in catalog.manifest().items():
+            tool_root = entry.get("tool_root")
+            if not isinstance(tool_root, str) or not tool_root:
+                continue
+            root = f"/opt/{generate.install_root(entry)}"
+            self.assertTrue(
+                tool_root == root or tool_root.startswith(f"{root}/"),
+                f"{profile}: tool_root {tool_root} is outside the install root {root}",
+            )
 
     def test_every_pin_appears_in_its_dockerfile(self) -> None:
         for profile, entry in _manifest().items():

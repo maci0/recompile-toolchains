@@ -6,6 +6,10 @@
 
 - `make images` (`tests/check_images.py`) checks images already built, in the local engine or, with `REGISTRY=<url>`, in a registry (manifest and config only). It fails when an image's build history does not verify its catalogue entry's `source.sha256` (`MISMATCH`), verifies no sha256 at all (`NO-SUMS`), lacks the compiler directory its recipe names (`NO-COMPILER`), or when two entries that claim different compilers (family, version, service pack) hold byte-identical compiler directories (`SAME-COMPILER`, local images). A re-pin does not rebuild the images built before it: the LAN registry's `rebrew/msvc:7.0-win32`, built on 2026-09-12 while `msvc-7.0` still pinned `archaic-msvc/msvc710`, served the 7.1 compiler under the 7.0 tag after the pin moved to `msvc700` on 2026-09-13. The check reports it as `MISMATCH` and, beside `msvc-7.1`, as `SAME-COMPILER`.
 
+### Fixed
+
+- `msvc-7.0-rtm` installs into `/opt/msvc7.0-rtm`, the directory its `tool_root` names and the published `rebrew/msvc:7.0-rtm-win32` image uses. The generated recipe installed into `/opt/msvc7.0`, so a rebuilt image's compiler worked while consumers that derive `INCLUDE` and `LIB` from `tool_root` pointed at a directory the image lacked. `make test` now fails when a `tool_root` lies outside its recipe's install root.
+
 ## [1.16.0] - 2026-11-18
 
 ### Added

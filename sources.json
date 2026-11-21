@@ -21051,14 +21051,14 @@
         {
           "op": "mkdir",
           "paths": [
-            "/opt/msvc7.0"
+            "/opt/msvc7.0-rtm"
           ]
         },
         {
           "op": "tar",
           "compression": "gz",
           "from": "/tmp/msvc700.tar.gz",
-          "into": "/opt/msvc7.0",
+          "into": "/opt/msvc7.0-rtm",
           "strip": 1
         },
         {
@@ -21067,11 +21067,11 @@
         },
         {
           "op": "guard",
-          "cmd": "ls /opt/msvc7.0/Vc7/bin/cl.exe"
+          "cmd": "ls /opt/msvc7.0-rtm/Vc7/bin/cl.exe"
         }
       ],
       "env": {},
-      "root": "msvc7.0",
+      "root": "msvc7.0-rtm",
       "title": "rebrew MSVC 7.0-rtm (win32, wine)",
       "description": "MSVC 7.0 RTM (win32, wine) toolchain image",
       "entrypoint": "cl",

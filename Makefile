@@ -12,7 +12,7 @@
 # --others --exclude-standard keeps the .gitignore'd trees out.
 SHELL_SCRIPTS := $(shell git ls-files --cached --others --exclude-standard '*.sh')
 
-.PHONY: lint test docs generate verify smoke pins
+.PHONY: lint test docs generate verify smoke pins images
 lint:
 	uv lock --check
 	shellcheck $(SHELL_SCRIPTS)
@@ -53,3 +53,10 @@ smoke:
 # transient upstream outage cannot block a change.
 pins:
 	uv run python tests/check_pins.py
+
+# Built-image check: every image the local engine holds (or, with
+# REGISTRY=<url>, the registry) was built from its catalogue pin, and no two
+# versions share one compiler (see tests/check_images.py).  Needs the images,
+# so it is run before publishing rather than per push.
+images:
+	uv run python tests/check_images.py $(if $(REGISTRY),--registry $(REGISTRY))

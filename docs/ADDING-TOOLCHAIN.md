@@ -358,6 +358,7 @@ Then:
 make lint && make test                 # analyzers + contract/catalog tests
 make smoke                             # build+compile one image per runtime (needs Docker)
 make pins                              # every pinned URL still resolves (needs network)
+make images                            # built images carry their pin, one compiler per version
 ./build.sh this-is-not-a-toolchain     # exercises the manifest validation sweep
 ```
 
@@ -395,23 +396,21 @@ for names in groups.values():
 EOF
 ```
 
-One sweep is worth running whenever toolchains are renamed or re-pinned
-(nothing in CI can do it; it needs Docker): every manifest profile must have
-a built image under its **current** tag.  A rename that updates the manifest
-but leaves the old tag behind is invisible otherwise, which is how
-`ido/5.3-linux` → `ido/5.3-n64` once ended up with a manifest entry and no
-image:
-
-```bash
-python3 - <<'EOF'
-import json, subprocess
-for p, e in json.load(open("sources.json")).items():
-    fam, tag = e["host_dir"].split("/")
-    if subprocess.run(["docker", "image", "inspect", f"rebrew/{fam}:{tag}"],
-                      capture_output=True).returncode:
-        print("no image:", p, e["host_dir"])
-EOF
-```
+Fixing the pin does not fix an image already built under the tag: the
+registry kept serving the 7.1 compiler as `rebrew/msvc:7.0-win32` for two
+months after `msvc-7.0` moved to `msvc700`.  Run `make images` whenever
+toolchains are renamed or re-pinned, and against the registry a service pulls
+from (`make images REGISTRY=http://<host>:<port>`) before and after
+publishing (nothing in CI can do it; it needs Docker or the registry).  It
+fails on an image whose build history does not verify its entry's
+`source.sha256` (`MISMATCH`, or `NO-SUMS` for a recipe that verified
+nothing), on byte-identical compiler binaries under two entries that claim
+different compilers (`SAME-COMPILER`, local images only), and on an image
+without the compiler directory its recipe names (`NO-COMPILER`).  Its
+`absent` lines list every profile with no image under its **current** tag: a
+rename that updates the manifest but leaves the old tag behind is invisible
+otherwise, which is how `ido/5.3-linux` → `ido/5.3-n64` once ended up with a
+manifest entry and no image.
 
 ## The manifest, field by field
 

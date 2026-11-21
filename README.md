@@ -104,6 +104,14 @@ hash-verified packages or fail loudly on drift:
 resolve (scheduled weekly in CI, since an upstream deleting an asset must not
 look like a broken manifest).
 
+`make images` checks images already built: each one's build history must
+verify its catalogue entry's `source.sha256`, and two entries that claim
+different compilers must not hold byte-identical compiler binaries.  It
+reads the local engine, or a registry with `make images REGISTRY=<url>`
+(manifest and config only, so the binary comparison needs local images).
+A tag built before a re-pin keeps serving the old compiler until it is
+rebuilt; this is the check that sees it.  Run it before publishing.
+
 `make smoke` is the Docker-requiring counterpart: it builds one image per
 runtime class and compiles with it, which is how "the build succeeded but the
 compiler emitted nothing" gets caught (see below).  It is not part of

@@ -6,4 +6,4 @@
 . /usr/local/lib/rebrew/wrapper-common.sh
 
 rebrew_pick_source "$@"
-rebrew_run /opt/msvc7.0/Vc7/bin/cl.exe "$@"
+rebrew_run /opt/msvc7.0-rtm/Vc7/bin/cl.exe "$@"

@@ -3,10 +3,14 @@
 
 # Toolchain catalog
 
-335 toolchains, one self-contained image each.  This file is generated
-from `sources.json` and the toolchain Dockerfiles; see
+335 toolchains, each a recipe for one self-contained image.  This file
+is generated from `sources.json` and the toolchain Dockerfiles; see
 [ADDING-TOOLCHAIN.md](ADDING-TOOLCHAIN.md) to add another, and the
 [README](../README.md) for how to run the images.
+
+An entry says how to build an image, not that one is published: a
+deployment runs the toolchains whose images its runtime holds, and
+`make images` lists which those are (`absent` for the rest).
 
 Every tag is `rebrew/<family>:<version>-<platform>` (`PREFIX=` re-tags the
 whole set).  The runtime column says how the image executes its compiler;

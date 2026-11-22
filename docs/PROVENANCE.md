@@ -9,8 +9,8 @@ binary is redistributed from this repository. The chain is:
 1. the original vendor media (CDs, floppies, SDK releases) is preserved
    in archival repos;
 2. those trees are packaged as release assets or dated bundles, and
-   `sources.json` pins each one by `url` + `sha256` (plus the git
-   `commit` for branch-pinned tarballs);
+   `sources.json` pins each one by `url` + `sha256` (a GitHub archive
+   is fetched by the `commit` it records, never by branch);
 3. the Dockerfile re-verifies that hash during the build, so an image
    either matches the manifest it was built from or fails to build;
 4. `make images` checks that an image already built under a tag still
@@ -91,7 +91,11 @@ listed here, so a new upstream cannot arrive undocumented.
 
 These upstreams are not pinned by any profile; they are what the
 shared base images install, and each base Dockerfile carries the
-sha256-pinned package list:
+sha256-pinned package list.  The bases' OS images are pinned by
+digest, and their distribution packages come at exact versions
+from snapshot.debian.org and snapshot.ubuntu.com at the timestamps
+the base Dockerfiles name, which a toolchain image's own packages
+also read:
 
 - `github.com/archaic-toolchains/dosemu2-noble` hosts our copies of the `dosemu2/ppa` and `stsp-0/dj64` PPA builds: `dosemu2` (x86 virtualisation for DOS), `fdpp`/`libfdpp35`/`libfdldr35` (the FreeDOS++ kernel), `comcom64`/`comcom32`, and the dj64 DPMI host (`dj64`, `djstub`, `libdjstub64-0`, `libdjdev64-0`) that lets DJGPP `go32` binaries run under dosemu2: the DOS runtime the 16-bit toolchains run on (GPL)
 

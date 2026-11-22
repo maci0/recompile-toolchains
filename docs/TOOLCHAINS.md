@@ -49,7 +49,7 @@ Amsterdam Compiler Kit
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/ack:6.2-7afa32a-linux386` | host | `cc` | native | none | `7afa32a0a0f13e865fa2e8104e442689005cd627` `142ad8834ed5` @ `7afa32a0a0f1` | none |
+| `rebrew/ack:6.2-7afa32a-linux386` | host | `cc` | native | none | `ack` `142ad8834ed5` @ `7afa32a0a0f1` | none |
 
 ## agbcc
 
@@ -106,10 +106,10 @@ Borland Turbo C/C++ (DOS and Win32)
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `rebrew/borland:2.0-decompme-win16` | win16 | `bcc` | DOSBox | `bcc2.0` | `bcc2.0.tar.gz` `6a8bb50e1d39` @ `0884197d3e4a` | none |
-| `rebrew/borland:2.0-win16` | win16 | `tcc` | DOSBox | none | `main` `2eca4c26c1b3` @ `64b5ef09a7c1` | none |
+| `rebrew/borland:2.0-win16` | win16 | `tcc` | DOSBox | none | `tc20` `1abebda4eab0` @ `64b5ef09a7c1` | none |
 | `rebrew/borland:3.1-decompme-win16` | win16 | `bcc` | DOSBox | `bcc3.1` | `bcc3.1.tar.gz` `1fad5133fbe0` @ `0884197d3e4a` | none |
-| `rebrew/borland:3.1-win16` | win16 | `tcc` | DOSBox | none | `main` `3d534741ebdc` @ `ba6af878392b` | none |
-| `rebrew/borland:5.5-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `e9319c390430` @ `fcdcaf5bc41f` | none |
+| `rebrew/borland:3.1-win16` | win16 | `tcc` | DOSBox | none | `tc31` `691f508f4cb5` @ `ba6af878392b` | none |
+| `rebrew/borland:5.5-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `borlandc55` `647c93fb2513` @ `fcdcaf5bc41f` | none |
 | `rebrew/borland:5.6-win32` | win32 | `bcc` | wine, wibo via `REBREW_RUNNER=wibo` | none | `borland-cpp-ide-09bcecc81184.tar.gz` `8e5a93db9933` @ `09bcecc81184` | unpacked from `tar-subset` |
 
 ## cc65
@@ -140,7 +140,7 @@ Borland Delphi 1.0 (16-bit, DOSBox)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/delphi:1.0-win16` | win16 | `dcc` | DOSBox | none | `main` `24cd23f0ef55` @ `fd12406eeaa6` | none |
+| `rebrew/delphi:1.0-win16` | win16 | `dcc` | DOSBox | none | `delphi10` `5f47a18c64cc` @ `fd12406eeaa6` | none |
 
 ## devkita64
 
@@ -370,41 +370,41 @@ Microsoft Visual C/C++ 1.0-12.0
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/msvc:1.0-win16` | win16 | `cl10` | DOSBox | none | `main` `4858446b957f` @ `0cd3d8a20241` | none |
-| `rebrew/msvc:1.5-win16` | win16 | `cl15` | DOSBox | none | `main` `5cd1e4d9fd70` @ `3649e12977c1` | none |
-| `rebrew/msvc:1.52-win16` | win16 | `cl16` | DOSBox | none | `main` `18fbdb547aa6` @ `3beb967dfc07` | the same compiler binaries as `msvc-1.5`: identical objects |
-| `rebrew/msvc:10.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `2e5fbb9b71ed` @ `09a53c11f781` | none |
-| `rebrew/msvc:10.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `5f0b4486eb68` @ `f8977e2cacbe` | none |
-| `rebrew/msvc:11.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `adba1882eb07` @ `89087a636aea` | none |
+| `rebrew/msvc:1.0-win16` | win16 | `cl10` | DOSBox | none | `msvc10` `50b303e2dc22` @ `0cd3d8a20241` | none |
+| `rebrew/msvc:1.5-win16` | win16 | `cl15` | DOSBox | none | `msvc15` `46db20c355a1` @ `3649e12977c1` | none |
+| `rebrew/msvc:1.52-win16` | win16 | `cl16` | DOSBox | none | `msvc152` `74747b782ac2` @ `3beb967dfc07` | the same compiler binaries as `msvc-1.5`: identical objects |
+| `rebrew/msvc:10.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc1000_sp1` `4d256b37c4fe` @ `09a53c11f781` | none |
+| `rebrew/msvc:10.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc1000` `923684491a7e` @ `f8977e2cacbe` | none |
+| `rebrew/msvc:11.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc1100` `b1a422ef7f9d` @ `89087a636aea` | none |
 | `rebrew/msvc:12.0-u4-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc12.zip` `2adc1d97b342` | Visual C++ 2013 Update 4; native x86 MSVCR120 and MSVCP120 retained beside the tools with archive notices; headers and libraries configured |
-| `rebrew/msvc:2.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `0b058f103fe6` @ `6bf022c590fd` | none |
-| `rebrew/msvc:4.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.0` | `main` `4996b91a8e07` @ `17122292d394` | none |
-| `rebrew/msvc:4.1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.1` | `master` `21486aecd108` @ `373f5e621ac8` | none |
-| `rebrew/msvc:4.2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.2` | `master` `651db2412024` @ `b42c244f0a83` | none |
-| `rebrew/msvc:5.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `f41e9e5a05bd` @ `401174749393` | none |
-| `rebrew/msvc:5.0-sp2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `551137506a6a` @ `4ebf02022705` | none |
-| `rebrew/msvc:5.0-sp3-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `cdba2878eaac` @ `259a03f0bc86` | none |
-| `rebrew/msvc:5.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `46745771c080` @ `8abf95ce9801` | none |
-| `rebrew/msvc:6.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `2c3d1a6d2e7d` @ `6d9787482473` | none |
-| `rebrew/msvc:6.0-sp2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `088cd189ce0a` @ `79157a87dec5` | none |
-| `rebrew/msvc:6.0-sp3-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.3` | `main` `f753adfa8a29` @ `ff28b9385708` | none |
-| `rebrew/msvc:6.0-sp4-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.4` | `main` `7aeb03f65858` @ `0ca69bae9e3c` | none |
-| `rebrew/msvc:6.0-sp5-crt-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `a95a9c17cbcb` @ `b0b07e29108e` | none |
-| `rebrew/msvc:6.0-sp5-pp-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5pp` | `master` `1bbf17748905` @ `762e9382c751` | none |
-| `rebrew/msvc:6.0-sp5-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5` | `master` `a95a9c17cbcb` @ `b0b07e29108e` | none |
-| `rebrew/msvc:6.0-sp6-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.6` | `master` `7c2aa3dd4c56` @ `1f4223a77122` | none |
-| `rebrew/msvc:6.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `19b72020c822` @ `34d4fc4004e8` | none |
+| `rebrew/msvc:2.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc200` `b97ce61e8a3d` @ `6bf022c590fd` | none |
+| `rebrew/msvc:4.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.0` | `msvc400` `158af9a3303f` @ `17122292d394` | none |
+| `rebrew/msvc:4.1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.1` | `msvc410` `72904772611a` @ `373f5e621ac8` | none |
+| `rebrew/msvc:4.2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc4.2` | `msvc420` `35f595a1c212` @ `b42c244f0a83` | none |
+| `rebrew/msvc:5.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc500sp1` `3bffbbb3b456` @ `401174749393` | none |
+| `rebrew/msvc:5.0-sp2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc500sp2` `bad38ab6b27c` @ `4ebf02022705` | none |
+| `rebrew/msvc:5.0-sp3-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc500sp3` `6f4427b5c46b` @ `259a03f0bc86` | none |
+| `rebrew/msvc:5.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc500` `4f3f44520c8f` @ `8abf95ce9801` | none |
+| `rebrew/msvc:6.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc600_sp1` `fbbc603561f9` @ `6d9787482473` | none |
+| `rebrew/msvc:6.0-sp2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc600_sp2` `8687378f815a` @ `79157a87dec5` | none |
+| `rebrew/msvc:6.0-sp3-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.3` | `msvc600_sp3` `d59b3460cc3e` @ `ff28b9385708` | none |
+| `rebrew/msvc:6.0-sp4-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.4` | `msvc600_sp4` `8f4dbbd2cb51` @ `0ca69bae9e3c` | none |
+| `rebrew/msvc:6.0-sp5-crt-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc600_sp5` `46316a1d1c53` @ `b0b07e29108e` | none |
+| `rebrew/msvc:6.0-sp5-pp-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5pp` | `msvc600_sp5_vcpp` `f07b22eef238` @ `762e9382c751` | none |
+| `rebrew/msvc:6.0-sp5-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5` | `msvc600_sp5` `46316a1d1c53` @ `b0b07e29108e` | none |
+| `rebrew/msvc:6.0-sp6-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.6` | `msvc600_sp6` `f01d95e398cc` @ `1f4223a77122` | none |
+| `rebrew/msvc:6.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc600` `636767208193` @ `34d4fc4004e8` | none |
 | `rebrew/msvc:6.0-win9x-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.0` | `msvc6.0.tar.gz` `5c81e9c2ab0a` | none |
-| `rebrew/msvc:7.0-rtm-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.0rtm` | `master` `5f75462fb613` @ `97fe4cdeaeb0` | none |
-| `rebrew/msvc:7.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `bc1300625c89` @ `8bd9502d7427` | none |
-| `rebrew/msvc:7.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.0` | `master` `5f75462fb613` @ `97fe4cdeaeb0` | none |
-| `rebrew/msvc:7.1-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `44246ff2980d` @ `cf6260606463` | none |
-| `rebrew/msvc:7.1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.1` | `master` `618e876bc064` @ `2932d76fe417` | none |
+| `rebrew/msvc:7.0-rtm-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.0rtm` | `msvc700` `e8de76827817` @ `97fe4cdeaeb0` | none |
+| `rebrew/msvc:7.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc700_sp1` `0ab5939866ac` @ `8bd9502d7427` | none |
+| `rebrew/msvc:7.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.0` | `msvc700` `e8de76827817` @ `97fe4cdeaeb0` | none |
+| `rebrew/msvc:7.1-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc710_sp1` `b6135a043414` @ `cf6260606463` | none |
+| `rebrew/msvc:7.1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc7.1` | `msvc710` `487051441db6` @ `2932d76fe417` | none |
 | `rebrew/msvc:8.0-portable-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0p` | `msvc8.0-52c8293f8b8d.zip` `b138c1b3c99a` @ `52c8293f8b8d` | unpacked from `zip-strip1` |
-| `rebrew/msvc:8.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0sp1` | `master` `9b53b515d798` @ `4b1bafba636f` | none |
-| `rebrew/msvc:8.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0` | `master` `ab819164ebd9` @ `00ddaf58d097` | none |
-| `rebrew/msvc:9.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `main` `33a66c779da3` @ `cebb3c9740c9` | none |
-| `rebrew/msvc:9.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `master` `9121d184d9cb` @ `c9d710cef9a3` | none |
+| `rebrew/msvc:8.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0sp1` | `msvc800_sp1` `7ddbb5064be4` @ `4b1bafba636f` | none |
+| `rebrew/msvc:8.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0` | `msvc800` `17b382bcc476` @ `00ddaf58d097` | none |
+| `rebrew/msvc:9.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc900_sp1` `d9ece1e4522a` @ `cebb3c9740c9` | none |
+| `rebrew/msvc:9.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc900` `084c135403e1` @ `c9d710cef9a3` | none |
 
 ## msvc-ppc
 
@@ -620,7 +620,7 @@ Classic Macintosh cross compilers with open interfaces
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/retro68:16.0.0-0cbd3cb-m68k-macos` | macos | `cc` | native | none | `0cbd3cb918a127a0d30a675b337f8f8e15062786` `c4775801b3d3` @ `0cbd3cb918a1` | Build uses open Multiversal Interfaces; Apple Universal Interfaces are neither fetched nor redistributed; Build parallelism capped at eight jobs |
+| `rebrew/retro68:16.0.0-0cbd3cb-m68k-macos` | macos | `cc` | native | none | `Retro68` `c4775801b3d3` @ `0cbd3cb918a1` | Build uses open Multiversal Interfaces; Apple Universal Interfaces are neither fetched nor redistributed; Build parallelism capped at eight jobs |
 
 ## saturn
 
@@ -669,7 +669,7 @@ VBCC, VASM and VLINK for Amiga m68k
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/vbcc:0.9h-p2-amiga` | host | `cc` | native | none | `647720b664c0599a4b5b28b3232987673615fe11` `d9b4d46c27af` @ `647720b664c0` | Unmodified upstream source/target archives retained under /opt/vbcc-sources; mirror packages VBCC 0.9h patch 2, target patch 3, VASM 2.0d and VLINK 0.18a; Amiga m68k Hunk object output; compile-only in Rebrew until a Hunk reader exists; VBCC/VASM/VLINK component licence restrictions apply; public availability does not imply unrestricted commercial use; VBCC datatype probing runs serially so every prompt receives the supplied default answer |
+| `rebrew/vbcc:0.9h-p2-amiga` | host | `cc` | native | none | `vbcc_vasm_vlink` `d9b4d46c27af` @ `647720b664c0` | Unmodified upstream source/target archives retained under /opt/vbcc-sources; mirror packages VBCC 0.9h patch 2, target patch 3, VASM 2.0d and VLINK 0.18a; Amiga m68k Hunk object output; compile-only in Rebrew until a Hunk reader exists; VBCC/VASM/VLINK component licence restrictions apply; public availability does not imply unrestricted commercial use; VBCC datatype probing runs serially so every prompt receives the supplied default answer |
 
 ## watcom
 

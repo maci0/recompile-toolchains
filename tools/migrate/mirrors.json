@@ -110,5 +110,6 @@
   "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.5a.tar.gz": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.5a.tar.gz",
   "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc10.6.tar.gz": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc10.6.tar.gz",
   "https://github.com/archaic-toolchains/watcom1x/releases/download/2026-11-10/wcc11.0.tar.gz": "https://github.com/OmniBlade/decomp.me/releases/download/wcc10.5/wcc11.0.tar.gz",
-  "https://raw.githubusercontent.com/RocketRet/modern-asn64/20d21729ce6a2e7bc8a4a91ec9505cab0d6e50f9/modern-asn64.py": "https://github.com/RocketRet/modern-asn64/releases/download/main-release/modern-asn64.py"
+  "https://raw.githubusercontent.com/RocketRet/modern-asn64/20d21729ce6a2e7bc8a4a91ec9505cab0d6e50f9/modern-asn64.py": "https://github.com/RocketRet/modern-asn64/releases/download/main-release/modern-asn64.py",
+  "https://snapshot.debian.org/archive/debian/20261112T180000Z/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb": "https://deb.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb"
 }

@@ -373,11 +373,11 @@ SOURCES: dict[str, tuple[str, str]] = {
         "Apache-2.0 with LLVM exception",
     ),
     "ftp.gnu.org": ("GNU GCC release tarballs, compiled inside the image", "GPL"),
-    "deb.debian.org": (
+    "snapshot.debian.org/archive/debian": (
         (
-            "the Debian pool: the pinned `libtinfo5` runtime package the prebuilt "
-            "clang trees link against (Debian dropped libtinfo5 from bookworm, so "
-            "each clang image installs the .deb from the pool)"
+            "Debian's snapshot archive: the pinned `libtinfo5` runtime package the "
+            "prebuilt clang trees link against, from a dated snapshot that keeps "
+            "serving it after the live pool deletes it"
         ),
         "MIT-style (ncurses); the .deb is taken unmodified",
     ),

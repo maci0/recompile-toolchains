@@ -2015,7 +2015,7 @@
     "commit": "",
     "extra_pins": [
       {
-        "url": "https://deb.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb",
+        "url": "https://snapshot.debian.org/archive/debian/20261112T180000Z/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb",
         "sha256": "dd347f794e651039e7b4c391f86c674fed7f415b3dca6b0937beb0d470f09c1a"
       }
     ],
@@ -2176,7 +2176,7 @@
     "commit": "",
     "extra_pins": [
       {
-        "url": "https://deb.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb",
+        "url": "https://snapshot.debian.org/archive/debian/20261112T180000Z/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb",
         "sha256": "dd347f794e651039e7b4c391f86c674fed7f415b3dca6b0937beb0d470f09c1a"
       }
     ],
@@ -2268,7 +2268,7 @@
     "commit": "",
     "extra_pins": [
       {
-        "url": "https://deb.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb",
+        "url": "https://snapshot.debian.org/archive/debian/20261112T180000Z/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb",
         "sha256": "dd347f794e651039e7b4c391f86c674fed7f415b3dca6b0937beb0d470f09c1a"
       }
     ],

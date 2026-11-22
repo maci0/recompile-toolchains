@@ -4606,8 +4606,7 @@
       },
       "arch": "x86",
       "bits": 32,
-      "service_pack": "sp5",
-      "same_compiler_as": "msvc-6.0-sp5"
+      "service_pack": "sp5"
     },
     {
       "id": "msvc-6.0-sp5-pp",

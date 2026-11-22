@@ -395,7 +395,7 @@ Microsoft Visual C/C++ 1.0-12.0
 | `rebrew/msvc:6.0-sp2-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc600_sp2` `8687378f815a` @ `79157a87dec5` | the same compiler binaries as `msvc-6.0`: identical objects |
 | `rebrew/msvc:6.0-sp3-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.3` | `msvc600_sp3` `d59b3460cc3e` @ `ff28b9385708` | none |
 | `rebrew/msvc:6.0-sp4-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.4` | `msvc600_sp4` `8f4dbbd2cb51` @ `0ca69bae9e3c` | none |
-| `rebrew/msvc:6.0-sp5-crt-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc600_sp5` `46316a1d1c53` @ `b0b07e29108e` | the same compiler binaries as `msvc-6.0-sp5`: identical objects |
+| `rebrew/msvc:6.0-sp5-crt-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc600_sp5` `46316a1d1c53` @ `b0b07e29108e` | none |
 | `rebrew/msvc:6.0-sp5-pp-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5pp` | `msvc600_sp5_vcpp` `f07b22eef238` @ `762e9382c751` | none |
 | `rebrew/msvc:6.0-sp5-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.5` | `msvc600_sp5` `46316a1d1c53` @ `b0b07e29108e` | none |
 | `rebrew/msvc:6.0-sp6-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc6.6` | `msvc600_sp6` `f01d95e398cc` @ `1f4223a77122` | none |

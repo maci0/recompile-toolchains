@@ -36,23 +36,32 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.title="rebrew base-dosemu (dosemu2 + dj64 runtime layer)" \
       org.opencontainers.image.description="dosemu2/dj64 runtime base for 16-bit DOS toolchain images (needs --device /dev/kvm)"
 
-# dosemu2's runtime libraries come from Ubuntu's archive (they are ordinary
-# distro packages); only the PPA-only packages below are pinned.
-RUN apt-get update \
+# dosemu2's runtime libraries are ordinary Ubuntu packages, installed at exact
+# versions from the snapshot base-noble's sources name; the PPA-only packages
+# below are pinned by URL and sha256.
+RUN apt-get -o Acquire::Retries=3 update \
     && apt-get install -y --no-install-recommends \
-        ca-certificates cpp curl dos2unix gzip libao4 libasound2t64 libb64-0d \
-        libelf1t64 libfluidsynth3 libfontconfig1 libglib2.0-0t64 libgpm2 \
-        libieee1284-3t64 libjansson4 libjson-c5 libreadline8t64 libsdl2-2.0-0 \
-        libsdl2-ttf-2.0-0 libsearpc1t64 libseccomp2 libslang2 libslirp0 \
-        libstdc++6 libx11-6 libxext6 python3 tar \
+        ca-certificates=20260816ubuntu0.24.04.2 cpp=4:13.2.0-7ubuntu1 \
+        curl=8.5.0-2ubuntu10.16 dos2unix=7.5.1-1 gzip=1.12-1ubuntu3.2 \
+        libao4=1.2.2+20180113-1.1ubuntu4 libasound2t64=1.2.11-1ubuntu0.3 \
+        libb64-0d=1.2-5 libelf1t64=0.190-1.1ubuntu0.1 libfluidsynth3=2.3.4-1build3 \
+        libfontconfig1=2.15.0-1.1ubuntu2 libglib2.0-0t64=2.80.0-6ubuntu3.10 \
+        libgpm2=1.20.7-11 libieee1284-3t64=0.2.11-14.1build1 libjansson4=2.14-2build2 \
+        libjson-c5=0.17-1build1 libreadline8t64=8.2-4build1 \
+        libsdl2-2.0-0=2.30.0+dfsg-1ubuntu3.1 libsdl2-ttf-2.0-0=2.22.0+dfsg-1 \
+        libsearpc1t64=3.3.0+really3.3+git20230527.783141f-3.2 \
+        libseccomp2=2.5.5-1ubuntu3.1 libslang2=2.3.3-3build2 \
+        libslirp0=4.7.0-1ubuntu3.1 libstdc++6=14.2.0-4ubuntu2~24.04.1 \
+        libx11-6=2:1.8.7-1ubuntu0.1 libxext6=2:1.3.4-1build2 python3=3.12.3-0ubuntu2.1 \
+        tar=1.35+dfsg-3ubuntu0.4 \
     && rm -rf /var/lib/apt/lists/*
 
 # dosemu2 + the FreeDOS++ kernel (fdpp) + the dj64 DPMI host: builds from the two
 # PPAs decomp.me's own backend uses, downloaded from our copies in
 # archaic-toolchains/dosemu2-noble, since the PPAs delete superseded builds and
 # a pinned one stops downloading within weeks.  apt installs the local files so their
-# handful of Ubuntu-native dependencies resolve from the archive (the lists
-# removed by the layer above are refreshed first).
+# handful of Ubuntu-native dependencies resolve from base-noble's snapshot (the
+# lists removed by the layer above are refreshed first).
 RUN apt-get update \
     && mkdir -p /tmp/debs \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/dosemu2.deb \

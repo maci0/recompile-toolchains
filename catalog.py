@@ -1093,7 +1093,11 @@ def provenance(entries: dict[str, dict[str, object]]) -> str:
             "",
             "These upstreams are not pinned by any profile; they are what the",
             "shared base images install, and each base Dockerfile carries the",
-            "sha256-pinned package list:",
+            "sha256-pinned package list.  The bases' OS images are pinned by",
+            "digest, and their distribution packages come at exact versions",
+            "from snapshot.debian.org and snapshot.ubuntu.com at the timestamps",
+            "the base Dockerfiles name, which a toolchain image's own packages",
+            "also read:",
             "",
         ]
         for key in shared:

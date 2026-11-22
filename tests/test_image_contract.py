@@ -311,5 +311,50 @@ class TestImageContract(unittest.TestCase):
             )
 
 
+#: A base stage's FROM: one of the repository's own bases, or an image by digest ARG.
+_BASE_FROM = re.compile(r"FROM (\$\{(?:HELPER|NOBLE)_IMAGE\}|\S+@\$\{(\w+_DIGEST)\})(?: AS \S+)?$")
+#: The package list of one `apt-get install`, up to the next `&&`.
+_APT_INSTALL = re.compile(r"apt-get (?:-o \S+ )*install -y --no-install-recommends ([^&]+)")
+
+
+class TestBases(unittest.TestCase):
+    """Every toolchain image sits on a base, so the bases are pinned by bytes too.
+
+    A rebuilt base must run the release's OS and Wine/dosemu2 packages: each
+    OS image is pinned by digest, each distribution package by exact version
+    from a dated snapshot archive the sources are switched to.
+    """
+
+    def _dockerfiles(self) -> dict[str, str]:
+        found = {
+            path.parent.name: re.sub(r"\\\n\s*", " ", path.read_text(encoding="utf-8"))
+            for path in sorted(_REPO.glob("base*/Dockerfile"))
+        }
+        self.assertEqual(set(found), set(generate.BASES))
+        return found
+
+    def test_every_base_image_is_pinned_by_digest(self) -> None:
+        for name, text in self._dockerfiles().items():
+            for line in (ln for ln in text.splitlines() if ln.startswith("FROM ")):
+                match = _BASE_FROM.match(line)
+                self.assertIsNotNone(match, f"{name}: {line} is not pinned by digest")
+                if match and match.group(2):
+                    self.assertRegex(text, rf"ARG {match.group(2)}=sha256:[0-9a-f]{{64}}\n", name)
+
+    def test_every_package_comes_at_a_version_from_a_snapshot(self) -> None:
+        for name, text in self._dockerfiles().items():
+            for match in _APT_INSTALL.finditer(text):
+                # A local .deb is the file the same RUN downloaded and checked by sha256.
+                for package in match.group(1).split():
+                    self.assertTrue(
+                        package.endswith(".deb") or re.fullmatch(r"[a-z0-9.+-]+=\S+", package),
+                        f"{name}: {package} has no exact version",
+                    )
+            # A base on an OS image switches its sources; one on a base inherits them.
+            if re.search(r"^FROM \S+@\$\{\w+_DIGEST\}", text, re.MULTILINE):
+                self.assertRegex(text, r"URIs: https?://snapshot\.(debian\.org|ubuntu\.com)/", name)
+                self.assertIn('Acquire::Check-Valid-Until "false";', text, name)
+
+
 if __name__ == "__main__":
     unittest.main()

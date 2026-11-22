@@ -60,7 +60,11 @@ dependency chains and builds only the required shared bases, in order: `rebrew/b
 host) and `rebrew/base-dosemu` (base-noble + dosemu2 + dj64, for the 16-bit DOS
 toolchains).  Each Dockerfile declares the one it needs in its `ARG BASE_IMAGE=`
 default, and `build.sh` honours it, so an image never inherits a runtime it does
-not use.  Naming is normalized everywhere: a toolchain
+not use.  The bases pin their OS image by digest and install distribution
+packages at exact versions from a dated snapshot archive (snapshot.debian.org,
+snapshot.ubuntu.com, timestamps in the base Dockerfiles); the images keep those
+sources, so a toolchain's own `apt` packages come from the same archive state
+rather than the live mirror.  Naming is normalized everywhere: a toolchain
 lives in `<family>/<version>-<platform>` (platform suffixes such as `win16`,
 `win32`, `linux-x64`, `msdos`, a CPU such as `z80`, or the console: `n64`,
 `ps1`, `ps2`, `gba`, `nds`, `3ds`, `psp`, `gc`, `wii`, `wiiu`, `dreamcast`,

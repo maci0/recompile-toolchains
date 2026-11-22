@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- The three base images are pinned by bytes. `base-noble` was `FROM ubuntu:noble` by tag; it is now `ubuntu:noble@sha256:882e1e56...` (`noble-20261110.1`, the image `rebrew/base-noble:1.0` was last built on), beside `base`'s existing `debian:bookworm-slim` digest. Every distribution package the bases install (Wine, DOSBox, dosemu2's runtime libraries, the libfaketime build tools) comes at an exact version from snapshot.debian.org (`DEBIAN_SNAPSHOT=20261112T180000Z`) or snapshot.ubuntu.com (`UBUNTU_SNAPSHOT=20261121T180000Z`), the archive states the current bases were built from: a rebuilt `base`, `base-noble` and `base-dosemu` list the same installed package versions as `rebrew/base:1.0`, `rebrew/base-noble:1.0` and `rebrew/base-dosemu:1.0` (`dpkg-query`, 304, 109 and 227 packages). The images keep the snapshot sources and `Acquire::Check-Valid-Until` off, so a toolchain recipe's own `apt` packages read the same archive state instead of the live mirror. `base` refuses a snapshot older than the one its Debian image names. The dosemu2 and dj64 packages stay pinned by URL and sha256 from `archaic-toolchains/dosemu2-noble`. `make test` checks that every base `FROM` names a digest and every package an exact version.
+
 ## [1.17.0] - 2026-11-21
 
 ### Added

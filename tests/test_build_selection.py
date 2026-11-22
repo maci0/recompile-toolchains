@@ -114,6 +114,48 @@ class TestBuildSelection(unittest.TestCase):
                     self.assertEqual(len(calls), len(bases) + 1)
                     self.assertTrue(all("-t test-registry/team/" in line for line in calls))
 
+    def _run_stubbed(self, args: list[str]) -> tuple[subprocess.CompletedProcess[str], list[str]]:
+        """build.sh with a docker stub that logs its calls; (result, calls)."""
+        scratch = _REPO / ".scratch"
+        scratch.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=scratch) as directory:
+            work = Path(directory)
+            docker = work / "docker"
+            docker.write_text('#!/bin/sh\nprintf "%s\\n" "$*" >> "$BUILD_CALLS"\n')
+            docker.chmod(0o755)
+            log = work / "calls"
+            env = dict(os.environ, PATH=f"{work}:{os.environ['PATH']}", BUILD_CALLS=str(log))
+            env["REBREW_BUILD_JOBS"] = "8"
+            result = subprocess.run(  # noqa: S603  (tracked script, stubbed docker)
+                [str(_REPO / "build.sh"), *args],
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=600,
+                check=False,
+            )
+            calls = log.read_text().splitlines() if log.exists() else []
+        return result, calls
+
+    def test_a_withdrawn_profile_is_refused_with_its_reason(self) -> None:
+        # msvc-9.0-sp1's compiler targets Itanium; sources.json withdraws it.
+        for name in ("msvc-9.0-sp1", "msvc/9.0-sp1-win32"):
+            with self.subTest(name=name):
+                result, calls = self._run_stubbed([name])
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn(
+                    "refusing to build: msvc-9.0-sp1 is withdrawn: its compiler targets Itanium",
+                    result.stderr,
+                )
+                self.assertEqual(calls, [])
+
+    def test_a_full_sweep_skips_a_withdrawn_profile(self) -> None:
+        result, calls = self._run_stubbed([])
+        self.assertEqual(result.returncode, 0, result.stdout[-2000:] + result.stderr[-2000:])
+        self.assertIn("==> skipping: msvc-9.0-sp1 is withdrawn", result.stderr)
+        self.assertFalse(any("msvc:9.0-sp1-win32" in call for call in calls))
+        self.assertTrue(any("msvc:9.0-win32" in call for call in calls))
+
 
 if __name__ == "__main__":
     unittest.main()

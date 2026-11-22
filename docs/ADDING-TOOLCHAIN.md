@@ -16,7 +16,8 @@ docs/TOOLCHAINS.md                            generated human catalog (make docs
 backend and compiler-detector) read instead of keeping a copy of
 `sources.json`. It carries `flags_style`, `arg_style`, `obj_ext`, `bits` and
 `tool_root` from the manifest beside the pin, target and runtime class, so
-every image must declare the consumer fields.
+every image must declare the consumer fields. A row that carries `withdrawn`
+is not to be offered or run: its compiler is not what its id says.
 
 Read [TOOLCHAINS.md](TOOLCHAINS.md) for what already exists, and the
 [README](../README.md) for how consumers run the images.
@@ -444,6 +445,7 @@ manifest entry and no image.
 | `recipe` | everything the Dockerfile is rendered from: base, apt, fetch, steps, env, root, binary, entrypoint, runner, wrapper, labels (see step 3) |
 | `notes` | optional authored documentation for the image: the catalog's Notes column, verbatim.  It lives here, not in the recipe, because re-deriving a recipe rewrites it. Anything the image does not render belongs at the profile level. |
 | `aliases` | extra names `build.sh` accepts for this profile |
+| `withdrawn` | optional: why the image must not be built or offered under its id (its compiler is not what the id says).  The entry and its id stay, so records that name it resolve; `./build.sh <id>` refuses with this sentence, a full `./build.sh` skips it, and `toolchains.json` publishes it as the row's `withdrawn`, which a consumer must treat as not offered.  No double quote or backslash (`build.sh` reads it with `awk`) |
 | `same_compiler_as` | optional: the profile whose compiler binaries this one ships byte for byte, so the two produce identical objects: two product versions (`msvc-1.52` names `msvc-1.5`, both C/C++ 8.00c), service packs that left the compiler alone (`msvc-6.0-sp1` and `-sp2` name `msvc-6.0`), or a second id for one archive (`msvc-7.0-rtm` names `msvc-7.0`).  Published in `toolchains.json`; `make images` fails if the binaries differ, and fails byte-identical binaries that no declaration ties |
 | `*_url`/`*_sha256`/`*_commit` | additional pinned sources the image needs |
 

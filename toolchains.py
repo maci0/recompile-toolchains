@@ -261,6 +261,10 @@ def row(profile: str, entry: dict[str, object]) -> dict[str, object]:
     same = _text(entry, "same_compiler_as")
     if same:
         out["same_compiler_as"] = same
+    withdrawn = _text(entry, "withdrawn")
+    if withdrawn:
+        # The id stays so stored records resolve; a consumer must not offer or run it.
+        out["withdrawn"] = withdrawn
     return out
 
 

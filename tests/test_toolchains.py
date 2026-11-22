@@ -96,6 +96,16 @@ class TestToolchainsArtifact(unittest.TestCase):
                 self.assertTrue(consumer["obj_ext"].startswith("."))
                 self.assertEqual("bits" in row, "arch" in row)
 
+    def test_a_withdrawn_entry_is_published_with_its_reason(self) -> None:
+        # The row stays (stored records name the id); `withdrawn` tells a
+        # consumer not to offer it, in the words build.sh refuses with.
+        data = json.loads(toolchains.ARTIFACT.read_text(encoding="utf-8"))
+        rows = {row["id"]: row for row in data["toolchains"]}
+        self.assertIn("targets Itanium", rows["msvc-9.0-sp1"]["withdrawn"])
+        self.assertEqual(
+            {row["id"] for row in data["toolchains"] if "withdrawn" in row}, {"msvc-9.0-sp1"}
+        )
+
     def test_aliases_resolve_to_one_profile(self) -> None:
         data = json.loads(toolchains.ARTIFACT.read_text(encoding="utf-8"))
         owner: dict[str, str] = {}

@@ -10779,9 +10779,7 @@
         "argv": []
       }
     },
-    "notes": [
-      "its compiler targets Itanium, not x86: the `VC/bin/cl.exe` the wrapper runs prints 'Version 15.00.30729.01 for Itanium' and writes Intel Itanium COFF objects (checked 2026-11-22 on the published and a rebuilt image)"
-    ]
+    "withdrawn": "its compiler targets Itanium, not x86: `VC/bin/cl.exe` reports 15.00.30729.01 for Itanium and writes IA-64 objects (COFF machine 0x0200), so the image is not built or offered as msvc-9.0-sp1 until the archive carries the x86 SP1 compiler"
   },
   "msvc-ppc-14.00.2110": {
     "family": "msvc-ppc",

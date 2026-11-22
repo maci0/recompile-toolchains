@@ -66,6 +66,20 @@ PINS="$(awk -F'"' '
 ' "$ROOT/sources.json")"
 [ -n "$PINS" ] || { echo "failed to parse $ROOT/sources.json" >&2; exit 2; }
 
+# Withdrawn profiles (host_dir <tab> profile <tab> reason): an explicit
+# selection is refused with the reason, a full sweep skips them.
+WITHDRAWN="$(awk -F'"' '
+    /^  "[^"]+": \{$/       { key = $2 }
+    /^    "host_dir": "/    { dir[key] = $4 }
+    /^    "withdrawn": "/   { why[key] = $4 }
+    END { for (k in why) print dir[k] "\t" k "\t" why[k] }
+' "$ROOT/sources.json")"
+# withdrawn_reason <dir> — "<profile> is withdrawn: <reason>", or empty.
+withdrawn_reason() {
+  printf '%s\n' "$WITHDRAWN" | awk -F'\t' -v d="$1" \
+    '$1 == d && d != "" { print $2 " is withdrawn: " $3 }'
+}
+
 # Each pinned url/sha256 also appears verbatim in the host_dir's Dockerfile
 # (its curl + sha256sum RUN is what actually builds the image), so the two
 # are rendered from sources.json by generate.py. Verify they agree before
@@ -314,6 +328,11 @@ if [ $# -eq 0 ]; then
     [ -f "$d/Dockerfile" ] || continue
     rel="${d#"$ROOT"/}"
     rel="${rel%/}"  # the glob yields a trailing slash — strip it
+    reason="$(withdrawn_reason "$rel")"
+    if [ -n "$reason" ]; then
+      echo "==> skipping: $reason" >&2
+      continue
+    fi
     dirs+=("$rel")
   done
 else
@@ -321,6 +340,8 @@ else
   for arg in "$@"; do
     dir="$(resolve_dir "$arg")"
     [ -n "$dir" ] || { echo "unknown toolchain: $arg" >&2; exit 2; }
+    reason="$(withdrawn_reason "$dir")"
+    [ -z "$reason" ] || { echo "refusing to build: $reason" >&2; exit 2; }
     [ -n "${want[$dir]:-}" ] && continue  # duplicate args build once
     want[$dir]=1
     dirs+=("$dir")

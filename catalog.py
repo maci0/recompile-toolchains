@@ -944,6 +944,9 @@ def _notes(entry: dict[str, object]) -> str:
     on 151 profiles while the docs looked fine.
     """
     notes: list[str] = []
+    withdrawn = _text(entry, "withdrawn")
+    if withdrawn:
+        notes.append(f"**withdrawn, not built or offered**: {withdrawn}")
     base = _text(entry, "variant_of")
     if base:
         notes.append(f"the same build as `{base}`, with a different front end")

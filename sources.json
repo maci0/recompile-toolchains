@@ -10778,7 +10778,10 @@
         "validate_source": true,
         "argv": []
       }
-    }
+    },
+    "notes": [
+      "its compiler targets Itanium, not x86: the `VC/bin/cl.exe` the wrapper runs prints 'Version 15.00.30729.01 for Itanium' and writes Intel Itanium COFF objects (checked 2026-11-22 on the published and a rebuilt image)"
+    ]
   },
   "msvc-ppc-14.00.2110": {
     "family": "msvc-ppc",

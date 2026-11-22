@@ -122,17 +122,28 @@ class TestRecipePins(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn(
             "MISMATCH      msvc-7.0                       rebrew/msvc:7.0-win32: "
-            "the recipe checked 13f86a2d618f, 618e876bc064; the catalogue pins 5f75462fb613",
+            "the recipe checked 13f86a2d618f, 618e876bc064; the catalogue pins e8de76827817",
             out,
         )
 
     def test_the_recipe_that_checked_the_pin_passes(self) -> None:
-        # The same image is a correct build of msvc-7.1, which pins msvc710.
-        with _registry({"7.1-win32"}, _fixture("config.json")):
+        # The same recipe run against msvc-7.1's pin of today: msvc710 at its commit.
+        sums = images.recipe_sums(images.history_of(_config()))
+        branch = next(s for s in sums if s.startswith("618e876bc064"))
+        config = _fixture("config.json").decode()
+        rebuilt = config.replace(branch, images.entries()["msvc-7.1"].sha256).encode()
+        with _registry({"7.1-win32"}, rebuilt):
             code, out = self._run(["--registry", _REGISTRY, "msvc-7.1"])
         self.assertEqual(code, 0, out)
         self.assertIn("ok            msvc-7.1", out)
-        self.assertIn("compiler binaries: not compared", out)
+
+    def test_a_build_from_before_a_repin_fails(self) -> None:
+        # The image is a build of msvc-7.1 from the branch archive of msvc710,
+        # pinned until msvc-7.1 moved to the commit archive: same tree, other bytes.
+        with _registry({"7.1-win32"}, _fixture("config.json")):
+            code, out = self._run(["--registry", _REGISTRY, "msvc-7.1"])
+        self.assertEqual(code, 1, out)
+        self.assertIn("MISMATCH      msvc-7.1", out)
 
     def test_a_recipe_that_checked_no_sum_fails(self) -> None:
         lines = images.history_of(_config())

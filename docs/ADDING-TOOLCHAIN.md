@@ -98,15 +98,26 @@ Two traps found while unblocking the last DOS toolchains (2026):
 Then pin it by content:
 
 ```bash
-curl -fsSL -o /tmp/artifact "<url>"
-sha256sum /tmp/artifact                       # → sources.json sha256
 git ls-remote <repo> refs/heads/<branch>      # → sources.json commit
+curl -fsSL -o .scratch/artifact \
+  "https://codeload.github.com/<owner>/<repo>/tar.gz/<commit>"   # → url
+sha256sum .scratch/artifact                   # → sources.json sha256
 ```
 
 Rules the contract tests enforce (`tests/test_image_contract.py`):
 
-- `url` starts with `https://`, `sha256` is 64 hex chars, `commit` is
-  recorded whenever the URL contains `refs/heads/` (a branch moves).
+- `url` starts with `https://` and `sha256` is 64 hex chars.
+- No pin names a moving reference: a GitHub archive is fetched as
+  `codeload.github.com/<owner>/<repo>/tar.gz/<commit>` with that commit in
+  `commit`, never `refs/heads/<branch>`, and no pin names a rolling release
+  tag (`latest`, `main`, `master`, `main-release`). The sha256 would still
+  refuse other bytes, but any push to the branch would make the released
+  recipe unbuildable. Six pins whose upstream serves the bytes only under a
+  rolling tag are listed in the test as awaiting a dated mirror; a new entry
+  does not join them. The archive of a commit names its top directory after
+  the commit, so its sha256 differs from the branch archive of the same
+  commit; the trees are identical. GitHub does not promise that an archive
+  stays byte-stable for ever, but it does not change when the branch moves.
 - The **same** url and sha256 strings appear inside the toolchain
   Dockerfile (`build.sh` checks this before building anything, and the test
   suite checks it on every run). A one-sided edit fails the build rather

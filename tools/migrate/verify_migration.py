@@ -61,16 +61,45 @@ ACKNOWLEDGED: dict[str, tuple[str, str, str | None]] = {
 }
 
 
-#: archaic-toolchains mirrors (mirror URL -> upstream URL) of third-party media, byte for byte
-#: the files their upstreams served, so every sha256 pin stayed.  verify reads a mirror URL as its
+#: Mirrors (mirror URL -> upstream URL) serving byte for byte the files their upstreams served,
+#: so every sha256 pin stayed: archaic-toolchains copies of third-party media, and an upstream's
+#: own commit-pinned copy of a file a rolling release served.  verify reads a mirror URL as its
 #: upstream: moving a pin to its mirror is no migration difference, and every other one still is.
 MIRRORS: dict[str, str] = json.loads(
     (REPO / "tools" / "migrate" / "mirrors.json").read_text(encoding="utf-8")
 )
 
 
+class CommitArchive(TypedDict):
+    """The branch archive a commit archive replaced: one tree, other bytes."""
+
+    branch: str
+    branch_sha256: str
+    sha256: str
+
+
+#: GitHub archives fetched by commit (URL -> the branch archive it replaced).  The
+#: archive of a commit names its top directory after the commit, so its sha256
+#: differs from the branch archive of that commit; the trees were compared member
+#: by member when the pins moved (2026-11-22).  verify reads each one as the
+#: branch archive and its sha256, like a mirror.
+COMMIT_ARCHIVES: dict[str, CommitArchive] = json.loads(
+    (REPO / "tools" / "migrate" / "commit-archives.json").read_text(encoding="utf-8")
+)
+
+
+def predecessors() -> dict[str, str]:
+    """Every pin string to read as the one it replaced: mirror URLs and commit archives."""
+    found = dict(MIRRORS)
+    for url, archive in COMMIT_ARCHIVES.items():
+        found[url] = archive["branch"]
+        found[archive["sha256"]] = archive["branch_sha256"]
+    return found
+
+
 def unmirrored(directory: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
-    """*directory*, or a copy at *into* whose text files name each mirror URL's upstream."""
+    """*directory*, or a copy at *into* whose text files name each pin's predecessor."""
+    replaced = predecessors()
     texts: dict[pathlib.Path, str] = {}
     for path in directory.rglob("*"):
         if not path.is_file():
@@ -79,14 +108,14 @@ def unmirrored(directory: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:  # a binary COPY source: no URL to put back
             continue
-        if any(mirror in text for mirror in MIRRORS):
+        if any(mirror in text for mirror in replaced):
             texts[path.relative_to(directory)] = text
     if not texts:
         return directory
     shutil.copytree(directory, into)
     for rel, original in texts.items():
         text = original
-        for mirror, upstream in MIRRORS.items():
+        for mirror, upstream in replaced.items():
             text = text.replace(mirror, upstream)
         (into / rel).write_text(text, encoding="utf-8")
     return into

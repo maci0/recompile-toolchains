@@ -308,3 +308,36 @@ class TestMigration(unittest.TestCase):
                     self.assertEqual(migration.main(["--baseline", "test"]), 0)
                 with patch.object(migration, "MIRRORS", {}):
                     self.assertEqual(migration.main(["--baseline", "test"]), 1)
+
+    def test_a_commit_archive_reads_as_the_branch_archive_it_replaced(self) -> None:
+        branch = "https://codeload.github.com/o/cc/tar.gz/refs/heads/main"
+        commit = "https://codeload.github.com/o/cc/tar.gz/" + "a" * 40
+        archive = {"branch": branch, "branch_sha256": "b" * 64, "sha256": "c" * 64}
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            old, new = root / "old" / "tool", root / "new" / "tool"
+            for directory, url, sha in [(old, branch, "b" * 64), (new, commit, "c" * 64)]:
+                directory.mkdir(parents=True)
+                (directory / "Dockerfile").write_text(
+                    f'FROM scratch\nRUN curl -fsSL -o /tmp/cc.tar.gz "{url}" '
+                    f'&& echo "{sha}  /tmp/cc.tar.gz" | sha256sum -c -\n'
+                    'ENTRYPOINT ["/usr/local/bin/cc"]\n'
+                )
+            with (
+                patch.object(migration, "REPO", new.parent),
+                patch.object(migration, "checkout", return_value=old.parent),
+                patch.object(migration, "discard"),
+                patch.object(
+                    migration.generate, "manifest", return_value={"test": {"host_dir": "tool"}}
+                ),
+                patch.object(migration, "MIRRORS", {}),
+                redirect_stdout(StringIO()),
+            ):
+                with patch.object(migration, "COMMIT_ARCHIVES", {commit: archive}):
+                    self.assertEqual(migration.main(["--baseline", "test"]), 0)
+                # The sha256 alone moved: still a difference.
+                moved = {commit: {**archive, "sha256": "d" * 64}}
+                with patch.object(migration, "COMMIT_ARCHIVES", moved):
+                    self.assertEqual(migration.main(["--baseline", "test"]), 1)
+                with patch.object(migration, "COMMIT_ARCHIVES", {}):
+                    self.assertEqual(migration.main(["--baseline", "test"]), 1)

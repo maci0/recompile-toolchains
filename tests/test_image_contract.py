@@ -39,6 +39,26 @@ _RUN_HELPERS = (
 )
 
 
+#: A release tag that names a moving target (a rolling CI release), not a version.
+_MOVING_TAG = re.compile(r"/releases/download/(latest|main|master|main-release)/")
+#: A GitHub archive of one commit; the commit must be the entry's `commit`.
+_CODELOAD_COMMIT = re.compile(r"https://codeload\.github\.com/[^/]+/[^/]+/tar\.gz/([0-9a-f]{40})$")
+#: Pins whose bytes upstream serves only under a moving tag: no versioned
+#: release and no commit holds them (checked 2026-11-22).  Each needs a dated
+#: mirror release, as base-dosemu's dosemu2 packages have in
+#: archaic-toolchains/dosemu2-noble, before it can leave this list.
+_AWAITING_MIRROR = frozenset(
+    {
+        ("gcc-2.7.2-kmc", "primary"),
+        ("gcc-2.7.2-kmc", "binutils"),
+        ("gcc-2.8.1-pm", "primary"),
+        ("gcc-2.8.1-pm", "binutils"),
+        ("gcc-4.4.0-mips64-elf", "primary"),
+        ("gcc-egcs-1.1.2-4", "primary"),
+    }
+)
+
+
 def _toolchain_dirs() -> list[Path]:
     """Every ``<family>/<version>-<arch>`` directory (``base/`` excluded)."""
     return sorted(path.parent for path in _REPO.glob("*/*/Dockerfile"))
@@ -84,12 +104,28 @@ class TestManifest(unittest.TestCase):
             for name, url, sha in _pins(entry):
                 self.assertTrue(url.startswith("https://"), f"{profile}: {name} url")
                 self.assertEqual(len(sha), 64, f"{profile}: {name} has no sha256")
-            # A branch tarball moves, so its pin must name the commit it came
-            # from.  A release asset is content-addressed by its sha256 alone
-            # and has no commit to record (Open Watcom's `Last-CI-build`
-            # snapshot is republished continuously).
-            if "refs/heads/" in entry["url"]:
-                self.assertTrue(entry["commit"], f"{profile}: branch pin without a commit")
+
+    def test_every_pin_names_an_immutable_reference(self) -> None:
+        """A tagged release must stay buildable after its upstreams move on.
+
+        The sha256 holds the bytes, so a moved reference never installs
+        something else; it makes the recipe unbuildable instead.  A GitHub
+        archive is fetched by the commit `commit` records, never a branch, and
+        no pin names a rolling release tag except the ones awaiting a mirror.
+        """
+        for profile, entry in _manifest().items():
+            for name, url, _sha in _pins(entry):
+                self.assertNotIn("refs/heads/", url, f"{profile}: {name} fetches a branch head")
+                if _MOVING_TAG.search(url):
+                    self.assertIn(
+                        (profile, name), _AWAITING_MIRROR, f"{profile}: {name} names a moving tag"
+                    )
+            archive = _CODELOAD_COMMIT.match(entry["url"])
+            if archive:
+                self.assertEqual(archive.group(1), entry["commit"], f"{profile}: commit")
+        for profile, name in _AWAITING_MIRROR:
+            urls = {pin: url for pin, url, _sha in _pins(_manifest()[profile])}
+            self.assertRegex(urls[name], _MOVING_TAG, f"{profile}: {name} is mirrored: unlist it")
 
     def test_tool_root_is_inside_the_install_root(self) -> None:
         """Consumers derive the compiler's INCLUDE and LIB from `tool_root`.

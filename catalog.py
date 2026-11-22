@@ -880,8 +880,8 @@ def source_of(url: str) -> str:
     parsed = urlsplit(url)
     upstream = (parsed.hostname or "") + parsed.path
     candidates = [upstream]
-    # GitHub source archives retain the repository's upstream attribution.
-    if parsed.hostname == "codeload.github.com":
+    # GitHub source archives and raw files keep the repository's attribution.
+    if parsed.hostname in ("codeload.github.com", "raw.githubusercontent.com"):
         candidates.append("github.com" + parsed.path)
     return max(
         (key for key in SOURCES if any(c == key or c.startswith(key + "/") for c in candidates)),
@@ -969,6 +969,9 @@ def _pin(entry: dict[str, object]) -> str:
     sha = _text(entry, "sha256")
     commit = _text(entry, "commit")
     name = url.split("?")[0].rstrip("/").split("/")[-1] or url
+    if commit and name == commit:
+        # A GitHub archive of a commit: name the repository, not the commit twice.
+        name = url.split("/tar.gz/")[0].rsplit("/", 1)[-1]
     pin = f"`{name}` `{sha[:12]}`"
     return f"{pin} @ `{commit[:12]}`" if commit else pin
 
@@ -1057,8 +1060,8 @@ def provenance(entries: dict[str, dict[str, object]]) -> str:
         "1. the original vendor media (CDs, floppies, SDK releases) is preserved",
         "   in archival repos;",
         "2. those trees are packaged as release assets or dated bundles, and",
-        "   `sources.json` pins each one by `url` + `sha256` (plus the git",
-        "   `commit` for branch-pinned tarballs);",
+        "   `sources.json` pins each one by `url` + `sha256` (a GitHub archive",
+        "   is fetched by the `commit` it records, never by branch);",
         "3. the Dockerfile re-verifies that hash during the build, so an image",
         "   either matches the manifest it was built from or fails to build;",
         "4. `make images` checks that an image already built under a tag still",

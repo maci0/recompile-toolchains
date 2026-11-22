@@ -1375,8 +1375,8 @@
     "arg_style": "dos",
     "obj_ext": ".obj",
     "bits": 16,
-    "url": "https://codeload.github.com/archaic-toolchains/tc20/tar.gz/refs/heads/main",
-    "sha256": "2eca4c26c1b30ce2bd7e61573eb9f40096994405fc173c28143f06a93da269d1",
+    "url": "https://codeload.github.com/archaic-toolchains/tc20/tar.gz/64b5ef09a7c18b65c38902a217bcfec67c4b113b",
+    "sha256": "1abebda4eab015dba7b2b816d60d4d6d5d74fd9391128bfe627d8d162f166a33",
     "commit": "64b5ef09a7c18b65c38902a217bcfec67c4b113b",
     "recipe": {
       "base": "base",
@@ -1522,8 +1522,8 @@
     "arg_style": "dos",
     "obj_ext": ".obj",
     "bits": 16,
-    "url": "https://codeload.github.com/archaic-toolchains/tc31/tar.gz/refs/heads/main",
-    "sha256": "3d534741ebdc31ffdceb87db8de3b7d494ad5c912b7cd1a4f326b4a94d0c2ba1",
+    "url": "https://codeload.github.com/archaic-toolchains/tc31/tar.gz/ba6af878392be5ea20f6bb54f7dd2359b3845b7b",
+    "sha256": "691f508f4cb5c51d010514fd605d8c553031746e85ea730fac26e73c3a27d7f6",
     "commit": "ba6af878392be5ea20f6bb54f7dd2359b3845b7b",
     "recipe": {
       "base": "base",
@@ -1669,8 +1669,8 @@
     "arg_style": "borland",
     "obj_ext": ".obj",
     "tool_root": "/opt/bcc55/Bin",
-    "url": "https://codeload.github.com/archaic-toolchains/borlandc55/tar.gz/refs/heads/main",
-    "sha256": "e9319c3904303ca4424cfed855b17837d10aa9653a3d8e6329d2adb3326392b0",
+    "url": "https://codeload.github.com/archaic-toolchains/borlandc55/tar.gz/fcdcaf5bc41fc166ef632329c72baf6d487b50d2",
+    "sha256": "647c93fb2513255d7447e7d8c8ba1ac1eddc821de2777a58fa145b71ec5891d6",
     "commit": "fcdcaf5bc41fc166ef632329c72baf6d487b50d2",
     "recipe": {
       "base": "base",
@@ -2355,8 +2355,8 @@
     "arg_style": "msvc",
     "obj_ext": ".exe",
     "bits": 16,
-    "url": "https://codeload.github.com/archaic-toolchains/delphi10/tar.gz/refs/heads/main",
-    "sha256": "24cd23f0ef555f3582eda27b4bb655e17215366b556dfaabd9f2ba5daf61b55e",
+    "url": "https://codeload.github.com/archaic-toolchains/delphi10/tar.gz/fd12406eeaa6b44099013c5a56d083919676967c",
+    "sha256": "5f47a18c64cc00e9b8d184fb7f9f223047f1e3dd00f346548be095e6f289f3db",
     "commit": "fd12406eeaa6b44099013c5a56d083919676967c",
     "recipe": {
       "base": "base",
@@ -5290,7 +5290,7 @@
     ],
     "extra_pins": [
       {
-        "url": "https://github.com/RocketRet/modern-asn64/releases/download/main-release/modern-asn64.py",
+        "url": "https://raw.githubusercontent.com/RocketRet/modern-asn64/20d21729ce6a2e7bc8a4a91ec9505cab0d6e50f9/modern-asn64.py",
         "sha256": "7e6815e2c2c0ae0b4581ace1c5adab3d1d567f0fc729f674fc52bdd77e2240bc"
       }
     ],
@@ -6326,7 +6326,7 @@
         "sha256": "85e3e9fa05640af67115279a992a616a1a1fec8cf56b2e58191196fbbc51853a"
       },
       {
-        "url": "https://github.com/RocketRet/modern-asn64/releases/download/main-release/modern-asn64.py",
+        "url": "https://raw.githubusercontent.com/RocketRet/modern-asn64/20d21729ce6a2e7bc8a4a91ec9505cab0d6e50f9/modern-asn64.py",
         "sha256": "7e6815e2c2c0ae0b4581ace1c5adab3d1d567f0fc729f674fc52bdd77e2240bc"
       }
     ],
@@ -8718,8 +8718,8 @@
     "arg_style": "dos",
     "obj_ext": ".obj",
     "bits": 16,
-    "url": "https://codeload.github.com/archaic-toolchains/msvc10/tar.gz/refs/heads/main",
-    "sha256": "4858446b957fe327fedbb3a511316bebc060b72f22557a47397b905522668ce9",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc10/tar.gz/0cd3d8a2024119b6b08b384fd3487a64a59a25eb",
+    "sha256": "50b303e2dc2208a17f07dbd15773036d249a03c8646a5faf0a0848a726b8b1f7",
     "commit": "0cd3d8a2024119b6b08b384fd3487a64a59a25eb",
     "recipe": {
       "base": "base",
@@ -8792,8 +8792,8 @@
     "arg_style": "dos",
     "obj_ext": ".obj",
     "bits": 16,
-    "url": "https://codeload.github.com/archaic-toolchains/msvc15/tar.gz/refs/heads/main",
-    "sha256": "5cd1e4d9fd70fe97587fd3edfd0cebe3276e7b59ea5eb0848510f15c95d79aec",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc15/tar.gz/3649e12977c169bd60662362400677f28a716ef1",
+    "sha256": "46db20c355a1b49869de719092d9237cee939fdf0e481e451f4f63835923f7e7",
     "commit": "3649e12977c169bd60662362400677f28a716ef1",
     "recipe": {
       "base": "base",
@@ -8866,8 +8866,8 @@
     "arg_style": "dos",
     "obj_ext": ".obj",
     "bits": 16,
-    "url": "https://codeload.github.com/archaic-toolchains/msvc152/tar.gz/refs/heads/main",
-    "sha256": "18fbdb547aa6a6cdbb3a77b00b5453f6fd9ae2b543a1c4842552643384e4711b",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc152/tar.gz/3beb967dfc075d34a1a8f7d30e0428e447432270",
+    "sha256": "74747b782ac22fa1fdc2925d98eccffde66b0a549fd31090acb4648f6833b86c",
     "commit": "3beb967dfc075d34a1a8f7d30e0428e447432270",
     "recipe": {
       "base": "base",
@@ -8941,8 +8941,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc10.0/VC/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc1000/tar.gz/refs/heads/master",
-    "sha256": "5f0b4486eb68e0069bb11506bcc8834710ac92ac1e7f311b3e4400a9d5d9409f",
+    "url": "https://codeload.github.com/archaic-msvc/msvc1000/tar.gz/f8977e2cacbe6cab4f9e73eb2c05695a88519bfe",
+    "sha256": "923684491a7e3fbdc326a0681c7d8d4ecfb9a9d217638038ac2859c702c45b01",
     "commit": "f8977e2cacbe6cab4f9e73eb2c05695a88519bfe",
     "recipe": {
       "base": "base",
@@ -8997,8 +8997,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc10.0-sp1/VC/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc1000_sp1/tar.gz/refs/heads/master",
-    "sha256": "2e5fbb9b71ed8cb2673594484d6a8fad7484c809ecefffaf3319e0164af6f89b",
+    "url": "https://codeload.github.com/archaic-msvc/msvc1000_sp1/tar.gz/09a53c11f781ec9ab5e66772ba720b9d85e4c2a4",
+    "sha256": "4d256b37c4fea1327c554e19f9fda3078155a404699a5fb3f33a8a4804258bfb",
     "commit": "09a53c11f781ec9ab5e66772ba720b9d85e4c2a4",
     "recipe": {
       "base": "base",
@@ -9053,8 +9053,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc11.0/VC/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc1100/tar.gz/refs/heads/master",
-    "sha256": "adba1882eb076cb774b7a5d0f2b1067544da7cd2f0bf0b12f284361516cbc825",
+    "url": "https://codeload.github.com/archaic-msvc/msvc1100/tar.gz/89087a636aea5e6f9450ee7e840ea71e08740ee1",
+    "sha256": "b1a422ef7f9d3576bf00fde301b5000b062a84acc4ff40e45bffba6e24431a9f",
     "commit": "89087a636aea5e6f9450ee7e840ea71e08740ee1",
     "recipe": {
       "base": "base",
@@ -9109,8 +9109,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc2.0/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc200/tar.gz/refs/heads/master",
-    "sha256": "0b058f103fe6b615987a85d518d7fd23389fab67c9df3cadfae22f5a70d5d000",
+    "url": "https://codeload.github.com/archaic-msvc/msvc200/tar.gz/6bf022c590fdea0526dc94975f3d91add444ac1a",
+    "sha256": "b97ce61e8a3d9e38fdf0b4a5caa25065a629cfecae4baf029b26653a66463aff",
     "commit": "6bf022c590fdea0526dc94975f3d91add444ac1a",
     "recipe": {
       "base": "base",
@@ -9165,8 +9165,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc4.0/BIN",
-    "url": "https://codeload.github.com/archaic-toolchains/msvc400/tar.gz/refs/heads/main",
-    "sha256": "4996b91a8e075715238817ad567994b8dbf830d25d2c6e0fefe7adacc5b4ddec",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc400/tar.gz/17122292d394baa5a08fea6c899cdf48b67efb15",
+    "sha256": "158af9a3303f90ab565009a81629dffe0bfddd1da3d23b617bc2ae5f6e13d2e1",
     "commit": "17122292d394baa5a08fea6c899cdf48b67efb15",
     "aliases": [
       "msvc4.0"
@@ -9224,8 +9224,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc4.1/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc410/tar.gz/refs/heads/master",
-    "sha256": "21486aecd108397bdced6e2cf6a5170a3cc30280a3eba97a4a8f92985a9cc5c4",
+    "url": "https://codeload.github.com/archaic-msvc/msvc410/tar.gz/373f5e621ac8fb7b219873b37334ef1d0a2149e6",
+    "sha256": "72904772611a8cb23ea51fc2e670e58cf35d4e5d26c80d7a9c740ac73ef3636a",
     "commit": "373f5e621ac8fb7b219873b37334ef1d0a2149e6",
     "aliases": [
       "msvc4.1"
@@ -9283,8 +9283,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc4.2/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc420/tar.gz/refs/heads/master",
-    "sha256": "651db241202416be7e870ff8d98928179b94515068e7895008b8a82cb0b7001c",
+    "url": "https://codeload.github.com/archaic-msvc/msvc420/tar.gz/b42c244f0a83ba15ba2ffb62b0dc240d7b2dea50",
+    "sha256": "35f595a1c212486635d71e280bf17524b26f4e4af29ce70ca496d08b478754a1",
     "commit": "b42c244f0a83ba15ba2ffb62b0dc240d7b2dea50",
     "aliases": [
       "msvc4.2"
@@ -9342,8 +9342,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc5.0/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc500/tar.gz/refs/heads/master",
-    "sha256": "46745771c0805310212415450f097134f3871d1786434e86c080e0b8cb9a38fb",
+    "url": "https://codeload.github.com/archaic-msvc/msvc500/tar.gz/8abf95ce980161ad87b0b02402269cce76988953",
+    "sha256": "4f3f44520c8fa53014200eb678beddd52ab2745de8365c92bd3cb16c677809a1",
     "commit": "8abf95ce980161ad87b0b02402269cce76988953",
     "recipe": {
       "base": "base",
@@ -9398,8 +9398,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc5.0-sp1/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc500sp1/tar.gz/refs/heads/master",
-    "sha256": "f41e9e5a05bd7a4da97fdcc9d168aaac7898e5bfec11791c630735a7da13d303",
+    "url": "https://codeload.github.com/archaic-msvc/msvc500sp1/tar.gz/401174749393c9991a6b91425a795e04e8bdeedb",
+    "sha256": "3bffbbb3b4569b7f5ca5072651caf97f2d89e837684931522e9d224125b104f3",
     "commit": "401174749393c9991a6b91425a795e04e8bdeedb",
     "recipe": {
       "base": "base",
@@ -9454,8 +9454,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc5.0-sp2/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc500sp2/tar.gz/refs/heads/master",
-    "sha256": "551137506a6a98ca890bfe20df7d5833bc475cf7e2279d959eccce0485525c8e",
+    "url": "https://codeload.github.com/archaic-msvc/msvc500sp2/tar.gz/4ebf02022705b4c9e9108d3ed3f286ed80ba2ed9",
+    "sha256": "bad38ab6b27c955c7dea333d830005d7389e269f3142d6e25d775dc9d9ad18ce",
     "commit": "4ebf02022705b4c9e9108d3ed3f286ed80ba2ed9",
     "recipe": {
       "base": "base",
@@ -9510,8 +9510,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc5.0-sp3/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc500sp3/tar.gz/refs/heads/master",
-    "sha256": "cdba2878eaacd07cb289b73f08250e2c39596fc9b31a2ad7a4fd887879be1e38",
+    "url": "https://codeload.github.com/archaic-msvc/msvc500sp3/tar.gz/259a03f0bc863de5baf657ec064cb60cb20a2cdc",
+    "sha256": "6f4427b5c46b0ce648242e7b18f4d8b96c5500bae6b27cc68cb5d6a7c8a89347",
     "commit": "259a03f0bc863de5baf657ec064cb60cb20a2cdc",
     "recipe": {
       "base": "base",
@@ -9566,8 +9566,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0/VC98/Bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc600/tar.gz/refs/heads/master",
-    "sha256": "19b72020c8225f91d7345b16aa0acf1b31a4608ae1299693021491e7338d0ee8",
+    "url": "https://codeload.github.com/archaic-msvc/msvc600/tar.gz/34d4fc4004e880b8d5c44ae5babd7229eeaad993",
+    "sha256": "636767208193f896f9d49bd884bbe0d00f184c53b83a985c3bf8828f4ca01faa",
     "commit": "34d4fc4004e880b8d5c44ae5babd7229eeaad993",
     "recipe": {
       "base": "base",
@@ -9634,8 +9634,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0-sp1/VC98/bin",
-    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp1/tar.gz/refs/heads/main",
-    "sha256": "2c3d1a6d2e7d6248f1bcb5e46a54cd2bea94704df032056abef53828b0b79888",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp1/tar.gz/6d9787482473ca46a1e6fb70be020755951eb16a",
+    "sha256": "fbbc603561f99a2a3d5e100b9b55fb3675031c31110894f7e70711418db4e6fe",
     "commit": "6d9787482473ca46a1e6fb70be020755951eb16a",
     "recipe": {
       "base": "base",
@@ -9690,8 +9690,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0-sp2/VC98/bin",
-    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp2/tar.gz/refs/heads/main",
-    "sha256": "088cd189ce0ae3c7ff96a71bb3f364a397b2fe6c19e6a8f252cc575be3783574",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp2/tar.gz/79157a87dec5e5ff014178f817f27a70098fd862",
+    "sha256": "8687378f815a857eeb84dd80db655aa1feac3e01c2774d97055ed92564d210eb",
     "commit": "79157a87dec5e5ff014178f817f27a70098fd862",
     "recipe": {
       "base": "base",
@@ -9746,8 +9746,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0-sp3/VC98/Bin",
-    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp3/tar.gz/refs/heads/main",
-    "sha256": "f753adfa8a29d8b03fb67bbcaadd3e41d672b86e5e17e32084bd1b60a1771ab4",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp3/tar.gz/ff28b93857087f787492eef603e243fcccb0b368",
+    "sha256": "d59b3460cc3ec125ce4096a8823927f6de68c9078033d26c33f57235d3bf85d1",
     "commit": "ff28b93857087f787492eef603e243fcccb0b368",
     "aliases": [
       "msvc6.3"
@@ -9805,8 +9805,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0-sp4/VC98/bin",
-    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp4/tar.gz/refs/heads/main",
-    "sha256": "7aeb03f65858000bb6988a64cc066a4a2aec9fc591400db400ffe6fc99ae2dbc",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc600_sp4/tar.gz/0ca69bae9e3ca739c5ce38c8cf39ffc51582080d",
+    "sha256": "8f4dbbd2cb51567a8e8f3261e9ea463d407380035ca1bbb1a0de50176b23f3ed",
     "commit": "0ca69bae9e3ca739c5ce38c8cf39ffc51582080d",
     "aliases": [
       "msvc6.4"
@@ -9864,8 +9864,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0-sp5/VC98/Bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp5/tar.gz/refs/heads/master",
-    "sha256": "a95a9c17cbcbe0d97a3e80ef9596f12404eb28f36bab24e89aabcbe37acbbef6",
+    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp5/tar.gz/b0b07e29108e2695eb0274c2a377a7b7d7326150",
+    "sha256": "46316a1d1c531a9c1b965146f5de635ab250fee63a1ce1af5433e215a5cb586c",
     "commit": "b0b07e29108e2695eb0274c2a377a7b7d7326150",
     "aliases": [
       "msvc6.5"
@@ -9928,8 +9928,8 @@
     "obj_ext": ".obj",
     "bits": 32,
     "tool_root": "/opt/msvc6.0-sp5-crt/VC98/Bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp5/tar.gz/refs/heads/master",
-    "sha256": "a95a9c17cbcbe0d97a3e80ef9596f12404eb28f36bab24e89aabcbe37acbbef6",
+    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp5/tar.gz/b0b07e29108e2695eb0274c2a377a7b7d7326150",
+    "sha256": "46316a1d1c531a9c1b965146f5de635ab250fee63a1ce1af5433e215a5cb586c",
     "commit": "b0b07e29108e2695eb0274c2a377a7b7d7326150",
     "recipe": {
       "base": "base",
@@ -10033,8 +10033,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0-sp5-pp/VC98/Bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp5_vcpp/tar.gz/refs/heads/master",
-    "sha256": "1bbf177489054698fd5d29bf042692efdb5bec8719f9dc889b9b1c618c645991",
+    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp5_vcpp/tar.gz/762e9382c751613c341daa766f0e22cdeb07152c",
+    "sha256": "f07b22eef2382fbb901fbef72540c76c163ffc65cdcd9656bc073eacd02d54c5",
     "commit": "762e9382c751613c341daa766f0e22cdeb07152c",
     "aliases": [
       "msvc6.5pp"
@@ -10096,8 +10096,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc6.0-sp6/VC98/Bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp6/tar.gz/refs/heads/master",
-    "sha256": "7c2aa3dd4c56b8054cc1ae0e00cd976005dd5b9b43ea8c33b22798a15c9c15c3",
+    "url": "https://codeload.github.com/archaic-msvc/msvc600_sp6/tar.gz/1f4223a77122220d28e8670788b3f9fd6bb2c4d1",
+    "sha256": "f01d95e398cc766b782b070fb36877a81c50f6b37ca3fba00f427976acb417b7",
     "commit": "1f4223a77122220d28e8670788b3f9fd6bb2c4d1",
     "aliases": [
       "msvc6.6"
@@ -10230,8 +10230,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc7.0/Vc7/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc700/tar.gz/refs/heads/master",
-    "sha256": "5f75462fb6134ad56c3ae28cf8b1e3b2869578d4171568b7a1fcdfb0bf97830b",
+    "url": "https://codeload.github.com/archaic-msvc/msvc700/tar.gz/97fe4cdeaeb0bb934591d4b05eb52c2e8ab3e34b",
+    "sha256": "e8de768278175a56ace7ef79648a4ac6136bfb074dd5ba991356b16c5d0bcf46",
     "commit": "97fe4cdeaeb0bb934591d4b05eb52c2e8ab3e34b",
     "aliases": [
       "msvc7.0"
@@ -10289,8 +10289,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc7.0-sp1/Vc7/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc700_sp1/tar.gz/refs/heads/master",
-    "sha256": "bc1300625c89e855e1c0160b43c6fe2576ad68426483bd73c3cde2682165ba8a",
+    "url": "https://codeload.github.com/archaic-msvc/msvc700_sp1/tar.gz/8bd9502d74274667de198247a459d63dbd431068",
+    "sha256": "0ab5939866ac411f658ab616a8f6cce7f74cad28c75a251fbda6adff297a6018",
     "commit": "8bd9502d74274667de198247a459d63dbd431068",
     "recipe": {
       "base": "base",
@@ -10345,8 +10345,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc7.1/Vc7/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc710/tar.gz/refs/heads/master",
-    "sha256": "618e876bc06431498fa98e71a408d822a5fad979219ce3253318d099a6917b27",
+    "url": "https://codeload.github.com/archaic-msvc/msvc710/tar.gz/2932d76fe417b0bc49010b26d4be2e5b743cc4be",
+    "sha256": "487051441db67665baede52f82b06205e927d3530ca0e0a9401bd57802e21adf",
     "commit": "2932d76fe417b0bc49010b26d4be2e5b743cc4be",
     "aliases": [
       "msvc7.1"
@@ -10404,8 +10404,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc7.1-sp1/Vc7/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc710_sp1/tar.gz/refs/heads/master",
-    "sha256": "44246ff2980d715c2d05eaed505344a0b87850a04606482c13ba4832ddf5ec70",
+    "url": "https://codeload.github.com/archaic-msvc/msvc710_sp1/tar.gz/cf62606064633dd8441aa2feffe34792099cc366",
+    "sha256": "b6135a0434141f2e05a29e8740a635f6cfd26908666c7f0d9d6d087d5c6c80a5",
     "commit": "cf62606064633dd8441aa2feffe34792099cc366",
     "recipe": {
       "base": "base",
@@ -10460,8 +10460,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc8.0/VC/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc800/tar.gz/refs/heads/master",
-    "sha256": "ab819164ebd9e9d367c1178a86eb9c3337b1a8d85d1357322a3252b63ad64453",
+    "url": "https://codeload.github.com/archaic-msvc/msvc800/tar.gz/00ddaf58d09788f0b12e475dae5fb5674dd32578",
+    "sha256": "17b382bcc476286298ce1f0223df608bc83d3f7701521914bc4f5a758052549a",
     "commit": "00ddaf58d09788f0b12e475dae5fb5674dd32578",
     "aliases": [
       "msvc8.0"
@@ -10605,8 +10605,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc8.0-sp1/VC/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc800_sp1/tar.gz/refs/heads/master",
-    "sha256": "9b53b515d79839c7404944c29cdae862d3a8c1ff0d0a27a202bfc37a31f587c5",
+    "url": "https://codeload.github.com/archaic-msvc/msvc800_sp1/tar.gz/4b1bafba636f67eb76f548f0f0e7f38864091a4a",
+    "sha256": "7ddbb5064be4bac26412f1f09a837bd5b533c2f84fa03cb6ed412a573d8a89eb",
     "commit": "4b1bafba636f67eb76f548f0f0e7f38864091a4a",
     "recipe": {
       "base": "base",
@@ -10664,8 +10664,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc9.0/VC/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc900/tar.gz/refs/heads/master",
-    "sha256": "9121d184d9cb88c13b95d3d2e770c8d8ae9d2531a5d8ea90c53a14f765e3f904",
+    "url": "https://codeload.github.com/archaic-msvc/msvc900/tar.gz/c9d710cef9a3dec08d7d2dca78a3b494335a5baa",
+    "sha256": "084c135403e1f46abd1db1b7059de9ae95a4304049d2428f2816818e89004b89",
     "commit": "c9d710cef9a3dec08d7d2dca78a3b494335a5baa",
     "recipe": {
       "base": "base",
@@ -10720,8 +10720,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc9.0-sp1/VC/bin",
-    "url": "https://codeload.github.com/archaic-toolchains/msvc900_sp1/tar.gz/refs/heads/main",
-    "sha256": "33a66c779da39ab40518f24b75656f1f93cb1837a3d65a9b79188f41c2f2bd97",
+    "url": "https://codeload.github.com/archaic-toolchains/msvc900_sp1/tar.gz/cebb3c9740c92de36937a401a3a3141358c8ac29",
+    "sha256": "d9ece1e4522ab33a4017c093312451b3fb2fda10b2dd04fc53b47bf08c6ee1ce",
     "commit": "cebb3c9740c92de36937a401a3a3141358c8ac29",
     "recipe": {
       "base": "base",
@@ -21033,8 +21033,8 @@
     "arg_style": "msvc",
     "obj_ext": ".obj",
     "tool_root": "/opt/msvc7.0-rtm/Vc7/bin",
-    "url": "https://codeload.github.com/archaic-msvc/msvc700/tar.gz/refs/heads/master",
-    "sha256": "5f75462fb6134ad56c3ae28cf8b1e3b2869578d4171568b7a1fcdfb0bf97830b",
+    "url": "https://codeload.github.com/archaic-msvc/msvc700/tar.gz/97fe4cdeaeb0bb934591d4b05eb52c2e8ab3e34b",
+    "sha256": "e8de768278175a56ace7ef79648a4ac6136bfb074dd5ba991356b16c5d0bcf46",
     "commit": "97fe4cdeaeb0bb934591d4b05eb52c2e8ab3e34b",
     "aliases": [
       "msvc7.0rtm"

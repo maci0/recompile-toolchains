@@ -415,7 +415,9 @@ from (`make images REGISTRY=http://<host>:<port>`) before and after
 publishing (nothing in CI can do it; it needs Docker or the registry).  It
 fails on an image whose build history does not verify the sha256 of every
 download its recipe fetches (`MISMATCH`, or `NO-SUMS` for a recipe that
-verified nothing), on byte-identical compiler binaries under two entries
+verified nothing; a history that verifies the branch archive a commit archive
+replaced, as `tools/migrate/commit-archives.json` records, prints
+`ok (branch)` and passes), on byte-identical compiler binaries under two entries
 (`SAME-COMPILER`, local images only) unless `same_compiler_as` or
 `variant_of` ties them, whatever version they claim (an SP4 tag holding the
 SP6 tree claims 6.0 like the tree it replaced); on a declaration whose

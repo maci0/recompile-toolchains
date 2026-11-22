@@ -138,10 +138,26 @@ class TestRecipePins(unittest.TestCase):
         self.assertIn("ok            msvc-7.1", out)
         self.assertIn("compiler binaries: not compared (a registry serves layers", out)
 
-    def test_a_build_from_before_a_repin_fails(self) -> None:
+    def test_a_build_from_the_replaced_branch_archive_passes(self) -> None:
         # The image is a build of msvc-7.1 from the branch archive of msvc710,
-        # pinned until msvc-7.1 moved to the commit archive: same tree, other bytes.
+        # pinned until msvc-7.1 moved to the commit archive: same tree, other
+        # bytes, both sums recorded in tools/migrate/commit-archives.json.
         with _registry({"7.1-win32"}, _fixture("config.json")):
+            code, out = self._run(["--registry", _REGISTRY, "msvc-7.1"])
+        self.assertEqual(code, 0, out)
+        self.assertIn(
+            "ok (branch)   msvc-7.1                       rebrew/msvc:7.1-win32: built from "
+            "the branch archive its commit archive replaced (618e876bc064)",
+            out,
+        )
+        self.assertIn("ok 0, ok (branch) 1, MISMATCH 0", out)
+
+    def test_a_branch_archive_without_a_recorded_replacement_fails(self) -> None:
+        # The same build with no row in commit-archives.json gets no allowance.
+        with (
+            patch.object(images, "COMMIT_ARCHIVES", _FIXTURES / "no-commit-archives.json"),
+            _registry({"7.1-win32"}, _fixture("config.json")),
+        ):
             code, out = self._run(["--registry", _REGISTRY, "msvc-7.1"])
         self.assertEqual(code, 1, out)
         self.assertIn("MISMATCH      msvc-7.1", out)
@@ -159,7 +175,7 @@ class TestRecipePins(unittest.TestCase):
             code, out = self._run(["--registry", _REGISTRY, "msvc-7.0"])
         self.assertEqual(code, 0)
         self.assertIn("absent        msvc-7.0", out)
-        self.assertIn("ok 0, MISMATCH 0, NO-SUMS 0, absent 1", out)
+        self.assertIn("ok 0, ok (branch) 0, MISMATCH 0, NO-SUMS 0, absent 1", out)
 
     def test_an_unknown_profile_is_refused_before_any_read(self) -> None:
         with (

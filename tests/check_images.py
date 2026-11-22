@@ -16,8 +16,12 @@ Two checks, both read-only:
    history checks other sums (another source under this tag, or a secondary
    download re-pinned since the build); `NO-SUMS` means it checks none (a
    recipe from before every image downloaded a pinned source), so nothing ties
-   its compiler to the pin.  Both fail.  Read from the local engine, or with
-   `--registry URL` from a registry's manifest and config (no layers).
+   its compiler to the pin.  Both fail.  An image whose history verifies the
+   branch archive that a commit archive replaced (`tools/migrate/
+   commit-archives.json`, which records both sums for trees compared member
+   by member) holds the same tree and prints `ok (branch)`; no other sum
+   gets that allowance.  Read from the local engine, or with `--registry URL`
+   from a registry's manifest and config (no layers).
 2. Distinct compilers (local engine only: it reads the files).  The directory
    holding each image's compiler binary (the recipe's `binary`, or the
    `C:\\...\\X.EXE` a DOSBox command runs) is hashed file by file; entries
@@ -87,6 +91,8 @@ _CHUNK_BYTES = 1 << 20
 #: The checksum line generate.py renders (and the hand-written recipes before it
 #: used): `echo "<sha256>  <file>" | sha256sum -c -`.
 _RECIPE_SUM = re.compile(r'([0-9a-f]{64}) +[^\s"]+"? *\| *sha256sum -c')
+#: GitHub archives fetched by commit, and the branch archive each replaced.
+COMMIT_ARCHIVES = REPO / "tools" / "migrate" / "commit-archives.json"
 #: The compiler a DOSBox command runs: `C:\\BIN\\CL.EXE` gives `BIN`.
 _DOS_COMPILER = re.compile(r"C:\\+([A-Za-z0-9_]+(?:\\+[A-Za-z0-9_]+)*)\\+[A-Za-z0-9_]+\.EXE")
 _HTTP_NOT_FOUND = 404
@@ -311,6 +317,8 @@ class Entry:
     tag: str
     #: The sha256 of every download the recipe fetches, by pin name ("primary", ...).
     sums: dict[str, str]
+    #: For a pin fetched as a commit archive: the sha256 of the branch archive it replaced.
+    replaced: dict[str, str]
     #: The compiler version the entry says it is: family and version.
     claim: tuple[str, str]
     #: The in-image directory holding the compiler binary; "" when the recipe names none.
@@ -330,6 +338,7 @@ def entries() -> dict[str, Entry]:
     import toolchains
 
     prefix = os.environ.get("PREFIX", "rebrew")
+    archives = _json(COMMIT_ARCHIVES.read_bytes(), COMMIT_ARCHIVES.name)
     found: dict[str, Entry] = {}
     for profile, entry in catalog.manifest().items():
         row = toolchains.row(profile, entry)
@@ -345,6 +354,12 @@ def entries() -> dict[str, Entry]:
         found[profile] = Entry(
             tag=f"{prefix}/{str(image['tag']).removeprefix('rebrew/')}",
             sums={name: pins[name][1] for name in fetched},
+            replaced={
+                name: str(archive["branch_sha256"])
+                for name in fetched
+                if isinstance(archive := archives.get(pins[name][0]), dict)
+                and archive.get("sha256") == pins[name][1]
+            },
             claim=(str(row["family"]), str(row["version"])),
             compiler_dir=compiler_dir(entry),
             same_compiler_as=same,
@@ -378,7 +393,7 @@ def recipe_pins(
     found: dict[str, Entry], selected: list[str], registry: str
 ) -> tuple[int, list[str]]:
     """Check 1 for *selected*; (failures, profiles whose image is present)."""
-    counts = {"ok": 0, "MISMATCH": 0, "NO-SUMS": 0, "absent": 0}
+    counts = {"ok": 0, "ok (branch)": 0, "MISMATCH": 0, "NO-SUMS": 0, "absent": 0}
     present: list[str] = []
     for profile in selected:
         entry = found[profile]
@@ -390,9 +405,16 @@ def recipe_pins(
         present.append(profile)
         sums = recipe_sums(history)
         missing = [(name, sha) for name, sha in entry.sums.items() if sha not in sums]
+        branch = [name for name, _sha in missing if entry.replaced.get(name) in sums]
         if not missing:
             counts["ok"] += 1
             print(f"ok            {profile:30s} {entry.tag}")
+        elif len(branch) == len(missing):
+            counts["ok (branch)"] += 1
+            print(
+                f"ok (branch)   {profile:30s} {entry.tag}: built from the branch archive "
+                f"its commit archive replaced ({entry.replaced[branch[0]][:12]})"
+            )
         elif sums:
             counts["MISMATCH"] += 1
             checked = ", ".join(sorted(s[:12] for s in sums))
@@ -408,6 +430,7 @@ def recipe_pins(
             print(f"NO-SUMS       {profile:30s} {entry.tag}: the recipe checked no sha256")
     print(
         f"\nrecipe pins, {len(selected)} entries: ok {counts['ok']}, "
+        f"ok (branch) {counts['ok (branch)']}, "
         f"MISMATCH {counts['MISMATCH']}, NO-SUMS {counts['NO-SUMS']}, absent {counts['absent']}"
     )
     return counts["MISMATCH"] + counts["NO-SUMS"], present

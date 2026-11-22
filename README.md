@@ -403,7 +403,10 @@ Notes on selected families follow. The generated
   carry no binary assets).  Those builds link `libtinfo.so.5`, which bookworm
   no longer ships: 3.9.1/4.0.1 are satisfied by the soname symlink, while
   8.0.0/9.0.0 check the versioned symbol and get a sha256-pinned Debian
-  `libtinfo5` `.deb` unpacked into their `lib/`.
+  `libtinfo5` `.deb` unpacked into their `lib/`.  The tarballs are host
+  compilers that write x86-64 objects by default, so the wrappers pass
+  `-target aarch64-linux-elf` (decomp.me's Switch target) ahead of the
+  caller's arguments; a later `-target` overrides it.
 - **MWCCARM (NDS ARM9) / ARM Compiler (3DS)**: the decompme/compilers
   `mwccarm.zip` and `armcc.zip` bundles (version → subtree mappings taken
   from decompme/compilers' generated Dockerfiles and recorded in each

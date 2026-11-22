@@ -2009,7 +2009,7 @@
     "flags_style": "posix",
     "arg_style": "posix",
     "obj_ext": ".o",
-    "bits": 32,
+    "bits": 64,
     "url": "https://releases.llvm.org/3.9.1/clang+llvm-3.9.1-x86_64-linux-gnu-debian8.tar.xz",
     "sha256": "dbe2ad98cd9c2b718fdfb5dc72dcf9cfb91009d05a5b2b37457cccc958559b2a",
     "commit": "",
@@ -2089,7 +2089,10 @@
       "wrapper": {
         "shape": "passthrough",
         "validate_source": false,
-        "argv": []
+        "argv": [
+          "-target",
+          "aarch64-linux-elf"
+        ]
       },
       "title": "rebrew Clang 3.9.1 (Switch)",
       "description": "Clang 3.9.1 (LLVM prebuilt, native x86_64, Switch decomp) toolchain image"
@@ -2101,7 +2104,7 @@
     "flags_style": "posix",
     "arg_style": "posix",
     "obj_ext": ".o",
-    "bits": 32,
+    "bits": 64,
     "url": "https://releases.llvm.org/4.0.1/clang+llvm-4.0.1-x86_64-linux-gnu-debian8.tar.xz",
     "sha256": "ca48a4def4cbc9dd6af3f46ce1dc2bd903d26c7ad51387f57884ad1eaa58e42f",
     "commit": "",
@@ -2160,7 +2163,10 @@
       "wrapper": {
         "shape": "passthrough",
         "validate_source": false,
-        "argv": []
+        "argv": [
+          "-target",
+          "aarch64-linux-elf"
+        ]
       }
     }
   },
@@ -2170,7 +2176,7 @@
     "flags_style": "posix",
     "arg_style": "posix",
     "obj_ext": ".o",
-    "bits": 32,
+    "bits": 64,
     "url": "https://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz",
     "sha256": "0f5c314f375ebd5c35b8c1d5e5b161d9efaeff0523bac287f8b4e5b751272f51",
     "commit": "",
@@ -2250,7 +2256,10 @@
       "wrapper": {
         "shape": "passthrough",
         "validate_source": false,
-        "argv": []
+        "argv": [
+          "-target",
+          "aarch64-linux-elf"
+        ]
       },
       "title": "rebrew Clang 8.0.0 (Switch)",
       "description": "Clang 8.0.0 (LLVM prebuilt, native x86_64, Switch decomp) toolchain image"
@@ -2262,7 +2271,7 @@
     "flags_style": "posix",
     "arg_style": "posix",
     "obj_ext": ".o",
-    "bits": 32,
+    "bits": 64,
     "url": "https://releases.llvm.org/9.0.0/clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz",
     "sha256": "a23b082b30c128c9831dbdd96edad26b43f56624d0ad0ea9edec506f5385038d",
     "commit": "",
@@ -2342,7 +2351,10 @@
       "wrapper": {
         "shape": "passthrough",
         "validate_source": false,
-        "argv": []
+        "argv": [
+          "-target",
+          "aarch64-linux-elf"
+        ]
       },
       "title": "rebrew Clang 9.0.0 (Switch)",
       "description": "Clang 9.0.0 (LLVM prebuilt, native x86_64, Switch decomp) toolchain image"
@@ -25332,7 +25344,7 @@
     "flags_style": "posix",
     "arg_style": "posix",
     "obj_ext": ".o",
-    "bits": 32,
+    "bits": 8,
     "url": "https://github.com/llvm-mos/llvm-mos-sdk/releases/download/v23.3.0/llvm-mos-linux.tar.xz",
     "sha256": "9f694497bc93a7c876d8c62325c7d74e7860346d80fbcd0555e19ba6856658c8",
     "commit": "",
@@ -25393,7 +25405,7 @@
     "flags_style": "posix",
     "arg_style": "posix",
     "obj_ext": ".o",
-    "bits": 32,
+    "bits": 8,
     "url": "https://github.com/llvm-mos/llvm-mos-sdk/releases/download/v23.3.0/llvm-mos-linux.tar.xz",
     "sha256": "9f694497bc93a7c876d8c62325c7d74e7860346d80fbcd0555e19ba6856658c8",
     "commit": "",

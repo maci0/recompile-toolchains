@@ -188,6 +188,9 @@ def _arch_bits(entry: dict[str, object]) -> tuple[str, int]:
             arch = "x86"
         elif arch == "x86" and bits == 64:
             arch = "x86_64"
+        elif arch == "x86_16" and bits == 32:
+            # A 32-bit DOS extender compiler (DJGPP) writes i386 code.
+            arch = "x86"
     return arch, bits
 
 

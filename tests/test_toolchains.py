@@ -96,6 +96,15 @@ class TestToolchainsArtifact(unittest.TestCase):
                 self.assertTrue(consumer["obj_ext"].startswith("."))
                 self.assertEqual("bits" in row, "arch" in row)
 
+    def test_bits_agree_with_the_architecture(self) -> None:
+        # A row's `bits` is the code model of its `arch`; `aarch64` with 32 bits
+        # (the Switch clang rows) or `x86_16` with 32 (DJGPP) contradicts itself.
+        width = {"x86_16": 16, "x86": 32, "x86_64": 64, "aarch64": 64, "mos6502": 8}
+        data = json.loads(toolchains.ARTIFACT.read_text(encoding="utf-8"))
+        for row in data["toolchains"]:
+            if row.get("arch") in width:
+                self.assertEqual(row["bits"], width[row["arch"]], row["id"])
+
     def test_a_withdrawn_entry_is_published_with_its_reason(self) -> None:
         # The row stays (stored records name the id); `withdrawn` tells a
         # consumer not to offer it, in the words build.sh refuses with.

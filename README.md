@@ -44,6 +44,23 @@ rebrew itself, e.g. a `recompile`-style compiler-as-a-service
 (submit C source + toolchain id, get back the object; a local `recompile`
 service is the reference consumer).
 
+## Status
+
+Every recipe renders, pins its downloads by sha256 and is checked by
+`make test`; `make smoke` builds and compiles with one image per runtime
+class, and `make images` checks the images a host holds.  Open:
+
+- Ten pins have no immutable source and await a dated mirror in
+  `archaic-toolchains`: six release assets under rolling tags
+  (`gcc-2.7.2-kmc` and `gcc-2.8.1-pm`, compiler and binutils each,
+  `gcc-4.4.0-mips64-elf`, `gcc-egcs-1.1.2-4`) and the four
+  `ia16-gcc-6.3.0-20260612` packages in the `tkchia/build-ia16` Launchpad PPA
+  pool, which drops superseded builds.  Until then a cold build of those
+  five entries needs upstream to still serve the bytes.
+- `msvc-9.0-sp1` is withdrawn: its archive's compiler targets Itanium.
+- `make images` cannot read ACK objects (no machine field), and cannot tell a
+  32-bit compiler under the ia16 row from ia16-elf (both write ELF32 i386).
+
 ## Build
 
 ```bash
@@ -283,8 +300,9 @@ The [2026-10-25 ingestion report](docs/RELATED-WORK.md#ingestion-and-repairs--20
 - **[sources.json](sources.json)**: the manifest itself, holding per toolchain the
   pinned `url` + `sha256` (+ `commit` for branch pins), archive `layout`,
   secondary pins, `aliases` and the consumer fields (`flags_style`,
-  `arg_style`, `obj_ext`, `bits`, `arch` where the platform names none, `tool_root`).  `build.sh` validates it in
-  both directions before any image is built.
+  `arg_style`, `obj_ext`, `bits`, `tool_root`, and `arch` where the platform
+  names none).  `build.sh` validates it in both directions before any image
+  is built.
 - **[toolchains.json](toolchains.json)**: the generated release artifact for
   consumers: every profile with its pin, image tag, target, runtime class,
   entrypoint, aliases and consumer fields.  **Generated** from `sources.json`

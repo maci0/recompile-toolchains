@@ -43,18 +43,28 @@ _RUN_HELPERS = (
 _MOVING_TAG = re.compile(r"/releases/download/(latest|main|master|main-release)/")
 #: A GitHub archive of one commit; the commit must be the entry's `commit`.
 _CODELOAD_COMMIT = re.compile(r"https://codeload\.github\.com/[^/]+/[^/]+/tar\.gz/([0-9a-f]{40})$")
-#: Pins whose bytes upstream serves only under a moving tag: no versioned
-#: release and no commit holds them (checked 2026-11-22).  Each needs a dated
-#: mirror release, as base-dosemu's dosemu2 packages have in
-#: archaic-toolchains/dosemu2-noble, before it can leave this list.
+#: A Launchpad PPA's package pool, which drops a build once a newer upload
+#: supersedes it (two dosemu2 PPA pins returned 404 that way: RELATED-WORK.md).
+_PPA_POOL = re.compile(r"^https://ppa\.launchpadcontent\.net/[^/]+/[^/]+/ubuntu/pool/")
+#: Pins whose bytes no immutable reference serves.  Each needs a dated mirror
+#: release, as base-dosemu's dosemu2 packages have in
+#: archaic-toolchains/dosemu2-noble, before it can leave this list; a new
+#: entry does not join it.
 _AWAITING_MIRROR = frozenset(
     {
+        # Served only under a rolling release tag; no versioned release and no
+        # commit holds the bytes (checked 2026-11-22).
         ("gcc-2.7.2-kmc", "primary"),
         ("gcc-2.7.2-kmc", "binutils"),
         ("gcc-2.8.1-pm", "primary"),
         ("gcc-2.8.1-pm", "binutils"),
         ("gcc-4.4.0-mips64-elf", "primary"),
         ("gcc-egcs-1.1.2-4", "primary"),
+        # The tkchia/build-ia16 PPA pool: GCC, binutils, libi86, newlib.
+        ("ia16-gcc-6.3.0-20260612", "primary"),
+        ("ia16-gcc-6.3.0-20260612", "extra0"),
+        ("ia16-gcc-6.3.0-20260612", "extra1"),
+        ("ia16-gcc-6.3.0-20260612", "extra2"),
     }
 )
 
@@ -116,21 +126,25 @@ class TestManifest(unittest.TestCase):
         The sha256 holds the bytes, so a moved reference never installs
         something else; it makes the recipe unbuildable instead.  A GitHub
         archive is fetched by the commit `commit` records, never a branch, and
-        no pin names a rolling release tag except the ones awaiting a mirror.
+        no pin names a rolling release tag or a PPA pool except the ones
+        awaiting a mirror.
         """
         for profile, entry in _manifest().items():
             for name, url, _sha in _pins(entry):
                 self.assertNotIn("refs/heads/", url, f"{profile}: {name} fetches a branch head")
-                if _MOVING_TAG.search(url):
+                if _MOVING_TAG.search(url) or _PPA_POOL.match(url):
                     self.assertIn(
-                        (profile, name), _AWAITING_MIRROR, f"{profile}: {name} names a moving tag"
+                        (profile, name), _AWAITING_MIRROR, f"{profile}: {name} has no fixed source"
                     )
             archive = _CODELOAD_COMMIT.match(entry["url"])
             if archive:
                 self.assertEqual(archive.group(1), entry["commit"], f"{profile}: commit")
         for profile, name in _AWAITING_MIRROR:
             urls = {pin: url for pin, url, _sha in _pins(_manifest()[profile])}
-            self.assertRegex(urls[name], _MOVING_TAG, f"{profile}: {name} is mirrored: unlist it")
+            self.assertTrue(
+                _MOVING_TAG.search(urls[name]) or _PPA_POOL.match(urls[name]),
+                f"{profile}: {name} is mirrored: unlist it",
+            )
 
     def test_tool_root_is_inside_the_install_root(self) -> None:
         """Consumers derive the compiler's INCLUDE and LIB from `tool_root`.

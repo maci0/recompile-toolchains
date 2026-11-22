@@ -128,7 +128,10 @@ SOURCES: dict[str, tuple[str, str]] = {
         "BSD and component terms retained",
     ),
     "ppa.launchpadcontent.net/tkchia/build-ia16": (
-        "Dated IA-16 GCC, binutils, newlib and libi86 packages",
+        (
+            "IA-16 GCC, binutils, newlib and libi86 packages from the PPA pool, "
+            "which drops superseded builds; no dated mirror holds them yet"
+        ),
         "GPL compiler/binutils; runtime exceptions and component terms",
     ),
     "tho-otto.de/download/mint": (

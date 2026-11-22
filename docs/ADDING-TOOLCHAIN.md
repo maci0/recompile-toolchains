@@ -125,9 +125,16 @@ Rules the contract tests enforce (`tests/test_image_contract.py`):
   `commit`, never `refs/heads/<branch>`, and no pin names a rolling release
   tag (`latest`, `main`, `master`, `main-release`). The sha256 would still
   refuse other bytes, but any push to the branch would make the released
-  recipe unbuildable. Six pins whose upstream serves the bytes only under a
-  rolling tag are listed in the test as awaiting a dated mirror; a new entry
-  does not join them. The archive of a commit names its top directory after
+  recipe unbuildable. A Launchpad PPA pool URL is moving the same way: the
+  pool drops a build once a newer upload supersedes it. Ten pins are listed
+  in the test (`_AWAITING_MIRROR`) as awaiting a dated mirror in
+  `archaic-toolchains`; a new entry does not join them. Six are served only
+  under a rolling release tag: `gcc-2.7.2-kmc` and `gcc-2.8.1-pm` (compiler
+  and binutils each), `gcc-4.4.0-mips64-elf` and `gcc-egcs-1.1.2-4`. Four are
+  the `ia16-gcc-6.3.0-20260612` packages (GCC, binutils, libi86, newlib) in
+  the `tkchia/build-ia16` PPA pool. While they wait, a cold build of these
+  five entries depends on upstream still serving the bytes; the sha256
+  refuses anything else. The archive of a commit names its top directory after
   the commit, so its sha256 differs from the branch archive of the same
   commit; the trees are identical. GitHub does not promise that an archive
   stays byte-stable for ever, but it does not change when the branch moves.

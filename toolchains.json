@@ -8017,7 +8017,7 @@
       "family": "psyq",
       "version": "4.0",
       "platform": "ps1",
-      "runtime": "wine",
+      "runtime": "wibo",
       "entrypoint": "cc",
       "image_entrypoint": "/usr/local/bin/cc",
       "image": {
@@ -8045,7 +8045,7 @@
       "family": "psyq",
       "version": "4.1",
       "platform": "ps1",
-      "runtime": "wine",
+      "runtime": "wibo",
       "entrypoint": "cc",
       "image_entrypoint": "/usr/local/bin/cc",
       "image": {
@@ -8073,7 +8073,7 @@
       "family": "psyq",
       "version": "4.3",
       "platform": "ps1",
-      "runtime": "wine",
+      "runtime": "wibo",
       "entrypoint": "cc",
       "image_entrypoint": "/usr/local/bin/cc",
       "image": {
@@ -8101,7 +8101,7 @@
       "family": "psyq",
       "version": "4.4",
       "platform": "ps1",
-      "runtime": "wine",
+      "runtime": "wibo",
       "entrypoint": "cc",
       "image_entrypoint": "/usr/local/bin/cc",
       "image": {

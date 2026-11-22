@@ -1,8 +1,8 @@
 """The committed ``toolchains.json`` must match the manifest.
 
-The artifact is the catalogue consumers (rebrew, recompile, the Go backend and
-compiler-detector) read instead of keeping a copy of ``sources.json``.  A
-hand edit would silently split the catalogue again, so the test compares the
+The artifact is the catalogue rebrew and recompile read instead of keeping a
+copy of ``sources.json`` (docs/ADDING-TOOLCHAIN.md names the members each
+reads).  A hand edit would silently split the catalogue again, so the test compares the
 committed file with the renderer byte for byte and checks the consumer fields
 every reader depends on.
 """

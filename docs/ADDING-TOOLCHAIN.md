@@ -12,12 +12,24 @@ toolchains.json.sha256                        its sha256 for consumers (make doc
 docs/TOOLCHAINS.md                            generated human catalog (make docs)
 ```
 
-`toolchains.json` is the release artifact consumers (rebrew, recompile, the Go
-backend and compiler-detector) read instead of keeping a copy of
-`sources.json`. It carries `flags_style`, `arg_style`, `obj_ext`, `bits` and
-`tool_root` from the manifest beside the pin, target and runtime class, so
-every image must declare the consumer fields. A row that carries `withdrawn`
-is not to be offered or run: its compiler is not what its id says.
+`toolchains.json` is the release artifact two repositories read instead of
+keeping a copy of `sources.json`:
+
+- **rebrew** vendors it byte for byte, pinned by sha256
+  (`src/rebrew/compiler/toolchain_data.py`), and reads each row's `id`,
+  `image.tag` and `source` (`url`, `sha256`, `commit`); its tests hold its
+  own registry's image tag, `withdrawn` and `bits` to the rows.
+- **recompile** reads it from the checkout of this repository it runs with
+  (`recompile/execution.py`): `schema_version`, `count` and each row's `id`
+  and `image.tag`.
+
+A change to one of those members needs a change in the reader that takes it.
+No other repository reads the file (searched 2026-11-23: the backend and
+compiler-detector do not). The file also carries `flags_style`, `arg_style`, `obj_ext` and `tool_root`
+from the manifest beside the target and runtime class, which no reader takes
+from it yet (rebrew's registry repeats them by hand), so every image must
+still declare the consumer fields. A row that carries `withdrawn` is not to
+be offered or run: its compiler is not what its id says.
 
 Read [TOOLCHAINS.md](TOOLCHAINS.md) for what already exists, and the
 [README](../README.md) for how consumers run the images.

@@ -128,8 +128,9 @@ RUNTIME_CLASS = {
     "daze": "daze",
 }
 
-#: Consumer fields every image declares in ``sources.json``.  They are not
-#: documentation: rebrew and compiler-detector invoke and identify by them.
+#: Consumer fields every image declares in ``sources.json``, published under
+#: ``consumer``: how a caller invokes the image.  No reader takes them from
+#: toolchains.json yet; rebrew's registry repeats them by hand.
 CONSUMER_FIELDS = ("flags_style", "arg_style", "obj_ext")
 
 _ENTRYPOINT = re.compile(r'^ENTRYPOINT \["/usr/local/bin/([^"]+)"\]$', re.MULTILINE)

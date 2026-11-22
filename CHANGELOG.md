@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- `make images` failed no 32-bit x86 object under a 16-bit row: the allowance for ia16-elf, which writes 16-bit code as ELF32 i386, applied to every format, so a COFF i386 or USE32 OMF object agreed with an `x86_16` (`win16`, `msdos`) row and a Win16 or DOS tag holding a 32-bit compiler passed. The allowance now covers ELF i386 alone. The check also reads PE executables, the sdcc port an ASxxxx `.rel` names, xo65, Z80RMF, Amiga hunk and Xbox 360 COFF (machine 0x01F2), so every `arch` and `bits` pair `toolchains.json` carries is compared; ACK objects, which name no machine, stay `unidentified`. `make test` holds a probe object for every pair and fails each one under every other pair. Applied to what 1.18.0's checks recorded, no row fails: the 97 objects of its `make images` runs (54 `rebrew/` and 43 rebuilt images) agree except `msvc-9.0-sp1`, which is withdrawn, and of the first 16 bytes `docs/toolchain-qualification-2026-10-25.json` holds of each profile's smoke object, 40 decide the row and agree, ACK's is unreadable and 293 (ELF, OMF, MZ, ASxxxx) need more bytes. Seven `x86_16` rows have no recorded object that settles their width (`borland-2.0-decompme`, `borland-3.1-decompme`, `ia16-gcc-6.3.0-20260612`, `msc-5.1`, `quickc-2.50`, `watcom-2.0-20261001-win16`, `watcom-2.0-win16`) until `make images` runs on their images.
+
 ## [1.18.0] - 2026-11-22
 
 ### Changed

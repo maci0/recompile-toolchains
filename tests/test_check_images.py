@@ -221,6 +221,81 @@ def _elf(machine: int, elf_class: int) -> bytes:
     return b"\x7fELF" + bytes([elf_class, 1]) + bytes(12) + machine.to_bytes(2, "little")
 
 
+def _omf(segment_attributes: int) -> bytes:
+    """THEADR, then a SEGDEF whose attribute byte's P bit says USE32."""
+    return bytes([0x80, 2, 0, 0, 0]) + bytes([0x98, 7, 0, segment_attributes]) + bytes(6)
+
+
+def _mz(header: bytes) -> bytes:
+    """An MZ stub whose e_lfanew points at *header* (NE, or PE with its machine)."""
+    return b"MZ" + bytes(0x3A) + (0x40).to_bytes(4, "little") + header + bytes(64)
+
+
+def _asxxxx(header: str, port: str) -> bytes:
+    """The first lines of an sdcc `.rel` (ASxxxx), with the `O` line sdcc writes."""
+    return f"{header}\nH 9 areas 3 global symbols\nM t\nO -m{port}\nS .__.ABS. Def000000\n".encode()
+
+
+#: One object per (arch, bits) pair toolchains.json carries, in each format a
+#: compiler under such a row writes with its default invocation.  The byte
+#: strings that are not built here are the first bytes of each image's smoke
+#: object (docs/toolchain-qualification-2026-10-25.json, `magic`).
+_PROBES: dict[tuple[str, int], dict[str, bytes]] = {
+    ("aarch64", 64): {"ELF64 AArch64": _elf(183, 2)},
+    ("arm", 32): {"ELF32 ARM": _elf(40, 1)},
+    ("m68k", 32): {
+        "ELF32 m68k": _elf(4, 1),
+        "Amiga hunk (vbcc)": bytes.fromhex("000003e700000001742e6300000003e8"),
+    },
+    ("mcs51", 8): {"ASxxxx (sdcc 8051)": _asxxxx("XH3", "mcs51 --model-small")},
+    ("mips", 32): {"ELF32 MIPS": _elf(8, 1)},
+    ("mos6502", 8): {
+        "ELF32 MOS (llvm-mos)": _elf(6502, 1),
+        "xo65 (cc65)": bytes.fromhex("557a6e6111000000600000000b000000"),
+    },
+    ("powerpc", 32): {
+        "ELF32 PowerPC": _elf(20, 1),
+        "COFF PowerPC big-endian (Xbox 360)": bytes.fromhex("f20103007aebdc6a5c01000008000000")
+        + bytes(4),
+    },
+    ("sh2", 32): {"ELF32 SH": _elf(42, 1)},
+    ("sh4", 32): {"ELF32 SH": _elf(42, 1)},
+    ("sm83", 8): {"ASxxxx (sdcc sm83)": _asxxxx("XL4", "sm83")},
+    ("stm8", 8): {"ASxxxx (sdcc stm8)": _asxxxx("XH3", "stm8")},
+    ("x86_16", 16): {
+        "OMF USE16": _omf(0x48),
+        "NE executable": _mz(b"NE"),
+        "ELF32 i386 (ia16-elf)": _elf(3, 1),
+    },
+    ("x86", 32): {
+        "COFF i386": _coff(0x014C),
+        "OMF USE32": _omf(0xA9),
+        "PE i386": _mz(b"PE\0\0" + (0x014C).to_bytes(2, "little")),
+        "ELF32 i386": _elf(3, 1),
+    },
+    ("x86_64", 64): {"ELF64 x86-64": _elf(62, 2), "COFF x86-64": _coff(0x8664)},
+    ("z80", 8): {
+        "ASxxxx (sdcc z80)": _asxxxx("XL4", "z80"),
+        "Z80RMF (z88dk)": bytes.fromhex("5a3830524d4631380100000000000000"),
+    },
+}
+#: The one format that names no code width: ia16-elf writes its 16-bit code as
+#: ELF32 i386, so an ELF i386 object agrees with an x86 and an x86_16 row.
+#: ELF SH names no core either, so it agrees with sh2 and sh4.
+_AMBIGUOUS = {"ELF32 i386 (ia16-elf)", "ELF32 i386", "ELF32 SH"}
+
+
+def _one_profile_per_target() -> dict[tuple[str, int], str]:
+    """The first offered profile of each (arch, bits) pair the catalogue carries."""
+    catalogue = images.entries()
+    by_target: dict[tuple[str, int], str] = {}
+    for profile in sorted(catalogue):
+        entry = catalogue[profile]
+        if not entry.withdrawn and entry.target[0]:
+            by_target.setdefault(entry.target, profile)
+    return by_target
+
+
 class TestObjectTargets(unittest.TestCase):
     def _run(self, objects: dict[str, bytes], profiles: list[str]) -> tuple[int, str]:
         catalogue = images.entries()
@@ -274,11 +349,90 @@ class TestObjectTargets(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("no-object     msvc-9.0                       /c t.c wrote no object", out)
 
+    def test_a_32_bit_object_under_a_16_bit_row_fails(self) -> None:
+        # A Win16 tag holding a 32-bit compiler: COFF i386, USE32 OMF or a PE.
+        for name in ("COFF i386", "OMF USE32", "PE i386"):
+            with self.subTest(name):
+                code, out = self._run(
+                    {"rebrew/msvc:1.52-win16": _PROBES["x86", 32][name]}, ["msvc-1.52"]
+                )
+                self.assertEqual(code, 1, out)
+                self.assertRegex(
+                    out, r"WRONG-TARGET  msvc-1\.52 .*\(x86 32\), the row says x86_16 16"
+                )
+
+    def test_a_16_bit_object_under_a_32_bit_row_fails(self) -> None:
+        for name in ("OMF USE16", "NE executable"):
+            with self.subTest(name):
+                code, out = self._run(
+                    {"rebrew/msvc:6.0-win32": _PROBES["x86_16", 16][name]}, ["msvc-6.0"]
+                )
+                self.assertEqual(code, 1, out)
+                self.assertRegex(
+                    out, r"WRONG-TARGET  msvc-6\.0 .*\(x86_16 16\), the row says x86 32"
+                )
+
+    def test_an_ia16_elf_object_under_the_ia16_row_passes(self) -> None:
+        code, out = self._run(
+            {"rebrew/ia16:6.3.0-20260612-msdos": _elf(3, 1)}, ["ia16-gcc-6.3.0-20260612"]
+        )
+        self.assertEqual(code, 0, out)
+        self.assertIn("agree 1, WRONG-TARGET 0", out)
+
+    def test_every_arch_and_bits_pair_has_a_probe_that_agrees(self) -> None:
+        catalogue = images.entries()
+        by_target = _one_profile_per_target()
+        self.assertEqual(set(by_target), set(_PROBES), "a pair without a probe, or a stale probe")
+        for target, probes in sorted(_PROBES.items()):
+            profile = by_target[target]
+            for name, data in probes.items():
+                with self.subTest(target=target, probe=name):
+                    code, out = self._run({catalogue[profile].tag: data}, [profile])
+                    self.assertEqual(code, 0, out)
+                    self.assertIn("agree 1, WRONG-TARGET 0", out)
+
+    def test_every_probe_fails_under_every_other_pair(self) -> None:
+        catalogue = images.entries()
+        by_target = _one_profile_per_target()
+        for target, probes in sorted(_PROBES.items()):
+            for name, data in probes.items():
+                if name in _AMBIGUOUS:
+                    continue
+                for other in sorted(set(_PROBES) - {target}):
+                    with self.subTest(probe=name, row=other):
+                        profile = by_target[other]
+                        code, out = self._run({catalogue[profile].tag: data}, [profile])
+                        self.assertEqual(code, 1, out)
+                        self.assertIn(f"WRONG-TARGET  {profile}", out)
+
+    def test_the_ambiguous_formats_fail_outside_their_pairs(self) -> None:
+        catalogue = images.entries()
+        rows = {"x86_64": "gcc-14.2.0", "sh2": "shc-5.0r32-sh2", "x86": "msvc-6.0"}
+        for data, profile in (
+            (_elf(3, 1), rows["x86_64"]),
+            (_elf(42, 1), rows["x86"]),
+            (_elf(3, 1), rows["sh2"]),
+        ):
+            with self.subTest(profile=profile):
+                code, out = self._run({catalogue[profile].tag: data}, [profile])
+                self.assertEqual(code, 1, out)
+                self.assertIn(f"WRONG-TARGET  {profile}", out)
+
+    def test_an_asxxxx_object_is_read_by_its_sdcc_port(self) -> None:
+        catalogue = images.entries()
+        tag = catalogue["sdcc-4.6.0-z80"].tag
+        code, out = self._run({tag: _asxxxx("XL4", "sm83")}, ["sdcc-4.6.0-z80"])
+        self.assertEqual(code, 1, out)
+        self.assertIn("ASxxxx, sdcc port sm83 (sm83 8), the row says z80 8", out)
+
     def test_omf_code_width_is_read_from_the_first_segdef(self) -> None:
-        use16 = bytes([0x80, 2, 0, 0, 0]) + bytes([0x98, 7, 0, 0x48]) + bytes(6)
-        use32 = bytes([0x80, 2, 0, 0, 0]) + bytes([0x98, 7, 0, 0xA9]) + bytes(6)
-        self.assertEqual(images.object_target(use16), ("x86_16", 16, "OMF, USE16 code segment"))
-        self.assertEqual(images.object_target(use32), ("x86", 32, "OMF, USE32 code segment"))
+        self.assertEqual(
+            images.object_target(_omf(0x48)),
+            (frozenset({("x86_16", 16)}), "OMF, USE16 code segment"),
+        )
+        self.assertEqual(
+            images.object_target(_omf(0xA9)), (frozenset({("x86", 32)}), "OMF, USE32 code segment")
+        )
 
 
 class TestDistinctCompilers(unittest.TestCase):

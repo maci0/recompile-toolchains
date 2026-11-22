@@ -42,13 +42,19 @@ Two checks, both read-only:
    image compiles a one-function test source with its argument dialect's
    default invocation (`/c t.c`, `-c t.c`, `t.c`, `-c t.c -o t.o`, as
    tests/smoke.sh calls an image without a case of its own), networkless, and
-   the object's machine is read against the row's `arch` and `bits`: COFF
-   machine, OMF code-segment width, ELF machine and class, an NE executable.
-   A disagreement fails as `WRONG-TARGET` (`msvc-9.0-sp1` writes IA-64 COFF
-   under an x86 row), unless the row is `withdrawn`.  An image that writes no
-   object under the default invocation, or one in a format this check cannot
-   read (ASxxxx, xo65, Amiga hunk), prints `no-object` or `unidentified` and
-   passes: `make smoke` is what proves that an image produces an object.
+   the object's machine and code width are read against the row's `arch` and
+   `bits`: COFF machine, OMF code-segment width (USE16 or USE32), ELF machine
+   and class, an NE or PE executable, the sdcc port of an ASxxxx `.rel`, and
+   the single-architecture formats xo65 (6502), Z80RMF (Z80) and Amiga hunk
+   (m68k).  A disagreement fails as `WRONG-TARGET` (`msvc-9.0-sp1` writes
+   IA-64 COFF under an x86 row; a 32-bit COFF or USE32 OMF object fails an
+   `x86_16` row), unless the row is `withdrawn`.  ELF i386 is the one format
+   that agrees with two widths: ia16-elf writes its 16-bit code under that
+   machine, so a 32-bit ELF compiler under the ia16 row is not caught here.
+   An image that writes no object under the default invocation, or one in a
+   format this check cannot read (ACK's, which names no machine), prints
+   `no-object` or `unidentified` and passes: `make smoke` is what proves that
+   an image produces an object.
 
 Images the engine or registry does not hold print as `absent` and pass: which
 images a host carries is that host's choice.  Images keep `rebrew/` as their
@@ -125,28 +131,54 @@ _TEST_SOURCES = {
 #: without a case of its own).
 _INVOCATIONS = {"msvc": ["/c", "t.c"], "borland": ["-c", "t.c"], "dos": ["t.c"]}
 _DEFAULT_INVOCATION = ["-c", "t.c", "-o", "t.o"]
-#: ELF e_machine -> the row arch it is; the class gives `bits` for these.
-_ELF_MACHINES = {
-    3: "x86",
-    4: "m68k",
-    8: "mips",
-    20: "powerpc",
-    40: "arm",
-    42: "sh",
-    62: "x86_64",
-    183: "aarch64",
-    6502: "mos6502",
+#: ELF e_machine -> the row arches it can be; the ELF class is the code width
+#: unless _ELF_FIXED_WIDTH names the arch.  ELF SH names no core.
+_ELF_MACHINES: dict[int, tuple[str, ...]] = {
+    3: ("x86",),
+    4: ("m68k",),
+    8: ("mips",),
+    20: ("powerpc",),
+    40: ("arm",),
+    42: ("sh2", "sh4"),
+    62: ("x86_64",),
+    183: ("aarch64",),
+    6502: ("mos6502",),
 }
-#: Architectures whose ELF class is their code width.
-_ELF_CLASS_IS_WIDTH = frozenset({"x86", "x86_64", "aarch64", "arm", "mips", "powerpc", "m68k"})
-#: COFF machine -> (arch, bits).
-_COFF_MACHINES = {0x014C: ("x86", 32), 0x8664: ("x86_64", 64), 0x0200: ("ia64", 64)}
+_ELF_FIXED_WIDTH = {"sh2": 32, "sh4": 32, "mos6502": 8}
+#: ia16-elf writes its 16-bit code as ELF32 i386 (EM_386): the one format here
+#: that does not say whether its x86 code is 16- or 32-bit.
+_EM_386 = 3
+_IA16_ELF = ("x86_16", 16)
+#: COFF machine (also a PE header's) -> (arch, bits).  0x01F2 is the
+#: big-endian PowerPC the Xbox 360 compilers write.
+_COFF_MACHINES = {
+    0x014C: ("x86", 32),
+    0x8664: ("x86_64", 64),
+    0x0200: ("ia64", 64),
+    0x01F2: ("powerpc", 32),
+}
 _OMF_THEADR = 0x80
 _OMF_SEGDEF = (0x98, 0x99)
+_MZ_HEADER_BYTES = 0x40
+#: An ASxxxx object (sdcc's `.rel`) starts with its radix, byte order and
+#: address width line; sdcc writes the port it compiled for in an `O` line.
+_ASXXXX_HEADER = re.compile(rb"\A[XDQ][HL][234]\r?\n")
+_ASXXXX_PORT = re.compile(rb"^O [^\n]*?-m([a-z0-9]+)", re.MULTILINE)
+#: sdcc port -> (arch, bits).
+_SDCC_PORTS = {"mcs51": ("mcs51", 8), "z80": ("z80", 8), "sm83": ("sm83", 8), "stm8": ("stm8", 8)}
+#: Object formats that belong to one architecture; none of them states a CPU
+#: variant this check could compare.
+_MAGIC_TARGETS: tuple[tuple[bytes, tuple[str, int], str], ...] = (
+    (b"Uzna", ("mos6502", 8), "xo65 object (cc65)"),
+    (b"Z80RMF", ("z80", 8), "Z80RMF object (z88dk)"),
+    (b"\x00\x00\x03\xe7", ("m68k", 32), "Amiga hunk object"),
+)
 #: The scratch root for check 3's work directories (gitignored, on disk).
 SCRATCH = REPO / ".scratch"
 
 type Json = dict[str, object]
+#: A row's (arch, bits).
+type Target = tuple[str, int]
 
 
 class CheckError(RuntimeError):
@@ -375,7 +407,7 @@ class Entry:
     #: `same_compiler_as` and its `variant_of`.
     shares: frozenset[str]
     #: The row's `arch` and `bits`; ("", 0) when it states none.
-    target: tuple[str, int]
+    target: Target
     #: The invocation check 3 compiles with and the source file it writes.
     invocation: tuple[str, ...]
     source: str
@@ -548,19 +580,26 @@ def distinct_compilers(found: dict[str, Entry], present: list[str]) -> int:
     return failures
 
 
-def object_target(data: bytes) -> tuple[str, int, str] | None:
-    """(arch, bits, description) of a compiled object; bits 0 when the format does not say."""
+def object_target(data: bytes) -> tuple[frozenset[Target], str] | None:
+    """The (arch, bits) rows a compiled object agrees with, and what was read; None unread."""
     if data[:4] == b"\x7fELF" and len(data) >= 20:
+        width = 32 if data[4] == 1 else 64
         machine = int.from_bytes(data[18:20], "little" if data[5] == 1 else "big")
-        arch = _ELF_MACHINES.get(machine)
-        if arch is None:
+        arches = _ELF_MACHINES.get(machine)
+        if arches is None:
             return None
-        bits = (32 if data[4] == 1 else 64) if arch in _ELF_CLASS_IS_WIDTH else 0
-        return arch, bits, f"ELF{32 if data[4] == 1 else 64} machine {machine}"
-    if data[:2] == b"MZ" and len(data) >= 0x40:
+        targets = {(arch, _ELF_FIXED_WIDTH.get(arch, width)) for arch in arches}
+        if (machine, width) == (_EM_386, 32):
+            targets.add(_IA16_ELF)
+        return frozenset(targets), f"ELF{width} machine {machine}"
+    if data[:2] == b"MZ" and len(data) >= _MZ_HEADER_BYTES:
         offset = int.from_bytes(data[0x3C:0x40], "little")
         if data[offset : offset + 2] == b"NE":
-            return "x86_16", 16, "NE executable"
+            return frozenset({("x86_16", 16)}), "NE executable"
+        if data[offset : offset + 4] == b"PE\0\0":
+            machine = int.from_bytes(data[offset + 4 : offset + 6], "little")
+            if machine in _COFF_MACHINES:
+                return frozenset({_COFF_MACHINES[machine]}), f"PE machine 0x{machine:04x}"
         return None
     if data[:1] == bytes([_OMF_THEADR]):
         # The first SEGDEF is the code segment; its P bit says USE32.
@@ -569,28 +608,27 @@ def object_target(data: bytes) -> tuple[str, int, str] | None:
             kind, size = data[at], int.from_bytes(data[at + 1 : at + 3], "little")
             if kind in _OMF_SEGDEF:
                 if data[at + 3] & 1:
-                    return "x86", 32, "OMF, USE32 code segment"
-                return "x86_16", 16, "OMF, USE16 code segment"
+                    return frozenset({("x86", 32)}), "OMF, USE32 code segment"
+                return frozenset({("x86_16", 16)}), "OMF, USE16 code segment"
             at += 3 + size
         return None
+    if _ASXXXX_HEADER.match(data):
+        port = _ASXXXX_PORT.search(data)
+        if port is None:
+            return None
+        name = port.group(1).decode("ascii")
+        return frozenset({_SDCC_PORTS.get(name, (name, 0))}), f"ASxxxx, sdcc port {name}"
+    for magic, target, what in _MAGIC_TARGETS:
+        if data.startswith(magic):
+            return frozenset({target}), what
     machine = int.from_bytes(data[:2], "little") if len(data) >= 2 else -1
     if machine in _COFF_MACHINES:
-        arch, bits = _COFF_MACHINES[machine]
-        return arch, bits, f"COFF machine 0x{machine:04x}"
+        return frozenset({_COFF_MACHINES[machine]}), f"COFF machine 0x{machine:04x}"
     return None
 
 
-def _agrees(found: tuple[str, int], row: tuple[str, int]) -> bool:
-    """An object's (arch, bits) against a row's.
-
-    ELF i386 also carries 16-bit code (ia16-elf), and ELF SH both SH cores.
-    """
-    arch, bits = found
-    want_arch, want_bits = row
-    arches = {"x86": {"x86", "x86_16"}, "sh": {"sh2", "sh4"}}.get(arch, {arch})
-    if want_arch not in arches:
-        return False
-    return bits in (0, want_bits) or (want_arch == "x86_16" and arch == "x86" and bits == 32)
+def _named(targets: frozenset[Target]) -> str:
+    return " or ".join(f"{arch} {bits}" for arch, bits in sorted(targets))
 
 
 def engine_compile(tag: str, invocation: tuple[str, ...], source: str) -> bytes | None:
@@ -663,17 +701,17 @@ def object_targets(found: dict[str, Entry], present: list[str]) -> int:
             counts["unidentified"] += 1
             print(f"unidentified  {profile:30s} an object format this check cannot read")
             continue
-        arch, bits, what = seen
+        targets, what = seen
         said = f"{entry.target[0]} {entry.target[1]}"
-        if _agrees((arch, bits), entry.target):
+        if entry.target in targets:
             counts["agree"] += 1
-            print(f"target        {profile:30s} {what} ({arch}), the row says {said}")
+            print(f"target        {profile:30s} {what} ({_named(targets)}), the row says {said}")
         elif entry.withdrawn:
             counts["withdrawn"] += 1
-            print(f"withdrawn     {profile:30s} {what} ({arch}) under a {said} row")
+            print(f"withdrawn     {profile:30s} {what} ({_named(targets)}) under a {said} row")
         else:
             counts["WRONG-TARGET"] += 1
-            print(f"WRONG-TARGET  {profile:30s} {what} ({arch} {bits}), the row says {said}")
+            print(f"WRONG-TARGET  {profile:30s} {what} ({_named(targets)}), the row says {said}")
     summary = ", ".join(f"{name} {count}" for name, count in counts.items())
     print(f"object targets, {len(present)} images: {summary}")
     return counts["WRONG-TARGET"]

@@ -41,21 +41,40 @@ sys.path.insert(0, str(REPO / "tools" / "migrate"))
 import generate  # noqa: E402
 
 #: Differences made on purpose since the baseline, keyed by profile: the reason,
-#: the text every one of that profile's problems must contain, and, for a
-#: hand-written wrapper, the sha256 of the acknowledged wrapper, so any other
-#: difference, or any later edit to that wrapper, still fails the run.  The
-#: clang images fetched ncurses' libtinfo5 over plaintext http; the same bytes
-#: are served over https (sha256 unchanged), so the pin was upgraded while
-#: migrating.  The delphi-1.0 wrapper keeps an 8.3 source basename instead of
-#: staging every source as SRC.DPR, because DCC takes the NE module name from it.
-ACKNOWLEDGED: dict[str, tuple[str, str, str | None]] = {
-    **dict.fromkeys(
-        ("clang-3.9.1", "clang-8.0.0", "clang-9.0.0"),
-        ("pin upgraded from http to https (same sha256)", "http://deb.debian.org", None),
+#: the texts one of which every one of that profile's problems must contain,
+#: and, for a changed wrapper, the sha256 of the acknowledged wrapper, so any
+#: other difference, or any later edit to that wrapper, still fails the run.
+#: The clang images fetched ncurses' libtinfo5 over plaintext http; the same
+#: bytes are served over https (sha256 unchanged), so the pin was upgraded
+#: while migrating.  The Switch clang wrappers pass `-target aarch64-linux-elf`
+#: ahead of the caller's flags: the prebuilt host compilers otherwise write
+#: x86-64 objects.  The delphi-1.0 wrapper keeps an 8.3 source basename instead
+#: of staging every source as SRC.DPR, because DCC takes the NE module name from it.
+_SWITCH_TARGET = "selects the Switch target (-target aarch64-linux-elf)"
+ACKNOWLEDGED: dict[str, tuple[str, tuple[str, ...], str | None]] = {
+    "clang-3.9.1": (
+        f"pin upgraded from http to https (same sha256); {_SWITCH_TARGET}",
+        ("http://deb.debian.org", "wrapper line "),
+        "a24e177fe1f387136c973a982d3c1cdf4ff70bc08b3f593f8ef5504de3fb0a76",
+    ),
+    "clang-4.0.1": (
+        _SWITCH_TARGET,
+        ("wrapper line ",),
+        "296bd9615488ce36f9be9951db81123eb7e9922d9759527b18e0978dffdaf308",
+    ),
+    "clang-8.0.0": (
+        f"pin upgraded from http to https (same sha256); {_SWITCH_TARGET}",
+        ("http://deb.debian.org", "wrapper line "),
+        "8fa5c018b1adbe110293c66fdc79c45b43e054059c4852df5a541695e40a51b7",
+    ),
+    "clang-9.0.0": (
+        f"pin upgraded from http to https (same sha256); {_SWITCH_TARGET}",
+        ("http://deb.debian.org", "wrapper line "),
+        "edc0f40df81aa8b035487590693d424eab23630bb9f00d15148d93008687cc0e",
     ),
     "delphi-1.0": (
         "wrapper preserves the 8.3 module name and stages program units, flags and maps",
-        "wrapper line ",
+        ("wrapper line ",),
         "b570e4c8e2aee8cace91ac323f5728e18f275ed73602b0af8f51a65a5c34a3eb",
     ),
 }
@@ -606,7 +625,7 @@ def main(argv: list[str]) -> int:
                         problems.append(
                             f"wrapper sha256 {got} is not the acknowledged {wrapper_sha256}"
                         )
-                if all(expected in problem for problem in problems):
+                if all(any(text in problem for text in expected) for problem in problems):
                     acknowledged.append((profile, why))
                     continue
             differ.append((profile, problems))

@@ -334,7 +334,7 @@ downloads → images.  Two of those preservation orgs are **our own**:
   `tc20`, `tc31`, `borlandc55`, `delphi10`).
 
 `sources.json` records, per toolchain: the pinned download URL, sha256,
-branch commit, layout and any aliases.  The community compiler ids and
+the git commit the pin was taken from, layout and any aliases.  The community compiler ids and
 version mappings follow
 [decompme/compilers](https://github.com/decompme/compilers) (pinned at
 `0884197d`), which is where the preserved console compilers are catalogued.

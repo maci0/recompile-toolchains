@@ -101,6 +101,8 @@ class TestManifest(unittest.TestCase):
             self.assertTrue(entry["host_dir"], profile)
             self.assertTrue(entry["url"].startswith("https://"), profile)
             self.assertEqual(len(entry["sha256"]), 64, f"{profile}: bad sha256")
+            # A full commit id, never an abbreviation.
+            self.assertRegex(entry["commit"], r"^([0-9a-f]{40})?$", f"{profile}: commit")
             for name, url, sha in _pins(entry):
                 self.assertTrue(url.startswith("https://"), f"{profile}: {name} url")
                 self.assertEqual(len(sha), 64, f"{profile}: {name} has no sha256")

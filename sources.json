@@ -276,7 +276,7 @@
     "bits": 32,
     "url": "https://github.com/notyourav/agbcc/releases/download/cp/agbcc.tar.gz",
     "sha256": "05a30f03ee916563bba29efdc9da64c47909892aa878002cf07e8e7ae5bd32f5",
-    "commit": "ac51b05a074197bffa51148ae543ce1e03c9c094",
+    "commit": "02616ee06e7a21aee5e636f18c0867730ec573dc",
     "recipe": {
       "base": "base",
       "apt": [
@@ -1742,7 +1742,7 @@
     "bits": 32,
     "url": "https://github.com/archaic-toolchains/borland-cpp-ide/releases/download/2026-11-10/borland-cpp-ide-09bcecc81184.tar.gz",
     "sha256": "8e5a93db99330b816646a14bdfa1c90d2e80a41810ce8c65f4942378cb621882",
-    "commit": "09bcecc81184",
+    "commit": "09bcecc811841444338e81b9c9930c0e686f9530",
     "recipe": {
       "base": "base",
       "apt": [],

@@ -438,7 +438,7 @@ manifest entry and no image.
 | `family` | image namespace and directory prefix (`mwcc` → `rebrew/mwcc:…`) |
 | `host_dir` | `<family>/<version>-<platform>`; the Dockerfile lives here |
 | `url`, `sha256` | the primary pinned download, verified inside the build |
-| `commit` | the git commit a GitHub archive URL names; `""` for release assets |
+| `commit` | the full git commit the pin was taken from: the commit a GitHub archive URL names (`make test` checks they agree), the decompme/compilers commit whose `values.yaml` lists a decompme-catalogued asset (`0884197d...`), or a commit of the asset's upstream repository recorded with the pin; `""` when none was recorded.  Published as `source.commit`; it is provenance, not a second download reference |
 | `recipe` | everything the Dockerfile is rendered from: base, apt, fetch, steps, env, root, binary, entrypoint, runner, wrapper, labels (see step 3) |
 | `notes` | optional authored documentation for the image: the catalog's Notes column, verbatim.  It lives here, not in the recipe, because re-deriving a recipe rewrites it. Anything the image does not render belongs at the profile level. |
 | `aliases` | extra names `build.sh` accepts for this profile |

@@ -4382,7 +4382,8 @@
       },
       "arch": "x86",
       "bits": 32,
-      "service_pack": "sp2"
+      "service_pack": "sp2",
+      "same_compiler_as": "msvc-5.0-sp1"
     },
     {
       "id": "msvc-5.0-sp3",
@@ -4462,7 +4463,8 @@
       },
       "arch": "x86",
       "bits": 32,
-      "service_pack": "sp1"
+      "service_pack": "sp1",
+      "same_compiler_as": "msvc-6.0"
     },
     {
       "id": "msvc-6.0-sp2",
@@ -4489,7 +4491,8 @@
       },
       "arch": "x86",
       "bits": 32,
-      "service_pack": "sp2"
+      "service_pack": "sp2",
+      "same_compiler_as": "msvc-6.0"
     },
     {
       "id": "msvc-6.0-sp3",
@@ -4603,7 +4606,8 @@
       },
       "arch": "x86",
       "bits": 32,
-      "service_pack": "sp5"
+      "service_pack": "sp5",
+      "same_compiler_as": "msvc-6.0-sp5"
     },
     {
       "id": "msvc-6.0-sp5-pp",
@@ -4745,7 +4749,8 @@
         "tool_root": "/opt/msvc7.0-rtm/Vc7/bin"
       },
       "arch": "x86",
-      "bits": 32
+      "bits": 32,
+      "same_compiler_as": "msvc-7.0"
     },
     {
       "id": "msvc-7.0-sp1",

@@ -22,12 +22,13 @@
 #     wrapper-common rebrew_run helper dispatches on it
 #
 # The Debian filesystem is pinned by digest and every package comes from
-# snapshot.debian.org at DEBIAN_SNAPSHOT: the archive state rebrew/base:1.0 was
-# last built from (2026-11-12 18:06 UTC, from the live mirror), so a rebuild
-# installs the packages the published images run. The image's debian.sources
-# names the snapshot it was built from (20261005T000000Z); the build refuses an
-# archive older than that. The sources stay on the snapshot, so a toolchain image's own
-# `apt-get install` reads the same archive state rather than the live mirror.
+# snapshot.debian.org at DEBIAN_SNAPSHOT, an archive state at which the base
+# installs the package versions rebrew/base:1.0 holds (its apt layer was built
+# from the live mirror on 2026-11-08), so a rebuild runs the packages the images
+# built on it run. The image's debian.sources names the snapshot it was built
+# from (20261005T000000Z); the build refuses an archive older than that. The
+# sources stay on the snapshot, so a toolchain image's own `apt-get install`
+# reads the same archive state rather than the live mirror.
 # A snapshot's Release files expire like any other, so the images keep
 # Acquire::Check-Valid-Until off (/etc/apt/apt.conf.d/99snapshot); signatures
 # are still checked against the image's keyring. Bump DEBIAN_DIGEST,

@@ -71,9 +71,10 @@ PLATFORMS = (
     "linux",
 )
 
-#: Platform → detector architecture and code model.  The compiler-detector
-#: consumer matches its observations against these; a profile without an
-#: entry here simply omits ``arch``/``bits`` rather than guessing.
+#: Platform → architecture and code model of the objects a profile writes.
+#: A profile on a platform without an entry here (a host platform such as
+#: ``linux`` or ``macos``) declares ``arch`` in sources.json; one with neither
+#: is refused.
 TARGETS: dict[str, tuple[str, int]] = {
     "linux-x64": ("x86_64", 64),
     "linux-i386": ("x86", 32),
@@ -181,6 +182,9 @@ def _arch_bits(entry: dict[str, object]) -> tuple[str, int]:
             arch, bits = "m68k", 32
         elif "powerpc" in host_dir:
             arch, bits = "powerpc", 32
+    declared_arch = _text(entry, "arch")
+    if declared_arch:
+        arch = declared_arch
     declared = entry.get("bits")
     if isinstance(declared, int):
         bits = declared
@@ -252,9 +256,10 @@ def row(profile: str, entry: dict[str, object]) -> dict[str, object]:
         "source": source,
         "consumer": _consumer(entry, profile),
     }
-    if arch and bits:
-        out["arch"] = arch
-        out["bits"] = bits
+    if not (arch and bits):
+        raise ValueError(f"{profile}: no arch and bits (declare `arch` in sources.json)")
+    out["arch"] = arch
+    out["bits"] = bits
     service_pack = _service_pack(profile)
     if service_pack:
         out["service_pack"] = service_pack

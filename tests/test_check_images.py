@@ -291,7 +291,7 @@ def _one_profile_per_target() -> dict[tuple[str, int], str]:
     by_target: dict[tuple[str, int], str] = {}
     for profile in sorted(catalogue):
         entry = catalogue[profile]
-        if not entry.withdrawn and entry.target[0]:
+        if not entry.withdrawn:
             by_target.setdefault(entry.target, profile)
     return by_target
 
@@ -348,6 +348,37 @@ class TestObjectTargets(unittest.TestCase):
         code, out = self._run({}, ["msvc-9.0"])
         self.assertEqual(code, 0, out)
         self.assertIn("no-object     msvc-9.0                       /c t.c wrote no object", out)
+        self.assertIn("not checked 1 (no-object 1, unidentified 0)", out)
+
+    def test_an_unreadable_object_is_counted_as_not_checked(self) -> None:
+        # ACK writes its own object format, which names no machine.
+        ack = bytes.fromhex("0202000000000400000005000d000000")
+        code, out = self._run(
+            {"rebrew/ack:6.2-7afa32a-linux386": ack}, ["ack-6.2-7afa32a-linux386"]
+        )
+        self.assertEqual(code, 0, out)
+        self.assertIn("unidentified  ack-6.2-7afa32a-linux386", out)
+        self.assertIn(
+            "object targets, 1 images: agree 0, WRONG-TARGET 0, withdrawn 0, "
+            "not checked 1 (no-object 0, unidentified 1)",
+            out,
+        )
+
+    def test_the_rows_that_once_had_no_target_are_compiled_and_checked(self) -> None:
+        # Apple GCC assembles with powerpc-linux-gnu-as; IDO writes MIPS ELF.
+        code, out = self._run(
+            {
+                "rebrew/gcc:4.0.1-5363-macos": _elf(20, 1),
+                "rebrew/ido:7.1-linux": _elf(8, 1),
+                "rebrew/bootlin:m68k-glibc-2026.08-1-linux": _elf(8, 1),
+            },
+            ["gcc-4.0.1-5363", "ido-7.1-linux", "bootlin-m68k-glibc-2026.08-1"],
+        )
+        self.assertEqual(code, 1, out)
+        self.assertIn("target        gcc-4.0.1-5363", out)
+        self.assertIn("target        ido-7.1-linux", out)
+        self.assertIn("WRONG-TARGET  bootlin-m68k-glibc-2026.08-1", out)
+        self.assertIn("object targets, 3 images: agree 2, WRONG-TARGET 1", out)
 
     def test_a_32_bit_object_under_a_16_bit_row_fails(self) -> None:
         # A Win16 tag holding a 32-bit compiler: COFF i386, USE32 OMF or a PE.

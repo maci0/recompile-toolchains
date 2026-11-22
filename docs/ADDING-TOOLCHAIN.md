@@ -167,7 +167,11 @@ Every profile also declares the consumer fields `flags_style` (`msvc` or
 known, `bits` (8, 16, 32 or 64) and `tool_root` (the container directory
 holding the command-line tools).  They render into `toolchains.json`;
 `make test` refuses a profile that omits `flags_style`, `arg_style` or
-`obj_ext`.
+`obj_ext`.  Every row publishes the `arch` and `bits` of the objects its
+compiler writes: `arch` comes from the platform (`toolchains.TARGETS`), and a
+profile on a host platform (`linux`, `macos`) declares it in `sources.json`
+(`ido-7.1-linux` writes MIPS, the Apple GCC profiles PowerPC); `make docs`
+and `make test` refuse a profile with neither.
 
 The recipe fields:
 
@@ -433,8 +437,8 @@ row is reported, not failed): a 32-bit COFF or USE32 OMF object under an
 `x86_16` row fails.  ELF i386 agrees with `x86` and `x86_16` rows, because
 ia16-elf writes 16-bit code under that machine.  An image that writes no
 object that way, or one in a format the check cannot read (ACK's), prints
-`no-object` or `unidentified`: `make smoke` proves objects, this proves
-their target.  A new object format, or a row with a new `arch` and `bits`
+`no-object` or `unidentified`, and the summary counts both as `not checked`:
+`make smoke` proves objects, this proves their target.  A new object format, or a row with a new `arch` and `bits`
 pair, needs a probe in `tests/test_check_images.py` (`_PROBES`); `make test`
 fails without one.  The compiler directory is the one holding
 the recipe's `binary`, so every recipe names one, a pipeline its compiler

@@ -26,6 +26,9 @@ _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _RUNTIME = frozenset({"exec", "wine", "wibo", "dosbox", "dosemu2", "daze"})
 _FLAGS = frozenset({"msvc", "posix"})
 _ARGS = frozenset({"msvc", "posix", "pipeline", "dos", "borland", "watcom"})
+_ARCHES = frozenset(
+    arch for arch, _ in (*toolchains.TARGETS.values(), *toolchains.DEVKIT_TARGETS.values())
+)
 
 
 class TestToolchainsArtifact(unittest.TestCase):
@@ -94,7 +97,24 @@ class TestToolchainsArtifact(unittest.TestCase):
                 self.assertIn(consumer["flags_style"], _FLAGS)
                 self.assertIn(consumer["arg_style"], _ARGS)
                 self.assertTrue(consumer["obj_ext"].startswith("."))
-                self.assertEqual("bits" in row, "arch" in row)
+                # make images compares every object with these; a row without
+                # them would be compiled and never checked.
+                self.assertIn(row.get("arch"), _ARCHES)
+                self.assertIsInstance(row.get("bits"), int)
+
+    def test_a_profile_without_a_target_is_refused(self) -> None:
+        # The ido-*-linux rows sat on the host platform `linux` and published
+        # no arch, so make images skipped their objects without a word.
+        entry = dict(catalog.manifest()["ido-7.1-linux"])
+        del entry["arch"]
+        with self.assertRaisesRegex(ValueError, "ido-7.1-linux: no arch and bits"):
+            toolchains.row("ido-7.1-linux", entry)
+
+    def test_a_declared_arch_is_one_the_platforms_name(self) -> None:
+        for profile, entry in catalog.manifest().items():
+            if "arch" in entry:
+                with self.subTest(profile=profile):
+                    self.assertIn(entry["arch"], _ARCHES)
 
     def test_bits_agree_with_the_architecture(self) -> None:
         # A row's `bits` is the code model of its `arch`; `aarch64` with 32 bits

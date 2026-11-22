@@ -283,7 +283,7 @@ The [2026-10-25 ingestion report](docs/RELATED-WORK.md#ingestion-and-repairs--20
 - **[sources.json](sources.json)**: the manifest itself, holding per toolchain the
   pinned `url` + `sha256` (+ `commit` for branch pins), archive `layout`,
   secondary pins, `aliases` and the consumer fields (`flags_style`,
-  `arg_style`, `obj_ext`, `bits`, `tool_root`).  `build.sh` validates it in
+  `arg_style`, `obj_ext`, `bits`, `arch` where the platform names none, `tool_root`).  `build.sh` validates it in
   both directions before any image is built.
 - **[toolchains.json](toolchains.json)**: the generated release artifact for
   consumers: every profile with its pin, image tag, target, runtime class,

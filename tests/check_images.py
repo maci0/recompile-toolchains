@@ -53,8 +53,10 @@ Two checks, both read-only:
    machine, so a 32-bit ELF compiler under the ia16 row is not caught here.
    An image that writes no object under the default invocation, or one in a
    format this check cannot read (ACK's, which names no machine), prints
-   `no-object` or `unidentified` and passes: `make smoke` is what proves that
-   an image produces an object.
+   `no-object` or `unidentified` and passes, and the summary line counts
+   both as `not checked`: `make smoke` is what proves that an image produces
+   an object.  Every row carries `arch` and `bits` (toolchains.py refuses
+   one without), so every present image is compiled.
 
 Images the engine or registry does not hold print as `absent` and pass: which
 images a host carries is that host's choice.  Images keep `rebrew/` as their
@@ -406,7 +408,7 @@ class Entry:
     #: The entries this one is declared to share a compiler with: its
     #: `same_compiler_as` and its `variant_of`.
     shares: frozenset[str]
-    #: The row's `arch` and `bits`; ("", 0) when it states none.
+    #: The row's `arch` and `bits` (toolchains.row refuses a row without them).
     target: Target
     #: The invocation check 3 compiles with and the source file it writes.
     invocation: tuple[str, ...]
@@ -689,8 +691,6 @@ def object_targets(found: dict[str, Entry], present: list[str]) -> int:
     counts = {"agree": 0, "WRONG-TARGET": 0, "withdrawn": 0, "no-object": 0, "unidentified": 0}
     for profile in present:
         entry = found[profile]
-        if not entry.target[0]:
-            continue
         data = engine_compile(entry.tag, entry.invocation, entry.source)
         if data is None:
             counts["no-object"] += 1
@@ -712,8 +712,12 @@ def object_targets(found: dict[str, Entry], present: list[str]) -> int:
         else:
             counts["WRONG-TARGET"] += 1
             print(f"WRONG-TARGET  {profile:30s} {what} ({_named(targets)}), the row says {said}")
-    summary = ", ".join(f"{name} {count}" for name, count in counts.items())
-    print(f"object targets, {len(present)} images: {summary}")
+    print(
+        f"object targets, {len(present)} images: agree {counts['agree']}, "
+        f"WRONG-TARGET {counts['WRONG-TARGET']}, withdrawn {counts['withdrawn']}, "
+        f"not checked {counts['no-object'] + counts['unidentified']} "
+        f"(no-object {counts['no-object']}, unidentified {counts['unidentified']})"
+    )
     return counts["WRONG-TARGET"]
 
 

@@ -409,7 +409,7 @@ Microsoft Visual C/C++ 1.0-12.0
 | `rebrew/msvc:8.0-portable-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0p` | `msvc8.0-52c8293f8b8d.zip` `b138c1b3c99a` @ `52c8293f8b8d` | unpacked from `zip-strip1` |
 | `rebrew/msvc:8.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0sp1` | `msvc800_sp1` `7ddbb5064be4` @ `4b1bafba636f` | none |
 | `rebrew/msvc:8.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | `msvc8.0` | `msvc800` `17b382bcc476` @ `00ddaf58d097` | none |
-| `rebrew/msvc:9.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc900_sp1` `d9ece1e4522a` @ `cebb3c9740c9` | its compiler targets Itanium, not x86: the `VC/bin/cl.exe` the wrapper runs prints 'Version 15.00.30729.01 for Itanium' and writes Intel Itanium COFF objects (checked 2026-11-22 on the published and a rebuilt image) |
+| `rebrew/msvc:9.0-sp1-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc900_sp1` `d9ece1e4522a` @ `cebb3c9740c9` | **withdrawn, not built or offered**: its compiler targets Itanium, not x86: `VC/bin/cl.exe` reports 15.00.30729.01 for Itanium and writes IA-64 objects (COFF machine 0x0200), so the image is not built or offered as msvc-9.0-sp1 until the archive carries the x86 SP1 compiler |
 | `rebrew/msvc:9.0-win32` | win32 | `cl` | wine, wibo via `REBREW_RUNNER=wibo` | none | `msvc900` `084c135403e1` @ `c9d710cef9a3` | none |
 
 ## msvc-ppc

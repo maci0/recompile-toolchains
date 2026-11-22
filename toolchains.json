@@ -4969,7 +4969,8 @@
       },
       "arch": "x86",
       "bits": 32,
-      "service_pack": "sp1"
+      "service_pack": "sp1",
+      "withdrawn": "its compiler targets Itanium, not x86: `VC/bin/cl.exe` reports 15.00.30729.01 for Itanium and writes IA-64 objects (COFF machine 0x0200), so the image is not built or offered as msvc-9.0-sp1 until the archive carries the x86 SP1 compiler"
     },
     {
       "id": "msvc-ppc-14.00.2110",

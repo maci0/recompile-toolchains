@@ -102,6 +102,20 @@ def _pins(entry: Mapping[str, object]) -> list[tuple[str, str, str]]:
     return pins
 
 
+_ENV_ASSIGNMENT = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)=(\S+)")
+
+
+def _image_env(dockerfile: str) -> dict[str, str]:
+    """Every variable the Dockerfile's ENV instructions set, continuations joined."""
+    joined = dockerfile.replace("\\\n", " ")
+    return {
+        name: value
+        for line in joined.splitlines()
+        if line.startswith("ENV ")
+        for name, value in _ENV_ASSIGNMENT.findall(line[len("ENV ") :])
+    }
+
+
 class TestManifest(unittest.TestCase):
     def test_every_entry_is_complete(self) -> None:
         for profile, entry in _manifest().items():
@@ -175,8 +189,13 @@ class TestManifest(unittest.TestCase):
         what actually does it.  They disagreed for 151 profiles — every image
         whose wrapper calls `rebrew_run` was recorded as `wibo` (the opt-in
         runner, not the default) and the DOSBox ones as `exec` — because the
-        catalog sniffed the artifact instead of reading the manifest.
+        catalog sniffed the artifact instead of reading the manifest.  The
+        published `runtime` is held to the same runner: it is what a consumer
+        reads to know what runs.  `psyq-4.0` to `psyq-4.4` set
+        `REBREW_RUNNER=wibo` inside a multi-line ENV and were published as
+        `wine`.
         """
+        catalogue = catalog.manifest()
         for profile, entry in _manifest().items():
             directory = _REPO / str(entry["host_dir"])
             dockerfile = (directory / "Dockerfile").read_text(encoding="utf-8")
@@ -197,7 +216,7 @@ class TestManifest(unittest.TestCase):
             elif "rebrew_run" in wrappers:
                 # wine is the default; `REBREW_RUNNER=wibo` opts into the
                 # minimal loader some decomp.me-packaged tools need
-                observed = "wibo" if "ENV REBREW_RUNNER=wibo" in dockerfile else "wine"
+                observed = _image_env(dockerfile).get("REBREW_RUNNER", "wine")
             elif "rebrew_exec" in wrappers:
                 observed = "exec"
             else:
@@ -205,6 +224,8 @@ class TestManifest(unittest.TestCase):
             recipe = entry.get("recipe")
             declared = recipe.get("runner") if isinstance(recipe, dict) else None
             self.assertEqual(declared, observed, f"{profile}: declared runner")
+            published = toolchains.row(profile, catalogue[profile])["runtime"]
+            self.assertEqual(published, observed, f"{profile}: published runtime")
 
     def test_variants_name_a_base_they_share_a_build_with(self) -> None:
         """`variant_of` is a claim about the data, so it is checked against it.

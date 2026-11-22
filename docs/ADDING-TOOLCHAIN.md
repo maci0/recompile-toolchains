@@ -25,7 +25,11 @@ keeping a copy of `sources.json`:
 
 A change to one of those members needs a change in the reader that takes it.
 No other repository reads the file (searched 2026-11-23: the backend and
-compiler-detector do not). The file also carries `flags_style`, `arg_style`, `obj_ext` and `tool_root`
+compiler-detector do not). A row's `runtime` is the runner that executes a compile in the image as
+built, by default: the recipe's `runner`, which must equal the `REBREW_RUNNER`
+its `env` sets, if it sets one (`make test` holds the published `runtime`, the
+recipe and the wrapper to one runner). The file also carries `flags_style`,
+`arg_style`, `obj_ext` and `tool_root`
 from the manifest beside the target and runtime class, which no reader takes
 from it yet (rebrew's registry repeats them by hand), so every image must
 still declare the consumer fields. A row that carries `withdrawn` is not to

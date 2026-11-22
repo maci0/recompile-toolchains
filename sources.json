@@ -18298,7 +18298,7 @@
       "description": "PSY-Q 4.0 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
       "binary": "CC1PSX.EXE",
-      "runner": "wine",
+      "runner": "wibo",
       "wrapper": {
         "shape": "psyq_native",
         "notes": [
@@ -18412,7 +18412,7 @@
       "description": "PSY-Q 4.1 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
       "binary": "CC1PSX.EXE",
-      "runner": "wine",
+      "runner": "wibo",
       "wrapper": {
         "shape": "psyq_native",
         "notes": [
@@ -18526,7 +18526,7 @@
       "description": "PSY-Q 4.3 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
       "binary": "CC1PSX.EXE",
-      "runner": "wine",
+      "runner": "wibo",
       "wrapper": {
         "shape": "psyq_native",
         "notes": [
@@ -18640,7 +18640,7 @@
       "description": "PSY-Q 4.4 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
       "binary": "CC1PSX.EXE",
-      "runner": "wine",
+      "runner": "wibo",
       "wrapper": {
         "shape": "psyq_native",
         "notes": [

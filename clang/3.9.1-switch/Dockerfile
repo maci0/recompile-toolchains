@@ -23,7 +23,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/clang.tar.xz \
     && echo "dbe2ad98cd9c2b718fdfb5dc72dcf9cfb91009d05a5b2b37457cccc958559b2a  /tmp/clang.tar.xz" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/libtinfo5.deb \
-        "https://deb.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb" \
+        "https://snapshot.debian.org/archive/debian/20261112T180000Z/pool/main/n/ncurses/libtinfo5_6.4-4_amd64.deb" \
     && echo "dd347f794e651039e7b4c391f86c674fed7f415b3dca6b0937beb0d470f09c1a  /tmp/libtinfo5.deb" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

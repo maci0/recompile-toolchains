@@ -44,10 +44,10 @@ listed here, so a new upstream cannot arrive undocumented.
 | `github.com/open-watcom` | Open Watcom v2 release snapshots | Sybase Open Watcom licence | 4 |
 | `ppa.launchpadcontent.net/tkchia/build-ia16` | Dated IA-16 GCC, binutils, newlib and libi86 packages | GPL compiler/binutils; runtime exceptions and component terms | 1 |
 | `releases.llvm.org` | LLVM's own release host, for the prebuilt clang tarballs that the 3.9.1/4.0.1/8.0.0/9.0.0 GitHub releases do not carry | Apache-2.0 with LLVM exception | 4 |
-| `deb.debian.org` | the Debian pool: the pinned `libtinfo5` runtime package the prebuilt clang trees link against (Debian dropped libtinfo5 from bookworm, so each clang image installs the .deb from the pool) | MIT-style (ncurses); the .deb is taken unmodified | 3 |
 | `ftp.gnu.org` | GNU GCC release tarballs, compiled inside the image | GPL | 3 |
 | `github.com/llvm` | LLVM/Clang GitHub release assets | Apache-2.0 with LLVM exception | 3 |
 | `github.com/pret` | `pret/agbcc`: the GBA compiler rebuild | GPL | 3 |
+| `snapshot.debian.org/archive/debian` | Debian's snapshot archive: the pinned `libtinfo5` runtime package the prebuilt clang trees link against, from a dated snapshot that keeps serving it after the live pool deletes it | MIT-style (ncurses); the .deb is taken unmodified | 3 |
 | `tho-otto.de/download/mint` | Dated Atari MiNT ELF GCC, binutils and mintlib archives | GPL compiler/binutils; mintlib LGPL and component terms | 1 |
 | `codeload.github.com/Neargye/magic_enum` | Pinned enum headers for the PSY-Q converter | MIT | 2 |
 | `codeload.github.com/Taywee/args` | Pinned argument parser for the PSY-Q converter | MIT | 2 |

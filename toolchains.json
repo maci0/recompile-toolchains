@@ -579,7 +579,9 @@
         "arg_style": "posix",
         "obj_ext": ".o",
         "tool_root": null
-      }
+      },
+      "arch": "m68k",
+      "bits": 32
     },
     {
       "id": "borland-2.0",
@@ -3178,7 +3180,9 @@
         "arg_style": "pipeline",
         "obj_ext": ".o",
         "tool_root": null
-      }
+      },
+      "arch": "powerpc",
+      "bits": 32
     },
     {
       "id": "gcc-3.2-rh8",
@@ -3234,7 +3238,9 @@
         "arg_style": "pipeline",
         "obj_ext": ".o",
         "tool_root": null
-      }
+      },
+      "arch": "powerpc",
+      "bits": 32
     },
     {
       "id": "gcc-4.0.1-5363",
@@ -3261,7 +3267,9 @@
         "arg_style": "pipeline",
         "obj_ext": ".o",
         "tool_root": null
-      }
+      },
+      "arch": "powerpc",
+      "bits": 32
     },
     {
       "id": "gcc-4.0.1-5370",
@@ -3288,7 +3296,9 @@
         "arg_style": "pipeline",
         "obj_ext": ".o",
         "tool_root": null
-      }
+      },
+      "arch": "powerpc",
+      "bits": 32
     },
     {
       "id": "gcc-4.4.0-mips64-elf",
@@ -3624,7 +3634,9 @@
         "arg_style": "posix",
         "obj_ext": ".o",
         "tool_root": null
-      }
+      },
+      "arch": "mips",
+      "bits": 32
     },
     {
       "id": "ido-6.0",
@@ -3737,7 +3749,9 @@
         "arg_style": "posix",
         "obj_ext": ".o",
         "tool_root": null
-      }
+      },
+      "arch": "mips",
+      "bits": 32
     },
     {
       "id": "ido-mipspro-744",

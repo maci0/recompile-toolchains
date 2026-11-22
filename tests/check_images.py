@@ -38,12 +38,26 @@ Two checks, both read-only:
    layer digest cannot stand in for the binaries, because each entry installs
    under its own `/opt` root, so one compiler in two images is two layers.
 
+3. Object targets (local engine only: it runs the compiler).  Each present
+   image compiles a one-function test source with its argument dialect's
+   default invocation (`/c t.c`, `-c t.c`, `t.c`, `-c t.c -o t.o`, as
+   tests/smoke.sh calls an image without a case of its own), networkless, and
+   the object's machine is read against the row's `arch` and `bits`: COFF
+   machine, OMF code-segment width, ELF machine and class, an NE executable.
+   A disagreement fails as `WRONG-TARGET` (`msvc-9.0-sp1` writes IA-64 COFF
+   under an x86 row), unless the row is `withdrawn`.  An image that writes no
+   object under the default invocation, or one in a format this check cannot
+   read (ASxxxx, xo65, Amiga hunk), prints `no-object` or `unidentified` and
+   passes: `make smoke` is what proves that an image produces an object.
+
 Images the engine or registry does not hold print as `absent` and pass: which
 images a host carries is that host's choice.  Images keep `rebrew/` as their
 namespace; `PREFIX` re-points it as in build.sh.  The local engine is the
 Docker Engine API on the unix socket `DOCKER_HOST` names, else
 /var/run/docker.sock.  No container is started: the binaries are read from a
-created container's filesystem, which is then removed.
+created container's filesystem, which is then removed; check 3 starts one
+container per image, without network, on a scratch directory under
+`.scratch/`.
 
 Deliberately not part of `make test`: it needs built images or a registry.
 Run it by hand (`make images`) before publishing an image, and against the
@@ -61,9 +75,11 @@ import http.client
 import json
 import os
 import re
+import shutil
 import socket
 import sys
 import tarfile
+import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -99,6 +115,36 @@ _HTTP_NOT_FOUND = 404
 _HTTP_OK = 200
 _HTTP_CREATED = 201
 _HTTP_NO_CONTENT = 204
+_HTTP_NOT_MODIFIED = 304
+#: The one-function source check 3 compiles, and the Pascal one for Delphi.
+_TEST_SOURCES = {
+    ".c": "int f(int x){return x+1;}\n",
+    ".dpr": "program Hello; begin WriteLn(42); end.\n",
+}
+#: Argument dialect -> the default invocation (tests/smoke.sh's for a profile
+#: without a case of its own).
+_INVOCATIONS = {"msvc": ["/c", "t.c"], "borland": ["-c", "t.c"], "dos": ["t.c"]}
+_DEFAULT_INVOCATION = ["-c", "t.c", "-o", "t.o"]
+#: ELF e_machine -> the row arch it is; the class gives `bits` for these.
+_ELF_MACHINES = {
+    3: "x86",
+    4: "m68k",
+    8: "mips",
+    20: "powerpc",
+    40: "arm",
+    42: "sh",
+    62: "x86_64",
+    183: "aarch64",
+    6502: "mos6502",
+}
+#: Architectures whose ELF class is their code width.
+_ELF_CLASS_IS_WIDTH = frozenset({"x86", "x86_64", "aarch64", "arm", "mips", "powerpc", "m68k"})
+#: COFF machine -> (arch, bits).
+_COFF_MACHINES = {0x014C: ("x86", 32), 0x8664: ("x86_64", 64), 0x0200: ("ia64", 64)}
+_OMF_THEADR = 0x80
+_OMF_SEGDEF = (0x98, 0x99)
+#: The scratch root for check 3's work directories (gitignored, on disk).
+SCRATCH = REPO / ".scratch"
 
 type Json = dict[str, object]
 
@@ -328,6 +374,13 @@ class Entry:
     #: The entries this one is declared to share a compiler with: its
     #: `same_compiler_as` and its `variant_of`.
     shares: frozenset[str]
+    #: The row's `arch` and `bits`; ("", 0) when it states none.
+    target: tuple[str, int]
+    #: The invocation check 3 compiles with and the source file it writes.
+    invocation: tuple[str, ...]
+    source: str
+    #: The row's `withdrawn` reason; "" when the entry is offered.
+    withdrawn: str
 
 
 def entries() -> dict[str, Entry]:
@@ -364,6 +417,14 @@ def entries() -> dict[str, Entry]:
             compiler_dir=compiler_dir(entry),
             same_compiler_as=same,
             shares=frozenset(filter(None, (same, str(row.get("variant_of", ""))))),
+            target=(str(row.get("arch", "")), int(str(row.get("bits", 0)))),
+            invocation=tuple(
+                ["t.dpr"]
+                if row["family"] == "delphi"
+                else _INVOCATIONS.get(str(entry.get("arg_style")), _DEFAULT_INVOCATION)
+            ),
+            source="t.dpr" if row["family"] == "delphi" else "t.c",
+            withdrawn=str(row.get("withdrawn", "")),
         )
     return found
 
@@ -487,6 +548,137 @@ def distinct_compilers(found: dict[str, Entry], present: list[str]) -> int:
     return failures
 
 
+def object_target(data: bytes) -> tuple[str, int, str] | None:
+    """(arch, bits, description) of a compiled object; bits 0 when the format does not say."""
+    if data[:4] == b"\x7fELF" and len(data) >= 20:
+        machine = int.from_bytes(data[18:20], "little" if data[5] == 1 else "big")
+        arch = _ELF_MACHINES.get(machine)
+        if arch is None:
+            return None
+        bits = (32 if data[4] == 1 else 64) if arch in _ELF_CLASS_IS_WIDTH else 0
+        return arch, bits, f"ELF{32 if data[4] == 1 else 64} machine {machine}"
+    if data[:2] == b"MZ" and len(data) >= 0x40:
+        offset = int.from_bytes(data[0x3C:0x40], "little")
+        if data[offset : offset + 2] == b"NE":
+            return "x86_16", 16, "NE executable"
+        return None
+    if data[:1] == bytes([_OMF_THEADR]):
+        # The first SEGDEF is the code segment; its P bit says USE32.
+        at = 0
+        while at + 4 <= len(data):
+            kind, size = data[at], int.from_bytes(data[at + 1 : at + 3], "little")
+            if kind in _OMF_SEGDEF:
+                if data[at + 3] & 1:
+                    return "x86", 32, "OMF, USE32 code segment"
+                return "x86_16", 16, "OMF, USE16 code segment"
+            at += 3 + size
+        return None
+    machine = int.from_bytes(data[:2], "little") if len(data) >= 2 else -1
+    if machine in _COFF_MACHINES:
+        arch, bits = _COFF_MACHINES[machine]
+        return arch, bits, f"COFF machine 0x{machine:04x}"
+    return None
+
+
+def _agrees(found: tuple[str, int], row: tuple[str, int]) -> bool:
+    """An object's (arch, bits) against a row's.
+
+    ELF i386 also carries 16-bit code (ia16-elf), and ELF SH both SH cores.
+    """
+    arch, bits = found
+    want_arch, want_bits = row
+    arches = {"x86": {"x86", "x86_16"}, "sh": {"sh2", "sh4"}}.get(arch, {arch})
+    if want_arch not in arches:
+        return False
+    return bits in (0, want_bits) or (want_arch == "x86_16" and arch == "x86" and bits == 32)
+
+
+def engine_compile(tag: str, invocation: tuple[str, ...], source: str) -> bytes | None:
+    """The object *tag* writes for the test *source* under *invocation*, or None."""
+    SCRATCH.mkdir(exist_ok=True)
+    work = Path(tempfile.mkdtemp(prefix="check-images-", dir=SCRATCH))
+    try:
+        # The images run as uid 1000: the mount must be writable by it.
+        work.chmod(0o777)
+        (work / source).write_text(_TEST_SOURCES[Path(source).suffix], encoding="utf-8")
+        (work / source).chmod(0o644)
+        host: Json = {"Binds": [f"{work}:/work"]}
+        if Path("/dev/kvm").exists():
+            # The dosemu2 images need KVM; the others ignore it.
+            host["Devices"] = [
+                {
+                    "PathOnHost": "/dev/kvm",
+                    "PathInContainer": "/dev/kvm",
+                    "CgroupPermissions": "rwm",
+                }
+            ]
+        body: Json = {
+            "Image": tag,
+            "Cmd": list(invocation),
+            "WorkingDir": "/work",
+            "NetworkDisabled": True,
+            "HostConfig": host,
+        }
+        with _engine("POST", "/containers/create", body) as (status, stream):
+            raw = stream.read()
+        if status != _HTTP_CREATED:
+            raise CheckError(f"{tag}: engine create answered {status}")
+        container = _json(raw, f"{tag} create").get("Id")
+        if not isinstance(container, str):
+            raise CheckError(f"{tag}: engine create returned no container id")
+        try:
+            with _engine("POST", f"/containers/{container}/start") as (status, stream):
+                stream.read()
+            if status not in (_HTTP_NO_CONTENT, _HTTP_NOT_MODIFIED):
+                raise CheckError(f"{tag}: engine start answered {status}")
+            with _engine("POST", f"/containers/{container}/wait") as (status, stream):
+                stream.read()
+        finally:
+            with _engine("DELETE", f"/containers/{container}?force=true") as (status, stream):
+                stream.read()
+        objects = sorted(
+            path
+            for path in work.iterdir()
+            if path.suffix.lower() in (".o", ".obj", ".exe") and path.name != source
+        )
+        return objects[0].read_bytes() if objects else None
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def object_targets(found: dict[str, Entry], present: list[str]) -> int:
+    """Check 3: compile in each present image; count the WRONG-TARGET failures."""
+    counts = {"agree": 0, "WRONG-TARGET": 0, "withdrawn": 0, "no-object": 0, "unidentified": 0}
+    for profile in present:
+        entry = found[profile]
+        if not entry.target[0]:
+            continue
+        data = engine_compile(entry.tag, entry.invocation, entry.source)
+        if data is None:
+            counts["no-object"] += 1
+            print(f"no-object     {profile:30s} {' '.join(entry.invocation)} wrote no object")
+            continue
+        seen = object_target(data)
+        if seen is None:
+            counts["unidentified"] += 1
+            print(f"unidentified  {profile:30s} an object format this check cannot read")
+            continue
+        arch, bits, what = seen
+        said = f"{entry.target[0]} {entry.target[1]}"
+        if _agrees((arch, bits), entry.target):
+            counts["agree"] += 1
+            print(f"target        {profile:30s} {what} ({arch}), the row says {said}")
+        elif entry.withdrawn:
+            counts["withdrawn"] += 1
+            print(f"withdrawn     {profile:30s} {what} ({arch}) under a {said} row")
+        else:
+            counts["WRONG-TARGET"] += 1
+            print(f"WRONG-TARGET  {profile:30s} {what} ({arch} {bits}), the row says {said}")
+    summary = ", ".join(f"{name} {count}" for name, count in counts.items())
+    print(f"object targets, {len(present)} images: {summary}")
+    return counts["WRONG-TARGET"]
+
+
 def _untied(found: dict[str, Entry], members: list[str]) -> list[str]:
     """One member of each set the declarations tie together within *members*."""
     root = {member: member for member in members}
@@ -519,6 +711,7 @@ def main(argv: list[str]) -> int:
         print("compiler binaries: not compared (a registry serves layers, not files)")
     else:
         failures += distinct_compilers(found, present)
+        failures += object_targets(found, present)
     return 1 if failures else 0
 
 

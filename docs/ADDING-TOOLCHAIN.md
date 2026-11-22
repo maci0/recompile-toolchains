@@ -423,7 +423,14 @@ replaced, as `tools/migrate/commit-archives.json` records, prints
 `variant_of` ties them, whatever version they claim (an SP4 tag holding the
 SP6 tree claims 6.0 like the tree it replaced); on a declaration whose
 binaries differ (`DIFFERENT`); and on an image without the compiler directory
-its recipe names (`NO-COMPILER`).  The compiler directory is the one holding
+its recipe names (`NO-COMPILER`).  With local images it also compiles a
+one-function source in each image, networkless, with the argument dialect's
+default invocation, and fails an object whose machine (COFF machine, OMF
+code-segment width, ELF machine and class, NE) disagrees with the row's
+`arch` and `bits` (`WRONG-TARGET`; a `withdrawn` row is reported, not
+failed).  An image that writes no object that way, or one in a format the
+check cannot read, prints `no-object` or `unidentified`: `make smoke` proves
+objects, this proves their target.  The compiler directory is the one holding
 the recipe's `binary`, so every recipe names one, a pipeline its compiler
 stage (`CC1PSX.EXE`, `cc1n64.exe`, `cc1`); `make test` refuses a recipe that
 does not.  A registry answers the pin check only: it serves layers, not

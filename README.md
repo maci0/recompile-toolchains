@@ -118,7 +118,9 @@ which it then verifies.  It
 reads the local engine, or a registry with `make images REGISTRY=<url>`
 (manifest and config only, so the binary comparison needs local images: each
 entry installs under its own `/opt` root, so a layer digest cannot stand in
-for the files).
+for the files).  Against local images it also compiles a one-function source
+in each, without network, and fails an object whose machine disagrees with the
+row's `arch` and `bits` (`WRONG-TARGET`).
 A tag built before a re-pin keeps serving the old compiler until it is
 rebuilt; this is the check that sees it.  Run it before publishing.
 

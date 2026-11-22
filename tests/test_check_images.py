@@ -75,10 +75,17 @@ def _tree(files: dict[str, bytes]) -> bytes:
 
 
 def _engine(
-    histories: dict[str, list[str]], trees: dict[str, bytes]
+    histories: dict[str, list[str]],
+    trees: dict[str, bytes],
+    objects: dict[str, bytes] | None = None,
 ) -> contextlib.AbstractContextManager[object]:
-    """Patch the Engine API: image histories and each image's compiler directory."""
+    """Patch the Engine API: image histories, compiler directories, compiled objects.
+
+    Starting a container of a tag in *objects* writes that object into the
+    directory bound at /work, as the image's compiler would.
+    """
     containers: dict[str, str] = {}
+    binds: dict[str, str] = {}
 
     @contextlib.contextmanager
     def request(
@@ -96,7 +103,18 @@ def _engine(
                 raise AssertionError("create without a body")
             container = f"c{len(containers)}"
             containers[container] = str(body["Image"])
+            host = body.get("HostConfig")
+            if isinstance(host, dict):
+                binds[container] = str(host["Binds"][0]).partition(":")[0]
             yield 201, io.BytesIO(json.dumps({"Id": container}).encode())
+        elif method == "POST" and path.endswith("/start"):
+            container = path.split("/")[2]
+            data = (objects or {}).get(containers[container])
+            if data is not None:
+                (Path(binds[container]) / "t.obj").write_bytes(data)
+            yield 204, io.BytesIO(b"")
+        elif method == "POST" and path.endswith("/wait"):
+            yield 200, io.BytesIO(b'{"StatusCode": 0}')
         elif method == "GET" and "/archive?" in path:
             tag = containers[path.split("/")[2]]
             yield (200, io.BytesIO(trees[tag])) if tag in trees else (404, io.BytesIO(b"{}"))
@@ -193,6 +211,74 @@ class TestRecipePins(unittest.TestCase):
             code, out = self._run(["msvc-7.0"])
         self.assertEqual(code, 1)
         self.assertIn("MISMATCH      msvc-7.0", out)
+
+
+def _coff(machine: int) -> bytes:
+    return machine.to_bytes(2, "little") + bytes(18)
+
+
+def _elf(machine: int, elf_class: int) -> bytes:
+    return b"\x7fELF" + bytes([elf_class, 1]) + bytes(12) + machine.to_bytes(2, "little")
+
+
+class TestObjectTargets(unittest.TestCase):
+    def _run(self, objects: dict[str, bytes], profiles: list[str]) -> tuple[int, str]:
+        catalogue = images.entries()
+        histories = {
+            catalogue[p].tag: [
+                f'RUN echo "{sha}  /tmp/src.tar.gz" | sha256sum -c -'
+                for sha in catalogue[p].sums.values()
+            ]
+            for p in profiles
+        }
+        trees = {catalogue[p].tag: _tree({p: p.encode()}) for p in profiles}
+        out = io.StringIO()
+        with _engine(histories, trees, objects), contextlib.redirect_stdout(out):
+            code = images.main(profiles)
+        return code, out.getvalue()
+
+    def test_an_object_for_another_architecture_fails(self) -> None:
+        # msvc-9.0-sp1's compiler wrote IA-64 COFF under an x86 row.
+        code, out = self._run({"rebrew/msvc:9.0-win32": _coff(0x0200)}, ["msvc-9.0"])
+        self.assertEqual(code, 1, out)
+        self.assertIn(
+            "WRONG-TARGET  msvc-9.0                       COFF machine 0x0200 (ia64 64), "
+            "the row says x86 32",
+            out,
+        )
+
+    def test_an_object_for_the_row_architecture_passes(self) -> None:
+        code, out = self._run(
+            {
+                "rebrew/msvc:9.0-win32": _coff(0x014C),
+                "rebrew/clang:9.0.0-switch": _elf(183, 2),
+            },
+            ["msvc-9.0", "clang-9.0.0"],
+        )
+        self.assertEqual(code, 0, out)
+        self.assertIn("agree 2, WRONG-TARGET 0", out)
+
+    def test_an_x86_64_object_under_an_aarch64_row_fails(self) -> None:
+        # The Switch clang images wrote x86-64 ELF64 before their wrapper chose AArch64.
+        code, out = self._run({"rebrew/clang:9.0.0-switch": _elf(62, 2)}, ["clang-9.0.0"])
+        self.assertEqual(code, 1, out)
+        self.assertIn("WRONG-TARGET  clang-9.0.0", out)
+
+    def test_a_withdrawn_row_reports_and_passes(self) -> None:
+        code, out = self._run({"rebrew/msvc:9.0-sp1-win32": _coff(0x0200)}, ["msvc-9.0-sp1"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("withdrawn     msvc-9.0-sp1", out)
+
+    def test_no_object_is_reported_and_passes(self) -> None:
+        code, out = self._run({}, ["msvc-9.0"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("no-object     msvc-9.0                       /c t.c wrote no object", out)
+
+    def test_omf_code_width_is_read_from_the_first_segdef(self) -> None:
+        use16 = bytes([0x80, 2, 0, 0, 0]) + bytes([0x98, 7, 0, 0x48]) + bytes(6)
+        use32 = bytes([0x80, 2, 0, 0, 0]) + bytes([0x98, 7, 0, 0xA9]) + bytes(6)
+        self.assertEqual(images.object_target(use16), ("x86_16", 16, "OMF, USE16 code segment"))
+        self.assertEqual(images.object_target(use32), ("x86", 32, "OMF, USE32 code segment"))
 
 
 class TestDistinctCompilers(unittest.TestCase):

@@ -10,7 +10,13 @@ is generated from `sources.json` and the toolchain Dockerfiles; see
 
 An entry says how to build an image, not that one is published: a
 deployment runs the toolchains whose images its runtime holds, and
-`make images` lists which those are (`absent` for the rest).
+`make images` lists which those are (`absent` for the rest).  Nor does
+an entry say that its recipe was built for this release: `make test`
+checks that every recipe renders with its pins, `make pins` that every
+pinned URL resolves and `make verify` that every migrated recipe still
+installs what its hand-written one did, but only `make smoke` builds
+images (one per runtime class), and the release notes name the images
+rebuilt for it.
 
 Every tag is `rebrew/<family>:<version>-<platform>` (`PREFIX=` re-tags the
 whole set).  The runtime column says how the image executes its compiler;
@@ -68,7 +74,7 @@ GBA decomp C++ compiler (notyourav/agbcc `cp` fork)
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/agbccpp:gba` | gba | `agbccpp` | native | none | `agbcc.tar.gz` `05a30f03ee91` @ `ac51b05a0741` | Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly |
+| `rebrew/agbccpp:gba` | gba | `agbccpp` | native | none | `agbcc.tar.gz` `05a30f03ee91` @ `02616ee06e7a` | Original assembly invocation retained; -c selects preprocessing and ARM/Thumb ELF assembly |
 
 ## armcc
 

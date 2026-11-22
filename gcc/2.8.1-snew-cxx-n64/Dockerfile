@@ -27,7 +27,7 @@ RUN curl -fsSL --retry 3 --retry-all-errors -o /opt/gcc-2.8.1-snew-cxx-n64/cc1pl
     && echo "85e3e9fa05640af67115279a992a616a1a1fec8cf56b2e58191196fbbc51853a  /opt/gcc-2.8.1-snew-cxx-n64/cc1pln64.exe" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /opt/gcc-2.8.1-snew-cxx-n64/modern-asn64.py \
-        "https://github.com/RocketRet/modern-asn64/releases/download/main-release/modern-asn64.py" \
+        "https://raw.githubusercontent.com/RocketRet/modern-asn64/20d21729ce6a2e7bc8a4a91ec9505cab0d6e50f9/modern-asn64.py" \
     && echo "7e6815e2c2c0ae0b4581ace1c5adab3d1d567f0fc729f674fc52bdd77e2240bc  /opt/gcc-2.8.1-snew-cxx-n64/modern-asn64.py" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

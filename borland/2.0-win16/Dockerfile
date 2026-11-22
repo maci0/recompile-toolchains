@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Turbo C 2.0 (win16, DOSBox) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/tc20.tar.gz \
-        "https://codeload.github.com/archaic-toolchains/tc20/tar.gz/refs/heads/main" \
-    && echo "2eca4c26c1b30ce2bd7e61573eb9f40096994405fc173c28143f06a93da269d1  /tmp/tc20.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-toolchains/tc20/tar.gz/64b5ef09a7c18b65c38902a217bcfec67c4b113b" \
+    && echo "1abebda4eab015dba7b2b816d60d4d6d5d74fd9391128bfe627d8d162f166a33  /tmp/tc20.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/tc20 \
     && tar xzf /tmp/tc20.tar.gz --no-same-owner --strip-components=1 -C /opt/tc20 \

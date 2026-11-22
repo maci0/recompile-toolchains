@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="MSVC 1.5 (win16, DOSBox) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc15.tar.gz \
-        "https://codeload.github.com/archaic-toolchains/msvc15/tar.gz/refs/heads/main" \
-    && echo "5cd1e4d9fd70fe97587fd3edfd0cebe3276e7b59ea5eb0848510f15c95d79aec  /tmp/msvc15.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-toolchains/msvc15/tar.gz/3649e12977c169bd60662362400677f28a716ef1" \
+    && echo "46db20c355a1b49869de719092d9237cee939fdf0e481e451f4f63835923f7e7  /tmp/msvc15.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc15 \
     && tar xzf /tmp/msvc15.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc15 \

@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="MSVC 9.0 (win32, wine) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc900.tar.gz \
-        "https://codeload.github.com/archaic-msvc/msvc900/tar.gz/refs/heads/master" \
-    && echo "9121d184d9cb88c13b95d3d2e770c8d8ae9d2531a5d8ea90c53a14f765e3f904  /tmp/msvc900.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-msvc/msvc900/tar.gz/c9d710cef9a3dec08d7d2dca78a3b494335a5baa" \
+    && echo "084c135403e1f46abd1db1b7059de9ae95a4304049d2428f2816818e89004b89  /tmp/msvc900.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc9.0 \
     && tar xzf /tmp/msvc900.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc9.0 \

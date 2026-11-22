@@ -21,7 +21,7 @@ RUN mkdir -p /opt/gcc-2.7.2-snew /tmp/tools && curl -fsSL --retry 3 --retry-all-
     && echo "60abe17c2562f5ae28444fe4f783fa8217d84b73e59e29cf39c41f7551d968f4  /tmp/tools/sn64-new.tar.gz" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /opt/gcc-2.7.2-snew/modern-asn64.py \
-        "https://github.com/RocketRet/modern-asn64/releases/download/main-release/modern-asn64.py" \
+        "https://raw.githubusercontent.com/RocketRet/modern-asn64/20d21729ce6a2e7bc8a4a91ec9505cab0d6e50f9/modern-asn64.py" \
     && echo "7e6815e2c2c0ae0b4581ace1c5adab3d1d567f0fc729f674fc52bdd77e2240bc  /opt/gcc-2.7.2-snew/modern-asn64.py" | sha256sum -c -
 
 RUN rm -rf /var/lib/apt/lists/* \

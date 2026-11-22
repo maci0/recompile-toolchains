@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="MSVC 1.0 (win16, DOSBox) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc10.tar.gz \
-        "https://codeload.github.com/archaic-toolchains/msvc10/tar.gz/refs/heads/main" \
-    && echo "4858446b957fe327fedbb3a511316bebc060b72f22557a47397b905522668ce9  /tmp/msvc10.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-toolchains/msvc10/tar.gz/0cd3d8a2024119b6b08b384fd3487a64a59a25eb" \
+    && echo "50b303e2dc2208a17f07dbd15773036d249a03c8646a5faf0a0848a726b8b1f7  /tmp/msvc10.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc10 \
     && tar xzf /tmp/msvc10.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc10 \

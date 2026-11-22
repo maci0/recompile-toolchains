@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Delphi 1.0 (win16, DOSBox) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/delphi10.tar.gz \
-        "https://codeload.github.com/archaic-toolchains/delphi10/tar.gz/refs/heads/main" \
-    && echo "24cd23f0ef555f3582eda27b4bb655e17215366b556dfaabd9f2ba5daf61b55e  /tmp/delphi10.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-toolchains/delphi10/tar.gz/fd12406eeaa6b44099013c5a56d083919676967c" \
+    && echo "5f47a18c64cc00e9b8d184fb7f9f223047f1e3dd00f346548be095e6f289f3db  /tmp/delphi10.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/delphi10/DELPHI \
     && tar xzf /tmp/delphi10.tar.gz --no-same-owner --strip-components=1 -C /opt/delphi10 \

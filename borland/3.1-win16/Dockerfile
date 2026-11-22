@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Turbo C++ 3.1 (win16, DOSBox) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/tc31.tar.gz \
-        "https://codeload.github.com/archaic-toolchains/tc31/tar.gz/refs/heads/main" \
-    && echo "3d534741ebdc31ffdceb87db8de3b7d494ad5c912b7cd1a4f326b4a94d0c2ba1  /tmp/tc31.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-toolchains/tc31/tar.gz/ba6af878392be5ea20f6bb54f7dd2359b3845b7b" \
+    && echo "691f508f4cb5c51d010514fd605d8c553031746e85ea730fac26e73c3a27d7f6  /tmp/tc31.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/tc31 \
     && tar xzf /tmp/tc31.tar.gz --no-same-owner --strip-components=1 -C /opt/tc31 \

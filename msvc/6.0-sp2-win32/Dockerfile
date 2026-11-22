@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="MSVC 6.0-sp2 (win32, wine) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc600_sp2.tar.gz \
-        "https://codeload.github.com/archaic-toolchains/msvc600_sp2/tar.gz/refs/heads/main" \
-    && echo "088cd189ce0ae3c7ff96a71bb3f364a397b2fe6c19e6a8f252cc575be3783574  /tmp/msvc600_sp2.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-toolchains/msvc600_sp2/tar.gz/79157a87dec5e5ff014178f817f27a70098fd862" \
+    && echo "8687378f815a857eeb84dd80db655aa1feac3e01c2774d97055ed92564d210eb  /tmp/msvc600_sp2.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/msvc6.0-sp2 \
     && tar xzf /tmp/msvc600_sp2.tar.gz --no-same-owner --strip-components=1 -C /opt/msvc6.0-sp2 \

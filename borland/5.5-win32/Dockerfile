@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
       org.opencontainers.image.description="Borland C++ 5.5 (win32, wine) toolchain image"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/bcc55.tar.gz \
-        "https://codeload.github.com/archaic-toolchains/borlandc55/tar.gz/refs/heads/main" \
-    && echo "e9319c3904303ca4424cfed855b17837d10aa9653a3d8e6329d2adb3326392b0  /tmp/bcc55.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-toolchains/borlandc55/tar.gz/fcdcaf5bc41fc166ef632329c72baf6d487b50d2" \
+    && echo "647c93fb2513255d7447e7d8c8ba1ac1eddc821de2777a58fa145b71ec5891d6  /tmp/bcc55.tar.gz" | sha256sum -c -
 
 RUN mkdir -p /opt/bcc55 \
     && tar xzf /tmp/bcc55.tar.gz --no-same-owner --strip-components=1 -C /opt/bcc55 \

@@ -19,8 +19,8 @@ RUN apt-get update \
 ENV WINEDLLOVERRIDES="msvcrt=n,b"
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/msvc600_sp5.tar.gz \
-        "https://codeload.github.com/archaic-msvc/msvc600_sp5/tar.gz/refs/heads/master" \
-    && echo "a95a9c17cbcbe0d97a3e80ef9596f12404eb28f36bab24e89aabcbe37acbbef6  /tmp/msvc600_sp5.tar.gz" | sha256sum -c -
+        "https://codeload.github.com/archaic-msvc/msvc600_sp5/tar.gz/b0b07e29108e2695eb0274c2a377a7b7d7326150" \
+    && echo "46316a1d1c531a9c1b965146f5de635ab250fee63a1ce1af5433e215a5cb586c  /tmp/msvc600_sp5.tar.gz" | sha256sum -c -
 
 RUN curl -fsSL --retry 3 --retry-all-errors -o /tmp/vc6-runtime.exe \
         "https://github.com/archaic-toolchains/vc6redist/releases/download/2026-11-10/VC6RedistSetup_deu.exe" \

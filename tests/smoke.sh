@@ -56,29 +56,6 @@ skipped=0
 # Set by wine_probe: "" until probed, then "ok" or "refused".
 wine_engine=""
 
-# manifest_field <profile> <key> — a manifest field of the profile, or empty.
-manifest_field() {
-    python3 - "$1" "$2" <<'EOF'
-import json, sys
-entry = json.load(open("sources.json")).get(sys.argv[1])
-print(entry.get(sys.argv[2], "") if entry else "")
-EOF
-}
-
-# recipe_runner <profile> — the runner its image uses (wine, wibo, ...), or
-# empty: the recipe's `runner`, unless its `env` sets REBREW_RUNNER, which
-# rebrew_run obeys (the PSY-Q 4.0-4.4 recipes name wine and set wibo).  Read
-# with awk as build.sh reads sources.json.
-recipe_runner() {
-    awk -v want="  \"$1\": {" '
-        $0 == want { inside = 1; next }
-        inside && /^  "/ { exit }
-        inside && /^      "runner": "/ { split($0, field, "\""); runner = field[4] }
-        inside && /^        "REBREW_RUNNER": "/ { split($0, field, "\""); env = field[4] }
-        END { print (env != "" ? env : runner) }
-    ' sources.json
-}
-
 # wine_probe <tag> — once per run, whether the engine lets the 32-bit
 # wineserver in <tag> create its socket.  A healthy server waits for clients
 # until `timeout` stops it (124); a refused one exits at once.
@@ -110,7 +87,7 @@ run_case() {
     artifact_name="$3"
     expect="$4"
     shift 4
-    host_dir="$(manifest_field "$profile" host_dir)"
+    host_dir="$(sh tests/manifest_field.sh "$profile" host_dir)"
     if [ -z "$host_dir" ]; then
         echo "FAIL $profile: not in sources.json" >&2
         fail=$((fail + 1))
@@ -136,7 +113,7 @@ run_case() {
         fail=$((fail + 1))
         return 0
     fi
-    runner="$(recipe_runner "$profile")"
+    runner="$(sh tests/manifest_field.sh "$profile" runner)"
     if [ "$runner" = wine ]; then
         wine_probe "$tag"
         if [ "$wine_engine" = refused ]; then
@@ -293,7 +270,7 @@ if [ "$#" -gt 0 ]; then
                 # The image's argument dialect decides the invocation: `cl`
                 # ignores `-o` and writes t.obj, so a POSIX call reads as
                 # "no object produced" for every MSVC image.
-                case "$(manifest_field "$profile" arg_style)" in
+                case "$(sh tests/manifest_field.sh "$profile" arg_style)" in
                     msvc) run_case "$profile" '/c t.c' t.obj 'COFF' ;;
                     borland) run_case "$profile" '-c t.c' t.obj '' ;;
                     dos) run_case "$profile" 't.c' t.obj '' ;;

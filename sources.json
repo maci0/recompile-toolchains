@@ -2398,6 +2398,7 @@
       "root": "delphi10/DELPHI",
       "title": "rebrew Delphi 1.0 (win16, DOSBox)",
       "description": "Delphi 1.0 (win16, DOSBox) toolchain image",
+      "binary": "/opt/delphi10/DCC.EXE",
       "entrypoint": "dcc",
       "runner": "dosbox",
       "wrapper": {
@@ -4801,7 +4802,7 @@
       "title": "rebrew GCC 2.7.2 SN0001 (N64)",
       "description": "GCC 2.7.2 SN0001 (N64) (N64, PE/x86_32 pipeline) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1n64.exe",
       "runner": "wibo",
       "wrapper": {
         "shape": "sn64_pe",
@@ -4913,7 +4914,7 @@
       "title": "rebrew GCC 2.7.2 SN0001 C++ (N64)",
       "description": "GCC 2.7.2 SN0001 C++ (N64, PE/x86_32 pipeline) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1pln64.exe",
       "runner": "wibo",
       "wrapper": {
         "shape": "sn64_pe",
@@ -5025,7 +5026,7 @@
       "title": "rebrew GCC 2.7.2 SN0004 (N64)",
       "description": "GCC 2.7.2 SN0004 (N64) (N64, PE/x86_32 pipeline) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1n64.exe",
       "runner": "wibo",
       "wrapper": {
         "shape": "sn64_pe",
@@ -5135,7 +5136,7 @@
       "title": "rebrew GCC 2.7.2 SN0006 (N64)",
       "description": "GCC 2.7.2 SN0006 (N64) (N64, PE/x86_32 pipeline) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1n64.exe",
       "runner": "wibo",
       "wrapper": {
         "shape": "sn64_pe",
@@ -5247,7 +5248,7 @@
       "title": "rebrew GCC 2.7.2 SN0006 C++ (N64)",
       "description": "GCC 2.7.2 SN0006 C++ (N64, PE/x86_32 pipeline) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1pln64.exe",
       "runner": "wibo",
       "wrapper": {
         "shape": "sn64_pe",
@@ -5341,6 +5342,7 @@
       "root": "gcc-2.7.2-snew",
       "title": "rebrew GCC 2.7.2 SNEW (N64)",
       "description": "GCC 2.7.2 SNEW (SN64, N64, native x86_64 + modern-asn64.py) toolchain image",
+      "binary": "cc1",
       "entrypoint": "cc",
       "runner": "exec",
       "wrapper": {
@@ -6156,7 +6158,7 @@
       "title": "rebrew GCC 2.8.1 SN (N64)",
       "description": "GCC 2.8.1 SN (N64) (N64, PE/x86_32 pipeline) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1n64.exe",
       "runner": "wibo",
       "wrapper": {
         "shape": "sn64_pe",
@@ -6275,7 +6277,7 @@
       "title": "rebrew GCC 2.8.1 SN C++ (N64)",
       "description": "GCC 2.8.1 SN C++ (N64, PE/x86_32 pipeline) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1pln64.exe",
       "runner": "wibo",
       "wrapper": {
         "shape": "sn64_pe",
@@ -6377,6 +6379,7 @@
       "root": "gcc-2.8.1-snew-cxx-n64",
       "title": "rebrew GCC 2.8.1 SNEW C++ (N64)",
       "description": "GCC 2.8.1 SNEW C++ (N64, PE/x86_32 + modern-asn64.py) toolchain image",
+      "binary": "cc1pln64.exe",
       "entrypoint": "cc",
       "runner": "wibo",
       "wrapper": {
@@ -6896,7 +6899,7 @@
       "title": "rebrew Apple GCC 3.1, build 1041 (macOS)",
       "description": "powerpc-apple-darwin (Apple GCC 3.1, build 1041) cross compiler (native x86_64) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1",
       "runner": "exec",
       "wrapper": {
         "shape": "apple_gcc",
@@ -7069,7 +7072,7 @@
       "title": "rebrew Apple GCC 4.0.0 build 5026 (macOS)",
       "description": "powerpc-apple-darwin (Apple GCC 4.0.0 build 5026) cross compiler (native x86_64) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1",
       "runner": "exec",
       "wrapper": {
         "shape": "apple_gcc",
@@ -7158,7 +7161,7 @@
       "title": "rebrew Apple GCC 4.0.1 build 5363 (macOS)",
       "description": "powerpc-apple-darwin (Apple GCC 4.0.1 build 5363) cross compiler (native x86_64) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "cc1",
       "runner": "exec",
       "wrapper": {
         "shape": "apple_gcc",
@@ -7247,7 +7250,7 @@
       "title": "rebrew Apple GCC 4.0.1 build 5370 (macOS)",
       "description": "powerpc-apple-darwin (Apple GCC 4.0.1 build 5370) cross compiler (native x86_64) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "powerpc-darwin-cross/bin/cc1",
       "runner": "exec",
       "wrapper": {
         "shape": "apple_gcc",
@@ -7626,6 +7629,7 @@
       "root": "icc-5.0.1",
       "title": "rebrew Intel C++ 5.0.1 (win32)",
       "description": "Intel C++ Compiler 5.0.1 build 010525Z (i386 COFF, wine/wibo) toolchain image",
+      "binary": "Bin/icl.exe",
       "entrypoint": "icl",
       "runner": "wibo",
       "wrapper": {
@@ -7698,6 +7702,7 @@
       "root": "ido-4.1",
       "title": "rebrew IDO 4.1 (N64, qemu-irix-4.0)",
       "description": "IDO 4.1 (SGI MIPS, N64 little-endian, IRIX binaries under qemu-irix-4.0) toolchain image",
+      "binary": "usr/bin/cc",
       "entrypoint": "cc",
       "runner": "exec",
       "wrapper": {
@@ -9501,7 +9506,11 @@
         "validate_source": true,
         "argv": []
       }
-    }
+    },
+    "same_compiler_as": "msvc-5.0-sp1",
+    "notes": [
+      "the archive holds `msvc-5.0-sp1`'s tree file for file except `README.md`, which names `msvc500`; whether Visual Studio 97 SP2 changed any Visual C++ file is not established"
+    ]
   },
   "msvc-5.0-sp3": {
     "family": "msvc",
@@ -9681,7 +9690,8 @@
         "validate_source": true,
         "argv": []
       }
-    }
+    },
+    "same_compiler_as": "msvc-6.0"
   },
   "msvc-6.0-sp2": {
     "family": "msvc",
@@ -9737,7 +9747,8 @@
         "validate_source": true,
         "argv": []
       }
-    }
+    },
+    "same_compiler_as": "msvc-6.0"
   },
   "msvc-6.0-sp3": {
     "family": "msvc",
@@ -10024,7 +10035,8 @@
         "url": "https://github.com/archaic-toolchains/vc6redist/releases/download/2026-11-10/VC6RedistSetup_deu.exe",
         "sha256": "c2eb91d9c4448d50e46a32fecbcc3b418706d002beab9b5f4981de552098cee7"
       }
-    ]
+    ],
+    "same_compiler_as": "msvc-6.0-sp5"
   },
   "msvc-6.0-sp5-pp": {
     "family": "msvc",
@@ -17862,7 +17874,7 @@
       "title": "rebrew PSY-Q 2.6.3 (PlayStation 1, dosemu2)",
       "description": "PSY-Q 2.6.3 (MIPS R3000, PS1, DOS binaries under dosemu2) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "dosemu2",
       "wrapper": {
         "shape": "psyq_dosemu",
@@ -17978,7 +17990,7 @@
       "title": "rebrew PSY-Q 3.3 (PlayStation 1, dosemu2)",
       "description": "PSY-Q 3.3 (MIPS R3000, PS1, DOS binaries under dosemu2) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "dosemu2",
       "wrapper": {
         "shape": "psyq_dosemu",
@@ -18072,7 +18084,7 @@
       "title": "rebrew PSY-Q 3.5 (PlayStation 1, dosemu2)",
       "description": "PSY-Q 3.5 (MIPS R3000, PS1, DOS binaries under dosemu2) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "dosemu2",
       "wrapper": {
         "shape": "psyq_dosemu",
@@ -18166,7 +18178,7 @@
       "title": "rebrew PSY-Q 3.6 (PlayStation 1, dosemu2)",
       "description": "PSY-Q 3.6 (MIPS R3000, PS1, DOS binaries under dosemu2) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "dosemu2",
       "wrapper": {
         "shape": "psyq_dosemu",
@@ -18269,7 +18281,7 @@
       "title": "rebrew PSY-Q 4.0 (PS1)",
       "description": "PSY-Q 4.0 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "wine",
       "wrapper": {
         "shape": "psyq_native",
@@ -18383,7 +18395,7 @@
       "title": "rebrew PSY-Q 4.1 (PS1)",
       "description": "PSY-Q 4.1 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "wine",
       "wrapper": {
         "shape": "psyq_native",
@@ -18497,7 +18509,7 @@
       "title": "rebrew PSY-Q 4.3 (PS1)",
       "description": "PSY-Q 4.3 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "wine",
       "wrapper": {
         "shape": "psyq_native",
@@ -18611,7 +18623,7 @@
       "title": "rebrew PSY-Q 4.4 (PS1)",
       "description": "PSY-Q 4.4 (CC1PSX + ASPSX pipeline + obj parser, PE/x86_32) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "wine",
       "wrapper": {
         "shape": "psyq_native",
@@ -18935,6 +18947,7 @@
       "root": "saturn-cygnus",
       "title": "rebrew Saturn Cygnus 2.7-96Q3 (dosemu2)",
       "description": "Cygnus 2.7-96Q3 (SH-2, Sega Saturn, DOS binaries under dosemu2) toolchain image",
+      "binary": "CC1.EXE",
       "entrypoint": "cc",
       "runner": "dosemu2",
       "wrapper": {
@@ -21083,7 +21096,8 @@
         "validate_source": true,
         "argv": []
       }
-    }
+    },
+    "same_compiler_as": "msvc-7.0"
   },
   "ido-5.3-linux": {
     "family": "ido",
@@ -24043,7 +24057,7 @@
       "title": "rebrew PSY-Q 2.6.3 (PlayStation 1, Daze 0.3.0)",
       "description": "PSY-Q 2.6.3 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "daze",
       "wrapper": {
         "shape": "daze",
@@ -24260,7 +24274,7 @@
       "title": "rebrew PSY-Q 3.3 (PlayStation 1, Daze 0.3.0)",
       "description": "PSY-Q 3.3 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "daze",
       "wrapper": {
         "shape": "daze",
@@ -24457,7 +24471,7 @@
       "title": "rebrew PSY-Q 3.5 (PlayStation 1, Daze 0.3.0)",
       "description": "PSY-Q 3.5 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "daze",
       "wrapper": {
         "shape": "daze",
@@ -24654,7 +24668,7 @@
       "title": "rebrew PSY-Q 3.6 (PlayStation 1, Daze 0.3.0)",
       "description": "PSY-Q 3.6 (MIPS R3000, PS1, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
       "entrypoint": "cc",
-      "binary": "",
+      "binary": "CC1PSX.EXE",
       "runner": "daze",
       "wrapper": {
         "shape": "daze",
@@ -24845,6 +24859,7 @@
       "root": "saturn-cygnus",
       "title": "rebrew Saturn Cygnus 2.7-96Q3 (Daze 0.3.0)",
       "description": "Cygnus 2.7-96Q3 (SH-2, Sega Saturn, DOS binaries under Daze 0.3.0 (Unicorn)) toolchain image",
+      "binary": "CC1.EXE",
       "entrypoint": "cc",
       "runner": "daze",
       "wrapper": {

@@ -9,23 +9,30 @@ the 7.1 compiler under the 7.0 tag after the manifest moved to `msvc700`.
 
 Two checks, both read-only:
 
-1. Recipe pins.  Every image's build history must contain its catalogue
-   entry's `source.sha256` in the `echo "<sha256>  <file>" | sha256sum -c`
-   line the generated recipe runs.  `MISMATCH` means the history checks other
-   sums (another source under this tag); `NO-SUMS` means it checks none (a
+1. Recipe pins.  Every image's build history must contain the sha256 of
+   every download its recipe fetches (the primary source, and any parser,
+   helper, SDK, binutils or extra pin) in the `echo "<sha256>  <file>" |
+   sha256sum -c` line the generated recipe runs.  `MISMATCH` means the
+   history checks other sums (another source under this tag, or a secondary
+   download re-pinned since the build); `NO-SUMS` means it checks none (a
    recipe from before every image downloaded a pinned source), so nothing ties
    its compiler to the pin.  Both fail.  Read from the local engine, or with
    `--registry URL` from a registry's manifest and config (no layers).
 2. Distinct compilers (local engine only: it reads the files).  The directory
    holding each image's compiler binary (the recipe's `binary`, or the
-   `C:\\...\\X.EXE` a DOSBox command runs) is hashed file by file; two entries
-   whose directories are byte-identical while their family or version differ
-   fail as `SAME-COMPILER`, unless one declares the other in `same_compiler_as`
-   (two product versions, one compiler: `msvc-1.52` and `msvc-1.5`).  A
-   declaration whose binaries differ fails as `DIFFERENT`.  Byte-identical
-   entries of one family and version print as `alias` and pass: a service pack
-   that left the compiler binaries unchanged (`msvc-6.0`, `-sp1`, `-sp2`) or a
-   second id for one tree.
+   `C:\\...\\X.EXE` a DOSBox command runs) is hashed file by file; entries
+   whose directories are byte-identical fail as `SAME-COMPILER` unless they
+   are tied together by `same_compiler_as` (one compiler under two ids: the
+   product versions `msvc-1.52` and `msvc-1.5`, or service packs that left the
+   compiler unchanged, `msvc-6.0-sp1` and `msvc-6.0`) or `variant_of` (another
+   front end from the same archive).  A same-version pair needs the
+   declaration too: an SP4 tag holding the SP6 tree claims the same version.
+   A `same_compiler_as` whose binaries differ fails as `DIFFERENT`.  Every
+   recipe names its compiler (`make test` refuses one that does not); an
+   entry without one would print `unchecked`.
+   A registry cannot answer this check: it serves layers, not files, and a
+   layer digest cannot stand in for the binaries, because each entry installs
+   under its own `/opt` root, so one compiler in two images is two layers.
 
 Images the engine or registry does not hold print as `absent` and pass: which
 images a host carries is that host's choice.  Images keep `rebrew/` as their
@@ -302,34 +309,46 @@ class Entry:
     """What the catalogue says one profile's image is."""
 
     tag: str
-    sha256: str
+    #: The sha256 of every download the recipe fetches, by pin name ("primary", ...).
+    sums: dict[str, str]
     #: The compiler version the entry says it is: family and version.
     claim: tuple[str, str]
     #: The in-image directory holding the compiler binary; "" when the recipe names none.
     compiler_dir: str
     #: The entry whose compiler binaries this one declares it shares; "" when none.
     same_compiler_as: str
+    #: The entries this one is declared to share a compiler with: its
+    #: `same_compiler_as` and its `variant_of`.
+    shares: frozenset[str]
 
 
 def entries() -> dict[str, Entry]:
     """Every catalogue entry, from the rows toolchains.json publishes."""
     sys.path.insert(0, str(REPO))
     import catalog
+    import generate
     import toolchains
 
     prefix = os.environ.get("PREFIX", "rebrew")
     found: dict[str, Entry] = {}
     for profile, entry in catalog.manifest().items():
         row = toolchains.row(profile, entry)
-        image, source = row["image"], row["source"]
-        if not isinstance(image, dict) or not isinstance(source, dict):
-            raise CheckError(f"{profile}: catalogue row has no image or source")
+        image = row["image"]
+        if not isinstance(image, dict):
+            raise CheckError(f"{profile}: catalogue row has no image")
+        pins = generate.pin_urls(entry)
+        fetches = generate.recipe(entry).get("fetch")
+        if not isinstance(fetches, list):
+            raise CheckError(f"{profile}: the recipe fetches nothing")
+        fetched = [str(fetch.get("pin", "primary")) for fetch in fetches if isinstance(fetch, dict)]
+        same = str(row.get("same_compiler_as", ""))
         found[profile] = Entry(
             tag=f"{prefix}/{str(image['tag']).removeprefix('rebrew/')}",
-            sha256=str(source["sha256"]),
+            sums={name: pins[name][1] for name in fetched},
             claim=(str(row["family"]), str(row["version"])),
             compiler_dir=compiler_dir(entry),
-            same_compiler_as=str(row.get("same_compiler_as", "")),
+            same_compiler_as=same,
+            shares=frozenset(filter(None, (same, str(row.get("variant_of", ""))))),
         )
     return found
 
@@ -370,15 +389,19 @@ def recipe_pins(
             continue
         present.append(profile)
         sums = recipe_sums(history)
-        if entry.sha256 in sums:
+        missing = [(name, sha) for name, sha in entry.sums.items() if sha not in sums]
+        if not missing:
             counts["ok"] += 1
             print(f"ok            {profile:30s} {entry.tag}")
         elif sums:
             counts["MISMATCH"] += 1
             checked = ", ".join(sorted(s[:12] for s in sums))
+            pinned = ", ".join(
+                sha[:12] if name == "primary" else f"{name} {sha[:12]}" for name, sha in missing
+            )
             print(
                 f"MISMATCH      {profile:30s} {entry.tag}: the recipe checked {checked}; "
-                f"the catalogue pins {entry.sha256[:12]}"
+                f"the catalogue pins {pinned}"
             )
         else:
             counts["NO-SUMS"] += 1
@@ -425,20 +448,35 @@ def distinct_compilers(found: dict[str, Entry], present: list[str]) -> int:
     for digest, members in sorted(groups.items()):
         if len(members) == 1:
             continue
-        # A member that declares another member of the group is accounted for.
-        undeclared = [p for p in members if found[p].same_compiler_as not in members]
-        claims = sorted({found[profile].claim for profile in undeclared})
-        names = " ".join(sorted(members))
-        if len(claims) == 1:
-            if len(undeclared) > 1:
-                same = f"identical binaries ({digest[:12]}), one claimed version"
-                print(f"alias         {names}: {same}")
+        undeclared = _untied(found, members)
+        if len(undeclared) == 1:
             continue
         failures += 1
-        said = "; ".join(" ".join(filter(None, claim)) for claim in claims)
-        print(f"SAME-COMPILER {names}: identical binaries ({digest[:12]}) claim {said}")
+        names = " ".join(sorted(members))
+        said = "; ".join(
+            sorted(" ".join(filter(None, found[p].claim)) + f" ({p})" for p in undeclared)
+        )
+        print(
+            f"SAME-COMPILER {names}: identical binaries ({digest[:12]}), "
+            f"no same_compiler_as ties {said}"
+        )
     print(f"compiler binaries, {len(present)} images: {failures} failing")
     return failures
+
+
+def _untied(found: dict[str, Entry], members: list[str]) -> list[str]:
+    """One member of each set the declarations tie together within *members*."""
+    root = {member: member for member in members}
+
+    def find(member: str) -> str:
+        while root[member] != member:
+            member = root[member]
+        return member
+
+    for member in members:
+        for other in found[member].shares & set(members):
+            root[find(member)] = find(other)
+    return sorted({find(member) for member in members})
 
 
 def main(argv: list[str]) -> int:
@@ -455,7 +493,7 @@ def main(argv: list[str]) -> int:
         return 2
     failures, present = recipe_pins(found, sorted(argv) if argv else sorted(found), registry)
     if registry:
-        print("compiler binaries: not compared (they need the local engine)")
+        print("compiler binaries: not compared (a registry serves layers, not files)")
     else:
         failures += distinct_compilers(found, present)
     return 1 if failures else 0

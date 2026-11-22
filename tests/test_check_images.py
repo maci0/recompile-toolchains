@@ -131,11 +131,12 @@ class TestRecipePins(unittest.TestCase):
         sums = images.recipe_sums(images.history_of(_config()))
         branch = next(s for s in sums if s.startswith("618e876bc064"))
         config = _fixture("config.json").decode()
-        rebuilt = config.replace(branch, images.entries()["msvc-7.1"].sha256).encode()
+        rebuilt = config.replace(branch, images.entries()["msvc-7.1"].sums["primary"]).encode()
         with _registry({"7.1-win32"}, rebuilt):
             code, out = self._run(["--registry", _REGISTRY, "msvc-7.1"])
         self.assertEqual(code, 0, out)
         self.assertIn("ok            msvc-7.1", out)
+        self.assertIn("compiler binaries: not compared (a registry serves layers", out)
 
     def test_a_build_from_before_a_repin_fails(self) -> None:
         # The image is a build of msvc-7.1 from the branch archive of msvc710,
@@ -183,7 +184,8 @@ class TestDistinctCompilers(unittest.TestCase):
         catalogue = images.entries()
         histories = {
             catalogue[profile].tag: [
-                f'RUN echo "{catalogue[profile].sha256}  /tmp/src.tar.gz" | sha256sum -c -'
+                f'RUN echo "{sha}  /tmp/src.tar.gz" | sha256sum -c -'
+                for sha in catalogue[profile].sums.values()
             ]
             for profile in profiles
         }
@@ -201,8 +203,8 @@ class TestDistinctCompilers(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertRegex(
             out,
-            r"SAME-COMPILER msvc-7\.0 msvc-7\.1: identical binaries \([0-9a-f]{12}\) "
-            r"claim msvc 7\.0; msvc 7\.1",
+            r"SAME-COMPILER msvc-7\.0 msvc-7\.1: identical binaries \([0-9a-f]{12}\), "
+            r"no same_compiler_as ties msvc 7\.0 \(msvc-7\.0\); msvc 7\.1 \(msvc-7\.1\)",
         )
 
     def test_a_shared_driver_with_other_passes_is_distinct(self) -> None:
@@ -217,22 +219,61 @@ class TestDistinctCompilers(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("compiler binaries, 2 images: 0 failing", out)
 
-    def test_ids_of_one_claimed_version_print_as_alias(self) -> None:
-        # A second id for one tree, and service packs that left cl/c1/c2 alone.
-        same = _tree({"cl.exe": b"13.00.9466"})
+    def test_two_service_packs_with_one_compiler_fail_undeclared(self) -> None:
+        # Both claim 6.0: an SP4 tag holding the SP6 tree is the 7.0/7.1 mistake
+        # one level down, and nothing but a declaration may excuse it.
+        vc6 = _tree({"CL.EXE": b"12.00.8804", "C2.DLL": b"sp6"})
+        code, out = self._run(
+            {"rebrew/msvc:6.0-sp4-win32": vc6, "rebrew/msvc:6.0-sp6-win32": vc6},
+            ["msvc-6.0-sp4", "msvc-6.0-sp6"],
+        )
+        self.assertEqual(code, 1)
+        self.assertRegex(
+            out,
+            r"SAME-COMPILER msvc-6\.0-sp4 msvc-6\.0-sp6: identical binaries \([0-9a-f]{12}\), "
+            r"no same_compiler_as ties msvc 6\.0 \(msvc-6\.0-sp4\); msvc 6\.0 \(msvc-6\.0-sp6\)",
+        )
+
+    def test_declared_service_packs_with_one_compiler_pass(self) -> None:
+        # sources.json: msvc-6.0-sp1 and -sp2 same_compiler_as msvc-6.0.
         vc6 = _tree({"CL.EXE": b"12.00.8168"})
         code, out = self._run(
             {
-                "rebrew/msvc:7.0-win32": same,
-                "rebrew/msvc:7.0-rtm-win32": same,
                 "rebrew/msvc:6.0-win32": vc6,
                 "rebrew/msvc:6.0-sp1-win32": vc6,
+                "rebrew/msvc:6.0-sp2-win32": vc6,
             },
-            ["msvc-7.0", "msvc-7.0-rtm", "msvc-6.0", "msvc-6.0-sp1"],
+            ["msvc-6.0", "msvc-6.0-sp1", "msvc-6.0-sp2"],
         )
         self.assertEqual(code, 0, out)
-        self.assertIn("alias         msvc-7.0 msvc-7.0-rtm: identical binaries", out)
-        self.assertIn("alias         msvc-6.0 msvc-6.0-sp1: identical binaries", out)
+        self.assertIn("declared      msvc-6.0-sp1 msvc-6.0: identical binaries", out)
+        self.assertIn("declared      msvc-6.0-sp2 msvc-6.0: identical binaries", out)
+
+    def test_a_variant_shares_its_base_compiler(self) -> None:
+        # watcom-11.0-cxx is variant_of watcom-11.0: the same tree, wpp386 beside wcc386.
+        tree = _tree({"wcc386.exe": b"c", "wpp386.exe": b"c++"})
+        code, out = self._run(
+            {"rebrew/watcom:11.0-win32": tree, "rebrew/watcom:11.0-cxx-win32": tree},
+            ["watcom-11.0", "watcom-11.0-cxx"],
+        )
+        self.assertEqual(code, 0, out)
+        self.assertNotIn("SAME-COMPILER", out)
+
+    def test_a_repinned_secondary_download_fails(self) -> None:
+        # gcc-2.7.2-snew fetches its compiler and modern-asn64.py; the history
+        # checks only the compiler's sum.
+        catalogue = images.entries()
+        entry = catalogue["gcc-2.7.2-snew"]
+        history = [f'RUN echo "{entry.sums["primary"]}  /tmp/src.tar.gz" | sha256sum -c -']
+        out = io.StringIO()
+        with _engine({entry.tag: history}, {}), contextlib.redirect_stdout(out):
+            code = images.recipe_pins(catalogue, ["gcc-2.7.2-snew"], "")[0]
+        self.assertEqual(code, 1)
+        self.assertIn(f"the catalogue pins extra0 {entry.sums['extra0'][:12]}", out.getvalue())
+
+    def test_every_entry_names_its_compiler(self) -> None:
+        unchecked = sorted(p for p, e in images.entries().items() if not e.compiler_dir)
+        self.assertEqual(unchecked, [], "recipes without a compiler binary")
 
     def test_a_dosbox_compiler_is_compared_too(self) -> None:
         # The DOSBox recipes name no `binary`; their command runs C:\BIN\CL.EXE.

@@ -178,7 +178,7 @@ The recipe fields:
 | `steps` | the install operations, in order: `tar`, `unzip`, `7z`, `cp`, `mkdir`, `chmod`, `link`, `guard`, `check_run`, `script`, `rm` |
 | `env` | image-level `ENV` (the wrapper's own environment goes in `wrapper`) |
 | `root` | the install directory under `/opt` |
-| `binary` | the driver inside it, relative, or an absolute path for a shared prefix such as `/opt/cross` |
+| `binary` | the driver inside it, relative, or an absolute path for a shared prefix such as `/opt/cross`; for a pipeline with no driver, its compiler stage (`CC1PSX.EXE`, `cc1n64.exe`). `make images` compares the directory holding it, so every recipe names one |
 | `entrypoint` | the name it is installed as in `/usr/local/bin` |
 | `runner` | `exec` (native), `wine`, `wibo`: picks `rebrew_exec` or `rebrew_run` |
 | `wrapper` | how the entrypoint is generated (below) |
@@ -413,14 +413,19 @@ months after `msvc-7.0` moved to `msvc700`.  Run `make images` whenever
 toolchains are renamed or re-pinned, and against the registry a service pulls
 from (`make images REGISTRY=http://<host>:<port>`) before and after
 publishing (nothing in CI can do it; it needs Docker or the registry).  It
-fails on an image whose build history does not verify its entry's
-`source.sha256` (`MISMATCH`, or `NO-SUMS` for a recipe that verified
-nothing), on byte-identical compiler binaries under two entries that claim
-different compiler versions (`SAME-COMPILER`, local images only; ids of one
-family and version that share binaries print as `alias`), unless one declares
-the other in `same_compiler_as`; on a declaration whose binaries differ
-(`DIFFERENT`); and on an image
-without the compiler directory its recipe names (`NO-COMPILER`).  Its
+fails on an image whose build history does not verify the sha256 of every
+download its recipe fetches (`MISMATCH`, or `NO-SUMS` for a recipe that
+verified nothing), on byte-identical compiler binaries under two entries
+(`SAME-COMPILER`, local images only) unless `same_compiler_as` or
+`variant_of` ties them, whatever version they claim (an SP4 tag holding the
+SP6 tree claims 6.0 like the tree it replaced); on a declaration whose
+binaries differ (`DIFFERENT`); and on an image without the compiler directory
+its recipe names (`NO-COMPILER`).  The compiler directory is the one holding
+the recipe's `binary`, so every recipe names one, a pipeline its compiler
+stage (`CC1PSX.EXE`, `cc1n64.exe`, `cc1`); `make test` refuses a recipe that
+does not.  A registry answers the pin check only: it serves layers, not
+files, and each entry installs under its own `/opt` root, so equal compilers
+in two images are unequal layers.  Its
 `absent` lines list every profile with no image under its **current** tag: a
 rename that updates the manifest but leaves the old tag behind is invisible
 otherwise, which is how `ido/5.3-linux` → `ido/5.3-n64` once ended up with a
@@ -433,11 +438,11 @@ manifest entry and no image.
 | `family` | image namespace and directory prefix (`mwcc` → `rebrew/mwcc:…`) |
 | `host_dir` | `<family>/<version>-<platform>`; the Dockerfile lives here |
 | `url`, `sha256` | the primary pinned download, verified inside the build |
-| `commit` | the git commit a branch-pinned URL came from; `""` for release assets |
+| `commit` | the git commit a GitHub archive URL names; `""` for release assets |
 | `recipe` | everything the Dockerfile is rendered from: base, apt, fetch, steps, env, root, binary, entrypoint, runner, wrapper, labels (see step 3) |
 | `notes` | optional authored documentation for the image: the catalog's Notes column, verbatim.  It lives here, not in the recipe, because re-deriving a recipe rewrites it. Anything the image does not render belongs at the profile level. |
 | `aliases` | extra names `build.sh` accepts for this profile |
-| `same_compiler_as` | optional: the profile whose compiler binaries this one ships byte for byte.  Two product versions, one compiler: they produce identical objects (`msvc-1.52` names `msvc-1.5`, both C/C++ 8.00c).  Published in `toolchains.json`; `make images` fails if the binaries differ |
+| `same_compiler_as` | optional: the profile whose compiler binaries this one ships byte for byte, so the two produce identical objects: two product versions (`msvc-1.52` names `msvc-1.5`, both C/C++ 8.00c), service packs that left the compiler alone (`msvc-6.0-sp1` and `-sp2` name `msvc-6.0`), or a second id for one archive (`msvc-7.0-rtm` names `msvc-7.0`).  Published in `toolchains.json`; `make images` fails if the binaries differ, and fails byte-identical binaries that no declaration ties |
 | `*_url`/`*_sha256`/`*_commit` | additional pinned sources the image needs |
 
 ## Consumer registration and qualification

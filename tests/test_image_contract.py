@@ -210,12 +210,13 @@ class TestManifest(unittest.TestCase):
             # the recipes as a whole.
             self.assertNotEqual(entry["recipe"], other["recipe"], f"{profile}: same as {base}")
 
-    def test_same_compiler_names_another_version_of_the_family(self) -> None:
-        """`same_compiler_as` declares two product versions with one compiler.
+    def test_same_compiler_names_another_entry_of_the_family(self) -> None:
+        """`same_compiler_as` declares one compiler under two ids.
 
-        `make images` verifies the binaries; this pins the declaration itself:
-        it names a real, undeclared entry of the same family and another
-        version (one version under two ids needs no declaration).
+        Two product versions (`msvc-1.52`, `msvc-1.5`) or service packs that
+        left the compiler unchanged (`msvc-6.0-sp1`, `msvc-6.0`).  `make images`
+        verifies the binaries; this pins the declaration itself: it names a
+        real, undeclared entry of the same family.
         """
         rows = {
             profile: toolchains.row(profile, entry) for profile, entry in catalog.manifest().items()
@@ -227,7 +228,6 @@ class TestManifest(unittest.TestCase):
             self.assertIn(other, rows, f"{profile}: same_compiler_as names nothing")
             self.assertNotIn("same_compiler_as", rows[other], f"{profile}: {other} declares too")
             self.assertEqual(rows[other]["family"], row["family"], f"{profile}: another family")
-            self.assertNotEqual(rows[other]["version"], row["version"], f"{profile}: one version")
 
     def test_every_dockerfile_has_a_manifest_entry(self) -> None:
         """Reverse sweep: a Dockerfile whose download pins nothing is a gap."""

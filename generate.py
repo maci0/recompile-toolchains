@@ -38,7 +38,8 @@ The recipe schema, per profile under `"recipe"`:
     root        the image's install directory under /opt (defaults to the
                 `<version>-<platform>` directory name); unused when `binary` is
                 absolute
-    binary      path of the compiler, relative to /opt/<root> — or absolute
+    binary      path of the compiler (a pipeline's compiler stage), relative to
+                /opt/<root> — or absolute
                 when the wrapper reaches a shared prefix (`/opt/cross/bin/gcc`)
     wrapper     {"shape": "passthrough"|"normalising", "validate_source": bool,
                  "set_e": bool,

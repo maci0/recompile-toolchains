@@ -109,13 +109,16 @@ resolve (scheduled weekly in CI, since an upstream deleting an asset must not
 look like a broken manifest).
 
 `make images` checks images already built: each one's build history must
-verify its catalogue entry's `source.sha256`, and two entries that claim
-different compiler versions must not hold byte-identical compiler binaries
-unless one declares the other in `same_compiler_as` (two product versions,
-one compiler, identical objects: `msvc-1.52` and `msvc-1.5`), which it then
-verifies.  It
+verify the sha256 of every download its recipe fetches, and no two entries
+may hold byte-identical compiler binaries unless one declares the other in
+`same_compiler_as` (one compiler under two ids, identical objects: the
+product versions `msvc-1.52` and `msvc-1.5`, or `msvc-6.0-sp1` and
+`msvc-6.0`, whose service pack left the compiler alone) or `variant_of`,
+which it then verifies.  It
 reads the local engine, or a registry with `make images REGISTRY=<url>`
-(manifest and config only, so the binary comparison needs local images).
+(manifest and config only, so the binary comparison needs local images: each
+entry installs under its own `/opt` root, so a layer digest cannot stand in
+for the files).
 A tag built before a re-pin keeps serving the old compiler until it is
 rebuilt; this is the check that sees it.  Run it before publishing.
 

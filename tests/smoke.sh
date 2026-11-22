@@ -65,13 +65,17 @@ print(entry.get(sys.argv[2], "") if entry else "")
 EOF
 }
 
-# recipe_runner <profile> — the runner its recipe names (wine, wibo, ...), or
-# empty; read with awk as build.sh reads sources.json.
+# recipe_runner <profile> — the runner its image uses (wine, wibo, ...), or
+# empty: the recipe's `runner`, unless its `env` sets REBREW_RUNNER, which
+# rebrew_run obeys (the PSY-Q 4.0-4.4 recipes name wine and set wibo).  Read
+# with awk as build.sh reads sources.json.
 recipe_runner() {
     awk -v want="  \"$1\": {" '
         $0 == want { inside = 1; next }
         inside && /^  "/ { exit }
-        inside && /^      "runner": "/ { split($0, field, "\""); print field[4]; exit }
+        inside && /^      "runner": "/ { split($0, field, "\""); runner = field[4] }
+        inside && /^        "REBREW_RUNNER": "/ { split($0, field, "\""); env = field[4] }
+        END { print (env != "" ? env : runner) }
     ' sources.json
 }
 

@@ -869,7 +869,7 @@
         "tool_root": null
       },
       "arch": "aarch64",
-      "bits": 32
+      "bits": 64
     },
     {
       "id": "clang-4.0.1",
@@ -895,7 +895,7 @@
         "tool_root": null
       },
       "arch": "aarch64",
-      "bits": 32
+      "bits": 64
     },
     {
       "id": "clang-8.0.0",
@@ -921,7 +921,7 @@
         "tool_root": null
       },
       "arch": "aarch64",
-      "bits": 32
+      "bits": 64
     },
     {
       "id": "clang-9.0.0",
@@ -947,7 +947,7 @@
         "tool_root": null
       },
       "arch": "aarch64",
-      "bits": 32
+      "bits": 64
     },
     {
       "id": "delphi-1.0",
@@ -1076,7 +1076,7 @@
         "obj_ext": ".o",
         "tool_root": null
       },
-      "arch": "x86_16",
+      "arch": "x86",
       "bits": 32
     },
     {
@@ -3848,7 +3848,7 @@
         "tool_root": null
       },
       "arch": "mos6502",
-      "bits": 32
+      "bits": 8
     },
     {
       "id": "llvm-mos-23.3.0-nes",
@@ -3874,7 +3874,7 @@
         "tool_root": null
       },
       "arch": "mos6502",
-      "bits": 32
+      "bits": 8
     },
     {
       "id": "mingw-14.2.0",

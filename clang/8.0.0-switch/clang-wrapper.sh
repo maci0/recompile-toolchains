@@ -5,4 +5,4 @@
 # shellcheck source=base/wrapper-common.sh
 . /usr/local/lib/rebrew/wrapper-common.sh
 
-rebrew_exec /opt/clang-8.0.0/bin/clang "$@"
+rebrew_exec /opt/clang-8.0.0/bin/clang -target aarch64-linux-elf "$@"

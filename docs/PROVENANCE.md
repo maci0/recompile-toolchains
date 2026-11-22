@@ -42,7 +42,7 @@ listed here, so a new upstream cannot arrive undocumented.
 | `downloads.sourceforge.net/project/sdcc` | SDCC versioned native Linux release | GPL-2.0-or-later compiler; runtime exception and component terms | 4 |
 | `github.com/ChrisNonyminus` | `ChrisNonyminus/powerpc-darwin-cross`: Apple cc1/cc1plus cross builds (powerpc-apple-darwin) | GPL (Apple GCC sources) | 4 |
 | `github.com/open-watcom` | Open Watcom v2 release snapshots | Sybase Open Watcom licence | 4 |
-| `ppa.launchpadcontent.net/tkchia/build-ia16` | Dated IA-16 GCC, binutils, newlib and libi86 packages | GPL compiler/binutils; runtime exceptions and component terms | 1 |
+| `ppa.launchpadcontent.net/tkchia/build-ia16` | IA-16 GCC, binutils, newlib and libi86 packages from the PPA pool, which drops superseded builds; no dated mirror holds them yet | GPL compiler/binutils; runtime exceptions and component terms | 1 |
 | `releases.llvm.org` | LLVM's own release host, for the prebuilt clang tarballs that the 3.9.1/4.0.1/8.0.0/9.0.0 GitHub releases do not carry | Apache-2.0 with LLVM exception | 4 |
 | `ftp.gnu.org` | GNU GCC release tarballs, compiled inside the image | GPL | 3 |
 | `github.com/llvm` | LLVM/Clang GitHub release assets | Apache-2.0 with LLVM exception | 3 |

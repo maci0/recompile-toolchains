@@ -60,6 +60,13 @@ class, and `make images` checks the images a host holds.  Open:
 - `msvc-9.0-sp1` is withdrawn: its archive's compiler targets Itanium.
 - `make images` cannot read ACK objects (no machine field), and cannot tell a
   32-bit compiler under the ia16 row from ia16-elf (both write ELF32 i386).
+- Docker 29.4.2 cannot run the Wine images under its default seccomp profile:
+  it ships moby/profiles seccomp v0.2.2, whose commit `7158007a83` answers
+  socketcall(2) with ENOSYS, and the images' 32-bit wineserver exits with
+  "socket: Function not implemented".  Docker 29.4.3 (seccomp v0.2.3, which
+  reverts it in `3c28324314`) is the first release after it that runs them,
+  as 29.4.1 (seccomp v0.1.0) did.  On 29.4.2 a Wine image runs only with
+  `--security-opt seccomp=unconfined` or a profile that allows socketcall.
 
 ## Build
 

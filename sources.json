@@ -10035,8 +10035,7 @@
         "url": "https://github.com/archaic-toolchains/vc6redist/releases/download/2026-11-10/VC6RedistSetup_deu.exe",
         "sha256": "c2eb91d9c4448d50e46a32fecbcc3b418706d002beab9b5f4981de552098cee7"
       }
-    ],
-    "same_compiler_as": "msvc-6.0-sp5"
+    ]
   },
   "msvc-6.0-sp5-pp": {
     "family": "msvc",

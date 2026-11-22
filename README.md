@@ -144,7 +144,11 @@ rebuilt; this is the check that sees it.  Run it before publishing.
 `make smoke` is the Docker-requiring counterpart: it builds one image per
 runtime class and compiles with it, which is how "the build succeeded but the
 compiler emitted nothing" gets caught (see below).  It is not part of
-`make test` because it needs network and, for the dosemu2 family, `/dev/kvm`.
+`make test` because it needs network and, for the dosemu2 family, `/dev/kvm`
+(skipped with a line where it is missing).  On an engine whose default
+seccomp profile refuses 32-bit sockets (Docker 29.4.2), it runs the Wine cases
+with `--security-opt seccomp=unconfined` and says so; its last line counts the
+cases that ran, ran unconfined, were skipped and failed.
 
 Behavioral tests (`make test`) pin the contracts: the wrapper
 runner/watchdog behavior via stub runners; the image matrix itself (every Dockerfile has a complete manifest pin that also

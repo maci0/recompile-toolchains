@@ -14,6 +14,14 @@
 # dosemu2 images additionally need /dev/kvm (GitHub's ubuntu runners have it)
 # and are skipped with a message where it is missing, so the same script runs
 # on a developer machine and in CI.
+#
+# Wine images need an engine whose default seccomp profile lets a 32-bit
+# process create a socket: Docker 29.4.2 ships moby/profiles seccomp v0.2.2,
+# which answers socketcall(2) with ENOSYS, so every wineserver (32-bit here)
+# dies with "socket: Function not implemented" (reverted in v0.2.3, Docker
+# 29.4.3).  The first Wine case probes the engine; where it refuses, the Wine
+# cases run with `--security-opt seccomp=unconfined` and say so.  The last
+# line counts the cases that ran, ran unconfined, were skipped and failed.
 set -eu
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
@@ -42,6 +50,11 @@ trap 'rm -rf "$work"' EXIT
 chmod 777 "$work"
 
 fail=0
+ran=0
+unconfined=0
+skipped=0
+# Set by wine_probe: "" until probed, then "ok" or "refused".
+wine_engine=""
 
 # manifest_field <profile> <key> — a manifest field of the profile, or empty.
 manifest_field() {
@@ -50,6 +63,35 @@ import json, sys
 entry = json.load(open("sources.json")).get(sys.argv[1])
 print(entry.get(sys.argv[2], "") if entry else "")
 EOF
+}
+
+# recipe_runner <profile> — the runner its recipe names (wine, wibo, ...), or
+# empty; read with awk as build.sh reads sources.json.
+recipe_runner() {
+    awk -v want="  \"$1\": {" '
+        $0 == want { inside = 1; next }
+        inside && /^  "/ { exit }
+        inside && /^      "runner": "/ { split($0, field, "\""); print field[4]; exit }
+    ' sources.json
+}
+
+# wine_probe <tag> — once per run, whether the engine lets the 32-bit
+# wineserver in <tag> create its socket.  A healthy server waits for clients
+# until `timeout` stops it (124); a refused one exits at once.
+wine_probe() {
+    [ -z "$wine_engine" ] || return 0
+    if docker run --rm --network=none --entrypoint timeout "$1" \
+        3 /usr/lib/wine/wineserver32 -f -p0 >"$work/probe.log" 2>&1; then
+        _status=0
+    else
+        _status=$?
+    fi
+    if [ "$_status" -ne 124 ] && grep -q 'socket: Function not implemented' "$work/probe.log"; then
+        wine_engine=refused
+        echo "-- this engine's seccomp profile refuses a 32-bit socket (wineserver: socket: Function not implemented); Wine cases run with --security-opt seccomp=unconfined"
+    else
+        wine_engine=ok
+    fi
 }
 
 # run_case <profile> <arguments> <artifact> <expected-fragment> [extra docker args...]
@@ -67,7 +109,7 @@ run_case() {
     host_dir="$(manifest_field "$profile" host_dir)"
     if [ -z "$host_dir" ]; then
         echo "FAIL $profile: not in sources.json" >&2
-        fail=1
+        fail=$((fail + 1))
         return 0
     fi
     tag="rebrew/${host_dir%%/*}:${host_dir#*/}"
@@ -83,18 +125,27 @@ run_case() {
             ;;
     esac
     rm -f "$work/t.o" "$work/t.obj" "$work/t.OBJ" "$work/T.OBJ" "$work/t.EXE" "$work/T.EXE"
+    ran=$((ran + 1))
     if ! ./build.sh "$host_dir" >"$work/build.log" 2>&1; then
         echo "FAIL $profile: build failed" >&2
         tail -20 "$work/build.log" >&2
-        fail=1
+        fail=$((fail + 1))
         return 0
+    fi
+    runner="$(recipe_runner "$profile")"
+    if [ "$runner" = wine ]; then
+        wine_probe "$tag"
+        if [ "$wine_engine" = refused ]; then
+            set -- "$@" --security-opt seccomp=unconfined
+            unconfined=$((unconfined + 1))
+        fi
     fi
     # shellcheck disable=SC2086  # args are a deliberately word-split list
     if ! docker run --rm "$@" -v "$work":/work -w /work "$tag" \
         $args >"$work/compile.log" 2>&1; then
         echo "FAIL $profile: compile failed" >&2
         tail -20 "$work/compile.log" >&2
-        fail=1
+        fail=$((fail + 1))
         return 0
     fi
     # DOSBox keeps the stem's case and uppercases the extension (t.OBJ), and
@@ -103,20 +154,20 @@ run_case() {
     if [ -z "$artifact" ] || [ ! -s "$artifact" ]; then
         echo "FAIL $profile: no object produced" >&2
         tail -20 "$work/compile.log" >&2
-        fail=1
+        fail=$((fail + 1))
         return 0
     fi
     # Identify the target as well as checking that the compiler emitted bytes.
     kind="$(file -b "$artifact")"
     if [ -n "$expect" ] && ! printf '%s' "$kind" | grep -q "$expect"; then
         echo "FAIL $profile: object is '$kind' (wanted $expect)" >&2
-        fail=1
+        fail=$((fail + 1))
         return 0
     fi
     if [ "$profile" = "delphi-1.0" ]; then
         delphi_module_names "$tag"
         if [ "$names_failed" -ne 0 ]; then
-            fail=1
+            fail=$((fail + 1))
             return 0
         fi
         kind="$kind (module names ok)"
@@ -128,7 +179,7 @@ run_case() {
                 >"$work/compile.log" 2>&1; then
                 echo "FAIL $profile: upstream maspsx regression tests failed" >&2
                 tail -20 "$work/compile.log" >&2
-                fail=1
+                fail=$((fail + 1))
                 return 0
             fi
             ;;
@@ -139,7 +190,7 @@ run_case() {
             if ! docker run --rm -v "$work":/work -w /work "$tag" \
                 -o t.o -c t.c >"$work/compile.log" 2>&1; then
                 echo "FAIL $profile: cannot replace an output named before the source" >&2
-                fail=1
+                fail=$((fail + 1))
                 return 0
             fi
             case "$profile" in
@@ -149,7 +200,7 @@ run_case() {
                         -o t.c -c t.c >"$work/compile.log" 2>&1 \
                         || ! cmp -s "$work/t.c" "$work/expected-source"; then
                         echo "FAIL $profile: source/output collision was not refused safely" >&2
-                        fail=1
+                        fail=$((fail + 1))
                         return 0
                     fi
                     ;;
@@ -164,12 +215,12 @@ run_case() {
             if docker run --rm -v "$work":/work -w /work "$tag" \
                 -o t.o -c t.c >"$work/compile.log" 2>&1; then
                 echo "FAIL $profile: accepted invalid C" >&2
-                fail=1
+                fail=$((fail + 1))
                 return 0
             fi
             if ! cmp -s "$work/t.o" "$work/expected"; then
                 echo "FAIL $profile: failed compile replaced existing output" >&2
-                fail=1
+                fail=$((fail + 1))
                 return 0
             fi
             ;;
@@ -261,6 +312,7 @@ else
             run_case "$profile" "$args" "$artifact" "$expect" --device /dev/kvm
         else
             echo "-- skipping $profile: no /dev/kvm on this host"
+            skipped=$((skipped + 1))
         fi
     done <<'CASES'
 ido-7.1|-c t.c -o t.o|t.o|MIPS|
@@ -286,5 +338,6 @@ psyq-3.3-daze-0.3.0|-c t.c -o t.o|t.o|MIPS|
 CASES
 fi
 
+echo "smoke: $ran cases ran ($unconfined with seccomp=unconfined), $skipped skipped, $fail failed"
 [ "$fail" -eq 0 ] || { echo "smoke: FAILED" >&2; exit 1; }
-echo "smoke: all cases passed"
+echo "smoke: all cases that ran passed"

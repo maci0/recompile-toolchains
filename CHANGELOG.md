@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- The CI `smoke` job failed on every run since the hosted runner moved to ubuntu-26.04 (2026-11-21): its Docker 29.4.2 ships moby/profiles seccomp v0.2.2, whose default profile answers socketcall(2) with ENOSYS, so the 32-bit wineserver of every Wine image exits with "socket: Function not implemented" and `msvc-6.0-sp6`, `borland-5.6` and `psyq-4.6` failed; the images were sound (the same cases pass under `--security-opt seccomp=unconfined` there, and under the v0.2.3 profile, which reverted the rule and ships in Docker 29.4.3). `tests/smoke.sh` probes the engine with the first Wine image's wineserver; where it is refused, the Wine cases run with `seccomp=unconfined` and the run says so. The last line counts the cases that ran, ran unconfined, were skipped (no `/dev/kvm`) and failed. Any host on Docker 29.4.2 cannot run the Wine images under the default profile.
+
 ## [1.19.0] - 2026-11-22
 
 ### Changed

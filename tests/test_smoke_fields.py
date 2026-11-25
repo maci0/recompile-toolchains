@@ -114,6 +114,16 @@ done
             if call.startswith("run "):
                 self.assertIn(f" {tag} ", call)
 
+    def test_explicit_dosemu_profile_requires_kvm(self) -> None:
+        output, calls = self.run_smoke("psyq-3.3")
+        if Path("/dev/kvm").exists():
+            runs = [call for call in calls if call.startswith("run ")]
+            self.assertEqual(len(runs), 1, calls)
+            self.assertIn(" --device /dev/kvm ", runs[0])
+        else:
+            self.assertIn("skipping psyq-3.3: no /dev/kvm", output)
+            self.assertEqual(calls, [])
+
 
 if __name__ == "__main__":
     unittest.main()

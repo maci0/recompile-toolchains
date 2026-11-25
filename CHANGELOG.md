@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- D3-data7-057. Every dosemu2 smoke selection mounts `/dev/kvm` when present and skips the case when the device is absent.
 - D3-data7-056. The smoke compiler and Wine probe run the image built under the requested `PREFIX`.
 - D3-data7-052 and D3-data7-053. The PSY-Q, SN64 PE and Daze entrypoints pass macro and include options to the host preprocessor in the caller's working directory. A failed preprocess stops the wrapper before the compiler or assembler runs.
 - D3-data7-009. The image check accepts ELF32 i386 for `x86_16` only under the ia16 GCC profile. The same object now fails the MSVC 1.52 Win16 fixture with `WRONG-TARGET`.

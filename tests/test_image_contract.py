@@ -428,7 +428,15 @@ class TestBases(unittest.TestCase):
                     )
             # A base on an OS image switches its sources; one on a base inherits them.
             if re.search(r"^FROM \S+@\$\{\w+_DIGEST\}", text, re.MULTILINE):
-                self.assertRegex(text, r"URIs: https?://snapshot\.(debian\.org|ubuntu\.com)/", name)
+                if name == "base-noble":
+                    self.assertIn("URIs: mirror+file:/etc/apt/ubuntu-mirrors.list", text)
+                    self.assertIn(
+                        r"https://archive.ubuntu.com/ubuntu/\ttype:deb priority:1\n"
+                        r"https://snapshot.ubuntu.com/ubuntu/%s/\n",
+                        text,
+                    )
+                else:
+                    self.assertIn("URIs: http://snapshot.debian.org/", text)
                 self.assertIn('Acquire::Check-Valid-Until "false";', text, name)
 
 

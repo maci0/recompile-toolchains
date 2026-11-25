@@ -6,6 +6,7 @@
 
 ### Fixed
 
+- Ubuntu-based images can fetch package files from the Ubuntu archive when the snapshot service refuses a download. APT verifies each file against the dated, signed snapshot index.
 - The SN64 GCC 2.7.2 SN0001 and SN0006 images make their compiler directory readable and traversable by the runtime user after extracting the pinned archives. This fixes permission errors in both C and C++ compiles.
 
 - D3-data7-054. Native and PE compiler watchdog timeouts retain exit status 124 through staged wrappers and still name the timeout setting.

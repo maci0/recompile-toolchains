@@ -87,8 +87,9 @@ default, and `build.sh` honours it, so an image never inherits a runtime it does
 not use.  The bases pin their OS image by digest and install distribution
 packages at exact versions from a dated snapshot archive (snapshot.debian.org,
 snapshot.ubuntu.com, timestamps in the base Dockerfiles); the images keep those
-sources, so a toolchain's own `apt` packages come from the same archive state
-rather than the live mirror.  Naming is normalized everywhere: a toolchain
+sources for their toolchain packages. On Ubuntu, APT can also fetch a package
+file from the Ubuntu archive and verifies it against the signed snapshot index.
+Naming is normalized everywhere: a toolchain
 lives in `<family>/<version>-<platform>` (platform suffixes such as `win16`,
 `win32`, `linux-x64`, `msdos`, a CPU such as `z80`, or the console: `n64`,
 `ps1`, `ps2`, `gba`, `nds`, `3ds`, `psp`, `gc`, `wii`, `wiiu`, `dreamcast`,

@@ -38,8 +38,12 @@ LABEL org.opencontainers.image.source="https://github.com/maci0/rebrew" \
 
 # dosemu2's runtime libraries are ordinary Ubuntu packages, installed at exact
 # versions from the snapshot base-noble's sources name; the PPA-only packages
-# below are pinned by URL and sha256.
-RUN apt-get -o Acquire::Retries=3 update \
+# below are pinned by URL and sha256. The dosemu2, FreeDOS++ kernel and dj64 DPMI
+# host builds come from the two PPAs used by decomp.me. archaic-toolchains/dosemu2-noble
+# keeps copies because the PPAs delete superseded builds.
+# A retry reuses indexes already downloaded if the snapshot service returns 503.
+# Keep the signed lists through both installs, then remove them in this layer.
+RUN (apt-get --error-on=any update || apt-get --error-on=any update) \
     && apt-get install -y --no-install-recommends \
         ca-certificates=20260816ubuntu0.24.04.2 cpp=4:13.2.0-7ubuntu1 \
         curl=8.5.0-2ubuntu10.16 dos2unix=7.5.1-1 gzip=1.12-1ubuntu3.2 \
@@ -54,15 +58,6 @@ RUN apt-get -o Acquire::Retries=3 update \
         libslirp0=4.7.0-1ubuntu3.1 libstdc++6=14.2.0-4ubuntu2~24.04.1 \
         libx11-6=2:1.8.7-1ubuntu0.1 libxext6=2:1.3.4-1build2 python3=3.12.3-0ubuntu2.1 \
         tar=1.35+dfsg-3ubuntu0.4 \
-    && rm -rf /var/lib/apt/lists/*
-
-# dosemu2 + the FreeDOS++ kernel (fdpp) + the dj64 DPMI host: builds from the two
-# PPAs decomp.me's own backend uses, downloaded from our copies in
-# archaic-toolchains/dosemu2-noble, since the PPAs delete superseded builds and
-# a pinned one stops downloading within weeks.  apt installs the local files so their
-# handful of Ubuntu-native dependencies resolve from base-noble's snapshot (the
-# lists removed by the layer above are refreshed first).
-RUN apt-get update \
     && mkdir -p /tmp/debs \
     && curl -fsSL --retry 3 --retry-all-errors -o /tmp/debs/dosemu2.deb \
         "https://github.com/archaic-toolchains/dosemu2-noble/releases/download/2026-11-10/dosemu2.deb" \

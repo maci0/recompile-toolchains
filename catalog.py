@@ -24,30 +24,43 @@ REPO = Path(__file__).resolve().parent
 DOC = REPO / "docs" / "TOOLCHAINS.md"
 PROVENANCE = REPO / "docs" / "PROVENANCE.md"
 
-#: ``<family>/<version>-<platform>`` suffixes, longest first so ``win16``
-#: wins over a bare ``16``-style match and ``linux-x64`` over ``linux``.
+#: Image platform suffixes shared by the Markdown and machine-readable catalogs.
 PLATFORMS = (
     "linux-x64",
     "linux-i386",
+    "linux386",
+    "android-x86",
     "dreamcast",
     "macos",
-    "android-x86",
     "msdos",
     "switch",
     "win16",
     "win32",
     "x360",
     "wiiu",
-    "psp",
-    "nds",
-    "3ds",
+    "sm83",
+    "m68k",
+    "atari",
+    "amiga",
     "saturn",
     "ps1",
     "ps2",
+    "psp",
     "n64",
+    "nds",
+    "3ds",
     "gba",
     "wii",
     "gc",
+    "gb",
+    "c64",
+    "nes",
+    "mos",
+    "z80",
+    "8051",
+    "stm8",
+    "elf",
+    "linux",
 )
 
 #: Family → one-line description for the catalog heading.
@@ -910,9 +923,17 @@ def _aliases(entry: dict[str, object]) -> list[str]:
     return [str(a) for a in value] if isinstance(value, list) else []
 
 
-def _platform(host_dir: str) -> str:
+def platform_for(host_dir: str) -> str:
     version_arch = host_dir.split("/", 1)[1] if "/" in host_dir else host_dir
     return next((p for p in PLATFORMS if version_arch.endswith(p)), "host")
+
+
+def _platform(host_dir: str) -> str:
+    # The MOS artifact uses a common platform for the object format.
+    for target in ("c64", "nes"):
+        if host_dir.endswith(f"-{target}-mos"):
+            return target
+    return platform_for(host_dir)
 
 
 #: How each recipe's runner is described in the catalog.  This used to be

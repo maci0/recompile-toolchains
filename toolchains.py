@@ -30,47 +30,6 @@ CHECKSUM = REPO / "toolchains.json.sha256"
 
 SCHEMA_VERSION = 1
 
-#: ``<family>/<version>-<platform>`` suffixes, longest first so ``linux-x64``
-#: wins over a bare ``linux``.  ``host`` is the fallback for a tree whose
-#: target is not encoded in its directory name.
-PLATFORMS = (
-    "linux-x64",
-    "linux-i386",
-    "linux386",
-    "android-x86",
-    "dreamcast",
-    "macos",
-    "msdos",
-    "switch",
-    "win16",
-    "win32",
-    "x360",
-    "wiiu",
-    "sm83",
-    "m68k",
-    "atari",
-    "amiga",
-    "saturn",
-    "ps1",
-    "ps2",
-    "psp",
-    "n64",
-    "nds",
-    "3ds",
-    "gba",
-    "wii",
-    "gc",
-    "gb",
-    "c64",
-    "nes",
-    "mos",
-    "z80",
-    "8051",
-    "stm8",
-    "elf",
-    "linux",
-)
-
 #: Platform → architecture and code model of the objects a profile writes.
 #: A profile on a platform without an entry here (a host platform such as
 #: ``linux`` or ``macos``) declares ``arch`` in sources.json; one with neither
@@ -143,9 +102,7 @@ def _text(entry: dict[str, object], key: str) -> str:
 
 
 def _platform(entry: dict[str, object]) -> str:
-    host_dir = _text(entry, "host_dir")
-    suffix = host_dir.split("/", 1)[1] if "/" in host_dir else host_dir
-    return next((p for p in PLATFORMS if suffix.endswith(p)), "host")
+    return catalog.platform_for(_text(entry, "host_dir"))
 
 
 def _version_arch(entry: dict[str, object]) -> str:

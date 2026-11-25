@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- D3-data7-055. The Markdown catalog lists named cross-targets under their own platforms, including Commodore 64, NES and Amiga. The machine-readable manifest keeps its published platform values.
 - D3-data7-057. Every dosemu2 smoke selection mounts `/dev/kvm` when present and skips the case when the device is absent.
 - D3-data7-056. The smoke compiler and Wine probe run the image built under the requested `PREFIX`.
 - D3-data7-052 and D3-data7-053. The PSY-Q, SN64 PE and Daze entrypoints pass macro and include options to the host preprocessor in the caller's working directory. A failed preprocess stops the wrapper before the compiler or assembler runs.

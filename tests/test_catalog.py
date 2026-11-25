@@ -135,6 +135,17 @@ class TestCatalog(unittest.TestCase):
             self.assertIn(f"rebrew/{entry['family']}:", rendered, profile)
             self.assertIn(str(entry["host_dir"]).split("/")[-1], rendered, profile)
 
+    def test_catalog_names_cross_target_platforms(self) -> None:
+        rendered = catalog.render(catalog.manifest())
+        for tag, target in (
+            ("cc65:2.19-c64", "c64"),
+            ("llvm-mos:23.3.0-c64-mos", "c64"),
+            ("llvm-mos:23.3.0-nes-mos", "nes"),
+            ("vbcc:0.9h-p2-amiga", "amiga"),
+        ):
+            with self.subTest(tag=tag):
+                self.assertIn(f"| `rebrew/{tag}` | {target} |", rendered)
+
     def test_every_family_has_a_description(self) -> None:
         for entry in catalog.manifest().values():
             self.assertIn(entry["family"], catalog.FAMILIES, entry["host_dir"])

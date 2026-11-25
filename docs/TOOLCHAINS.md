@@ -27,27 +27,38 @@ the notes column flags the toolchains whose output needs a second step.
 | Platform | Toolchains |
 | --- | --- |
 | 3ds | 14 |
+| 8051 | 1 |
+| amiga | 1 |
 | android-x86 | 2 |
+| atari | 1 |
+| c64 | 2 |
 | dreamcast | 11 |
+| elf | 3 |
+| gb | 1 |
 | gba | 6 |
 | gc | 25 |
-| host | 18 |
+| linux | 3 |
 | linux-i386 | 1 |
 | linux-x64 | 6 |
+| linux386 | 1 |
 | macos | 5 |
 | msdos | 5 |
 | n64 | 23 |
 | nds | 24 |
+| nes | 1 |
 | ps1 | 58 |
 | ps2 | 42 |
 | psp | 14 |
 | saturn | 5 |
+| sm83 | 1 |
+| stm8 | 1 |
 | switch | 4 |
 | wii | 10 |
 | wiiu | 1 |
 | win16 | 10 |
 | win32 | 49 |
 | x360 | 2 |
+| z80 | 2 |
 
 ## ack
 
@@ -55,7 +66,7 @@ Amsterdam Compiler Kit
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/ack:6.2-7afa32a-linux386` | host | `cc` | native | none | `ack` `142ad8834ed5` @ `7afa32a0a0f1` | none |
+| `rebrew/ack:6.2-7afa32a-linux386` | linux386 | `cc` | native | none | `ack` `142ad8834ed5` @ `7afa32a0a0f1` | none |
 
 ## agbcc
 
@@ -103,7 +114,7 @@ Bootlin Linux cross-toolchains with pinned sysroots
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/bootlin:m68k-glibc-2026.08-1-linux` | host | `cc` | native | none | `m68k-68xxx--glibc--stable-2026.08-1.tar.xz` `c92f32f48cdb` | Linux m68k ABI with the exact glibc sysroot, GCC 15.3.0, binutils 2.45.1 |
+| `rebrew/bootlin:m68k-glibc-2026.08-1-linux` | linux | `cc` | native | none | `m68k-68xxx--glibc--stable-2026.08-1.tar.xz` `c92f32f48cdb` | Linux m68k ABI with the exact glibc sysroot, GCC 15.3.0, binutils 2.45.1 |
 
 ## borland
 
@@ -124,7 +135,7 @@ cc65 C compiler for 6502 systems
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/cc65:2.19-c64` | host | `cc` | native | none | `V2.19` `157b8051aed7` | none |
+| `rebrew/cc65:2.19-c64` | c64 | `cc` | native | none | `V2.19` `157b8051aed7` | none |
 
 ## clang
 
@@ -154,7 +165,7 @@ devkitPro AArch64 bare-metal toolchains
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/devkita64:16.1.0-1-elf` | host | `cc` | native | none | `devkita64-gcc-16.1.0-1-x86_64.pkg.tar.zst` `8192b899f0a5` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
+| `rebrew/devkita64:16.1.0-1-elf` | elf | `cc` | native | none | `devkita64-gcc-16.1.0-1-x86_64.pkg.tar.zst` `8192b899f0a5` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
 
 ## devkitarm
 
@@ -162,7 +173,7 @@ devkitPro ARM bare-metal toolchains
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/devkitarm:16.1.0-1-elf` | host | `cc` | native | none | `devkitarm-gcc-16.1.0-1-x86_64.pkg.tar.zst` `289be1a7a423` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
+| `rebrew/devkitarm:16.1.0-1-elf` | elf | `cc` | native | none | `devkitarm-gcc-16.1.0-1-x86_64.pkg.tar.zst` `289be1a7a423` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
 
 ## devkitppc
 
@@ -170,7 +181,7 @@ devkitPro PowerPC bare-metal toolchains
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/devkitppc:16.2.0-1-elf` | host | `cc` | native | none | `devkitppc-gcc-16.2.0-1-x86_64.pkg.tar.zst` `d27ec75b8e30` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
+| `rebrew/devkitppc:16.2.0-1-elf` | elf | `cc` | native | none | `devkitppc-gcc-16.2.0-1-x86_64.pkg.tar.zst` `d27ec75b8e30` | Exact split devkitPro GCC, binutils, newlib, rules and CRT packages; no floating pacman install |
 
 ## djgpp
 
@@ -208,7 +219,7 @@ GBDK-2020 compilers and libraries for 8-bit consoles
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/gbdk:4.5.0-sm83-gb` | host | `cc` | native | none | `gbdk-linux64.tar.gz` `d7857a5f6d13` | Bundled SDCC build and ASxxxx object format; Game Boy SM83 target |
+| `rebrew/gbdk:4.5.0-sm83-gb` | gb | `cc` | native | none | `gbdk-linux64.tar.gz` `d7857a5f6d13` | Bundled SDCC build and ASxxxx object format; Game Boy SM83 target |
 
 ## gcc
 
@@ -318,11 +329,11 @@ SGI IDO MIPS compilers for N64 (recompiled and IRIX originals)
 | `rebrew/ido:5.2-n64` | n64 | `cc` | native | `ido5.2` | `ido5.2.tar.xz` `870cd946d31d` @ `d577d1654ca4` | none |
 | `rebrew/ido:5.3-cxx-n64` | n64 | `cc` | native | `ido5.3_c++`, `ido5.3_c++_irix`, `ido5.3-cxx` | `ido5.3_c-.tar.xz` `851426c63ffb` @ `d577d1654ca4` | entered through the vendor C++ driver (`usr/lib/CC`): `.C`/`.cc` only, `.cpp` is silently ignored |
 | `rebrew/ido:5.3-irix-n64` | n64 | `cc` | native | `ido5.3_irix`, `ido5.3_asm_irix`, `ssb_ido5.3` | `ssb_ido5.3.tar` `a8a5bfa1713c` @ `d577d1654ca4` | none |
-| `rebrew/ido:5.3-linux` | host | `cc` | native | `ido5.3_linux` | `ido-5.3-recomp-linux.tar.gz` `ab5c741561f8` @ `9c242adc890b` | none |
+| `rebrew/ido:5.3-linux` | linux | `cc` | native | `ido5.3_linux` | `ido-5.3-recomp-linux.tar.gz` `ab5c741561f8` @ `9c242adc890b` | none |
 | `rebrew/ido:5.3-n64` | n64 | `cc` | native | `ido5.3` | `ido-5.3-recomp-linux.tar.gz` `ab5c741561f8` @ `9c242adc890b` | none |
 | `rebrew/ido:6.0-n64` | n64 | `cc` | native | `ido6.0`, `ido6.0_irix` | `ido6.0.tar.xz` `c56d4be020bd` @ `d577d1654ca4` | none |
 | `rebrew/ido:7.1-cxx-n64` | n64 | `cc` | native | `ido7.1_c++` | `ido-7.1-recomp-linux.tar.gz` `0d411696e178` @ `9c242adc890b` | the same build as `ido-7.1`, with a different front end; entered through the vendor C++ driver (`NCC`) |
-| `rebrew/ido:7.1-linux` | host | `cc` | native | `ido7.1_linux` | `ido-7.1-recomp-linux.tar.gz` `0d411696e178` @ `9c242adc890b` | none |
+| `rebrew/ido:7.1-linux` | linux | `cc` | native | `ido7.1_linux` | `ido-7.1-recomp-linux.tar.gz` `0d411696e178` @ `9c242adc890b` | none |
 | `rebrew/ido:7.1-n64` | n64 | `cc` | native | `ido7.1`, `ido7.1_irix` | `ido-7.1-recomp-linux.tar.gz` `0d411696e178` @ `9c242adc890b` | none |
 | `rebrew/ido:mipspro-744-n64` | n64 | `cc` | native | `mips_pro_744`, `mips_pro_744_irix` | `mipspro7.4.4.tar.xz` `df33be0d9605` @ `d577d1654ca4` | none |
 
@@ -341,8 +352,8 @@ LLVM-MOS 6502-family C/C++ cross-compilers
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/llvm-mos:23.3.0-c64-mos` | host | `cc` | native | none | `llvm-mos-linux.tar.xz` `9f694497bc93` | MOS ELF with target-specific relocations; platform c64 |
-| `rebrew/llvm-mos:23.3.0-nes-mos` | host | `cc` | native | none | `llvm-mos-linux.tar.xz` `9f694497bc93` | MOS ELF with target-specific relocations; platform nes |
+| `rebrew/llvm-mos:23.3.0-c64-mos` | c64 | `cc` | native | none | `llvm-mos-linux.tar.xz` `9f694497bc93` | MOS ELF with target-specific relocations; platform c64 |
+| `rebrew/llvm-mos:23.3.0-nes-mos` | nes | `cc` | native | none | `llvm-mos-linux.tar.xz` `9f694497bc93` | MOS ELF with target-specific relocations; platform nes |
 
 ## mingw
 
@@ -359,7 +370,7 @@ Atari MiNT ELF cross compilers
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/mintelf:15.2.0-atari` | host | `cc` | native | none | `gcc-15.2.0-mintelf-20250810-bin-linux64.tar.xz` `1f86cc5caa9a` | MiNT ELF ABI; GCC 15.2.0, binutils 2.45 and mintlib 0.60.1 with dated package revisions |
+| `rebrew/mintelf:15.2.0-atari` | atari | `cc` | native | none | `gcc-15.2.0-mintelf-20250810-bin-linux64.tar.xz` `1f86cc5caa9a` | MiNT ELF ABI; GCC 15.2.0, binutils 2.45 and mintlib 0.60.1 with dated package revisions |
 
 ## msc
 
@@ -645,10 +656,10 @@ Small Device C Compiler for 8-bit targets
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/sdcc:4.6.0-8051` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
-| `rebrew/sdcc:4.6.0-sm83` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
-| `rebrew/sdcc:4.6.0-stm8` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
-| `rebrew/sdcc:4.6.0-z80` | host | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
+| `rebrew/sdcc:4.6.0-8051` | 8051 | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
+| `rebrew/sdcc:4.6.0-sm83` | sm83 | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
+| `rebrew/sdcc:4.6.0-stm8` | stm8 | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
+| `rebrew/sdcc:4.6.0-z80` | z80 | `cc` | native | none | `sdcc-4.6.0-amd64-unknown-linux2.5.tar.bz2` `f6b929c62ed3` | none |
 
 ## shc
 
@@ -675,7 +686,7 @@ VBCC, VASM and VLINK for Amiga m68k
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/vbcc:0.9h-p2-amiga` | host | `cc` | native | none | `vbcc_vasm_vlink` `d9b4d46c27af` @ `647720b664c0` | Unmodified upstream source/target archives retained under /opt/vbcc-sources; mirror packages VBCC 0.9h patch 2, target patch 3, VASM 2.0d and VLINK 0.18a; Amiga m68k Hunk object output; compile-only in Rebrew until a Hunk reader exists; VBCC/VASM/VLINK component licence restrictions apply; public availability does not imply unrestricted commercial use; VBCC datatype probing runs serially so every prompt receives the supplied default answer |
+| `rebrew/vbcc:0.9h-p2-amiga` | amiga | `cc` | native | none | `vbcc_vasm_vlink` `d9b4d46c27af` @ `647720b664c0` | Unmodified upstream source/target archives retained under /opt/vbcc-sources; mirror packages VBCC 0.9h patch 2, target patch 3, VASM 2.0d and VLINK 0.18a; Amiga m68k Hunk object output; compile-only in Rebrew until a Hunk reader exists; VBCC/VASM/VLINK component licence restrictions apply; public availability does not imply unrestricted commercial use; VBCC datatype probing runs serially so every prompt receives the supplied default answer |
 
 ## watcom
 
@@ -704,4 +715,4 @@ z88dk C toolchain for Z80 systems
 
 | Image tag | Platform | Entrypoint | Runtime | Aliases | Pinned source | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `rebrew/z88dk:2.4-sccz80-z80` | host | `cc` | native | none | `z88dk-src-2.4.tgz` `96a57a01d44f` | none |
+| `rebrew/z88dk:2.4-sccz80-z80` | z80 | `cc` | native | none | `z88dk-src-2.4.tgz` `96a57a01d44f` | none |

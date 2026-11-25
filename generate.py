@@ -343,14 +343,16 @@ def render_wrapper(profile: str, entry: dict[str, object]) -> str:
     raise ValueError(f"{profile}: wrapper shape {shape!r} is not expressible; mark it handwritten")
 
 
-def _head(entry: dict[str, object], what: str, wrapper: dict[str, object]) -> list[str]:
+def _head(
+    entry: dict[str, object], what: str, wrapper: dict[str, object], *, interpreter: str = "sh"
+) -> list[str]:
     """The wrapper's opening block: marker, entrypoint line, then its prose.
 
     The prose is the wrapper's documentation and lives in the recipe as
     `notes`; it sits between the generated header and the shellcheck directive,
     where a reader looks for it.
     """
-    lines = ["#!/bin/sh", MARKER, f"# {what} — {_text(entry, 'host_dir')}"]
+    lines = [f"#!/bin/{interpreter}", MARKER, f"# {what} — {_text(entry, 'host_dir')}"]
     lines.extend(f"# {note}".rstrip() for note in _list(wrapper.get("notes")))
     return [
         *lines,
@@ -406,6 +408,40 @@ def _wrapper_passthrough(profile: str, entry: dict[str, object], wrapper: dict[s
     return "\n".join(lines) + "\n"
 
 
+# Strip preprocessor operands before looking for the source. A forced include
+# can be a readable file that precedes the actual source on the command line.
+_PREPROCESSED_ARGS = r"""OUT=""
+args=()
+cpp_flags=()
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -o)
+            [ "$#" -ge 2 ] && [ -n "$2" ] || rebrew_die "-o requires an output file"
+            OUT="$2"
+            shift 2
+            ;;
+        -c) shift ;;
+        -I|-D|-U|-include|-imacros|-isystem|-iquote|-idirafter)
+            [ "$#" -ge 2 ] && [ -n "$2" ] || rebrew_die "$1 requires an argument"
+            cpp_flags+=("$1" "$2")
+            shift 2
+            ;;
+        -I*|-D*|-U*|-nostdinc|-undef)
+            cpp_flags+=("$1")
+            shift
+            ;;
+        *) args+=("$1"); shift ;;
+    esac
+done
+rebrew_pick_source "${args[@]}"
+[ -n "$OUT" ] || OUT="$STEM.o"
+CC_FLAGS=()
+for arg in "${args[@]}"; do
+    [ "$arg" = "$SRC" ] || CC_FLAGS+=("$arg")
+done
+"""
+
+
 #: The PSY-Q 2.6.3 / 3.x pipeline, verbatim: the host `cpp` preprocesses
 #: with DOS line endings, CC1PSX and ASPSX each run in their own dosemu2
 #: session (their DJGPP `go32` stub cannot load under DOSBox), and the
@@ -413,42 +449,23 @@ def _wrapper_passthrough(profile: str, entry: dict[str, object], wrapper: dict[s
 #: Four images run exactly this, so the body lives here once; `{dir}` is the
 #: recipe's install root.  Raw string on purpose: the printf formats below
 #: contain literal `\r\n`, which a regular literal would turn into bytes.
-_PSYQ_DOSEMU_BODY = r"""rebrew_pick_source "$@"
-
-OUT=""
-CC_FLAGS=""
-while [ "$#" -gt 0 ]; do
-    case "$1" in
-        -o)
-            [ "$#" -ge 2 ] || rebrew_die "-o requires an output file"
-            OUT="$2"
-            shift 2
-            ;;
-        -c) shift ;;
-        "$SRC") shift ;;
-        *)
-            CC_FLAGS="$CC_FLAGS $1"
-            shift
-            ;;
-    esac
-done
-[ -n "$OUT" ] || OUT="$STEM.o"
+_PSYQ_DOSEMU_BODY = r"""{args}
 case "$SRC" in /*) SRC_ABS="$SRC" ;; *) SRC_ABS="$(pwd)/$SRC" ;; esac
 case "$OUT" in /*) OUT_ABS="$OUT" ;; *) OUT_ABS="$(pwd)/$OUT" ;; esac
 
 _work="$(mktemp -d)" || rebrew_die "cannot create a temporary directory"
 # shellcheck disable=SC2064  # expand $_work now: the trap runs after it may be unset
 trap "rm -rf '$_work'" EXIT
+/usr/bin/cpp -E "${cpp_flags[@]}" "$SRC_ABS" > "$_work/input.i" \
+    || rebrew_die "preprocessing $SRC failed"
 cd "$_work" || rebrew_die "cannot enter temporary directory"
 
 # CC1PSX wants preprocessed input with DOS line endings; the DOS side sees this
 # directory as drive D: (dosemu2's `+0 <dir> +1` image, set by the helper).
-# shellcheck disable=SC2086  # CC_FLAGS is a deliberate flag list, word-split
-/usr/bin/cpp -E "$SRC_ABS" | unix2dos > dos_src.c \
-    || rebrew_die "preprocessing $SRC failed"
+unix2dos < input.i > dos_src.c || rebrew_die "line conversion for $SRC failed"
 {
     printf '@echo off\r\n'
-    printf 'CC1PSX.EXE -quiet %s D:\\dos_src.c -o D:\\output.s\r\n' "$CC_FLAGS"
+    printf 'CC1PSX.EXE -quiet %s D:\\dos_src.c -o D:\\output.s\r\n' "${CC_FLAGS[*]}"
     printf 'EXIT /B\r\n'
 } > COMPILE.BAT
 
@@ -456,7 +473,7 @@ rebrew_dosemu_run "$_work" {dir} "D:\\COMPILE.BAT"
 if [ ! -s "$_work/output.s" ]; then
     # Assign first: SC2312 — a command substitution inside the message would
     # mask rebrew_dosemu_failure_note's own exit status.
-    _note=$(rebrew_dosemu_failure_note)
+    _note=$(set -e; rebrew_dosemu_failure_note)
     printf 'cc1psx produced no assembly for %s%s\n' "$SRC" "$_note" >&2
     sed -n '$p' "$_work/dosemu.log" >&2 2>/dev/null
     exit 1
@@ -464,7 +481,7 @@ fi
 
 rebrew_dosemu_run "$_work" {dir} "ASPSX.EXE -quiet D:\\output.s -o D:\\output.obj"
 if [ ! -s "$_work/output.obj" ]; then
-    _note=$(rebrew_dosemu_failure_note)
+    _note=$(set -e; rebrew_dosemu_failure_note)
     rebrew_die "aspsx produced no object for $SRC$_note"
 fi
 
@@ -481,26 +498,7 @@ fi
 _PSYQ_4X_BODY = r"""# The image sets this; failing loudly beats exec'ing "/CC1PSX.EXE".
 PSYQ_ROOT="${PSYQ_ROOT:?PSYQ_ROOT must point at the SDK tree (set by the image)}"
 
-rebrew_pick_source "$@"
-
-OUT=""
-CC_FLAGS=""
-while [ "$#" -gt 0 ]; do
-    case "$1" in
-        -o)
-            [ "$#" -ge 2 ] || rebrew_die "-o requires an output file"
-            OUT="$2"
-            shift 2
-            ;;
-        -c) shift ;;  # CC1PSX always compiles; the driver flag is ours
-        "$SRC") shift ;;
-        *)
-            CC_FLAGS="$CC_FLAGS $1"
-            shift
-            ;;
-    esac
-done
-[ -n "$OUT" ] || OUT="$STEM.o"
+{args}
 
 # resolve the caller's paths before changing directory
 case "$SRC" in /*) SRC_ABS="$SRC" ;; *) SRC_ABS="$(pwd)/$SRC" ;; esac
@@ -510,18 +508,18 @@ _work="$(mktemp -d)" || rebrew_die "cannot create a temporary directory"
 # shellcheck disable=SC2064  # expand $_work now: the trap runs after it may be unset
 trap "rm -rf '$_work'" EXIT
 
+/usr/bin/cpp -P "${cpp_flags[@]}" "$SRC_ABS" > "$_work/input.i" \
+    || rebrew_die "preprocessing $SRC failed"
 cd "$_work" || rebrew_die "cannot enter temporary directory"
 
 # CC1PSX consumes the preprocessed source on stdin and the SDK's own flow
 # converts it to DOS line endings first, so keep both steps.
-# shellcheck disable=SC2310  # rebrew_die exits; the `||` is the documented contract
-/usr/bin/cpp -P "$SRC_ABS" | unix2dos > src.i \
-    || rebrew_die "preprocessing $SRC failed"
+unix2dos < input.i > src.i || rebrew_die "line conversion for $SRC failed"
 
 # SC2310: the stage helpers exit on completion by design, so they are called
 # in a subshell under `||`; set -e must not turn a handled failure into an exit.
-# shellcheck disable=SC2086,SC2310  # CC_FLAGS is a deliberate flag list, word-split
-( rebrew_run "$PSYQ_ROOT/CC1PSX.EXE" -quiet $CC_FLAGS -o out.s < src.i ) \
+# shellcheck disable=SC2310
+( rebrew_run "$PSYQ_ROOT/CC1PSX.EXE" -quiet "${CC_FLAGS[@]}" -o out.s < src.i ) \
     || rebrew_die "CC1PSX failed on $SRC"
 # shellcheck disable=SC2310  # same subshell contract as the CC1PSX stage
 ( rebrew_run "$PSYQ_ROOT/ASPSX.EXE" -quiet out.s -o out.bj ) \
@@ -540,38 +538,21 @@ cd "$_work" || rebrew_die "cannot enter temporary directory"
 #: holes below; `{root}` is the recipe's install root.  Raw string on
 #: purpose: the trailing `\` line continuations are the shell's, not
 #: Python's.
-_SN64_PE_BODY = r"""rebrew_pick_source "$@"
-
-OUT=""
-CC_FLAGS=""
-while [ "$#" -gt 0 ]; do
-    case "$1" in
-        -o)
-            [ "$#" -ge 2 ] || rebrew_die "-o requires an output file"
-            OUT="$2"
-            shift 2
-            ;;
-        -c) shift ;;
-        "$SRC") shift ;;
-        *)
-            CC_FLAGS="$CC_FLAGS $1"
-            shift
-            ;;
-    esac
-done
-[ -n "$OUT" ] || OUT="$STEM.o"
+_SN64_PE_BODY = r"""{args}
 case "$SRC" in /*) SRC_ABS="$SRC" ;; *) SRC_ABS="$(pwd)/$SRC" ;; esac
 case "$OUT" in /*) OUT_ABS="$OUT" ;; *) OUT_ABS="$(pwd)/$OUT" ;; esac
 
 _work="$(mktemp -d)" || rebrew_die "cannot create a temporary directory"
 # shellcheck disable=SC2064  # expand $_work now: the trap runs after it may be unset
 trap "rm -rf '$_work'" EXIT
+{cpp} "${cpp_flags[@]}" "$SRC_ABS" > "$_work/input.i" \
+    || rebrew_die "preprocessing $SRC failed"
 cd "$_work" || rebrew_die "cannot enter temporary directory"
 
 # SC2310: the run helper exits by design, so a stage is called in a subshell
 # under `||`; set -e must not turn a handled failure into an exit.
-# shellcheck disable=SC2086,SC2310  # CC_FLAGS is a flag list, word-split
-{cpp} "$SRC_ABS" | ( rebrew_run /opt/{root}/{cc1} {cc1_flags} $CC_FLAGS -o out.s ) \
+# shellcheck disable=SC2310
+( rebrew_run /opt/{root}/{cc1} {cc1_flags} "${CC_FLAGS[@]}" -o out.s < input.i ) \
     || rebrew_die "{cc1_stem} failed on $SRC"
 # shellcheck disable=SC2310  # same subshell contract as the {cc1_stem} stage
 ( rebrew_run /opt/{root}/asn64.exe {as_flags} out.s -o out.obj ) \
@@ -646,18 +627,24 @@ def _wrapper_sn64_pe(entry: dict[str, object], wrapper: dict[str, object]) -> st
         body = body.replace("{" + hole + "}", _text(wrapper, hole))
     cc1 = _text(wrapper, "cc1")
     body = body.replace("{cc1_stem}", cc1.removesuffix(".exe"))
-    return "\n".join(_head(entry, "Entrypoint", wrapper)) + body
+    return "\n".join(_head(entry, "Entrypoint", wrapper, interpreter="bash")) + body.replace(
+        "{args}\n", _PREPROCESSED_ARGS
+    )
 
 
 def _wrapper_psyq_native(entry: dict[str, object], wrapper: dict[str, object]) -> str:
     """The PSY-Q 4.x compile pipeline, from recipe data."""
-    return "\n".join(_head(entry, "Entrypoint", wrapper)) + _PSYQ_4X_BODY
+    return "\n".join(
+        _head(entry, "Entrypoint", wrapper, interpreter="bash")
+    ) + _PSYQ_4X_BODY.replace("{args}\n", _PREPROCESSED_ARGS)
 
 
 def _wrapper_psyq_dosemu(entry: dict[str, object], wrapper: dict[str, object]) -> str:
     """The PSY-Q 2.6.3/3.x compile pipeline, from recipe data."""
     body = _PSYQ_DOSEMU_BODY.replace("{dir}", f"/opt/{install_root(entry)}")
-    return "\n".join(_head(entry, "Entrypoint", wrapper)) + body
+    return "\n".join(_head(entry, "Entrypoint", wrapper, interpreter="bash")) + body.replace(
+        "{args}\n", _PREPROCESSED_ARGS
+    )
 
 
 def _wrapper_object_mode(profile: str, entry: dict[str, object], wrapper: dict[str, object]) -> str:
@@ -745,34 +732,16 @@ def _wrapper_daze(entry: dict[str, object], wrapper: dict[str, object]) -> str:
     """Run the original DOS compiler stages using Daze's software backend."""
     family = _text(entry, "family")
     _require(family in {"psyq", "saturn"}, "Daze pipeline needs a PSY-Q or Saturn profile")
-    head = _head(entry, "Entrypoint", wrapper)
-    head[0] = "#!/bin/bash"
+    head = _head(entry, "Entrypoint", wrapper, interpreter="bash")
     body = r"""set -euo pipefail
-out=""
-args=()
-while [ "$#" -gt 0 ]; do
-    case "$1" in
-        -o)
-            [ "$#" -ge 2 ] && [ -n "$2" ] || rebrew_die "-o requires an output file"
-            out="$2"
-            shift 2
-            ;;
-        -c) shift ;;
-        *) args+=("$1"); shift ;;
-    esac
-done
-rebrew_pick_source "${args[@]}"
-[ -n "$out" ] || out="$STEM.o"
-flags=()
-for arg in "${args[@]}"; do
-    [ "$arg" = "$SRC" ] || flags+=("$arg")
-done
+{args}
 src=$(realpath -- "$SRC")
-out=$(realpath -m -- "$out")
+out=$(realpath -m -- "$OUT")
 [ "$src" != "$out" ] || rebrew_die "source and output must be different files"
 work=$(mktemp -d) || rebrew_die "cannot create a temporary directory"
 target=""
 trap 'rm -rf -- "$work"; [ -z "$target" ] || rm -f -- "$target"' EXIT
+( rebrew_exec /usr/bin/cpp -E {cpp_flags} "${cpp_flags[@]}" "$src" -o "$work/preprocessed.c" )
 cd "$work"
 
 # Each stage keeps its exit status and watchdog; compiler files are read-only.
@@ -781,10 +750,9 @@ run_dos() {
         --mount-ro C:{dir} --mount "D:$work" \
         --env TMP=D:/ --env TEMP=D:/ "$@" )
 }
-( rebrew_exec /usr/bin/cpp -E {cpp_flags} "$src" -o preprocessed.c )
 unix2dos -q -n preprocessed.c dos_src.c
 {precompile}
-run_dos C:/{cc1}.EXE -quiet "${flags[@]}" D:/{input} -o D:/output.s
+run_dos C:/{cc1}.EXE -quiet "${CC_FLAGS[@]}" D:/{input} -o D:/output.s
 [ -s output.s ] || rebrew_die "compiler produced no assembly"
 run_dos C:/{assembler}.EXE {as_flags} D:/output.s -o D:/output.obj
 [ -s output.obj ] || rebrew_die "assembler produced no object"
@@ -818,7 +786,7 @@ mv -fT -- "$target" "$out"
     }
     for key, value in values.items():
         body = body.replace("{" + key + "}", value)
-    return "\n".join(head) + body
+    return "\n".join(head) + body.replace("{args}\n", _PREPROCESSED_ARGS)
 
 
 def _wrapper_dosbox_compile(entry: dict[str, object], wrapper: dict[str, object]) -> str:

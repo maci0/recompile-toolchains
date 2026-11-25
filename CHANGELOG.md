@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- D3-data7-052 and D3-data7-053. The PSY-Q, SN64 PE and Daze entrypoints pass macro and include options to the host preprocessor in the caller's working directory. A failed preprocess stops the wrapper before the compiler or assembler runs.
 - D3-data7-009. The image check accepts ELF32 i386 for `x86_16` only under the ia16 GCC profile. The same object now fails the MSVC 1.52 Win16 fixture with `WRONG-TARGET`.
 
 ## [1.19.1] - 2026-11-22

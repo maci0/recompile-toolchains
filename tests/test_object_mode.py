@@ -13,6 +13,66 @@ import generate
 
 
 class TestObjectMode(unittest.TestCase):
+    def test_psyq_preprocesses_with_caller_flags(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            tools = {
+                "wibo": '#!/bin/sh\nexec "$@"\n',
+                "unix2dos": "#!/bin/sh\ncat\n",
+                "CC1PSX.EXE": "#!/bin/sh\ncat > out.s\n",
+                "ASPSX.EXE": "#!/bin/sh\ncp out.s out.bj\n",
+                "psyq-obj-parser": '#!/bin/sh\ncp -- "$1" "$3"\n',
+            }
+            for name, script in tools.items():
+                tool = work / name
+                tool.write_text(script)
+                tool.chmod(0o755)
+            profile = "psyq-4.0"
+            body = generate.render_wrapper(profile, generate.manifest()[profile])
+            body = body.replace(
+                "/usr/local/lib/rebrew/wrapper-common.sh",
+                str(generate.REPO / "base/wrapper-common.sh"),
+            )
+            wrapper = work / "cc"
+            wrapper.write_text(body)
+            wrapper.chmod(0o755)
+            (work / "headers with spaces").mkdir()
+            (work / "headers with spaces" / "values.h").write_text("#define VALUE 2\n")
+            (work / "input.c").write_text(
+                "#if SELECTED\n#include <values.h>\nint selected = VALUE;\n"
+                "#else\nint fallback;\n#endif\n"
+            )
+            env = dict(
+                os.environ,
+                PATH=f"{work}:{os.environ['PATH']}",
+                PSYQ_ROOT=str(work),
+                REBREW_RUNNER="wibo",
+            )
+            env.pop("SOURCE_DATE_EPOCH", None)
+
+            def run(*flags: str) -> subprocess.CompletedProcess[str]:
+                return subprocess.run(  # noqa: S603 (generated wrapper, stub SDK)
+                    [str(wrapper), *flags, "-c", "input.c", "-o", "output.o"],
+                    cwd=work,
+                    env=env,
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                    check=False,
+                )
+
+            output = work / "output.o"
+            with self.subTest("macro and relative include path"):
+                result = run("-D", "SELECTED=1", "-I", "headers with spaces")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(output.read_text(), "int selected = 2;\n")
+            with self.subTest("missing header preserves previous output"):
+                output.write_text("previous output\n")
+                (work / "input.c").write_text('#include "missing.h"\n')
+                result = run()
+                self.assertNotEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(output.read_text(), "previous output\n")
+
     def test_raw_compile_and_failed_publish(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)

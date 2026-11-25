@@ -8,7 +8,9 @@ profile's value is compared with a JSON parse of the same file.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -57,6 +59,60 @@ class TestManifestField(unittest.TestCase):
         self.assertEqual(_field("msvc-6.0", "not-a-field"), "")
         # A field of a later entry is not read into an earlier one.
         self.assertEqual(_field("msvc-6.0", "withdrawn"), "")
+
+
+class TestSmoke(unittest.TestCase):
+    def run_smoke(self, profile: str) -> tuple[str, list[str]]:
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            docker = work / "docker"
+            docker.write_text(
+                """#!/bin/sh
+printf '%s\n' "$*" >> "$DOCKER_LOG"
+[ "$1" = run ] || exit 0
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --entrypoint) exit 124 ;;
+        -v)
+            mount="${2%:/work}"
+            printf 'fixture\n' > "$mount/t.o"
+            printf 'fixture\n' > "$mount/t.obj"
+            exit ;;
+    esac
+    shift
+done
+"""
+            )
+            magic = work / "file"
+            magic.write_text("#!/bin/sh\necho COFF\n")
+            docker.chmod(0o755)
+            magic.chmod(0o755)
+            log = work / "docker.log"
+            result = subprocess.run(  # noqa: S603 - real smoke command with fixture Docker
+                ["sh", "tests/smoke.sh", profile],  # noqa: S607
+                cwd=_REPO,
+                env=dict(
+                    os.environ,
+                    PATH=f"{work}:{os.environ['PATH']}",
+                    PREFIX="fixture",
+                    DOCKER_LOG=str(log),
+                ),
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=_TIMEOUT_SECONDS,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            return result.stdout, log.read_text().splitlines() if log.exists() else []
+
+    def test_smoke_runs_and_probes_the_tag_it_builds(self) -> None:
+        _, calls = self.run_smoke("msvc-6.0-sp6")
+        tag = "fixture/msvc:6.0-sp6-win32"
+        self.assertTrue(any(f"-t {tag} " in call for call in calls), calls)
+        self.assertEqual(len([call for call in calls if call.startswith("run ")]), 2, calls)
+        for call in calls:
+            if call.startswith("run "):
+                self.assertIn(f" {tag} ", call)
 
 
 if __name__ == "__main__":

@@ -26,6 +26,7 @@ set -eu
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO"
+PREFIX="${PREFIX:-rebrew}"
 
 # The expected fragments below are deliberately loose: they must hold for any
 # file(1) magic database, which words the same object differently across
@@ -93,7 +94,7 @@ run_case() {
         fail=$((fail + 1))
         return 0
     fi
-    tag="rebrew/${host_dir%%/*}:${host_dir#*/}"
+    tag="$PREFIX/${host_dir%%/*}:${host_dir#*/}"
     echo "== $profile ($tag)"
     case "$profile" in
         delphi-1.0)
@@ -107,7 +108,7 @@ run_case() {
     esac
     rm -f "$work/t.o" "$work/t.obj" "$work/t.OBJ" "$work/T.OBJ" "$work/t.EXE" "$work/T.EXE"
     ran=$((ran + 1))
-    if ! ./build.sh "$host_dir" >"$work/build.log" 2>&1; then
+    if ! PREFIX="$PREFIX" ./build.sh "$host_dir" >"$work/build.log" 2>&1; then
         echo "FAIL $profile: build failed" >&2
         tail -20 "$work/build.log" >&2
         fail=$((fail + 1))

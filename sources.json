@@ -4805,6 +4805,10 @@
         {
           "op": "chmod",
           "cmd": "chmod +x /opt/gcc-2.7.2-sn0001/psyq-obj-parser"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod a+rx /opt/gcc-2.7.2-sn0001"
         }
       ],
       "env": {
@@ -4917,6 +4921,10 @@
         {
           "op": "chmod",
           "cmd": "chmod +x /opt/gcc-2.7.2-sn0001-cxx-n64/psyq-obj-parser"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod a+rx /opt/gcc-2.7.2-sn0001-cxx-n64"
         }
       ],
       "env": {
@@ -5139,6 +5147,10 @@
         {
           "op": "chmod",
           "cmd": "chmod +x /opt/gcc-2.7.2-sn0006/psyq-obj-parser"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod a+rx /opt/gcc-2.7.2-sn0006"
         }
       ],
       "env": {
@@ -5251,6 +5263,10 @@
         {
           "op": "chmod",
           "cmd": "chmod +x /opt/gcc-2.7.2-sn0006-cxx-n64/psyq-obj-parser"
+        },
+        {
+          "op": "chmod",
+          "cmd": "chmod a+rx /opt/gcc-2.7.2-sn0006-cxx-n64"
         }
       ],
       "env": {

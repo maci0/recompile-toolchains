@@ -145,6 +145,28 @@ def unmirrored(directory: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
 # Guarded ELF output repair: mv -f to mv -fT refuses directories and symlink-to-directory
 # targets instead of moving a temp-named object into them.
 QUALIFIED_REPAIRS: dict[str, str] = {
+    # Staged preprocessors and watchdogs, including the SN0001/SN0006 directory-mode repair.
+    "gcc-2.7.2-sn0001": "334368e1c2e8689199bdb40963ab86933811546b5ddd875674b51ad16370c19a",
+    "gcc-2.7.2-sn0001-cxx": "8c6779075c2526a8c40d55591c4f414edc462d19f1dd605da2de1f83724989ac",
+    "gcc-2.7.2-sn0004": "b64b68f466161b300200edad63b6700ef9c58888c4bd5167ec3cb81db337c08b",
+    "gcc-2.7.2-sn0006": "7edc09986486ab11b9146c10baf53eb533e63f1d6ad6f8d4459d4879ed6a95a8",
+    "gcc-2.7.2-sn0006-cxx": "da72be4b8fa7aa14027669439a9169d3bb5a32dd1b490ede997be1763bfae347",
+    "gcc-2.7.2-snew": "4d5ab93276ed559b08135dda867efcd0796a066cd22b20079fbce2ad30f55b42",
+    "gcc-2.8.1-sn": "eabccc0ce316b232d0cc3d36987be278d1dc3063ccbafbd63e38ef97a31821d5",
+    "gcc-2.8.1-sn-cxx": "7bfe6a352a1593d05d412e9282dd8ef1f35162c402bb74273743fa1ede3e093b",
+    "gcc-2.8.1-snew-cxx": "e687e4f258c6774de6e150bf094ccb204c07be7d2d609a890fe837da385566ac",
+    "gcc-3.1-1041": "0a987106991af6d5678a6df0544ee6beca02574c881fac82f49f119ea29d3df2",
+    "gcc-4.0.0-5026": "b5926d9db15e6ec3f210d99edb0b110e22a849a039dcc9cbde937437eea980e1",
+    "gcc-4.0.1-5363": "f258dbac27cf610499f6a2caa949ec4dfdba8e592dbd9b3be63ad8969fba0b03",
+    "gcc-4.0.1-5370": "e749fa9a778c711ad687b235404a3a23509501346fc562eaf1841d666e6e92ce",
+    "psyq-2.6.3-221": "6d6aceff4b7cf261da07cef764bf37999b4c6ef0557045050a50ac8282fe1ca0",
+    "psyq-3.3": "b69ad26713f501d0d1e82a93582856e61aa55be0ca9cafa1576d471776d10317",
+    "psyq-3.5": "4ef97652d785f66c4c45d14c7eb33579e41635cfdfd187d56fe3f167403cb811",
+    "psyq-3.6": "a952e8314130c932eae52dd4477294107113697d3bb3513590bd8653237251df",
+    "psyq-4.0": "5f36265a8f266ae96e762128cc6185db5d922140abc10ecda1727a956650a679",
+    "psyq-4.1": "162b644e051dd51deabcec77c5b981863955f9edbb654c49b57dc8ecc6ba8d64",
+    "psyq-4.3": "0fa9ee027f666bc6df0d9dfff85c0b1f0c04629bc89e236d63e083542ee1c675",
+    "psyq-4.4": "e1245a110f349627824fc2156cf3bc1fee1227992ce81cd0d052b55e30b18f77",
     # PSY-Q 4.5 adds SDK byte pin 495697696a3288866d83ff7b7aff423560ffaffd3e212274417f3348cc0b29f8;
     # the baseline pinned only its git commit, without an archive checksum.
     "psyq-4.5": "1a6ae9efb83a75e9a1028f7dd5ad6c08865d6120035984f1fa628f33c29f52b2",
@@ -156,7 +178,6 @@ QUALIFIED_REPAIRS: dict[str, str] = {
     "gcc-2.8.1-pm": "f7d4c1539c74ab2d48142cdcafd73f6f941bb2e82009f2a2549e09bc8e0f7b36",
     "ido-4.1": "6b0a18def4d67e7a84dafe6a1aa3dfa164cd68bce725e6753d528b48112ac7d7",
     "msc-6.0": "6f967ae6409917976bc6602e3fe1612aa2bb6defaffa523142b20ed504fe87f8",
-    "psyq-2.6.3-221": "e0e494f1ac5914f91760f0f3e97ab5d9c07b981bd745e18b9a9f7f76035eb80a",
     "psyq-4.6": "88638dfdc721a4669ab8bd84cefb128537a30974261e7026b986974786e51ec3",
     "shc-5.0r10": "396959d62ca8c0785186efd53cdab980b8bea19e9fce00b56ad07761318e7fb0",
     "shc-5.0r26": "b852c2877f39d5e61cc2f463662c37618cc446a057f622deecdf04a00a777794",

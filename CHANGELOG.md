@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 
+## [1.19.2] - 2026-11-25
+
 ### Fixed
+
+- The SN64 GCC 2.7.2 SN0001 and SN0006 images make their compiler directory readable and traversable by the runtime user after extracting the pinned archives. This fixes permission errors in both C and C++ compiles.
 
 - D3-data7-054. Native and PE compiler watchdog timeouts retain exit status 124 through staged wrappers and still name the timeout setting.
 - D3-data7-055. The Markdown catalog lists named cross-targets under their own platforms, including Commodore 64, NES and Amiga. The machine-readable manifest keeps its published platform values.

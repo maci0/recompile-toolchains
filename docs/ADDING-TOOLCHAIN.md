@@ -457,8 +457,9 @@ machine, OMF USE16 or USE32 code segment, ELF machine and class, NE or PE
 header, the sdcc port of an ASxxxx `.rel`, xo65, Z80RMF, Amiga hunk)
 disagrees with the row's `arch` and `bits` (`WRONG-TARGET`; a `withdrawn`
 row is reported, not failed): a 32-bit COFF or USE32 OMF object under an
-`x86_16` row fails.  ELF i386 agrees with `x86` and `x86_16` rows, because
-ia16-elf writes 16-bit code under that machine.  An image that writes no
+`x86_16` row fails. Only `ia16-gcc-6.3.0-20260612` accepts ELF32 i386 as
+evidence for `x86_16`. Its object format does not distinguish 16-bit and
+32-bit code. An image that writes no
 object that way, or one in a format the check cannot read (ACK's), prints
 `no-object` or `unidentified`, and the summary counts both as `not checked`:
 `make smoke` proves objects, this proves their target.  A new object format, or a row with a new `arch` and `bits`

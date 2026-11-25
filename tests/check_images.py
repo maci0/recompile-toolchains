@@ -48,9 +48,9 @@ Two checks, both read-only:
    the single-architecture formats xo65 (6502), Z80RMF (Z80) and Amiga hunk
    (m68k).  A disagreement fails as `WRONG-TARGET` (`msvc-9.0-sp1` writes
    IA-64 COFF under an x86 row; a 32-bit COFF or USE32 OMF object fails an
-   `x86_16` row), unless the row is `withdrawn`.  ELF i386 is the one format
-   that agrees with two widths: ia16-elf writes its 16-bit code under that
-   machine, so a 32-bit ELF compiler under the ia16 row is not caught here.
+   `x86_16` row), unless the row is `withdrawn`. Only the ia16 GCC profile
+   accepts ELF32 i386 as evidence for `x86_16`. Its object format does not
+   distinguish 16-bit and 32-bit code.
    An image that writes no object under the default invocation, or one in a
    format this check cannot read (ACK's, which names no machine), prints
    `no-object` or `unidentified` and passes, and the summary line counts
@@ -151,6 +151,7 @@ _ELF_FIXED_WIDTH = {"sh2": 32, "sh4": 32, "mos6502": 8}
 #: that does not say whether its x86 code is 16- or 32-bit.
 _EM_386 = 3
 _IA16_ELF = ("x86_16", 16)
+_IA16_ELF_PROFILE = "ia16-gcc-6.3.0-20260612"
 #: COFF machine (also a PE header's) -> (arch, bits).  0x01F2 is the
 #: big-endian PowerPC the Xbox 360 compilers write.
 _COFF_MACHINES = {
@@ -582,7 +583,9 @@ def distinct_compilers(found: dict[str, Entry], present: list[str]) -> int:
     return failures
 
 
-def object_target(data: bytes) -> tuple[frozenset[Target], str] | None:
+def object_target(
+    data: bytes, *, allow_ia16_elf: bool = False
+) -> tuple[frozenset[Target], str] | None:
     """The (arch, bits) rows a compiled object agrees with, and what was read; None unread."""
     if data[:4] == b"\x7fELF" and len(data) >= 20:
         width = 32 if data[4] == 1 else 64
@@ -591,7 +594,7 @@ def object_target(data: bytes) -> tuple[frozenset[Target], str] | None:
         if arches is None:
             return None
         targets = {(arch, _ELF_FIXED_WIDTH.get(arch, width)) for arch in arches}
-        if (machine, width) == (_EM_386, 32):
+        if allow_ia16_elf and (machine, width) == (_EM_386, 32):
             targets.add(_IA16_ELF)
         return frozenset(targets), f"ELF{width} machine {machine}"
     if data[:2] == b"MZ" and len(data) >= _MZ_HEADER_BYTES:
@@ -696,7 +699,7 @@ def object_targets(found: dict[str, Entry], present: list[str]) -> int:
             counts["no-object"] += 1
             print(f"no-object     {profile:30s} {' '.join(entry.invocation)} wrote no object")
             continue
-        seen = object_target(data)
+        seen = object_target(data, allow_ia16_elf=profile == _IA16_ELF_PROFILE)
         if seen is None:
             counts["unidentified"] += 1
             print(f"unidentified  {profile:30s} an object format this check cannot read")

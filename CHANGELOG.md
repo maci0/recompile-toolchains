@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- D3-data7-009. The image check accepts ELF32 i386 for `x86_16` only under the ia16 GCC profile. The same object now fails the MSVC 1.52 Win16 fixture with `WRONG-TARGET`.
+
 ## [1.19.1] - 2026-11-22
 
 ### Fixed

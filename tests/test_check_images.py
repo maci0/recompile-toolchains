@@ -265,7 +265,6 @@ _PROBES: dict[tuple[str, int], dict[str, bytes]] = {
     ("x86_16", 16): {
         "OMF USE16": _omf(0x48),
         "NE executable": _mz(b"NE"),
-        "ELF32 i386 (ia16-elf)": _elf(3, 1),
     },
     ("x86", 32): {
         "COFF i386": _coff(0x014C),
@@ -279,10 +278,8 @@ _PROBES: dict[tuple[str, int], dict[str, bytes]] = {
         "Z80RMF (z88dk)": bytes.fromhex("5a3830524d4631380100000000000000"),
     },
 }
-#: The one format that names no code width: ia16-elf writes its 16-bit code as
-#: ELF32 i386, so an ELF i386 object agrees with an x86 and an x86_16 row.
 #: ELF SH names no core either, so it agrees with sh2 and sh4.
-_AMBIGUOUS = {"ELF32 i386 (ia16-elf)", "ELF32 i386", "ELF32 SH"}
+_AMBIGUOUS = {"ELF32 SH"}
 
 
 def _one_profile_per_target() -> dict[tuple[str, int], str]:
@@ -381,8 +378,7 @@ class TestObjectTargets(unittest.TestCase):
         self.assertIn("object targets, 3 images: agree 2, WRONG-TARGET 1", out)
 
     def test_a_32_bit_object_under_a_16_bit_row_fails(self) -> None:
-        # A Win16 tag holding a 32-bit compiler: COFF i386, USE32 OMF or a PE.
-        for name in ("COFF i386", "OMF USE32", "PE i386"):
+        for name in ("COFF i386", "OMF USE32", "PE i386", "ELF32 i386"):
             with self.subTest(name):
                 code, out = self._run(
                     {"rebrew/msvc:1.52-win16": _PROBES["x86", 32][name]}, ["msvc-1.52"]

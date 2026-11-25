@@ -47,6 +47,7 @@ class TestObjectMode(unittest.TestCase):
                 PATH=f"{work}:{os.environ['PATH']}",
                 PSYQ_ROOT=str(work),
                 REBREW_RUNNER="wibo",
+                REBREW_RUNNER_TIMEOUT="1",
             )
             env.pop("SOURCE_DATE_EPOCH", None)
 
@@ -71,6 +72,13 @@ class TestObjectMode(unittest.TestCase):
                 (work / "input.c").write_text('#include "missing.h"\n')
                 result = run()
                 self.assertNotEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(output.read_text(), "previous output\n")
+            with self.subTest("compiler timeout preserves status and output"):
+                (work / "input.c").write_text("int fixture;\n")
+                (work / "CC1PSX.EXE").write_text("#!/bin/sh\nexec sleep 10\n")
+                result = run()
+                self.assertEqual(result.returncode, 124, result.stderr)
+                self.assertIn("REBREW_RUNNER_TIMEOUT", result.stderr)
                 self.assertEqual(output.read_text(), "previous output\n")
 
     def test_raw_compile_and_failed_publish(self) -> None:

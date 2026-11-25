@@ -43,6 +43,6 @@ cd "$_work" || rebrew_die "cannot enter temporary directory"
 /opt/gcc-2.7.2-snew/cpp -lang-c -undef "$SRC_ABS" > src.i     || rebrew_die "preprocessing $SRC failed"
 
 # shellcheck disable=SC2086,SC2310  # CC_FLAGS is a flag list; the helper exits by design
-( rebrew_exec /opt/gcc-2.7.2-snew/cc1 -mfp32 -mgp32 -G0 -quiet -mcpu=vr4300 -fno-exceptions $CC_FLAGS -o out.s < src.i )     || rebrew_die "cc1 failed on $SRC"
+( rebrew_exec /opt/gcc-2.7.2-snew/cc1 -mfp32 -mgp32 -G0 -quiet -mcpu=vr4300 -fno-exceptions $CC_FLAGS -o out.s < src.i )     || rebrew_stage_error "$?" "cc1 failed on $SRC"
 
 python3 /opt/gcc-2.7.2-snew/modern-asn64.py mips-linux-gnu-as out.s -G0 -EB -mips3 -O1     -mabi=32 -mgp32 -march=vr4300 -mfp32 -mno-shared -o "$OUT_ABS"

@@ -61,8 +61,8 @@ cd "$_work" || rebrew_die "cannot enter temporary directory"
 # under `||`; set -e must not turn a handled failure into an exit.
 # shellcheck disable=SC2310
 ( rebrew_run /opt/gcc-2.7.2-sn0006/cc1n64.exe  "${CC_FLAGS[@]}" -o out.s < input.i ) \
-    || rebrew_die "cc1n64 failed on $SRC"
+    || rebrew_stage_error "$?" "cc1n64 failed on $SRC"
 # shellcheck disable=SC2310  # same subshell contract as the cc1n64 stage
 ( rebrew_run /opt/gcc-2.7.2-sn0006/asn64.exe -q -G0 out.s -o out.obj ) \
-    || rebrew_die "asn64 failed on the assembly cc1n64 produced"
+    || rebrew_stage_error "$?" "asn64 failed on the assembly cc1n64 produced"
 /opt/gcc-2.7.2-sn0006/psyq-obj-parser out.obj -o "$OUT_ABS" -b -n -s

@@ -52,7 +52,7 @@ trap "rm -rf '$_work'" EXIT
 
 # shellcheck disable=SC2086,SC2310  # CC_FLAGS is a flag list; the helper exits by design
 ( rebrew_exec "$_cc1" -quiet $CC_FLAGS "$SRC_ABS" -o "$_work/out.s" ) \
-    || rebrew_die "cc1 failed on $SRC"
+    || rebrew_stage_error "$?" "cc1 failed on $SRC"
 python3 /opt/gcc-4.0.0-5026/convert_gas_syntax.py "$_work/out.s" "$STEM" new > "$_work/out_new.s" \
     || rebrew_die "assembler-syntax conversion failed for $SRC"
 powerpc-linux-gnu-as "$_work/out_new.s" -o "$OUT_ABS"

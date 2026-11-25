@@ -47,7 +47,7 @@ cd "$_work" || rebrew_die "cannot enter temporary directory"
 # under `||`; set -e must not turn a handled failure into an exit.
 # shellcheck disable=SC2086,SC2310  # CC_FLAGS is a flag list, word-split
 /usr/bin/cpp -E -lang-c++ -undef -D__GNUC__=2 -D__cplusplus -Dmips -D__mips__ -D__mips -Dn64 -D__n64__ -D__n64 -D_PSYQ -D__EXTENSIONS__ -D_MIPSEB -D__CHAR_UNSIGNED__ -D_LANGUAGE_C_PLUS_PLUS "$SRC_ABS" | ( rebrew_run /opt/gcc-2.8.1-snew-cxx-n64/cc1pln64.exe  $CC_FLAGS -o out.s ) \
-    || rebrew_die "cc1pln64 failed on $SRC"
+    || rebrew_stage_error "$?" "cc1pln64 failed on $SRC"
 # modern-asn64.py drives GNU as and writes the ELF object directly, so this
 # pipeline has no Sony-object/parser step.
 python3 /opt/gcc-2.8.1-snew-cxx-n64/modern-asn64.py mips-linux-gnu-as out.s -G0 -EB -mtune=vr4300 \

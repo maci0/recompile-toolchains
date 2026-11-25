@@ -78,9 +78,9 @@ unix2dos < input.i > src.i || rebrew_die "line conversion for $SRC failed"
 # in a subshell under `||`; set -e must not turn a handled failure into an exit.
 # shellcheck disable=SC2310
 ( rebrew_run "$PSYQ_ROOT/CC1PSX.EXE" -quiet "${CC_FLAGS[@]}" -o out.s < src.i ) \
-    || rebrew_die "CC1PSX failed on $SRC"
+    || rebrew_stage_error "$?" "CC1PSX failed on $SRC"
 # shellcheck disable=SC2310  # same subshell contract as the CC1PSX stage
 ( rebrew_run "$PSYQ_ROOT/ASPSX.EXE" -quiet out.s -o out.bj ) \
-    || rebrew_die "ASPSX failed on the assembly CC1PSX produced"
+    || rebrew_stage_error "$?" "ASPSX failed on the assembly CC1PSX produced"
 
 "$PSYQ_ROOT/psyq-obj-parser" out.bj -o "$OUT_ABS"

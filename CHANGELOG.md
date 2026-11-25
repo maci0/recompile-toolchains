@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- D3-data7-054. Native and PE compiler watchdog timeouts retain exit status 124 through staged wrappers and still name the timeout setting.
 - D3-data7-055. The Markdown catalog lists named cross-targets under their own platforms, including Commodore 64, NES and Amiga. The machine-readable manifest keeps its published platform values.
 - D3-data7-057. Every dosemu2 smoke selection mounts `/dev/kvm` when present and skips the case when the device is absent.
 - D3-data7-056. The smoke compiler and Wine probe run the image built under the requested `PREFIX`.

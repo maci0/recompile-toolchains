@@ -520,10 +520,10 @@ unix2dos < input.i > src.i || rebrew_die "line conversion for $SRC failed"
 # in a subshell under `||`; set -e must not turn a handled failure into an exit.
 # shellcheck disable=SC2310
 ( rebrew_run "$PSYQ_ROOT/CC1PSX.EXE" -quiet "${CC_FLAGS[@]}" -o out.s < src.i ) \
-    || rebrew_die "CC1PSX failed on $SRC"
+    || rebrew_stage_error "$?" "CC1PSX failed on $SRC"
 # shellcheck disable=SC2310  # same subshell contract as the CC1PSX stage
 ( rebrew_run "$PSYQ_ROOT/ASPSX.EXE" -quiet out.s -o out.bj ) \
-    || rebrew_die "ASPSX failed on the assembly CC1PSX produced"
+    || rebrew_stage_error "$?" "ASPSX failed on the assembly CC1PSX produced"
 
 "$PSYQ_ROOT/psyq-obj-parser" out.bj -o "$OUT_ABS"
 """
@@ -553,10 +553,10 @@ cd "$_work" || rebrew_die "cannot enter temporary directory"
 # under `||`; set -e must not turn a handled failure into an exit.
 # shellcheck disable=SC2310
 ( rebrew_run /opt/{root}/{cc1} {cc1_flags} "${CC_FLAGS[@]}" -o out.s < input.i ) \
-    || rebrew_die "{cc1_stem} failed on $SRC"
+    || rebrew_stage_error "$?" "{cc1_stem} failed on $SRC"
 # shellcheck disable=SC2310  # same subshell contract as the {cc1_stem} stage
 ( rebrew_run /opt/{root}/asn64.exe {as_flags} out.s -o out.obj ) \
-    || rebrew_die "asn64 failed on the assembly {cc1_stem} produced"
+    || rebrew_stage_error "$?" "asn64 failed on the assembly {cc1_stem} produced"
 /opt/{root}/psyq-obj-parser out.obj -o "$OUT_ABS" {parser_flags}
 """
 
@@ -605,7 +605,7 @@ trap "rm -rf '$_work'" EXIT
 
 # shellcheck disable=SC2086,SC2310  # CC_FLAGS is a flag list; the helper exits by design
 ( rebrew_exec "$_cc1" -quiet $CC_FLAGS "$SRC_ABS" -o "$_work/out.s" ) \
-    || rebrew_die "cc1 failed on $SRC"
+    || rebrew_stage_error "$?" "cc1 failed on $SRC"
 python3 /opt/{root}/convert_gas_syntax.py "$_work/out.s" "$STEM" new > "$_work/out_new.s" \
     || rebrew_die "assembler-syntax conversion failed for $SRC"
 powerpc-linux-gnu-as "$_work/out_new.s" -o "$OUT_ABS"

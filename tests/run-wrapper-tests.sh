@@ -272,10 +272,10 @@ st=$?
 rm -rf "$SLOW"
 case "$out" in
   *"exceeded 1s (REBREW_RUNNER_TIMEOUT) and was killed"*)
-    if [ "$st" -eq 1 ]; then
+    if [ "$st" -eq 124 ]; then
       echo "ok   watchdog kill fails loudly"
     else
-      check "watchdog kill fails loudly" "exit 1" "exit $st"
+      check "watchdog kill fails loudly" "exit 124" "exit $st"
     fi
     ;;
   *) echo "FAIL watchdog kill fails loudly: st=$st out=[$out]"; fail=1 ;;

@@ -12,6 +12,13 @@ rebrew_die() {
     exit 1
 }
 
+# A stage has already logged its watchdog timeout.
+rebrew_stage_error() {
+    [ "$1" -ne 124 ] || exit 124
+    shift
+    rebrew_die "$@"
+}
+
 # rebrew_timeout_secs <default> <value> <name> — echoes the effective
 # watchdog timeout in seconds for an external run (emulator or PE loader).
 # A hung compiler must fail loudly instead of blocking the caller forever;
@@ -116,8 +123,8 @@ rebrew_exec() {
     _status=$(rebrew_watchdog_status "$_start" "$_exec_timeout" "$?")
     set -e
     if [ "$_status" -eq 124 ]; then
-        rebrew_die "$1 exceeded ${_exec_timeout}s" \
-            "(REBREW_RUNNER_TIMEOUT) and was killed"
+        printf 'rebrew: %s exceeded %ss (REBREW_RUNNER_TIMEOUT) and was killed\n' \
+            "$1" "$_exec_timeout" >&2
     fi
     exit "$_status"
 }

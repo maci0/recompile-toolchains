@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.19.3] - 2026-11-28
+
+- Update the locked lint tools and uv. All 120 Python tests and the compiler-wrapper shell suite passed.
+
 ## [1.19.2] - 2026-11-25
 
 ### Fixed
